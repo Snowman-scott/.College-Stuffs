@@ -1,4 +1,8 @@
 # Text based game
+
+# Note: This currently dosent work!
+
+
 import os
 import time
 import json
