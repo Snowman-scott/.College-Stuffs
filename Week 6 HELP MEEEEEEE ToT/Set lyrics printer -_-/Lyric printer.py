@@ -1,5 +1,8 @@
 import time
 import sys
+import os
+
+os.system("clear")
 
 #ANSI color codes
 BLUE = '\033[94m'
