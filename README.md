@@ -1,7 +1,7 @@
 # College-Stuffs
-This is where all my college work will be upladed
+This is where all my college work will be uploaded
 
-Constructive Critisism IS welcome :3
+Constructive Criticism IS welcome :3
 
 These are the actual files from the College Pc
 
