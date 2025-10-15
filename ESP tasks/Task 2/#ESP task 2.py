@@ -30,15 +30,19 @@ def get_clerk_name():
 def get_stand_number():
     flag = True
     while flag:
-        stand_num = input("Enter stand number (1-10): ")
+        stand_num_Ui = input("Enter stand number (1-10): ")
         try:
-            int(stand_num)
+            int(stand_num_Ui)
         except:
             print("You did not enter a number.")
             flag = True
         else:
-            stand_num = int(stand_num)
-            if stand_num < 1 or stand_num > 9:
+            stand_num_Ui = int(stand_num_Ui)
+            stand_num = stand_num_Ui - 1
+
+            print(stand_num_Ui)
+            print(stand_num)
+            if stand_num < 0 or stand_num > 9:
                 print("Stand must be between 1 and 10.")
                 flag = True
             else:
@@ -146,8 +150,8 @@ while running:
     elif choice == "2":
         stand = get_clerk_name()
         disc = get_discount_choice()
-        print(str(stands[stand - 1][0]))
-        print(str(stands[stand - 1][1]))
+        print(str(stands[stand-1][0]))
+        print(str(stands[stand-1][1]))
         print("Summary before discounts:")
         print(str(stands[stand - 1][2:-1]))
         print(f"Discount selected = {disc}")
