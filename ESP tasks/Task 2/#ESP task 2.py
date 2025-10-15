@@ -32,7 +32,7 @@ def get_stand_number():
     while flag:
         stand_num = input("Enter stand number (1-10): ")
         try:
-            int(stand_numm)
+            int(stand_num)
         except:
             print("You did not enter a number.")
             flag = True
