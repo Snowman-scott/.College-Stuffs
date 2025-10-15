@@ -6,6 +6,8 @@
 stands = [["STAND 1 - ", 0],["STAND 2 - ", 0],["STAND 3 - ", 0],["STAND 4 - ", 0],["STAND 5 - ", 0],
           ["STAND 6 - ", 0],["STAND 7 - ", 0],["STAND 8 - ", 0],["STAND 9 - ", 0],["STAND 10 - ", 0]]
 
+Menu_U = "____Items____\n\n    Bread \n    Arrow \n Iron Pickaxe \n    Shield \n Golden Apple \n    Torch\n"
+
 menu = {
     "Bread": 2.00,
     "Arrow": 0.50,
@@ -49,6 +51,7 @@ def get_stand_number():
 def get_item():
     flag = True
     while flag:
+        print(Menu_U)
         item = input("Enter item (x to finish): ")
         if item.isalpha() == False and item not in ("x","X"):
             print("Invalid item name.")
