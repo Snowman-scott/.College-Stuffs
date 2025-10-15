@@ -16,7 +16,7 @@ menu = {
 }
 
 def get_clerk_name():
-    flag = true
+    flag = True
     while flag:
         clerk = input("Enter your player name: ")
         if clerk.isalpha() == False:
