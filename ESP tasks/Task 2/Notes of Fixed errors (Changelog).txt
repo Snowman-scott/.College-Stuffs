@@ -17,4 +17,8 @@ Now i will fix the logical errors or bugs
 
 Fixed the Stand number selecion not allowing users to input 10 lines 30 - 50
 
-(Screenshot Here)
+Note Lines 41-43 are not present in the code. Removed after!
+
+(Screenshot 3 Here)
+
+
