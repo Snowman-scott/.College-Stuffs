@@ -39,9 +39,6 @@ def get_stand_number():
         else:
             stand_num_Ui = int(stand_num_Ui)
             stand_num = stand_num_Ui - 1
-
-            print(stand_num_Ui)
-            print(stand_num)
             if stand_num < 0 or stand_num > 9:
                 print("Stand must be between 1 and 10.")
                 flag = True
