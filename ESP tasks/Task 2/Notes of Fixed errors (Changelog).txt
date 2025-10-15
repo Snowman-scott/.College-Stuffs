@@ -1,2 +1,4 @@
 Notes of Fixed errors (Changelog)
 
+Fixed the spelling of True on line 19
+
