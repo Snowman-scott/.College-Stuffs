@@ -1,0 +1,24 @@
+Notes of Fixed errors (Changelog)
+First I fix all the Syntax errors that make the program show an error in my IDE
+All screenshots are from Github Commit changes
+
+Fixed the spelling of True on line 19
+
+(Screenshot 1 here)
+
+
+Fixed the name of stand_num on line 35
+
+(Screenshot 2 here)
+
+
+
+Now i will fix the logical errors or bugs
+
+Fixed the Stand number selecion not allowing users to input 10 lines 30 - 50
+
+Note Lines 41-43 are not present in the code. Removed after!
+
+(Screenshot 3 Here)
+
+
