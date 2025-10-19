@@ -29,9 +29,14 @@ for x in range(len(info['formats'])): #Loop prints out all of the formats possib
     x = x + 1
 
 User_choice = int(input("Enter the number of the option you wnat to download: "))
-if User_choice >= len(info['formats']):
-    User_choice = int(input("Enter the number of the option you wnat to download: "))
-elif User_choice <= -1:
-    User_choice = int(input("Enter the number of the option you wnat to download: "))
-else:
-    print("")
+while True:
+    try:
+        User_choice = int(input("Enter the number of the option you wnat to download: "))
+        if 0 <= User_choice < len(info['formats']):
+            break
+        else:
+            print(f"Invalid choice. Please enter a number between 0 and {len(info['formats']) -1}.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+print("Valid choice selected!")
