@@ -27,3 +27,11 @@ for x in range(len(info['formats'])): #Loop prints out all of the formats possib
     print(f"This is option number {x}")
     print("")
     x = x + 1
+
+User_choice = int(input("Enter the number of the option you wnat to download: "))
+if User_choice >= len(info['formats']):
+    User_choice = int(input("Enter the number of the option you wnat to download: "))
+elif User_choice <= -1:
+    User_choice = int(input("Enter the number of the option you wnat to download: "))
+else:
+    print("")
