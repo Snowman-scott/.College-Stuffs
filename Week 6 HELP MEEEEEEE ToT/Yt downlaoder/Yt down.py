@@ -20,15 +20,14 @@ with YoutubeDL(ydl_opts) as ydl:
 x = 0
 for x in range(len(info['formats'])): #Loop prints out all of the formats possible to use
     format = info['formats'][x]
-    #print(format.keys())
-    print(f"the resolution is: {format['resolution']}")
-    print(f"The Format_id is: {format['format_id']}")
-    print(f"The Extension is: {format['ext']}")
-    print(f"This is option number {x}")
-    print("")
-    x = x + 1
+    if format['vcodec'] != 'none' and format['acodec'] != 'none':
+        print(f"the resolution is: {format['resolution']}")
+        print(f"The Format_id is: {format['format_id']}")
+        print(f"The Extension is: {format['ext']}")
+        print(f"This is option number {x}")
+        print("")
+        x = x + 1
 
-User_choice = int(input("Enter the number of the option you wnat to download: "))
 while True:
     try:
         User_choice = int(input("Enter the number of the option you wnat to download: "))
@@ -40,3 +39,11 @@ while True:
         print("Invalid input. Please enter a number.")
 
 print("Valid choice selected!")
+
+selected_format = info['formats'][User_choice]
+format_id = selected_format['format_id']
+
+downlaod_opts = {'format': format_id}
+
+with YoutubeDL(downlaod_opts) as ydl:
+    ydl.download([url])
