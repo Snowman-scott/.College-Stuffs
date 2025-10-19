@@ -6,12 +6,11 @@ from yt_dlp import YoutubeDL
 #Testing URL = https://youtu.be/SiJie3Z7DG8?si=8sKeL4oRvcs-1C_G #Changed testing url :D WEEZER!
 
 url = input("Enter URL of Video you want to Downlaod: ")
-if "https://youtu.be/" not in url:
-    url = input("Enter URL of video you want to download")
-elif url =="":
-    url = input("Enter URL of video you want to download")
-else:
-    print("")
+while not url or ("https://youtu.be" not in url and "https://www.youtube.com/watch?v=" not in url):
+    print("Invalid URL. Please Enter a Valid Youtube URL")
+    url = input("Enter URL of Video you want to Downlaod: ")
+
+print("Valid URL")
 
 ydl_opts = {}
 
