@@ -51,3 +51,6 @@ downlaod_opts = {'format': format_id}
 
 with YoutubeDL(downlaod_opts) as ydl:
     ydl.download([url])
+
+#Code user selecting where to save file
+# makle it so it can run without user needing yt_dlp on their machine (Idk how ToT Claude can help!)
