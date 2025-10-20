@@ -1,4 +1,6 @@
 #import requests
+from tkinter import filedialog
+import tkinter as tk
 import yt_dlp
 #import urllib3
 from yt_dlp import YoutubeDL
@@ -44,13 +46,20 @@ while True:
 
 print("Valid choice selected!")
 
+root = tk.Tk()
+root.withdraw()
+
+save_path = filedialog.askdirectory(title="Select Download Lacation")
+if not save_path:
+    save_path = "."
+
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
 
-downlaod_opts = {'format': format_id}
+downlaod_opts = {'format': format_id,
+                 'outtmpl':f'{save_path}/%(title)s.%(ext)s'}
 
 with YoutubeDL(downlaod_opts) as ydl:
     ydl.download([url])
 
-#Code user selecting where to save file
 # makle it so it can run without user needing yt_dlp on their machine (Idk how ToT Claude can help!)
