@@ -43,10 +43,13 @@ while True:
 
 print("Valid choice selected!")
 
+default_path = os.path.join(os.path.expanduser("~"), "Downloads")
 save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
 if not save_path:
-    save_path = "."
-save_path = os.path.expanduser(save_path) # Handle ~ for home directory
+    save_path = default_path
+else:
+    save_path = os.path.expanduser(save_path) # Handle ~ for home directory
+os.makedirs(save_path, exist_ok=True)
 
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
