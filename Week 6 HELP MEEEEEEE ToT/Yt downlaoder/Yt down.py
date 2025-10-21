@@ -1,8 +1,5 @@
-#import requests
-from tkinter import filedialog
-import tkinter as tk
+import os
 import yt_dlp
-#import urllib3
 from yt_dlp import YoutubeDL
 
 #Testing URL = https://youtu.be/SiJie3Z7DG8?si=8sKeL4oRvcs-1C_G #Changed testing url :D WEEZER!
@@ -46,12 +43,10 @@ while True:
 
 print("Valid choice selected!")
 
-root = tk.Tk()
-root.withdraw()
-
-save_path = filedialog.askdirectory(title="Select Download Lacation")
+save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
 if not save_path:
     save_path = "."
+save_path = os.path.expanduser(save_path) # Handle ~ for home directory
 
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
