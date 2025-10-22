@@ -4,7 +4,7 @@ from yt_dlp import YoutubeDL
 
 #Testing URL = https://youtu.be/SiJie3Z7DG8?si=8sKeL4oRvcs-1C_G #Changed testing url :D WEEZER!
 
-url = input("Enter URL of Video you want to Downlaod: ")
+url = input("Enter URL of Video you want to Download: ")
 while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
     print("Invalid URL. Please Enter a Valid Youtube URL")
     url = input("Enter URL of Video you want to Downlaod: ")
@@ -39,7 +39,7 @@ with YoutubeDL(ydl_opts) as ydl:
 
 # Ask user what they want to download
 while True:
-    Audio_or_both = input("Do you want to download just the audio or Both Audio and video? (audio/video)").strip().lower()
+    Audio_or_both = input("Do you want to download just the audio or video with audio? (audio/video)").strip().lower()
     if Audio_or_both in ['audio', 'a']:
         #audio only - filters for audio formats
         valid_formats = []
@@ -54,7 +54,7 @@ while True:
         for format in info['formats']:
             if format['vcodec'] != 'none' and format['acodec'] != 'none':
                 valid_formats.append(format)
-        print("\nAvalible video formats:")
+        print("\nAvailable video formats:")
         break
     else:
         print("Please enter 'audio' or 'video'")
@@ -77,7 +77,7 @@ for x in range(len(valid_formats)): #Loop prints out all of the formats possible
 # user selects format
 while True:
     try:
-        User_choice = int(input("Enter the number of the option you wnat to download: "))
+        User_choice = int(input("Enter the number of the option you want to download: "))
         if 0 <= User_choice < len(valid_formats):
             break
         else:
@@ -90,7 +90,7 @@ print("Valid choice selected!")
 #Select download location
 default_path = os.path.join(os.path.expanduser("~"), "Downloads")
 while True:
-    save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
+    save_path = input("Enter download location (Press Enter For Current Dir): ").strip()
     if not save_path:
         save_path = default_path
         print(f"Using default location {save_path}")
@@ -118,26 +118,26 @@ while True:
                     print(f"Error creating directory: {e}")
                     print("Please try a different path.")
             else:
-                print("Plese enter a differnt path.")
+                print("Please enter a differnt path.")
 
 #Downlaod the selected format
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
 
-downlaod_opts = {'format': format_id,
+download_opts = {'format': format_id,
                  'outtmpl':f'{save_path}/%(title)s.%(ext)s',
                  }
 if browser:
-    downlaod_opts['cookiesfrombrowser'] = (browser,)
+    download_opts['cookiesfrombrowser'] = (browser,)
 
 try:
     print("\nDownloading video...")
-    with YoutubeDL(downlaod_opts) as ydl:
+    with YoutubeDL(download_opts) as ydl:
         ydl.download([url])
     print("\n✓ Download completed successfully!")
 except yt_dlp.utils.DownloadError as e:
     print(f"\n✗ Download failed: {e}")
-    print("\nPossible reassons:")
+    print("\nPossible reasons:")
     print("- Video may be restricted or unavailable in your region")
     print("- Video may be age-restricted or private")
     print("- URL may be Broken! Try grabbing new URL")
