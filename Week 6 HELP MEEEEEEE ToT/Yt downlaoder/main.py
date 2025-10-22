@@ -2,30 +2,22 @@ import os
 import yt_dlp
 from yt_dlp import YoutubeDL
 
-url = input("Enter URL of Video you want to Download: ")
+def clear_terminal():
+    """Clear terminal on Windows, Mac, and Linux"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+print("This is Currently only a Youtube Video Downloader!")
+print("\nI paln to make it accept more sites and resolve issues soon!")
+print("\nAll Audio-Only Downloads will be downloaded as an MP3 File Not the format it states when running!")
+print("\nI will rework the features another time!")
+print("\n\nThank you for using my product!")
+
+url = input("\n\n\nEnter URL of Video you want to Download: ")
 while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
     print("Invalid URL. Please Enter a Valid Youtube URL")
     url = input("Enter URL of Video you want to Download: ")
 
-print("Valid URL")
-print("\nTo avoid YouTube bot detection, we'll use your browser's cookies.")
-print("Which browser are you using?")
-print("1. Chrome")
-print("2. Firefox")
-print("3. Edge")
-print("4. Safari")
-print("5. Skip (may not work)")
-
-browser_choice = input("Enter number (1-5): ").strip()
-browser_map = {
-    '1': 'chrome',
-    '2': 'firefox',
-    '3': 'edge',
-    '4': 'safari',
-    '5': None
-}
-
-browser = browser_map.get(browser_choice, 'chrome')
+print("\nValid URL")
 
 if browser:
     ydl_opts = {'cookiesfrombrowser': (browser,)}
@@ -35,16 +27,18 @@ else:
 with YoutubeDL(ydl_opts) as ydl:
     info = ydl.extract_info(url, download=False)
 
+clear_terminal()
+
 # Ask user what they want to download
 while True:
-    Audio_or_both = input("Do you want to download just the audio or video with audio? (audio/video)").strip().lower()
+    Audio_or_both = input("Do you want to download just the audio or video with audio? (audio/video) ").strip().lower()
     if Audio_or_both in ['audio', 'a']:
         #audio only - filters for audio formats
         valid_formats = []
         for format in info['formats']:
             if format['acodec'] != 'none' and format['vcodec'] == 'none':  # Audio only, no video
                 valid_formats.append(format)
-        print("\nAvailable audio formats:")
+        print("\nAvailable audio formats:\n")
         break
     elif Audio_or_both in ['both','b','v','video']:
         #Video with audio - filter for combined formats
@@ -52,7 +46,7 @@ while True:
         for format in info['formats']:
             if format['vcodec'] != 'none' and format['acodec'] != 'none':
                 valid_formats.append(format)
-        print("\nAvailable video formats:")
+        print("\nAvailable video formats:\n")
         break
     else:
         print("Please enter 'audio' or 'video'")
@@ -83,7 +77,7 @@ while True:
     except ValueError:
         print("Invalid input. Please enter a number.")
 
-print("Valid choice selected!")
+print("\nValid choice selected!\n")
 
 #Select download location
 default_path = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -118,22 +112,44 @@ while True:
             else:
                 print("Please enter a different path.")
 
+clear_terminal()
+
 #Downlaod the selected format
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
 
-download_opts = {'format': format_id,
-                 'outtmpl':f'{save_path}/%(title)s.%(ext)s',
-                 }
+download_opts = {
+    'format': format_id,
+    'outtmpl':f'{save_path}/%(title)s.%(ext)s',
+}
+
+# If audio-only and user wants to, convert to MP3
+if Audio_or_both in ['audio', 'a']:
+    while True:
+        convert = input("Do you want to convert that to an MP3? (y/n)").strip().lower()
+        if convert in ['y', 'yes']:
+            audio_bitrate = selected_format.get('abr', 192)
+            download_opts['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': str(int(audio_bitrate)),
+
+            }]
+            print(f"(Audio will be converted to MP3 at {audio_bitrate} kbps)")
+        elif convert in ['n','no']:
+            break
+
 if browser:
     download_opts['cookiesfrombrowser'] = (browser,)
 
 try:
-    print("\nDownloading video...")
+    clear_terminal()
     with YoutubeDL(download_opts) as ydl:
         ydl.download([url])
+        clear_terminal()
     print("\n✓ Download completed successfully!")
 except yt_dlp.utils.DownloadError as e:
+    clear_terminal()
     print(f"\n✗ Download failed: {e}")
     print("\nPossible reasons:")
     print("- Video may be restricted or unavailable in your region")
@@ -141,6 +157,5 @@ except yt_dlp.utils.DownloadError as e:
     print("- URL may be Broken! Try grabbing new URL")
     print("- Yt-dlp may be out of date. Get a new version of application")
 except Exception as e:
+    clear_terminal()
     print(f"\n✗ Unexpected Error: {e}")
-
-# makle it so it can run without user needing yt_dlp on their machine (Idk how ToT Claude can help!)
