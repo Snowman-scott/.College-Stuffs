@@ -1,10 +1,7 @@
 import os
 import yt_dlp
 from yt_dlp import YoutubeDL
-
-def clear_terminal():
-    """Clear terminal on Windows, Mac, and Linux"""
-    os.system('cls' if os.name == 'nt' else 'clear')
+from Functions import clear_terminal
 
 print("This is Currently only a Youtube Video Downloader!")
 print("\nI paln to make it accept more sites and resolve issues soon!")
@@ -29,43 +26,6 @@ with YoutubeDL(ydl_opts) as ydl:
 
 clear_terminal()
 
-# Ask user what they want to download
-while True:
-    Audio_or_both = input("Do you want to download just the audio or video with audio? (audio/video) ").strip().lower()
-    if Audio_or_both in ['audio', 'a']:
-        #audio only - filters for audio formats
-        valid_formats = []
-        for format in info['formats']:
-            if format['acodec'] != 'none' and format['vcodec'] == 'none':  # Audio only, no video
-                valid_formats.append(format)
-        print("\nAvailable audio formats:\n")
-        break
-    elif Audio_or_both in ['both','b','v','video']:
-        #Video with audio - filter for combined formats
-        valid_formats = []
-        for format in info['formats']:
-            if format['vcodec'] != 'none' and format['acodec'] != 'none':
-                valid_formats.append(format)
-        print("\nAvailable video formats:\n")
-        break
-    else:
-        print("Please enter 'audio' or 'video'")
-
-# Display avalible formats
-if not valid_formats:
-    print("No valid formats found for your selection. Exiting.")
-    exit()
-
-for x in range(len(valid_formats)): #Loop prints out all of the formats possible to use
-    format = valid_formats[x]
-    print(f"Resolution: {format.get('resolution', 'audio only')}")
-    print(f"Format ID: {format['format_id']}")
-    print(f"Extension: {format['ext']}")
-    if 'abr' in format and format['abr']:
-        print(f"Audio bitrate: {format['abr']} kbps")
-    print(f"This is option number {x}")
-    print("")
-
 # user selects format
 while True:
     try:
@@ -78,41 +38,6 @@ while True:
         print("Invalid input. Please enter a number.")
 
 print("\nValid choice selected!\n")
-
-#Select download location
-default_path = os.path.join(os.path.expanduser("~"), "Downloads")
-while True:
-    save_path = input("Enter download location (Press Enter For Current Dir): ").strip()
-    if not save_path:
-        save_path = default_path
-        print(f"Using default location {save_path}")
-        break
-    else:
-        save_path = os.path.expanduser(save_path) # Handle ~ if user types it
-
-        #check if path exists
-        if os.path.exists(save_path):
-            if os.path.isdir(save_path):
-                print(f"Valid directory: {save_path}")
-                break
-            else:
-                print("Error: That path exists but is not a directory. Please enter a valid directory!")
-
-        else:
-            #Ask if the user wants to create it
-            create = input(f"Directory '{save_path}' does not exist. Create it? (y/n): ").strip().lower()
-            if create in ['y', 'yes']:
-                try:
-                    os.makedirs(save_path, exist_ok=True)
-                    print(f"Created directory: {save_path}")
-                    break
-                except Exception as e:
-                    print(f"Error creating directory: {e}")
-                    print("Please try a different path.")
-            else:
-                print("Please enter a different path.")
-
-clear_terminal()
 
 #Downlaod the selected format
 selected_format = valid_formats[User_choice]

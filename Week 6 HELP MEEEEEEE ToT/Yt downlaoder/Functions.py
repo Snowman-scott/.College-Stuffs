@@ -1,6 +1,10 @@
 # Functions
 from main import formats
 
+def clear_terminal():
+    """Clear terminal on Windows, Mac, and Linux"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 def get_browser_choice():
     print("\nTo avoid YouTube bot detection, we'll use your browser's cookies.")
     print("Which browser are you using?")
