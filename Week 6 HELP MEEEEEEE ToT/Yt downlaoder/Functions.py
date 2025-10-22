@@ -1,5 +1,4 @@
 import os
-from main import formats
 
 def clear_terminal():
     """Clear terminal on Windows, Mac, and Linux"""
