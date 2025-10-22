@@ -3,10 +3,10 @@ import yt_dlp
 from yt_dlp import YoutubeDL
 from Functions import clear_terminal
 from Functions import get_browser_choice
-from Functions import get_format_choice()
-from Functions import filter_formats()
-from Functions import display_formats()
-from Save_location_grabber import get_download_path()
+from Functions import get_format_choice
+from Functions import filter_formats
+from Functions import display_formats
+from Save_location_grabber import get_download_path
 
 
 
@@ -83,47 +83,57 @@ def main():
         except ValueError:
             print("Please enter a valid number.")
 
+    selected_format = valid_formats[choice]
+    print(f"\nSelected: {selected_format.get('resolution','audio only')} ({selected_format['ext']})")
+
     save_path = get_download_path()
     clear_terminal()
 
     download_opts = {
-        'format': format_id,
-        'outtmpl':f'{save_path}/%(title)s.%(ext)s',
+        'format': selected_format['format_id'],
+        'outtmpl': os.path.join(save_path, '%(title)s.%(ext)s'),
     }
 
-# If audio-only and user wants to, convert to MP3
-if format_type in ['audio', 'a']:
-    while True:
-        convert = input("Do you want to convert that to an MP3? (y/n)").strip().lower()
-        if convert in ['y', 'yes']:
-            audio_bitrate = selected_format.get('abr', 192)
-            download_opts['postprocessors'] = [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': str(int(audio_bitrate)),
+    if browser:
+        download_opts['cookiesfrombrowser'] = (browser,)
 
-            }]
-            print(f"(Audio will be converted to MP3 at {audio_bitrate} kbps)")
-        elif convert in ['n','no']:
-            break
+    # Audio conversion handeling
+    print("MP3 conversion can only be done IF you have FFmpeg installed on your system!")
+    if format_type in ['audio', 'a']:
+        while True:
+            convert = input("Convert to an MP3? (y/n)").strip().lower()
+            if convert in ['y', 'yes']:
+                audio_bitrate = selected_format.get('abr', 192)
+                download_opts['postprocessors'] = [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': str(int(audio_bitrate)),
+                }]
+                print(f"(Audio will be converted to MP3 at {audio_bitrate} kbps)")
+                break
+            elif convert in ['n','no']:
+                break
+            else:
+                print("Please enter 'y' or 'n'")
 
-if browser:
-    download_opts['cookiesfrombrowser'] = (browser,)
-
-try:
-    clear_terminal()
-    with YoutubeDL(download_opts) as ydl:
-        ydl.download([url])
+    try:
         clear_terminal()
-    print("\n✓ Download completed successfully!")
-except yt_dlp.utils.DownloadError as e:
-    clear_terminal()
-    print(f"\n✗ Download failed: {e}")
-    print("\nPossible reasons:")
-    print("- Video may be restricted or unavailable in your region")
-    print("- Video may be age-restricted or private")
-    print("- URL may be Broken! Try grabbing new URL")
-    print("- Yt-dlp may be out of date. Get a new version of application")
-except Exception as e:
-    clear_terminal()
-    print(f"\n✗ Unexpected Error: {e}")
+        with YoutubeDL(download_opts) as ydl:
+            ydl.download([url])
+            clear_terminal()
+        print("\n✓ Download completed successfully!")
+        print(f"Saved to: {save_path}")
+    except yt_dlp.utils.DownloadError as e:
+        clear_terminal()
+        print(f"\n✗ Download failed: {e}")
+        print("\nPossible reasons:")
+        print("- Video may be restricted or unavailable in your region")
+        print("- Video may be age-restricted or private")
+        print("- URL may be Broken! Try grabbing new URL")
+        print("- Yt-dlp may be out of date. Get a new version of application")
+    except Exception as e:
+        clear_terminal()
+        print(f"\n✗ Unexpected Error: {e}")
+
+if __name__ == "__main__":
+    main()
