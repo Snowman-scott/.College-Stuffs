@@ -5,6 +5,8 @@ from Functions import clear_terminal
 from Functions import get_browser_choice
 from Functions import get_format_choice()
 from Functions import filter_formats()
+from Functions import display_formats()
+from Save_location_grabber import get_download_path()
 
 
 
@@ -62,33 +64,35 @@ def main():
     format_type = get_format_choice()
     valid_formats = filter_formats(info['formats'], format_type)
 
-    #I got upto here! Use claud on main account to code! 
+    if not valid_formats:
+        print(f"\nNo {format_type} formats found for this video.")
+        return
+    
+    print(f"Avalible {format_type} formats:\n")
+    display_formats(valid_formats)
 
 
-# user selects format
-while True:
-    try:
-        User_choice = int(input("Enter the number of the option you want to download: "))
-        if 0 <= User_choice < len(valid_formats):
-            break
-        else:
-            print(f"Invalid choice. Please enter a number between 0 and {len(valid_formats) -1}.")
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    # user selects format
+    while True:
+        try:
+            choice = int(input(f"Enter option number (0-{len(valid_formats)-1}): "))
+            if 0 <= choice < len(valid_formats):
+                break
+            else:
+                print(f"Invalid choice.\nPlease enter a number between 0 and {len(valid_formats) -1}.")
+        except ValueError:
+            print("Please enter a valid number.")
 
-print("\nValid choice selected!\n")
+    save_path = get_download_path()
+    clear_terminal()
 
-#Downlaod the selected format
-selected_format = valid_formats[User_choice]
-format_id = selected_format['format_id']
-
-download_opts = {
-    'format': format_id,
-    'outtmpl':f'{save_path}/%(title)s.%(ext)s',
-}
+    download_opts = {
+        'format': format_id,
+        'outtmpl':f'{save_path}/%(title)s.%(ext)s',
+    }
 
 # If audio-only and user wants to, convert to MP3
-if Audio_or_both in ['audio', 'a']:
+if format_type in ['audio', 'a']:
     while True:
         convert = input("Do you want to convert that to an MP3? (y/n)").strip().lower()
         if convert in ['y', 'yes']:
