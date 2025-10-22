@@ -10,27 +10,71 @@ while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
     url = input("Enter URL of Video you want to Downlaod: ")
 
 print("Valid URL")
+print("\nTo avoid YouTube bot detection, we'll use your browser's cookies.")
+print("Which browser are you using?")
+print("1. Chrome")
+print("2. Firefox")
+print("3. Edge")
+print("4. Safari")
+print("5. Skip (may not work)")
 
-ydl_opts = {}
+browser_choice = input("Enter number (1-5): ").strip()
+browser_map = {
+    '1': 'chrome',
+    '2': 'firefox',
+    '3': 'edge',
+    '4': 'safari',
+    '5': None
+}
+
+browser = browser_map.get(browser_choice, 'chrome')
+
+if browser:
+    ydl_opts = {'cookiesfrombrowser': (browser,)}
+else:
+    ydl_opts = {}
 
 with YoutubeDL(ydl_opts) as ydl:
     info = ydl.extract_info(url, download=False)
 
-x = 0
-valid_formats = []
-for format in info['formats']:
-    if format['vcodec'] != 'none' and format['acodec'] != 'none':
-        valid_formats.append(format)
+# Ask user what they want to download
+while True:
+    Audio_or_both = input("Do you want to download just the audio or Both Audio and video? (audio/video)").strip().lower()
+    if Audio_or_both in ['audio', 'a']:
+        #audio only - filters for audio formats
+        valid_formats = []
+        for format in info['formats']:
+            if format['acodec'] != 'none' and format['vcodec'] == 'none':  # Audio only, no video
+                valid_formats.append(format)
+        print("\nAvailable audio formats:")
+        break
+    elif Audio_or_both in ['both','b','v','video']:
+        #Video with audio - filter for combined formats
+        valid_formats = []
+        for format in info['formats']:
+            if format['vcodec'] != 'none' and format['acodec'] != 'none':
+                valid_formats.append(format)
+        print("\nAvalible video formats:")
+        break
+    else:
+        print("Please enter 'audio' or 'video'")
+
+# Display avalible formats
+if not valid_formats:
+    print("No valid formats found for your selection. Exiting.")
+    exit()
 
 for x in range(len(valid_formats)): #Loop prints out all of the formats possible to use
     format = valid_formats[x]
-    print(f"the resolution is: {format['resolution']}")
-    print(f"The Format_id is: {format['format_id']}")
-    print(f"The Extension is: {format['ext']}")
+    print(f"Resolution: {format.get('resolution', 'audio only')}")
+    print(f"Format ID: {format['format_id']}")
+    print(f"Extension: {format['ext']}")
+    if 'abr' in format and format['abr']:
+        print(f"Audio bitrate: {format['abr']} kbps")
     print(f"This is option number {x}")
     print("")
-    x = x + 1
 
+# user selects format
 while True:
     try:
         User_choice = int(input("Enter the number of the option you wnat to download: "))
@@ -43,6 +87,7 @@ while True:
 
 print("Valid choice selected!")
 
+#Select download location
 default_path = os.path.join(os.path.expanduser("~"), "Downloads")
 while True:
     save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
@@ -75,11 +120,15 @@ while True:
             else:
                 print("Plese enter a differnt path.")
 
+#Downlaod the selected format
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
 
 downlaod_opts = {'format': format_id,
-                 'outtmpl':f'{save_path}/%(title)s.%(ext)s'}
+                 'outtmpl':f'{save_path}/%(title)s.%(ext)s',
+                 }
+if browser:
+    downlaod_opts['cookiesfrombrowser'] = (browser,)
 
 try:
     print("\nDownloading video...")
