@@ -40,6 +40,7 @@ def filter_formats(formats, format_type):
         else:
             if fmt.get('vcodec', 'none') != 'none' and fmt.get('acodec', 'none') != 'none':
                 valid_formats.append(fmt)
+    return valid_formats
 
 def display_formats(formats):
     for idx, fmt in enumerate(formats):
