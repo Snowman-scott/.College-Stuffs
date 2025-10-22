@@ -2,12 +2,10 @@ import os
 import yt_dlp
 from yt_dlp import YoutubeDL
 
-#Testing URL = https://youtu.be/SiJie3Z7DG8?si=8sKeL4oRvcs-1C_G #Changed testing url :D WEEZER!
-
 url = input("Enter URL of Video you want to Download: ")
 while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
     print("Invalid URL. Please Enter a Valid Youtube URL")
-    url = input("Enter URL of Video you want to Downlaod: ")
+    url = input("Enter URL of Video you want to Download: ")
 
 print("Valid URL")
 print("\nTo avoid YouTube bot detection, we'll use your browser's cookies.")
@@ -118,7 +116,7 @@ while True:
                     print(f"Error creating directory: {e}")
                     print("Please try a different path.")
             else:
-                print("Please enter a differnt path.")
+                print("Please enter a different path.")
 
 #Downlaod the selected format
 selected_format = valid_formats[User_choice]
