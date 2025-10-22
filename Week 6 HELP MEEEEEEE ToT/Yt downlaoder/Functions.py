@@ -1,4 +1,4 @@
-# Functions
+import os
 from main import formats
 
 def clear_terminal():

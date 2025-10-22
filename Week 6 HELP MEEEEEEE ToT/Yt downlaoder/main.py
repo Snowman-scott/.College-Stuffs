@@ -2,29 +2,68 @@ import os
 import yt_dlp
 from yt_dlp import YoutubeDL
 from Functions import clear_terminal
+from Functions import get_browser_choice
+from Functions import get_format_choice()
+from Functions import filter_formats()
 
-print("This is Currently only a Youtube Video Downloader!")
-print("\nI paln to make it accept more sites and resolve issues soon!")
-print("\nAll Audio-Only Downloads will be downloaded as an MP3 File Not the format it states when running!")
-print("\nI will rework the features another time!")
-print("\n\nThank you for using my product!")
 
-url = input("\n\n\nEnter URL of Video you want to Download: ")
-while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
-    print("Invalid URL. Please Enter a Valid Youtube URL")
-    url = input("Enter URL of Video you want to Download: ")
 
-print("\nValid URL")
+def main():
+    print("YouTube Video Downloader")
+    print("\nNote: This currently only supports YouTube.")
+    print("All audio downloads can be converted to MP3 format.")
+    print("FFmpeg is Requiered to convert Audio files to MP3s")
+    print("\nThank you for using this tool!\n")
 
-if browser:
-    ydl_opts = {'cookiesfrombrowser': (browser,)}
-else:
-    ydl_opts = {}
+    url = input("\n\n\nEnter URL of Video you want to Download: ")
+    while not url or ("youtu.be/" not in url and "youtube.com/watch?v=" not in url):
+        print("Invalid URL. Please Enter a Valid Youtube URL")
+        url = input("Enter URL of Video you want to Download: ")
 
-with YoutubeDL(ydl_opts) as ydl:
-    info = ydl.extract_info(url, download=False)
+    print("\nValid URL")
 
-clear_terminal()
+    # Get browsrr choice
+    browser = get_browser_choice()
+    if browser:
+        ydl_opts = {'cookiesfrombrowser': (browser,)}
+    else:
+        ydl_opts = {}
+
+    # Extract the video info
+    clear_terminal()
+    print("Fetching Video information...")
+    try:
+        with YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+    except yt_dlp.utils.DownloadError as e:
+        clear_terminal()
+        print(f"Error: Could not fetch video information")
+        print(f"Details: {e}")
+        print("\nPossible reasons:")
+        print("- Invalid or unsupported URL")
+        print("- Video is private, deleted, or region-restricted")
+        print("- Network connection issues")
+        if browser:
+            print("- Browser cookies couldn't be accessed (try 'Skip' option)")
+        return
+    except Exception as e:
+        clear_terminal()
+        print(f"Unexpected error: {e}")
+        return
+
+
+    if not info.get('formats'):
+        print("Error: No formats available for this video")
+        return
+    
+    clear_terminal()
+
+    # Get format preferances
+    format_type = get_format_choice()
+    valid_formats = filter_formats(info['formats'], format_type)
+
+    #I got upto here! Use claud on main account to code! 
+
 
 # user selects format
 while True:
