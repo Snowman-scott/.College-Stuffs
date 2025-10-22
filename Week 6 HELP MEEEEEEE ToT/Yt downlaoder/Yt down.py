@@ -44,12 +44,36 @@ while True:
 print("Valid choice selected!")
 
 default_path = os.path.join(os.path.expanduser("~"), "Downloads")
-save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
-if not save_path:
-    save_path = default_path
-else:
-    save_path = os.path.expanduser(save_path) # Handle ~ for home directory
-os.makedirs(save_path, exist_ok=True)
+while True:
+    save_path = input("Enter downlaod location (Press Enter For Current Dir): ").strip()
+    if not save_path:
+        save_path = default_path
+        print(f"Using default location {save_path}")
+        break
+    else:
+        save_path = os.path.expanduser(save_path) # Handle ~ if user types it
+
+        #check if path exists
+        if os.path.exists(save_path):
+            if os.path.isdir(save_path):
+                print(f"Valid directory: {save_path}")
+                break
+            else:
+                print("Error: That path exists but is not a directory. Please enter a valid directory!")
+
+        else:
+            #Ask if the user wants to create it
+            create = input(f"Directory '{save_path}' does not exist. Create it? (y/n): ").strip().lower()
+            if create in ['y', 'yes']:
+                try:
+                    os.makedirs(save_path, exist_ok=True)
+                    print(f"Created directory: {save_path}")
+                    break
+                except Exception as e:
+                    print(f"Error creating directory: {e}")
+                    print("Please try a different path.")
+            else:
+                print("Plese enter a differnt path.")
 
 selected_format = valid_formats[User_choice]
 format_id = selected_format['format_id']
@@ -57,7 +81,19 @@ format_id = selected_format['format_id']
 downlaod_opts = {'format': format_id,
                  'outtmpl':f'{save_path}/%(title)s.%(ext)s'}
 
-with YoutubeDL(downlaod_opts) as ydl:
-    ydl.download([url])
+try:
+    print("\nDownloading video...")
+    with YoutubeDL(downlaod_opts) as ydl:
+        ydl.download([url])
+    print("\n✓ Download completed successfully!")
+except yt_dlp.utils.DownloadError as e:
+    print(f"\n✗ Download failed: {e}")
+    print("\nPossible reassons:")
+    print("- Video may be restricted or unavailable in your region")
+    print("- Video may be age-restricted or private")
+    print("- URL may be Broken! Try grabbing new URL")
+    print("- Yt-dlp may be out of date. Get a new version of application")
+except Exception as e:
+    print(f"\n✗ Unexpected Error: {e}")
 
 # makle it so it can run without user needing yt_dlp on their machine (Idk how ToT Claude can help!)
