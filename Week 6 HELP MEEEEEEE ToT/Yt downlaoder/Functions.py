@@ -47,9 +47,9 @@ def filter_formats(formats, format_type):
 
 def display_formats(formats):
     for idx, fmt in enumerate(formats):
+        print(f"\nOption {idx}: ")
         print(f"  Resolution: {fmt.get('resolution', 'audio only')}")
         print(f"  Format ID: {fmt['format_id']}")
         print(f"  Extension: {fmt['ext']}")
         if 'abr' in fmt and fmt['abr']:
             print(f"  Audio bitrate: {fmt['abr']} kbps")
-        print(f"\nOption {idx}: ")

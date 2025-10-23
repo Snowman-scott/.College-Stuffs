@@ -13,6 +13,7 @@ from Save_location_grabber import get_download_path
 def main():
     print("YouTube Video Downloader")
     print("\nNote: This currently only supports YouTube.")
+    print("If you get Error 403 Yt-dlp may be out of date! Plese refer to the README!")
     print("All audio downloads can be converted to MP3 format.")
     print("FFmpeg is Requiered to convert Audio files to MP3s")
     print("\nThank you for using this tool!\n")
