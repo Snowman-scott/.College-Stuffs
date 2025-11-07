@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import os
 
 def clear():
@@ -15,6 +16,12 @@ def mean_rev():
     clear()
     print("---Average revenue by region---")
     print(df2.round)
+    # Create bar chart
+    plt.figure(figsize=(10, 6))
+    plt.bar(df2["Region"], df2["Revenue"])
+    plt.xlabel("Region")
+    plt.ylabel("Revenue")
+    
     print("\n \n")
     print(f"The region that had the highest average revenue is: The {df["Region"].iloc[df2["Revenue"].idxmax()]}")
     print("\n \n")
@@ -27,6 +34,14 @@ def total_unit_sold():
 
     print("---Total units sold per product---")
     print(df2)
+    print("\n")
+    # Create bar chart
+    plt.figure(figsize=(10, 6))
+    plt.bar(df2["Product"], df2["UnitsSold"])
+    plt.xlabel("Product")
+    plt.ylabel("Units Sold")
+    plt.title("Total Units Sold by Product")
+    plt.show()
     print("\n \n")
     print(f"The product that sold the most units is: {df2["Product"].iloc[df2["UnitsSold"].idxmax()]}")
     print("\n \n")
