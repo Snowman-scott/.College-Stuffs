@@ -8,7 +8,8 @@ def clear_screen():
 conf = []
 
 def readconf():
-    fh = file.open(".conf.txt", "r")
+    if os.path
+    fh = open(".conf.txt", "r")
 
 def hr24Or12():
     
