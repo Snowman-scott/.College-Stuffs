@@ -26,5 +26,8 @@ Lowscoreindex = df2["Score"].idxmin()
 Highscoreindex = df2["Score"].idxmax()
 
 # iloc
-print(f"The country with the lowest total score was: {df2["Country"].iloc[Lowscoreindex]}")
-print(f"The country with the highest total score was: {df2["Country"].iloc[Highscoreindex]}")
+def ilocs():
+    print(f"The country with the lowest total score was: {df2["Country"].iloc[Lowscoreindex]}")
+    print(f"The country with the highest total score was: {df2["Country"].iloc[Highscoreindex]}")
+
+ilocs()
