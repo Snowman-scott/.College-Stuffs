@@ -21,7 +21,7 @@ def mean_rev():
     plt.bar(df2["Region"], df2["Revenue"])
     plt.xlabel("Region")
     plt.ylabel("Revenue")
-    
+    plt.title("Average Revenue by Region")
     print("\n \n")
     print(f"The region that had the highest average revenue is: The {df["Region"].iloc[df2["Revenue"].idxmax()]}")
     print("\n \n")
