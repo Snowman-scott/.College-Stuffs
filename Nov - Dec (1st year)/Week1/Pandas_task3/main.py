@@ -1,11 +1,15 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import os
 
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
 def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system("cls" if os.name == "nt" else "clear")
+
 
 df = pd.read_csv("sales_data.csv")
+
 
 def mean_rev():
     revenue = df.groupby("Region")["Revenue"]
@@ -16,15 +20,16 @@ def mean_rev():
     clear()
     print("---Average revenue by region---")
     print(df2.round)
-    # Create bar chart
-    plt.figure(figsize=(10, 6))
-    plt.bar(df2["Region"], df2["Revenue"])
-    plt.xlabel("Region")
-    plt.ylabel("Revenue")
+    # Create pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(df2["Revenue"], labels=df2["Region"], autopct="%1.1f%%")
     plt.title("Average Revenue by Region")
     print("\n \n")
-    print(f"The region that had the highest average revenue is: The {df["Region"].iloc[df2["Revenue"].idxmax()]}")
+    print(
+        f"The region that had the highest average revenue is: The {df['Region'].iloc[df2['Revenue'].idxmax()]}"
+    )
     print("\n \n")
+
 
 def total_unit_sold():
     units_sold = df.groupby("Product")["UnitsSold"]
@@ -41,14 +46,16 @@ def total_unit_sold():
     plt.xlabel("Product")
     plt.ylabel("Units Sold")
     plt.title("Total Units Sold by Product")
-    plt.show()
     print("\n \n")
-    print(f"The product that sold the most units is: {df2["Product"].iloc[df2["UnitsSold"].idxmax()]}")
+    print(
+        f"The product that sold the most units is: {df2['Product'].iloc[df2['UnitsSold'].idxmax()]}"
+    )
     print("\n \n")
+
 
 def salesperson_ranking():
     salesperson_rev = df.groupby("Salesperson")["Revenue"].sum()
-    salesperson_rank = salesperson_rev.rank(method='dense', ascending=False)
+    salesperson_rank = salesperson_rev.rank(method="dense", ascending=False)
     salesperson_rank_alt = sorted(salesperson_rev)
     df2 = salesperson_rank.reset_index()
     df2.columns = ["Salesperson", "Rank"]
@@ -56,12 +63,23 @@ def salesperson_ranking():
 
     print("---Salesperson Ranking based on Revenue---")
     print(df2)
+    # Makes a horizontal bar chart
+    plt.figure(figsize=(10, 6))
+    plt.barh(df2["Salesperson"], df2["Rank"])
+    plt.xlabel("Rank")
+    plt.ylabel("Salespersons name")
+    plt.title("Salesperson Ranking based on Revenue")
     print("\n \n")
-    print(f"The pesrson who has generated the most revenue overall is: {df2["Salesperson"].iloc[df2["Rank"].idxmax()]} \nWith a revenue of: {salesperson_rank_alt[len(salesperson_rank_alt)-1]}")
+    print(
+        f"The pesrson who has generated the most revenue overall is: {df2['Salesperson'].iloc[df2['Rank'].idxmax()]} \nWith a revenue of: {salesperson_rank_alt[len(salesperson_rank_alt) - 1]}"
+    )
     print("\n \n")
 
+
 def Rev_and_unit_sold_by_region_and_product():
-    region_and_product = df.groupby(["Region", "Product"])[["Revenue", "UnitsSold"]].sum()
+    region_and_product = df.groupby(["Region", "Product"])[
+        ["Revenue", "UnitsSold"]
+    ].sum()
     df2 = region_and_product.reset_index()
 
     top_prod_for_region = df2.groupby("Region")["UnitsSold"].idxmax()
@@ -69,9 +87,21 @@ def Rev_and_unit_sold_by_region_and_product():
 
     print("---Revenue and units sold by Region and product---")
     print(df2)
+    # makes a bar chart
+    lables = [
+        f"{region}\n({product})"
+        for region, product in zip(top_prodcts["Region"], top_prodcts["Product"])
+    ]
+    plt.figure(figsize=(10, 6))
+    plt.bar(lables, top_prodcts["UnitsSold"])
+    plt.xlabel("Region")
+    plt.ylabel("Units Sold")
+    plt.title("Total units Sold of Top selling product in Region")
+    plt.show()
     print("\n \n")
     print("---Best preforming product in each region (By units sold)---")
     print(top_prodcts)
+
 
 mean_rev()
 total_unit_sold()
