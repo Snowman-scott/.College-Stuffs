@@ -34,6 +34,13 @@ df2 = df.sort_values("visit_timestamp")
 
 areas = df["areas"].unique()
 
+Lines = []
+
+times_to_plot = []
+for time in df["time"]:
+    times_to_plot.append(str(time))
+big_line = plt.plot(times_to_plot, df["number_of_people_visited"], lable="All")
+
 for area in areas:
     line_to_plot = df[df["area"] == area]
     times_to_plot = []
@@ -44,5 +51,9 @@ for area in areas:
         line_to_plot["number_of_people_visited"],
         lable=area,
     )
-    plt.xticks(rotation=90)
-    plt.show()
+
+line1 = big_line(0)
+line1.remove()
+
+plt.xticks(rotation=90)
+plt.show()
