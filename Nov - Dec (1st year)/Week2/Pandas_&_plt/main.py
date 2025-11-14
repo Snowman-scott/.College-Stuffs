@@ -8,7 +8,7 @@ def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-df = pd.read_csv("theme_park_rised.csv")
+df = pd.read_csv("theme_park_rides.csv")
 
 
 def avrg_wait_times():
@@ -26,8 +26,11 @@ def avrg_wait_times():
         plt.text(
             bar.get_x() + bar.get_width() / 2,
             height,
-            f"${df2['wait_time_minutes'].iloc[i]}",
+            f"{df2['wait_time_minutes'].iloc[i]}",
             ha="center",
             va="bottom",
         )
     plt.show()
+
+
+avrg_wait_times()
