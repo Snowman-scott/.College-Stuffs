@@ -52,8 +52,8 @@ for area in areas:
         lable=area,
     )
 
-line1 = big_line(0)
-line1.remove()
+# line1 = big_line(0)
+# line1.remove()
 
 plt.xticks(rotation=90)
 plt.show()
