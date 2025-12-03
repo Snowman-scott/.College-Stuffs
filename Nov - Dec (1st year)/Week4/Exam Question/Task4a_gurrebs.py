@@ -136,6 +136,11 @@ def get_selected_item(item, startdate, enddate):
     return df3
 
 
+"""
+
+IGNORE THIS, NOT TO DO WITH MAIN MATPLOTLIB WORK!
+
+
 def get_selected_item_mplc(item, startdate, enddate):
     df1 = pd.read_csv("Task4a_data.csv")
     df2 = df1.loc[df1["Menu Item"] == item]
@@ -165,6 +170,7 @@ def get_selected_item_mplc(item, startdate, enddate):
         plt.grid(True, alpha=0.3, linewidth=0.7)
         plt.tight_layout()
         plt.show()
+        """
 
 
 def item_W_Hi_sales_and_avrg(item, startdate, enddate):
