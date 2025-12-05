@@ -73,44 +73,111 @@ def get_product_choice():
                 return item_name
 
 
+# Displays a calendar view of available dates
+def display_date_range():
+    df = pd.read_csv("Task4a_data.csv")
+    available_dates = df.columns[2:]
+    min_date = pd.to_datetime(available_dates[0], dayfirst=True)
+    max_date = pd.to_datetime(available_dates[-1], dayfirst=True)
+
+    print("\n" + "=" * 60)
+    print(
+        f"Available date range: {min_date.strftime('%d/%m/%Y')} - {max_date.strftime('%d/%m/%Y')}"
+    )
+    print("=" * 60)
+
+    current_date = min_date
+    current_month = min_date.month
+    current_year = min_date.year
+
+    while current_date <= max_date:
+        if current_date.month != current_month or current_date.year != current_year:
+            current_month = current_date.month
+            current_year = current_date.year
+
+        print(f"\n{current_date.strftime('%B %Y')}")
+
+        days_in_month = []
+        temp_date = current_date
+
+        while temp_date.month == current_month and temp_date <= max_date:
+            days_in_month.append(temp_date.day)
+            temp_date += pd.Timedelta(days=1)
+
+        for i in range(0, len(days_in_month), 10):
+            row = days_in_month[i : i + 10]
+            print("  ".join(f"{day:2}" for day in row))
+
+        current_date = temp_date
+
+    print("=" * 60 + "\n")
+
+
 # Gets user input of start of date range
 # Converts to a date to check data entry is in correct format and then returns it as a string
 def get_start_date():
     flag = True
 
+    df = pd.read_csv("Task4a_data.csv")
+    available_dates = df.columns[2:]
+    min_date = pd.to_datetime(available_dates[0], dayfirst=True)
+    max_date = pd.to_datetime(available_dates[-2], dayfirst=True)
+
+    display_date_range()
+
     while flag:
         start_date = input(
             "Please enter start date for your time range (DD/MM/YYYY) : "
-        )  # Need to add Checking to make sure the Data is actually in the data set
+        )
 
         try:
-            pd.to_datetime(start_date, dayfirst=True)
+            date_obj = pd.to_datetime(start_date, dayfirst=True)
         except:
             print("Sorry, you did not enter a valid date")
             flag = True
         else:
-            flag = False
+            if date_obj < min_date or date_obj > max_date:
+                print(
+                    f"Sorry, the date must be between {min_date.strftime('%d/%m/%Y')} and {max_date.strftime('%d/%m/%Y')}"
+                )
+                flag = True
+            else:
+                flag = False
 
     return start_date
 
 
 # Gets user input of end of date range
 # Converts to a date to check data entry is in correct format and then returns it as a string
-def get_end_date():
+def get_end_date(start_date):
     flag = True
 
+    df = pd.read_csv("Task4a_data.csv")
+    available_dates = df.columns[2:]
+    start_date_obj = pd.to_datetime(start_date, dayfirst=True)
+    max_date = pd.to_datetime(available_dates[-1], dayfirst=True)
+
     while flag:
-        end_date = input(
-            "Please enter end date for your time range (DD/MM/YYYY) : "
-        )  # Need to add Checking to make sure the Data is actually in the data set
+        end_date = input("Please enter end date for your time range (DD/MM/YYYY) : ")
 
         try:
-            pd.to_datetime(end_date, dayfirst=True)
+            date_obj = pd.to_datetime(end_date, dayfirst=True)
         except:
             print("Sorry, you did not enter a valid date")
             flag = True
         else:
-            flag = False
+            if date_obj < start_date_obj:
+                print(
+                    f"Sorry, the end date must be on or after the start date ({start_date})"
+                )
+                flag = True
+            elif date_obj > max_date:
+                print(
+                    f"Sorry, the date must be on or before {max_date.strftime('%d/%m/%Y')}"
+                )
+                flag = True
+            else:
+                flag = False
 
     return end_date
 
@@ -173,29 +240,46 @@ def get_selected_item_mplc(item, startdate, enddate):
         """
 
 
-def item_W_Hi_sales_and_avrg(item, startdate, enddate):
+def item_W_Hi_sales_and_avrg(startdate, enddate):
     df1 = pd.read_csv("Task4a_data.csv")
-    df2 = df1.loc[df1["Menu Item"] == item]
-    df3 = df2.loc[:, startdate:enddate]
-    df_T = df3.T
-    df_T.columns = ["Lunch", "Dinner"]
+    df2 = df1.loc[
+        :, ["Menu Item", "Service"] + list(df1.loc[:, startdate:enddate].columns)
+    ]
 
-    Hi_sold = df_T.max()
-    Hi_sold_date = df_T.idxmax()
-    avrg_sold = df_T.mean()
+    print("\n" + "=" * 80)
+    print(f"Sales Statistics for All Menu Items ({startdate} to {enddate})")
+    print("=" * 80)
 
-    print(f"Lunch - Highest sales: {Hi_sold['Lunch']} on {Hi_sold_date['Lunch']}")
-    print(f"Lunch - Average sales: {avrg_sold['Lunch']}")
-    print()
-    print(f"Dinner - Highest sales: {Hi_sold['Dinner']} on {Hi_sold_date['Dinner']}")
-    print(f"Dinner - Average sales: {avrg_sold['Dinner']}")
+    menu_items = df2["Menu Item"].unique()
+
+    for item in menu_items:
+        item_data = df2.loc[df2["Menu Item"] == item]
+        item_data_only = item_data.loc[:, startdate:enddate]
+        df_T = item_data_only.T
+        df_T.columns = ["Lunch", "Dinner"]
+
+        Hi_sold = df_T.max()
+        Hi_sold_date = df_T.idxmax()
+        avrg_sold = df_T.mean()
+
+        print(f"\n{item}:")
+        print(
+            f"  Lunch  - Highest sales: {Hi_sold['Lunch']} on {Hi_sold_date['Lunch']}"
+        )
+        print(f"  Lunch  - Average sales: {avrg_sold['Lunch']:.2f}")
+        print(
+            f"  Dinner - Highest sales: {Hi_sold['Dinner']} on {Hi_sold_date['Dinner']}"
+        )
+        print(f"  Dinner - Average sales: {avrg_sold['Dinner']:.2f}")
+
+    print("\n" + "=" * 80 + "\n")
 
 
 main_menu = menu()
 if main_menu == 1:
     item = get_product_choice()
     start_date = get_start_date()
-    end_date = get_end_date()
+    end_date = get_end_date(start_date)
 
     item_W_Hi_sales_and_avrg(item, start_date, end_date)
     extracted_data = get_selected_item(item, start_date, end_date)
