@@ -1,12 +1,15 @@
-#Lyrics printer diff
+# Lyrics printer diff
 
+import os
 import time
-import sys
+
+os.system("clear")
 
 # ANSI color codes
-CYAN = '\033[96m'
-BOLD_CYAN = '\033[1m\033[96m'
-RESET = '\033[0m'
+CYAN = "\033[96m"
+BOLD_CYAN = "\033[1m\033[96m"
+RESET = "\033[0m"
+
 
 def print_lyrics():
     # Each tuple contains: (lyric line, delay between characters in seconds)
@@ -35,18 +38,19 @@ def print_lyrics():
         ("Rock that python", 0.07),
         ("Let the rhythm take control", 0.05),
     ]
-    
+
     for line, char_delay in lyrics:
         # Print each character with a delay
         for char in line:
             print(f"{BOLD_CYAN}{char}{RESET}", end="", flush=True)
             time.sleep(char_delay)
-        
+
         # Move to next line after completing the current line
         print()  # New line after each lyric
-        
+
         # Optional: pause between lines
         time.sleep(0.5)
+
 
 if __name__ == "__main__":
     print_lyrics()
