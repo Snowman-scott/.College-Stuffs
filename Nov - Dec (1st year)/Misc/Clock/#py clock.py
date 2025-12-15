@@ -3,6 +3,7 @@ import time
 import os
 
 # No no work at moment, Have not coded what i needed to do....
+# GIT WORK
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
