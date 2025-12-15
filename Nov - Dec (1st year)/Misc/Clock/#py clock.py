@@ -2,6 +2,8 @@ import datetime as dt
 import time
 import os
 
+# No no work at moment, Have not coded what i needed to do....
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -12,7 +14,7 @@ def readconf():
     fh = open(".conf.txt", "r")
 
 def hr24Or12():
-    
+
     input("Do you want 12 hr or 24?: ")
 
 
