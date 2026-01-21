@@ -6,7 +6,9 @@ Hi
 
 | Description of test | Expected outcome | Actual outcome | Comments and intended actions |
 |---------------------|------------------|----------------|-------------------------------|
-|Inputing a word that is not intended to be inputted (Erroneous Test)|The program states that that is not a valid data type for input|The program thinks it is an actual item in the store ![The code in question|                               |
+|Erroneous Test|The program gives an error msg|The program thinks it is an actual item in the store|Oo|
 |                     |                  |                |                               |
 |                     |                  |                |                               |
 |                     |                  |                |                               |
+THIS IS CANCER!!!!
+MD I LOVE YOU BUT WTF
