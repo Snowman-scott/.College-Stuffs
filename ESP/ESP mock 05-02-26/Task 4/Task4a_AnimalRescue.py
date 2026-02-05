@@ -1,7 +1,5 @@
 import os
 import subprocess
-from filecmp import clear_cache
-from turtle import clear
 
 import matplotlib.pyplot as plt
 import pandas as pd
