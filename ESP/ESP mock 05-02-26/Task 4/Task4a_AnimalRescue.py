@@ -121,6 +121,7 @@ def post_type_interactions():
 
 
 def tod_post_type():  # Offering users a choice of bar or line graph to present data
+    clear_terminal()
     print("#################################################")
     print("################# Type of graph #################")
     print("#################################################")
