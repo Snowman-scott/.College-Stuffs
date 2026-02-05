@@ -117,6 +117,7 @@ def post_type_interactions():
     plt.xlabel("Post type")  # Graph label
     plt.ylabel("Total interactions")  # Graph label
     plt.title("Amount of post interaction Based on Type of post")  # Graph title
+    plt.show()
 
 
 def tod_post_type():  # Offering users a choice of bar or line graph to present data
