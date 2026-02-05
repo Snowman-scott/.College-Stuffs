@@ -1,3 +1,4 @@
 /.VsCode Files
 /.claude
 venv/
+.DS_Store
