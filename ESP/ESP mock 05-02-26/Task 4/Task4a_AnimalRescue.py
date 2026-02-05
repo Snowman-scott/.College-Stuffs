@@ -103,21 +103,23 @@ def get_avg_data(avg_choice):
 
 
 def post_type_interactions():
-    df = pd.read_csv("Task4a_data.csv")
+    df = pd.read_csv("Task4a_data.csv")  # Reading csv for data
     extract = df.groupby(["Post Type"], as_index=False)[
         ["Likes", "Shares", "Comments"]
-    ].sum()
-    extract["Total"] = extract[["Likes", "Shares", "Comments"]].sum(axis=1)
-    extract = extract.sort_values("Total", ascending=True)
-    print(extract, "\n \n \n \n")
-    plt.figure(figsize=(10, 6))
-    plt.barh(extract["Post Type"], extract["Total"])
-    plt.xlabel("Post type")
-    plt.ylabel("Total interactions")
-    plt.title("Amount of post interaction Based on Type of post")
+    ].sum()  # Using pandas to filter data
+    extract["Total"] = extract[["Likes", "Shares", "Comments"]].sum(
+        axis=1
+    )  # Data filtering
+    extract = extract.sort_values("Total", ascending=True)  # Sorting filtered data
+    print(extract, "\n \n \n \n")  # Output data
+    plt.figure(figsize=(10, 6))  # Plotting graph
+    plt.barh(extract["Post Type"], extract["Total"])  # putting data into the graph
+    plt.xlabel("Post type")  # Graph label
+    plt.ylabel("Total interactions")  # Graph label
+    plt.title("Amount of post interaction Based on Type of post")  # Graph title
 
 
-def tod_post_type():
+def tod_post_type():  # Offering users a choice of bar or line graph to present data
     print("#################################################")
     print("################# Type of graph #################")
     print("#################################################")
