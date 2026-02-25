@@ -1,0 +1,113 @@
+[
+  {
+    "type": "mcq",
+    "question": "What is the main purpose of Task 4b?",
+    "options": [
+      "A) To write the code for the solution",
+      "B) To evaluate how well your solution meets requirements and suggest improvements",
+      "C) To test individual functions in the program",
+      "D) To gather client requirements"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "verbose",
+    "question": "According to the Task 4b brief, what are the three main areas you must justify in your evaluation answer?",
+    "model_answer": "You must justify the system requirements, the user requirements, and potential future developments.",
+    "keywords": ["system", "user", "future", "development", "requirement"]
+  },
+  {
+    "type": "mcq",
+    "question": "According to the 'set task information', which specific data trend must the solution be able to identify and evaluate?",
+    "options": [
+      "A) Total revenue per year for the last decade",
+      "B) Trends and patterns for lunch and dinner services",
+      "C) The most popular drink sold at the bar",
+      "D) Average weight of the BBQ meat served"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "verbose",
+    "question": "To achieve higher grades, how should you support the claims you make about your software performance in the evaluation?",
+    "model_answer": "Support claims with specific evidence, such as referencing line numbers from your code or describing specific output screens and charts from Task 4a.",
+    "keywords": [
+      "evidence",
+      "line",
+      "number",
+      "reference",
+      "specific",
+      "example"
+    ]
+  },
+  {
+    "type": "mcq",
+    "question": "Which of the following should you include in your evaluation to show a professional approach?",
+    "options": [
+      "A) Comparison of your solution against the original requirements",
+      "B) A list of programming shortcuts you used",
+      "C) The client’s personal preferences and favorite colors",
+      "D) A simple count of how many lines of code you wrote"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "verbose",
+    "question": "When discussing your charts or graphs, what must you explain to the examiner to prove they meet the user requirements?",
+    "model_answer": "Explain how the output is meaningful and relevant to the end user (the BBQ manager) and how it helps them interpret data trends better than raw text.",
+    "keywords": [
+      "meaningful",
+      "relevant",
+      "manager",
+      "interpret",
+      "trends",
+      "value"
+    ]
+  },
+  {
+    "type": "mcq",
+    "question": "What should you do if your solution meets all functional requirements but runs slowly?",
+    "options": [
+      "A) Ignore it because it technically works",
+      "B) Note it as a non-functional improvement in the 'Future Developments' section",
+      "C) Delete the code and start again",
+      "D) State that the hardware is the only problem"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "verbose",
+    "question": "If you are suggesting a 'Future Development' for the User Interface (UI), what provides a strong technical justification?",
+    "model_answer": "Suggesting a GUI for accessibility or an advanced TUI using libraries like Rich/Curses to improve navigation and data layout for non-technical users.",
+    "keywords": [
+      "gui",
+      "tui",
+      "library",
+      "accessibility",
+      "navigation",
+      "interface"
+    ]
+  },
+  {
+    "type": "mcq",
+    "question": "Why is suggesting future improvements a vital part of the Task 4b mark scheme?",
+    "options": [
+      "A) It shows you can reflect and think critically about your work",
+      "B) It increases your word count to meet the limit",
+      "C) It makes the final code file larger",
+      "D) It allows you to skip the testing phase"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "mcq",
+    "question": "Which statement represents a high-quality evaluation comment?",
+    "options": [
+      "A) 'The software works but could be faster if loops were optimised.'",
+      "B) 'The program works, so nothing needs changing.'",
+      "C) 'I wrote the code in one day so it is very efficient.'",
+      "D) 'I liked making the program and the graphs look nice.'"
+    ],
+    "answer": "A"
+  }
+]
