@@ -41,15 +41,18 @@ python main.py
 ---
 
 # Information about this quiz
-- It is marked out of 20
-- there is no time limit
-- You have 10 questions on part 4a and 10 questions on part 4b
+- Marked out of **28 total** (6 MCQ × 1 mark + 4 Verbose × 3 marks, per section)
+- MCQ questions are right or wrong (1 mark each)
+- Verbose questions are marked proportionally based on technical keywords used (0–3 marks each)
+- Grade thresholds: **Distinction ≥ 80%**, **Merit ≥ 60%**
+- No time limit
+- 10 questions on part 4a and 10 questions on part 4b
 
 ---
 
 ## Roadmap
-- make it out of more than 20 marks (questions marked on an actual level and not just one mark for the correct answer)
-- Add a GUI?!
-- Add a timer
-- Add a leaderboard
-- Add a feature to write the answers to a file for later review or teacher review
+- [x] Dynamic marking — proportional marks based on keyword depth
+- [ ] Add a GUI?!
+- [ ] Add a timer
+- [ ] Add a leaderboard
+- [ ] Add a feature to write the answers to a file for later review or teacher review
