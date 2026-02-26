@@ -1,0 +1,94 @@
+[
+  {
+    "type": "mcq",
+    "question": "When you are given your data file for the project, what file format is it usually provided in?",
+    "options": ["A) .txt", "B) .csv", "C) .docx", "D) .pdf"],
+    "answer": "B"
+  },
+  {
+    "type": "verbose",
+    "question": "Why is it important to use 'Modular Programming' (breaking code into separate functions) rather than writing one long script?",
+    "model_answer": "It makes the code easier to test, debug, and maintain. It allows for Unit Testing and makes the logic clearer for the examiner to follow.",
+    "keywords": ["test", "debug", "maintain", "unit", "clear", "functions"]
+  },
+  {
+    "type": "mcq",
+    "question": "What type of testing checks individual functions or methods to ensure they work in isolation?",
+    "options": [
+      "A) Unit testing",
+      "B) Integration testing",
+      "C) User acceptance testing",
+      "D) Stress testing"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "verbose",
+    "question": "When reading an external data file, what specific steps should your code take to prevent the program from crashing if the file is missing?",
+    "model_answer": "You should use Exception Handling (try...except blocks) to catch errors like FileNotFoundError and give the user a helpful message.",
+    "keywords": ["try", "except", "exception", "error", "catch", "handling"]
+  },
+  {
+    "type": "mcq",
+    "question": "What is the primary reason for implementing 'Input Validation' within your solution?",
+    "options": [
+      "A) To make the program run faster",
+      "B) To make the code shorter",
+      "C) To prevent invalid or harmful data from being processed",
+      "D) To make the interface look more colorful"
+    ],
+    "answer": "C"
+  },
+  {
+    "type": "verbose",
+    "question": "The brief asks for 'maintainable' code. Explain how using a 'Global Constant' for a file name is better than 'Hard-coding' it into every function.",
+    "model_answer": "Global constants allow you to change the value in one place (at the top of the script) if the file name changes, rather than searching through the whole code.",
+    "keywords": ["place", "update", "search", "change", "top", "constant"]
+  },
+  {
+    "type": "mcq",
+    "question": "If you are asked to provide 'Graphical Output' to show a trend over a specific time period, which chart type is most appropriate?",
+    "options": [
+      "A) A Pie Chart showing percentages",
+      "B) A Line Graph showing the trend over time",
+      "C) A Scatter Plot with no connecting lines",
+      "D) A 3D Bubble Chart"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "verbose",
+    "question": "How does including 'Internal Documentation' (comments) in Task 4a help you when you start writing your Task 4b Reflective Evaluation?",
+    "model_answer": "Comments act as a roadmap, helping you quickly identify and reference specific logic to use as evidence in your evaluation report.",
+    "keywords": [
+      "roadmap",
+      "evidence",
+      "identify",
+      "reference",
+      "find",
+      "evaluation"
+    ]
+  },
+  {
+    "type": "mcq",
+    "question": "During Task 4a, what is the examiner primarily assessing?",
+    "options": [
+      "A) How quickly you finished",
+      "B) Your ability to develop a functional and robust solution",
+      "C) Extra features not in the brief",
+      "D) Artistic UI skills"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "mcq",
+    "question": "What is the main purpose of the Task 4 component as a whole?",
+    "options": [
+      "A) To write code fast",
+      "B) To develop, test, and evaluate your solution",
+      "C) To research client backgrounds",
+      "D) To create marketing materials"
+    ],
+    "answer": "B"
+  }
+]
