@@ -23,7 +23,10 @@ Option 2: The Command Line Way (Recommended)
 INFORMATION ABOUT THIS QUIZ
 ------------------------------------------------------------
 
-- Scoring: Marked out of 20 total.
+- Scoring: Marked out of 28 total (dynamic — see below).
+    * MCQ questions: 1 mark each (right or wrong)
+    * Verbose questions: 0-3 marks each (proportional to keywords used)
+- Grades: Distinction >= 80%  |  Merit >= 60%
 - Timing: No time limit (take your time to read the model answers).
 - Content:
     * 10 Questions on Part 4a (Development)
@@ -33,7 +36,7 @@ INFORMATION ABOUT THIS QUIZ
 ROADMAP (FUTURE UPDATES)
 ------------------------------------------------------------
 
-[ ] Dynamic Marking: Weighting marks based on technical depth.
+[x] Dynamic Marking: Proportional marks based on technical keyword depth.
 [ ] GUI: Upgrading from Terminal to a Windowed Interface.
 [ ] Timer: Adding a countdown for exam-condition practice.
 [ ] Leaderboard: Tracking high scores for the class.
