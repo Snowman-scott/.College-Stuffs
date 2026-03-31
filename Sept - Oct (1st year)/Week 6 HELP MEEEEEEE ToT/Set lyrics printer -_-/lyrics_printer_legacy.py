@@ -1,5 +1,7 @@
+import json
 import os
 import re
+import socket
 import subprocess
 import sys
 import time
@@ -93,13 +95,11 @@ def parse_lrc(synclyr):
     return results
 
 
-def tidal_search(lyrdata):
+def get_song(lyrdata):
     song_name = lyrdata["trackName"]
     artist_name = lyrdata["artistName"]
     album_name = lyrdata["albumName"]
     track_length = lyrdata["duration"]
-    best = None
-    best_diff = 999
 
     track_info = requests.get(
         f"https://hund.qqdl.site/search/?s={song_name}&a={artist_name}&al={album_name}&limit=5"
@@ -107,50 +107,18 @@ def tidal_search(lyrdata):
 
     search_data = track_info.json()["data"]
 
-    for item in search_data["items"]:
-        diff = abs(item["duration"] - track_length)
-        if diff < best_diff:
-            best_diff = diff
-            best = item
+    song_id = search_data["items"][0]["id"]
 
-    if best_diff <= 5:
-        song_id = best["id"]
-    else:
-        song_id = None
-    return song_id
+    song_request = requests.get(f"https://hund.qqdl.site/trackManifests/?id={song_id}")
 
+    song_request_data = song_request.json()["data"]
 
-def youtube_search(lyrdata):
-    song_name = lyrdata["trackName"]
-    artist_name = lyrdata["artistName"]
-    album_name = lyrdata["albumName"]
-    track_length = lyrdata["duration"]
-    best = None
-    best_diff = 999
+    url = song_request_data["data"]["attributes"]["uri"]
+
     ydl_opts = {"format": "bestaudio", "quiet": True, "no_warnings": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        search = f"ytsearch5:{song_name} {artist_name} {album_name}"
-        info = ydl.extract_info(search, download=False)
-    for entry in info["entries"]:
-        diff = abs(entry["duration"] - track_length)
-        if diff < best_diff:
-            best_diff = diff
-            best = entry
-    if best_diff <= 5:
-        return best["url"]
-    else:
-        return None
-
-
-def get_song(song_id):
-    if song_id is not None:
-        song_request = requests.get(
-            f"https://hund.qqdl.site/trackManifests/?id={song_id}"
-        )
-        song_request_data = song_request.json()["data"]
-
-        return song_request_data["data"]["attributes"]["uri"]
-    return None
+        info = ydl.extract_info(url, download=False)
+        return info["url"]
 
 
 def main(lyrdata, url):
@@ -205,15 +173,5 @@ def main(lyrdata, url):
 
 lyrdata = select_track()
 lrclib_id(lyrdata)
-
-song_id = tidal_search(lyrdata)
-url = get_song(song_id)
-
-if url is None:
-    url = youtube_search(lyrdata)
-
-if url is None:
-    clear_terminal()
-    print("No sources have the proper song avalible :<")
-
+url = get_song(lyrdata)
 main(lyrdata, url)
