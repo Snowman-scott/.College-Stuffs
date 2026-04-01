@@ -85,11 +85,12 @@ def parse_lrc(synclyr):
     results = []
     for line in synclyr.splitlines():
         match = re.match(r"\[(\d+):(\d+\.\d+)\] (.*)", line)
-        mins = int(match.group(1))
-        sec = float(match.group(2))
-        total_secs = (mins * 60) + sec
-        text = match.group(3)
-        results.append((total_secs, text))
+        if match:
+            mins = int(match.group(1))
+            sec = float(match.group(2))
+            total_secs = (mins * 60) + sec
+            text = match.group(3)
+            results.append((total_secs, text))
     return results
 
 
@@ -100,7 +101,6 @@ def tidal_search(lyrdata):
     track_length = lyrdata["duration"]
     best = None
     best_diff = 999
-
     track_info = requests.get(
         f"https://hund.qqdl.site/search/?s={song_name}&a={artist_name}&al={album_name}&limit=5"
     )
@@ -206,14 +206,17 @@ def main(lyrdata, url):
 lyrdata = select_track()
 lrclib_id(lyrdata)
 
-song_id = tidal_search(lyrdata)
-url = get_song(song_id)
+try:
+    song_id = tidal_search(lyrdata)
+    url = get_song(song_id)
+except Exception:
+    url = None
 
 if url is None:
     url = youtube_search(lyrdata)
 
 if url is None:
     clear_terminal()
-    print("No sources have the proper song avalible :<")
-
-main(lyrdata, url)
+    print("No sources have the proper song available :<")
+else:
+    main(lyrdata, url)
