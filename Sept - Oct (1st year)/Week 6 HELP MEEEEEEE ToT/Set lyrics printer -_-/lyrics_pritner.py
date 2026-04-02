@@ -6,6 +6,7 @@ import time
 
 import requests
 import vlc
+import whisper
 import yt_dlp
 
 frames = [
@@ -127,19 +128,35 @@ def youtube_search(lyrdata):
     track_length = lyrdata["duration"]
     best = None
     best_diff = 999
+
     ydl_opts = {"format": "bestaudio", "quiet": True, "no_warnings": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         search = f"ytsearch5:{song_name} {artist_name} {album_name}"
         info = ydl.extract_info(search, download=False)
+
     for entry in info["entries"]:
         diff = abs(entry["duration"] - track_length)
+
         if diff < best_diff:
             best_diff = diff
             best = entry
+
     if best_diff <= 5:
         return best["url"]
     else:
         return None
+
+
+def get_song_url(lyrdata):
+    try:
+        song_id = tidal_search(lyrdata)
+        url = get_song(song_id)
+        if url:
+            return url
+    except Exception:
+        pass
+
+    return youtube_search(lyrdata)
 
 
 def get_song(song_id):
@@ -151,6 +168,26 @@ def get_song(song_id):
 
         return song_request_data["data"]["attributes"]["uri"]
     return None
+
+
+def download_audio(url):
+    fd, path = tempfile.mkstemp(suffix=".wav")
+    os.close(fd)
+    ydl_opts = {
+        "format": "bestaudio",
+        "outtmpl": path,
+        "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "wav"}],
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        search = url
+        vid = ydl.extract_info(search, download=True)
+    return path
+
+
+def transcribe_audio(path):
+    model = whisper.load_model("Tiny")
+    results = model.transcribe(path)
+    return results["segments"]
 
 
 def main(lyrdata, url):
@@ -203,20 +240,15 @@ def main(lyrdata, url):
                 time.sleep(delay)
 
 
+# --- Main code --- #
+
 lyrdata = select_track()
 lrclib_id(lyrdata)
 
-try:
-    song_id = tidal_search(lyrdata)
-    url = get_song(song_id)
-except Exception:
-    url = None
+url = get_song_url(lyrdata)
 
-if url is None:
-    url = youtube_search(lyrdata)
-
-if url is None:
+if url:
+    main(lyrdata, url)
+else:
     clear_terminal()
     print("No sources have the proper song available :<")
-else:
-    main(lyrdata, url)
