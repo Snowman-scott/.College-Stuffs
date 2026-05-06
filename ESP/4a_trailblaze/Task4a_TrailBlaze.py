@@ -1,4 +1,11 @@
+import os
+import subprocess
+
 import pandas as pd
+
+
+def clear_terminal():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
 
 
 # Outputs the main menu and checks the user input
@@ -43,33 +50,37 @@ def get_activity_id():
         for i in range(len(activity_codes)):
             print(i + 1, " ", activity_codes[i])
 
-        selection = input("Enter your number selection here: ")
-
-        if selection.isdigit():
-            selection = int(selection)
-            flag = False
-        else:
+        try:
+            selection = int(input("Enter your number selection here: "))
+        except Exception:
             flag = True
-
-        activity_id = activity_codes[selection - 1]
-
-        print("You have selected activity id:", activity_id)
-        return activity_id
+        else:
+            if selection >= 1 and selection <= 9:
+                activity_id = activity_codes[selection - 1]
+                print("You have selected activity id:", activity_id)
+                return activity_id
+                flag = False
+            else:
+                flag = True
 
 
 # Gets and converts user input from string to date format
-def get_date(start_end):
+def get_date(start_end, activity_id):
+    data = pd.read_csv("Task4a_TrailBlaze_data.csv")
+    activity_data = data.loc[data["Activity ID"] == activity_id].copy()
 
+    print("\n".join(activity_data["Date"].values))
     flag = True
 
     while flag:
+        clear_terminal()
         date = input(
             "Please enter {} date for your date range (DD/MM/YYYY) : ".format(start_end)
         )
 
         try:
             pd.to_datetime(date, format="%d/%m/%Y")
-        except:
+        except Exception:
             print("Sorry, you did not enter a valid date")
             flag = True
         else:
@@ -106,11 +117,16 @@ def calculate_total_places_sold(date_id, activity_id, start_date, end_date):
     )
 
 
+def table_everything():
+    df = pd.read_csv("Task4a_TrailBlaze_data.csv")
+    df2 = df.groupby()
+
+
 main_menu_choice = main_menu()
 
 if main_menu_choice == 1:
     activity_id = get_activity_id()
-    start_date = get_date("start")
-    end_date = get_date("end")
+    start_date = get_date("start", activity_id)
+    end_date = get_date("end", activity_id)
     date_id = get_data_by_id_and_date(activity_id, start_date, end_date)
     calculate_total_places_sold(date_id, activity_id, start_date, end_date)
