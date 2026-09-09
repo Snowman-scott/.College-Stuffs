@@ -7,6 +7,7 @@
 
 4. a. Deny access, b. State username is wrong and suggest account creation and deny access to the account, c. Deny access and tell user a pass is required, d. the backend should remember the clients username and password and let them in
 
+---
 
 # Backend responsibilities
 
@@ -28,6 +29,8 @@ The back activley defends agains attacks, sanitising/validating all inputs to pr
 ## Response formatting and delivery.
 Once the  backend has processed the data it needs to package the result into a proper response. usually JSON for APIs, or rendered HTML for traditional server-side apps, along with the correct HTTP status code and headers, before sending it back to the client
 
+---
+
 # Just Web stuff 
 
 ## APIs
@@ -37,17 +40,17 @@ Application Programming interface.
 It lets you make a request to it so you can get a response with the data you requested 
 
 
-## HTTP
+## HTTP (Hyper Text Transfer Protocol)
 A protocol that browsers and servers use to communicate
 It is a request-response protocol: Client sends a request, Server processes the request and sends back the response.
 Stateless - By default the server wont remember anything about previous requests, This is why things like cookies and sessions exist
 
 ## HTTP vs HTTPS
-### HTTP:
+### HTTP (Hyper Text Transfer Protocol):
 Data is sent as plain text, Anyone could intercept the traffic and read exactly what you were doing on the site, 
 Because it is plain text it is really easy to steal passwords, bank info etc...
 
-### HTTPS
+### HTTPS (Hyper Text Transfer Protocol Secure):
 Same protocol but wrapped in TLS/SSL encryption. 
 This encrypts the data in transit so an attacker cannot see what the data is. 
 It also verifies it goes to the right server using an SSL cert so no bad actor can pretend to be the server and get the info.
@@ -57,10 +60,13 @@ HTTPS runs over port 443 by default
 
 ## HTTP Requ and it's contents 
 The Request is what the client sends to the server.
+
 ### Request line:
 This includes the Method (GET, POST, PUT, DELETE, etc..), the target URL/path ,and the HTTP version
+
 ### Headers:
 Headers are metadata about the request, eg- the host (domain), User-Agent, Content-type (format of any data being sent), Auth tokens and cookies
+
 ### Body:
 Optional but mainly on PUT, POST PATCH and it is the actual data being sent.
 
