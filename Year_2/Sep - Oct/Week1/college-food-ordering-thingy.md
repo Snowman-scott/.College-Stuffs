@@ -8,7 +8,9 @@ Feature set 1 Ordering:
 - Menu - Shows the users what they can get to eat  
 - Inventory - Shows the staff how many items of a certain food are left  
 - Scheduled menus (breakfast/lunch/dinner) - The menu will be able to automatically change based on time of day  
-- Order placement - Adding items into the basket, calculating total and placing the order  
+- Order placement - Adding items into the basket, calculating total and placing the order 
+- Order canceling - This allows users to cancel an order
+- Order editing - This allows users to add or remove items from an order without having to cancel the whole order 
 - Order status tracking - Shows the user the current status of their order  
 - Order-ready notifications - User gets a notification when their food is ready so they can collect it  
 
