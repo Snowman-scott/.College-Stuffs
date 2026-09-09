@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.1 Business Environment - T Level Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        .slide-container {
+            width: 100%;
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 60px 120px 60px;
+            position: relative;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide-container.active {
+            display: flex;
+        }
+
+        /* For slides with lots of content, align to top instead of center */
+        .slide-container.active:has(.question-box),
+        .slide-container.active:has(.comparison-table) {
+            justify-content: flex-start;
+            padding-top: 100px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            color: #8b9dc3;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #667eea;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .content-box {
+            background: rgba(30, 30, 50, 0.6);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 1400px;
+            backdrop-filter: blur(10px);
+            overflow: visible;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: rgba(40, 40, 70, 0.8);
+            border: 2px solid #764ba2;
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .card h4 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .card p, .card li {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #d0d0d0;
+        }
+
+        .card ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box p {
+            font-size: 1.4em;
+            line-height: 1.8;
+        }
+
+        .question-box {
+            background: rgba(20, 20, 40, 0.9);
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .question-header {
+            color: #667eea;
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+
+        .answer-space {
+            background: rgba(50, 50, 80, 0.5);
+            border: 2px dashed #764ba2;
+            border-radius: 10px;
+            padding: 25px;
+            min-height: 120px;
+            margin: 20px 0;
+        }
+
+        .marks {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-top: 15px;
+        }
+
+        .mark-scheme {
+            background: rgba(30, 50, 30, 0.6);
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .mark-scheme.visible {
+            display: block;
+        }
+
+        .mark-scheme h4 {
+            color: #4caf50;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .mark-scheme ul {
+            margin-left: 25px;
+        }
+
+        .mark-scheme li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            color: #c0c0c0;
+        }
+
+        .show-answer-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .show-answer-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(102, 126, 234, 0.8);
+            color: white;
+            border: 2px solid #667eea;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(118, 75, 162, 0.9);
+            transform: translateY(-3px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(30, 30, 50, 0.8);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            color: #667eea;
+            backdrop-filter: blur(10px);
+            border: 2px solid #667eea;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sector-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .sector-card {
+            background: rgba(40, 40, 70, 0.9);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .sector-card:hover {
+            transform: translateY(-8px);
+            border-color: #764ba2;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .sector-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .sector-card h4 {
+            color: #667eea;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        .sector-card p {
+            font-size: 1.2em;
+            color: #c0c0c0;
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 1.1em;
+        }
+
+        .comparison-table th {
+            background: rgba(102, 126, 234, 0.3);
+            color: #667eea;
+            padding: 18px;
+            text-align: left;
+            border: 2px solid #667eea;
+            font-size: 1.2em;
+        }
+
+        .comparison-table td {
+            padding: 18px;
+            border: 2px solid #764ba2;
+            background: rgba(40, 40, 70, 0.5);
+            color: #d0d0d0;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .key-term {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: rgba(118, 75, 162, 0.2);
+            border-left: 4px solid #764ba2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example-box h5 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .example-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #d0d0d0;
+        }
+
+        @media (max-width: 1400px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .sector-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 21</div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide-container active">
+        <h1>Content Area 5: Business Context</h1>
+        <h2>5.1 Business Environment</h2>
+        <div class="subtitle">5.1.1 Know the purpose and sectors of different types of organisations<br>5.1.2 Know the names and definitions of different business models</div>
+        <div class="highlight-box" style="max-width: 1000px;">
+            <p>Understanding how different organisations operate, their purposes, sectors, and business models is fundamental to working effectively in the digital technology industry.</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Learning Objectives -->
+    <div class="slide-container">
+        <h2>Learning Objectives</h2>
+        <div class="content-box">
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>📚 Organisational Knowledge</h4>
+                    <ul>
+                        <li>Understand the different purposes of organisations</li>
+                        <li>Identify the key sectors organisations operate in</li>
+                        <li>Recognise characteristics of different organisation types</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>💼 Business Model Knowledge</h4>
+                    <ul>
+                        <li>Define B2C, B2B, and B2M business models</li>
+                        <li>Compare characteristics of each model</li>
+                        <li>Identify real-world examples</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Purpose of Organisations -->
+    <div class="slide-container">
+        <h2>Purpose of Organisations</h2>
+        <div class="content-box">
+            <p style="font-size: 1.4em; margin-bottom: 30px; text-align: center;">All organisations exist to fulfill a specific purpose. The two primary purposes are:</p>
+            <div class="grid-2col">
+                <div class="card">
+                    <div class="sector-icon">🛍️</div>
+                    <h4>Providing a Product</h4>
+                    <p>Organisations that create, manufacture, or sell <span class="key-term">tangible goods</span> that customers can own and use.</p>
+                    <div class="example-box">
+                        <h5>Examples:</h5>
+                        <p>Apple (smartphones, laptops), Nike (footwear, clothing), Tesla (electric vehicles), Unilever (consumer goods)</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="sector-icon">⚙️</div>
+                    <h4>Providing a Service</h4>
+                    <p>Organisations that deliver <span class="key-term">intangible benefits</span> through expertise, labour, or technology to meet customer needs.</p>
+                    <div class="example-box">
+                        <h5>Examples:</h5>
+                        <p>Netflix (streaming), NHS (healthcare), Google (search/advertising), Deliveroo (food delivery)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px;">
+                <p><strong>Important Note:</strong> Many modern organisations provide both products AND services. For example, Amazon sells products but also provides cloud services (AWS), and Apple sells devices but also offers services like Apple Music and iCloud.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Overview of Sectors -->
+    <div class="slide-container">
+        <h2>Overview of Organisational Sectors</h2>
+        <div class="content-box">
+            <p style="font-size: 1.4em; margin-bottom: 30px; text-align: center;">Organisations are categorised into different sectors based on their ownership, funding, and objectives:</p>
+            <div class="sector-grid">
+                <div class="sector-card">
+                    <div class="sector-icon">💼</div>
+                    <h4>Private Sector</h4>
+                    <p>Owned by individuals or shareholders. Aim to generate profit.</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🏛️</div>
+                    <h4>Public Sector</h4>
+                    <p>Owned and operated by the government. Provide public services.</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">❤️</div>
+                    <h4>Voluntary/Charity</h4>
+                    <p>Not-for-profit. Focus on social, environmental, or community causes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Private Sector - SMEs -->
+    <div class="slide-container">
+        <h2>Private Sector: Small & Medium Enterprises (SMEs)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>What is an SME?</h4>
+                <p>A <span class="key-term">Small or Medium-sized Enterprise</span> is a privately owned business that meets certain criteria for size, typically based on employee numbers and turnover.</p>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Employees</th>
+                        <th>Annual Turnover</th>
+                        <th>Characteristics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Small Enterprise</strong></td>
+                        <td>&lt; 50</td>
+                        <td>≤ £10 million</td>
+                        <td>Local focus, owner-managed, flexible, limited resources</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medium Enterprise</strong></td>
+                        <td>50 - 249</td>
+                        <td>≤ £50 million</td>
+                        <td>Regional/national presence, growing team, established processes</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="example-box" style="margin-top: 30px;">
+                <h5>UK Digital SME Examples:</h5>
+                <p><strong>Monzo Bank</strong> (fintech startup), <strong>Bulb Energy</strong> (energy supplier), <strong>local web design agencies</strong>, <strong>independent software development firms</strong></p>
+            </div>
+            <div class="highlight-box" style="margin-top: 25px;">
+                <p><strong>Key Point:</strong> SMEs make up 99.9% of UK businesses and are crucial for innovation and employment in the digital sector.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Private Sector - Large Enterprises -->
+    <div class="slide-container">
+        <h2>Private Sector: Large Enterprises</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>What is a Large Enterprise?</h4>
+                <p>A <span class="key-term">Large Enterprise</span> typically has 250+ employees and annual turnover exceeding £50 million. These are often multinational corporations with complex structures.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Characteristics</h4>
+                    <ul>
+                        <li>Significant market share and influence</li>
+                        <li>Multiple departments and hierarchical structure</li>
+                        <li>Substantial financial resources</li>
+                        <li>Global operations and supply chains</li>
+                        <li>Established brand recognition</li>
+                        <li>Formal processes and governance</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Examples in Digital Sector</h4>
+                    <ul>
+                        <li><strong>Microsoft</strong> - Software & Cloud Services</li>
+                        <li><strong>BT Group</strong> - Telecommunications</li>
+                        <li><strong>Amazon</strong> - E-commerce & AWS</li>
+                        <li><strong>Vodafone</strong> - Mobile Networks</li>
+                        <li><strong>Sky</strong> - Broadcasting & Broadband</li>
+                        <li><strong>Meta (Facebook)</strong> - Social Media</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px;">
+                <p><strong>Impact on Digital Professionals:</strong> Large enterprises offer structured career paths, extensive training programs, and work on large-scale projects, but may have slower decision-making processes compared to SMEs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Private Sector - NGOs -->
+    <div class="slide-container">
+        <h2>Private Sector: Non-Governmental Organisations (NGOs)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>What is an NGO?</h4>
+                <p>A <span class="key-term">Non-Governmental Organisation</span> operates independently of government control, often working on social, environmental, humanitarian, or advocacy issues. NGOs can be either not-for-profit or for-profit.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Key Features of NGOs</h4>
+                    <ul>
+                        <li>Independent from government</li>
+                        <li>Focus on specific causes or issues</li>
+                        <li>May operate nationally or internationally</li>
+                        <li>Funded through donations, grants, or revenue</li>
+                        <li>Stakeholder-focused rather than shareholder-focused</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Types & Examples</h4>
+                    <p style="margin-bottom: 15px;"><strong>International NGOs:</strong></p>
+                    <ul style="margin-bottom: 20px;">
+                        <li>Oxfam (poverty relief)</li>
+                        <li>Greenpeace (environmental)</li>
+                        <li>Amnesty International (human rights)</li>
+                    </ul>
+                    <p><strong>Digital-focused NGOs:</strong></p>
+                    <ul>
+                        <li>Mozilla Foundation (internet health)</li>
+                        <li>Electronic Frontier Foundation (digital rights)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px;">
+                <p><strong>Important Distinction:</strong> While many NGOs are not-for-profit, being an NGO is about governance structure and independence from government, not necessarily about profit status. Some NGOs generate revenue to sustain their operations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Public Sector -->
+    <div class="slide-container">
+        <h2>Public Sector Organisations</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>What is the Public Sector?</h4>
+                <p>The <span class="key-term">Public Sector</span> consists of organisations owned and operated by the government (local or national) to provide essential services to citizens. Funded primarily through taxation.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Characteristics</h4>
+                    <ul>
+                        <li>Government ownership and control</li>
+                        <li>Focus on public service, not profit</li>
+                        <li>Accountable to taxpayers</li>
+                        <li>Subject to political oversight</li>
+                        <li>Universal access to services</li>
+                        <li>Regulated by public sector rules</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Examples in UK</h4>
+                    <ul>
+                        <li><strong>NHS</strong> - National Health Service</li>
+                        <li><strong>BBC</strong> - Public Service Broadcaster</li>
+                        <li><strong>DVLA</strong> - Driver & Vehicle Licensing</li>
+                        <li><strong>HMRC</strong> - Tax Collection</li>
+                        <li><strong>Local Councils</strong> - Regional Services</li>
+                        <li><strong>Police Forces</strong> - Law Enforcement</li>
+                        <li><strong>State Schools</strong> - Education</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example-box" style="margin-top: 30px;">
+                <h5>Digital Technology in Public Sector:</h5>
+                <p>The public sector is increasingly digital - think <strong>NHS App</strong> for healthcare bookings, <strong>GOV.UK</strong> for online government services, <strong>digital passport applications</strong>, and <strong>smart city initiatives</strong> by local councils.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Voluntary & Charity Sector -->
+    <div class="slide-container">
+        <h2>Voluntary & Charity Sector (Not-for-Profit)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>What is a Not-for-Profit Organisation?</h4>
+                <p>Organisations in the <span class="key-term">Voluntary/Charity Sector</span> exist to serve a social cause or community need rather than to generate profit for owners. Any surplus income is reinvested into the organisation's mission.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Key Characteristics</h4>
+                    <ul>
+                        <li>Mission-driven, not profit-driven</li>
+                        <li>Reinvest surplus into cause</li>
+                        <li>Funded by donations, grants, fundraising</li>
+                        <li>Governed by board of trustees</li>
+                        <li>Tax-exempt status (if registered charity)</li>
+                        <li>Reliance on volunteers alongside paid staff</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Examples</h4>
+                    <p style="margin-bottom: 15px;"><strong>Large Charities:</strong></p>
+                    <ul style="margin-bottom: 20px;">
+                        <li>Cancer Research UK</li>
+                        <li>British Red Cross</li>
+                        <li>Save the Children</li>
+                    </ul>
+                    <p><strong>Community Organisations:</strong></p>
+                    <ul style="margin-bottom: 20px;">
+                        <li>Local food banks</li>
+                        <li>Community centres</li>
+                    </ul>
+                    <p><strong>Digital Charities:</strong></p>
+                    <ul>
+                        <li>Wikipedia Foundation</li>
+                        <li>Code.org</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Sector Comparison -->
+    <div class="slide-container">
+        <h2>Comparing Sectors</h2>
+        <div class="content-box">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Private Sector</th>
+                        <th>Public Sector</th>
+                        <th>Voluntary/Charity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Primary Purpose</strong></td>
+                        <td>Generate profit</td>
+                        <td>Provide public services</td>
+                        <td>Serve social cause</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ownership</strong></td>
+                        <td>Private individuals, shareholders</td>
+                        <td>Government</td>
+                        <td>Independent, trustees</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Funding</strong></td>
+                        <td>Sales revenue, investment</td>
+                        <td>Taxation</td>
+                        <td>Donations, grants</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accountability</strong></td>
+                        <td>Shareholders, customers</td>
+                        <td>Citizens, Parliament</td>
+                        <td>Donors, beneficiaries</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Examples</strong></td>
+                        <td>Amazon, Tesco, Barclays</td>
+                        <td>NHS, BBC, Councils</td>
+                        <td>Oxfam, RSPCA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 11: Business Models Introduction -->
+    <div class="slide-container">
+        <h2>5.1.2 Business Models</h2>
+        <div class="content-box">
+            <div class="highlight-box" style="max-width: 1200px; margin-bottom: 40px;">
+                <p style="font-size: 1.5em; text-align: center;">A <span class="key-term">business model</span> describes who an organisation's customers are and how the organisation creates and delivers value to them.</p>
+            </div>
+            <p style="font-size: 1.4em; margin-bottom: 30px; text-align: center;">Three primary business models in the digital economy:</p>
+            <div class="sector-grid">
+                <div class="sector-card">
+                    <div class="sector-icon">🛒</div>
+                    <h4>B2C</h4>
+                    <p>Business to Customer</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🏢</div>
+                    <h4>B2B</h4>
+                    <p>Business to Business</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🌐</div>
+                    <h4>B2M</h4>
+                    <p>Business to Many</p>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 40px;">
+                <p><strong>Important:</strong> Many organisations use multiple business models simultaneously. For example, Microsoft sells to individual consumers (B2C), enterprise clients (B2B), and operates platforms (B2M).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: B2C Business Model -->
+    <div class="slide-container">
+        <h2>Business to Customer (B2C)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>Definition</h4>
+                <p><span class="key-term">Business to Customer (B2C)</span> is a business model where organisations sell products or services directly to individual consumers for their personal use.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Key Characteristics</h4>
+                    <ul>
+                        <li><strong>Target:</strong> Individual consumers</li>
+                        <li><strong>Decisions:</strong> Emotional, personal needs</li>
+                        <li><strong>Transaction size:</strong> Smaller, frequent</li>
+                        <li><strong>Sales cycle:</strong> Short, immediate</li>
+                        <li><strong>Marketing:</strong> Brand awareness, social media</li>
+                        <li><strong>Relationship:</strong> Transactional</li>
+                        <li><strong>Volume:</strong> High number of customers</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Digital B2C Examples</h4>
+                    <div class="example-box">
+                        <h5>E-commerce:</h5>
+                        <p>Amazon, ASOS, eBay</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Streaming:</h5>
+                        <p>Netflix, Spotify, Disney+</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Food Delivery:</h5>
+                        <p>Deliveroo, Just Eat, Uber Eats</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Banking:</h5>
+                        <p>Monzo, Revolut</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: B2B Business Model -->
+    <div class="slide-container">
+        <h2>Business to Business (B2B)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>Definition</h4>
+                <p><span class="key-term">Business to Business (B2B)</span> is a business model where organisations sell products or services to other businesses rather than individual consumers.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Key Characteristics</h4>
+                    <ul>
+                        <li><strong>Target:</strong> Other businesses</li>
+                        <li><strong>Decisions:</strong> Rational, ROI-focused</li>
+                        <li><strong>Transaction size:</strong> Larger contracts</li>
+                        <li><strong>Sales cycle:</strong> Long, complex</li>
+                        <li><strong>Marketing:</strong> Industry events, LinkedIn</li>
+                        <li><strong>Relationship:</strong> Long-term partnerships</li>
+                        <li><strong>Volume:</strong> Fewer, higher-value customers</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Digital B2B Examples</h4>
+                    <div class="example-box">
+                        <h5>Cloud Services:</h5>
+                        <p>AWS, Microsoft Azure, Google Cloud</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Software/SaaS:</h5>
+                        <p>Salesforce, Slack, Adobe</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Cybersecurity:</h5>
+                        <p>CrowdStrike, Cisco</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Payment Processing:</h5>
+                        <p>Stripe, PayPal Business</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: B2M Business Model -->
+    <div class="slide-container">
+        <h2>Business to Many (B2M)</h2>
+        <div class="content-box">
+            <div class="card" style="margin-bottom: 30px;">
+                <h4>Definition</h4>
+                <p><span class="key-term">Business to Many (B2M)</span> is a business model where organisations create platforms or marketplaces that connect multiple parties - enabling transactions between consumers, businesses, or both simultaneously.</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>Key Characteristics</h4>
+                    <ul>
+                        <li><strong>Platform model:</strong> Connects multiple users</li>
+                        <li><strong>Network effects:</strong> Value increases with users</li>
+                        <li><strong>Revenue:</strong> Commissions, subscriptions, ads</li>
+                        <li><strong>Dual customers:</strong> Buyers and sellers</li>
+                        <li><strong>Scalability:</strong> Rapid growth potential</li>
+                        <li><strong>Technology-dependent:</strong> Robust infrastructure</li>
+                        <li><strong>Community building:</strong> Engagement focus</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Digital B2M Examples</h4>
+                    <div class="example-box">
+                        <h5>E-commerce Platforms:</h5>
+                        <p>Amazon Marketplace, eBay</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Ride-Sharing:</h5>
+                        <p>Uber, Lyft</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Social Media:</h5>
+                        <p>Facebook, Instagram</p>
+                    </div>
+                    <div class="example-box">
+                        <h5>Freelance Platforms:</h5>
+                        <p>Upwork, Fiverr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Business Models Comparison -->
+    <div class="slide-container">
+        <h2>Comparing Business Models</h2>
+        <div class="content-box">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>B2C</th>
+                        <th>B2B</th>
+                        <th>B2M</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Customer</strong></td>
+                        <td>Individual consumers</td>
+                        <td>Other businesses</td>
+                        <td>Multiple parties</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Decision</strong></td>
+                        <td>Emotional, personal</td>
+                        <td>Rational, ROI-focused</td>
+                        <td>Varies by user type</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Value</strong></td>
+                        <td>Lower, frequent</td>
+                        <td>Higher, bulk</td>
+                        <td>Variable, commission</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sales Cycle</strong></td>
+                        <td>Short, immediate</td>
+                        <td>Long, complex</td>
+                        <td>Platform facilitates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Volume</strong></td>
+                        <td>High volume</td>
+                        <td>Lower volume</td>
+                        <td>Very high (both sides)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Examples</strong></td>
+                        <td>Netflix, Amazon retail</td>
+                        <td>Salesforce, AWS</td>
+                        <td>Uber, Airbnb, eBay</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 16: Real-World Classification -->
+    <div class="slide-container">
+        <h2>Real-World Classification Exercise</h2>
+        <div class="content-box">
+            <p style="font-size: 1.4em; margin-bottom: 30px; text-align: center;">Identify the sector, type, and business model:</p>
+            <div class="grid-2col">
+                <div class="card">
+                    <h4>🏢 Revolut</h4>
+                    <p style="margin: 15px 0;">Digital banking app for individuals.</p>
+                    <div class="answer-space" style="min-height: 100px;">
+                        <p style="font-size: 1.2em; color: #667eea;"><strong>Sector:</strong> Private - SME</p>
+                        <p style="font-size: 1.1em; margin-top: 10px;">Service, privately owned, profit-driven.</p>
+                        <p style="font-size: 1.2em; color: #667eea; margin-top: 10px;"><strong>Model:</strong> B2C</p>
+                        <p style="font-size: 1.1em;">Individual consumers, personal banking.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>☁️ Salesforce</h4>
+                    <p style="margin: 15px 0;">CRM software for companies.</p>
+                    <div class="answer-space" style="min-height: 100px;">
+                        <p style="font-size: 1.2em; color: #667eea;"><strong>Sector:</strong> Private - Large Enterprise</p>
+                        <p style="font-size: 1.1em; margin-top: 10px;">Software services, profit-driven.</p>
+                        <p style="font-size: 1.2em; color: #667eea; margin-top: 10px;"><strong>Model:</strong> B2B</p>
+                        <p style="font-size: 1.1em;">Enterprise software to businesses.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>🚗 Uber</h4>
+                    <p style="margin: 15px 0;">Platform connecting riders and drivers.</p>
+                    <div class="answer-space" style="min-height: 100px;">
+                        <p style="font-size: 1.2em; color: #667eea;"><strong>Sector:</strong> Private - Large Enterprise</p>
+                        <p style="font-size: 1.1em; margin-top: 10px;">Platform service, profit-driven.</p>
+                        <p style="font-size: 1.2em; color: #667eea; margin-top: 10px;"><strong>Model:</strong> B2M</p>
+                        <p style="font-size: 1.1em;">Marketplace connecting multiple parties.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>🏛️ NHS Digital</h4>
+                    <p style="margin: 15px 0;">Digital services for NHS and patients.</p>
+                    <div class="answer-space" style="min-height: 100px;">
+                        <p style="font-size: 1.2em; color: #667eea;"><strong>Sector:</strong> Public Sector</p>
+                        <p style="font-size: 1.1em; margin-top: 10px;">Government-owned, public services.</p>
+                        <p style="font-size: 1.2em; color: #667eea; margin-top: 10px;"><strong>Model:</strong> B2C</p>
+                        <p style="font-size: 1.1em;">Healthcare to individual citizens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 17: Exam Question 1 -->
+    <div class="slide-container">
+        <h2>Exam-Style Question 1</h2>
+        <div class="question-box">
+            <div class="question-header">Knowledge Question</div>
+            <div class="question-text">
+                <p><strong>(a)</strong> Define what is meant by a B2M (Business to Many) business model. [2 marks]</p>
+                <p style="margin-top: 20px;"><strong>(b)</strong> Explain how a B2M business model differs from a B2C model. [3 marks]</p>
+                <p style="margin-top: 20px;"><strong>(c)</strong> Give two examples of digital companies using B2M and explain how they create value. [3 marks]</p>
+            </div>
+            <div class="answer-space"></div>
+            <div class="marks">[8 marks total]</div>
+            <button class="show-answer-btn" onclick="toggleMarkScheme(this)">Show Mark Scheme</button>
+            <div class="mark-scheme">
+                <h4>Mark Scheme</h4>
+                <p><strong>(a) 2 marks:</strong></p>
+                <ul>
+                    <li>B2M creates platforms/marketplaces (1 mark)</li>
+                    <li>That connect multiple parties to facilitate transactions (1 mark)</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>(b) 3 marks:</strong></p>
+                <ul>
+                    <li>B2C sells directly to consumers, B2M creates platform connecting users (1 mark)</li>
+                    <li>B2C owns/provides product, B2M facilitates others to transact (1 mark)</li>
+                    <li>B2M has network effects, value increases with more users (1 mark)</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>(c) 3 marks:</strong></p>
+                <ul>
+                    <li>Uber - connects drivers/passengers, convenient matching (1.5 marks)</li>
+                    <li>Airbnb - connects property owners/travelers (1.5 marks)</li>
+                    <li>Award 1 mark for company, 0.5 for value creation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Exam Question 2 -->
+    <div class="slide-container">
+        <h2>Exam-Style Question 2</h2>
+        <div class="question-box">
+            <div class="question-header">Extended Response Question</div>
+            <div class="question-text">
+                <p><strong>Scenario:</strong> TechStartup Ltd is a small software development company with 35 employees in Manchester. They create mobile apps for local businesses and charge for development and maintenance.</p>
+                <p style="margin-top: 20px;"><strong>Question:</strong> Identify and explain the sector, size category, and business model. Justify your answer with reference to the scenario.</p>
+            </div>
+            <div class="answer-space"></div>
+            <div class="marks">[8 marks]</div>
+            <button class="show-answer-btn" onclick="toggleMarkScheme(this)">Show Mark Scheme</button>
+            <div class="mark-scheme">
+                <h4>Mark Scheme</h4>
+                <ul>
+                    <li><strong>Sector:</strong> Private sector - "Ltd" indicates private ownership (1 mark)</li>
+                    <li><strong>Size:</strong> Small enterprise (SME) - 35 employees &lt; 50 (1 mark)</li>
+                    <li><strong>Purpose:</strong> Provides service - software development (1 mark)</li>
+                    <li><strong>Business model:</strong> B2B - clients are "local businesses" (2 marks)</li>
+                    <li><strong>Justification:</strong> Evidence includes private ownership, employee count, service-based, business clients (2-3 marks for comprehensive justification)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 19: Exam Question 3 -->
+    <div class="slide-container">
+        <h2>Exam-Style Question 3</h2>
+        <div class="question-box">
+            <div class="question-header">Analysis Question</div>
+            <div class="question-text">
+                <p><strong>Scenario:</strong> The NHS is launching a digital health platform for patients to book appointments and access records. HealthTech Solutions (private sector) is contracted to develop it.</p>
+                <p style="margin-top: 20px;"><strong>Question:</strong> Compare the sectors and business models of NHS and HealthTech Solutions. Explain how their different characteristics might affect their approach to this project.</p>
+            </div>
+            <div class="answer-space"></div>
+            <div class="marks">[10 marks]</div>
+            <button class="show-answer-btn" onclick="toggleMarkScheme(this)">Show Mark Scheme</button>
+            <div class="mark-scheme">
+                <h4>Mark Scheme</h4>
+                <ul>
+                    <li><strong>NHS:</strong> Public sector, government-funded, B2C (serving citizens), accountable to taxpayers (2 marks)</li>
+                    <li><strong>HealthTech:</strong> Private sector, profit-driven, B2B (selling to NHS), accountable to shareholders (2 marks)</li>
+                    <li><strong>Business model impact:</strong> NHS B2C citizen-focused, HealthTech B2B business client-focused (1-2 marks)</li>
+                    <li><strong>Project approach:</strong> NHS prioritises patient welfare, security, accessibility; HealthTech focuses on contract requirements, profitability (2-3 marks)</li>
+                    <li><strong>Collaboration:</strong> Public needs combined with private efficiency (1-2 marks)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 20: Exam Question 4 -->
+    <div class="slide-container">
+        <h2>Exam-Style Question 4</h2>
+        <div class="question-box">
+            <div class="question-header">Evaluation Question</div>
+            <div class="question-text">
+                <p><strong>Scenario:</strong> Maya has three job offers:</p>
+                <ul style="margin: 20px 0; margin-left: 30px; font-size: 1.2em;">
+                    <li><strong>CloudCorp</strong> - Large enterprise, £45k, B2B cloud infrastructure</li>
+                    <li><strong>Digital Dreams</strong> - Startup (15 employees), £38k + equity, B2M app marketplace</li>
+                    <li><strong>CodeForGood</strong> - Charity (50 employees), £35k, educational tech (B2B/B2C)</li>
+                </ul>
+                <p style="margin-top: 20px;"><strong>Question:</strong> Evaluate which organisation Maya should choose. Consider types, sectors, business models and how these affect career development, job security, and work environment. Justify your recommendation.</p>
+            </div>
+            <div class="answer-space"></div>
+            <div class="marks">[12 marks]</div>
+            <button class="show-answer-btn" onclick="toggleMarkScheme(this)">Show Mark Scheme</button>
+            <div class="mark-scheme">
+                <h4>Mark Scheme</h4>
+                <ul>
+                    <li><strong>CloudCorp:</strong> Large enterprise advantages (career progression, training, security) vs disadvantages (slower pace, less impact) (2-3 marks)</li>
+                    <li><strong>Digital Dreams:</strong> Startup advantages (innovation, equity, responsibility) vs disadvantages (risk, security, hours) (2-3 marks)</li>
+                    <li><strong>CodeForGood:</strong> Charity advantages (mission-driven, impact) vs disadvantages (salary, resources) (2-3 marks)</li>
+                    <li><strong>Business model considerations:</strong> B2B enterprise experience, B2M platform skills, hybrid versatility (1-2 marks)</li>
+                    <li><strong>Recommendation:</strong> Justified choice based on goals, values, needs (2-3 marks)</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Note:</strong> Any choice can be justified - marks for quality of reasoning.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Summary -->
+    <div class="slide-container">
+        <h2>Key Takeaways</h2>
+        <div class="content-box">
+            <h3 style="color: #667eea; margin-bottom: 30px; text-align: center;">5.1.1 Organisation Types & Sectors</h3>
+            <div class="grid-2col" style="margin-bottom: 40px;">
+                <div class="card">
+                    <h4>📋 Purpose</h4>
+                    <ul>
+                        <li><strong>Products:</strong> Tangible goods</li>
+                        <li><strong>Services:</strong> Intangible benefits</li>
+                        <li>Many provide both</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🏢 Private Sector</h4>
+                    <ul>
+                        <li><strong>SMEs:</strong> &lt;250 employees</li>
+                        <li><strong>Large:</strong> 250+ employees</li>
+                        <li><strong>NGOs:</strong> Independent</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🏛️ Public Sector</h4>
+                    <ul>
+                        <li>Government-owned</li>
+                        <li>Public services</li>
+                        <li>Funded by taxation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>❤️ Voluntary/Charity</h4>
+                    <ul>
+                        <li>Not-for-profit</li>
+                        <li>Mission-driven</li>
+                        <li>Donations/grants</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 style="color: #667eea; margin-bottom: 30px; text-align: center;">5.1.2 Business Models</h3>
+            <div class="sector-grid">
+                <div class="sector-card">
+                    <div class="sector-icon">🛒</div>
+                    <h4>B2C</h4>
+                    <p style="margin-top: 15px;">Direct to consumers</p>
+                    <p style="font-size: 1em; color: #a0a0a0; margin-top: 10px;">Short cycle, emotional, mass market</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🏢</div>
+                    <h4>B2B</h4>
+                    <p style="margin-top: 15px;">To other businesses</p>
+                    <p style="font-size: 1em; color: #a0a0a0; margin-top: 10px;">Long cycle, rational, relationships</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🌐</div>
+                    <h4>B2M</h4>
+                    <p style="margin-top: 15px;">Platform connecting parties</p>
+                    <p style="font-size: 1em; color: #a0a0a0; margin-top: 10px;">Network effects, scalable</p>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 40px;">
+                <p style="font-size: 1.5em; text-align: center;"><strong>Understanding organisational types, sectors, and business models is essential for digital technology careers.</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-container');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Scroll to top of page when changing slides
+            window.scrollTo(0, 0);
+            
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function toggleMarkScheme(button) {
+            const markScheme = button.nextElementSibling;
+            markScheme.classList.toggle('visible');
+            button.textContent = markScheme.classList.contains('visible') ? 'Hide Mark Scheme' : 'Show Mark Scheme';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

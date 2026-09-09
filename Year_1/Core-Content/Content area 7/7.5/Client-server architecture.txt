@@ -1,0 +1,28 @@
+1. Client-server model is a distributed computing architecture where tasks are divided between service providers (servers) and service requesters.
+
+2. Centralized Data management, Improved security, Resource sharing.
+
+3. A thin client is a lightweight, low power, minimal Processing on client machine. Most work is done by the Server and not on the device itself.
+    uses for a Thin client are Web applications like Google docs, cloud-based email clients Etc..
+
+A thick client is a Desktop with high power hardware in it, Uses more power and can do all the processing in house (on device) This makes it more powerful and better for offline work
+    Uses of a Thick client are Adobe photoshop, native Video games, Video editing
+
+4. There are many good reasons to use a client server architecture, But these come with massive risks.
+The issue with a client server architecture is The cost and reliability. If the Server Goes down or breaks anyone trying to work wont be able to, 
+this is because the resources they may want are being run on the server without the server it all falls apart
+Another issue with the Client server architecture is The cost to set it up. With a Cs architecture you need to buy a server and thin clients, a server can cost anywhere fro 2000+ for a half decent server
+This is an issues as they may not want to spend that much money at the start.
+A peer to peer architecture would be good because it uses multiple thick clients ranging from £300 - £1000 which are connected together, this forms the communication between everything and allows one to host a service that another can use
+This is cheaper to build and maintain and would be the better option for a smaller company 
+
+5. Using a Client server architecture for a College is a great idea.
+Using a Client server architecture will allow the It Admins to control the network allowing them to setup services on servers.
+The ability to run services will allow them to setup an authentication system that is run in building so it can be offline, and secure.
+This will also allow them to setup a Storage server/ NAS. As long as the hardware is good and has 2-4 10Gb/s ports should allow all 300 users to access data.
+This will be reliable as it will have 20 - 40Gb/s of transfer speed, the drives will be in a raid allowing for some drives to fail and still keep the data.
+This also gives Centralised control allowing the whole system to be controlled from the server.
+
+The only downsides to this is the cost.
+It will cost allot of money to get the server and hardware needed for all this and the college may not have enough money to setup and maintain the system
+You will need to run wires, APs, Switches adn more. This will cost a lot to implement, if your server breaks its going to cost allot to replace or repair it.

@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6.3.2 & 6.3.3 Structured & Unstructured Data - T Level DPDD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0e27;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 50px 100px;
+    display: none;
+    opacity: 0;
+    background: linear-gradient(135deg, #0f1729 0%, #1a1f3a 100%);
+    overflow-y: auto;
+}
+
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: #1E293B;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: #8B5CF6;
+    border-radius: 4px;
+}
+
+.slide.active {
+    display: block;
+    animation: slideIn 0.6s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    z-index: 10;
+}
+
+h1 {
+    font-size: clamp(2.2em, 3.5vw, 4em);
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(1.6em, 2.5vw, 2.8em);
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-weight: 800;
+}
+
+h3 {
+    font-size: clamp(1.2em, 1.6vw, 1.9em);
+    margin-bottom: 15px;
+    color: #8B5CF6;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: clamp(1em, 1.3vw, 1.5em);
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+p, li {
+    font-size: clamp(0.9em, 1.05vw, 1.2em);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #E2E8F0;
+}
+
+ul, ol {
+    margin-left: 25px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border-left: 4px solid #8B5CF6;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.navigation {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 14px 30px;
+    border-radius: 60px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    z-index: 1000;
+}
+
+button {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    padding: 11px 26px;
+    font-size: 0.95em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.slide-number {
+    color: #E2E8F0;
+    font-weight: 600;
+    font-size: 0.95em;
+    min-width: 70px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 140px;
+    height: 6px;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6 0%, #7C3AED 100%);
+    transition: width 0.4s ease;
+    border-radius: 10px;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.question-number {
+    font-size: 1.3em;
+    font-weight: 800;
+    color: #8B5CF6;
+}
+
+.marks {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: rgba(139, 92, 246, 0.2);
+    padding: 5px 18px;
+    border-radius: 20px;
+}
+
+.question-text {
+    font-size: 1.05em;
+    line-height: 1.8;
+}
+
+.context-box {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin: 20px 0;
+}
+
+.command-verb {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    font-size: 1.05em;
+}
+
+.bullet-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.bullet-list li {
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.bullet-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 5px;
+    color: #8B5CF6;
+    font-weight: bold;
+}
+
+.data-type-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.data-type-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+}
+
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.structured-side {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.1) 100%);
+    border-left: 4px solid #3B82F6;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.unstructured-side {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%);
+    border-left: 4px solid #F59E0B;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.key-point {
+    background: rgba(139, 92, 246, 0.1);
+    border-left: 3px solid #8B5CF6;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+.icon-box {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 1: Title Slide -->
+<div class="slide active">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; text-align: center;">
+        <h1 style="font-size: clamp(3em, 5.5vw, 5.5em); margin-bottom: 30px; line-height: 1.1;">
+            <span style="color: #FFFFFF;">STRUCTURED & </span><span style="background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #7C3AED 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">UNSTRUCTURED DATA</span>
+        </h1>
+        
+        <div style="width: 100%; max-width: 300px; height: 3px; background: linear-gradient(90deg, transparent 0%, #8B5CF6 50%, transparent 100%); margin-bottom: 35px;"></div>
+        
+        <h2 style="color: #A78BFA; font-weight: 700; font-size: clamp(1.8em, 2.5vw, 2.5em); margin-bottom: 20px;">Content Area 6.3.2 & 6.3.3</h2>
+        
+        <p style="font-size: clamp(1.1em, 1.4vw, 1.5em); color: #94A3B8; margin-bottom: 50px; max-width: 800px;">Understanding Data Classification: Structured vs Unstructured</p>
+        
+        <div class="card" style="max-width: 900px; margin: 0 auto 40px auto; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(139, 92, 246, 0.3);">
+            <div class="grid-2" style="gap: 40px;">
+                <div style="text-align: left;">
+                    <h4 style="color: #3B82F6; font-size: 1.15em; margin-bottom: 15px;">📊 Structured Data</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95em; line-height: 1.8;">
+                        <li style="margin-bottom: 8px;">• Definition and characteristics</li>
+                        <li style="margin-bottom: 8px;">• Purpose and applications</li>
+                        <li>• Quantitative data relationship</li>
+                    </ul>
+                </div>
+                <div style="text-align: left;">
+                    <h4 style="color: #F59E0B; font-size: 1.15em; margin-bottom: 15px;">📝 Unstructured Data</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95em; line-height: 1.8;">
+                        <li style="margin-bottom: 8px;">• Definition and characteristics</li>
+                        <li style="margin-bottom: 8px;">• Purpose and applications</li>
+                        <li>• Qualitative data relationship</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <span style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">T LEVEL DPDD</span>
+            <span style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">CONTENT AREA 6.3.2 & 6.3.3</span>
+            <span style="background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">17 SLIDES</span>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Introduction to Data Classification -->
+<div class="slide">
+    <h1>Understanding Data Classification</h1>
+    
+    <div class="card">
+        <h3>Why Classify Data?</h3>
+        <p style="font-size: 1.1em; margin-bottom: 20px;">Not all data is created equal. The way data is organised and stored fundamentally affects how we can process, analyse, and extract value from it.</p>
+        
+        <div class="grid-2" style="margin-top: 25px;">
+            <div class="data-type-card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; font-size: 1.4em;">Structured Data</h4>
+                <p style="margin-top: 15px;">Highly organised data that follows a predefined format or schema. Fits neatly into tables with rows and columns.</p>
+            </div>
+            
+            <div class="data-type-card" style="border-left: 4px solid #F59E0B;">
+                <h4 style="color: #F59E0B; font-size: 1.4em;">Unstructured Data</h4>
+                <p style="margin-top: 15px;">Data without a predefined structure or organisation. Doesn't fit into traditional databases or spreadsheets.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="highlight-box">
+        <h4 style="color: #FFFFFF; margin-bottom: 15px;">Key Distinction</h4>
+        <p style="font-size: 1.15em;">The primary difference lies in <strong>organisation</strong> and <strong>format consistency</strong>. Structured data follows strict rules, whilst unstructured data is free-form and flexible.</p>
+    </div>
+</div>
+
+<!-- Slide 3: Structured Data - Definition -->
+<div class="slide">
+    <h1>Structured Data</h1>
+    
+    <div class="card" style="border-left: 5px solid #3B82F6;">
+        <div class="icon-box" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">DEFINITION</div>
+        <h2 style="color: #3B82F6; margin-top: 10px;">What is Structured Data?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;"><strong>Structured data</strong> is data that has been organised into a formatted repository, typically a database or spreadsheet, where each piece of data follows a predefined model or schema with clear relationships between data elements.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point">
+                    <h4>📋 Predefined Schema</h4>
+                    <p>Data structure is defined before data is entered. Fields, data types, and relationships are predetermined.</p>
+                </div>
+                <div class="key-point">
+                    <h4>🔢 Fixed Format</h4>
+                    <p>Each record follows the same format. Same fields in same order with same data types.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point">
+                    <h4>🔍 Easily Searchable</h4>
+                    <p>Can be queried using SQL or similar languages. Filtering and sorting is straightforward.</p>
+                </div>
+                <div class="key-point">
+                    <h4>📊 Tabular Format</h4>
+                    <p>Organised in rows and columns. Each row is a record, each column is a field.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Structured Data - Purpose & Examples -->
+<div class="slide">
+    <h1>Structured Data: Purpose & Examples</h1>
+    
+    <div class="card">
+        <h3>Purpose of Structured Data</h3>
+        <div class="grid-3" style="margin-top: 20px;">
+            <div class="data-type-card" style="border-left: 3px solid #3B82F6;">
+                <h4 style="color: #3B82F6;">Efficient Storage</h4>
+                <p>Minimal redundancy and optimised for database systems. Storage space is used efficiently.</p>
+            </div>
+            <div class="data-type-card" style="border-left: 3px solid #3B82F6;">
+                <h4 style="color: #3B82F6;">Fast Retrieval</h4>
+                <p>Quick queries and searches. Indexing makes finding specific records instantaneous.</p>
+            </div>
+            <div class="data-type-card" style="border-left: 3px solid #3B82F6;">
+                <h4 style="color: #3B82F6;">Data Integrity</h4>
+                <p>Validation rules ensure data quality. Constraints prevent invalid data entry.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>Common Examples</h3>
+        
+        <div class="example-box">
+            <h4 style="color: #3B82F6; margin-bottom: 10px;">Customer Database Table</h4>
+            <pre style="color: #E2E8F0; line-height: 1.6;">
+CustomerID | FirstName | LastName  | Email              | DateOfBirth | AccountBalance
+---------- | --------- | --------- | ------------------ | ----------- | --------------
+C001       | Sarah     | Johnson   | sarah.j@email.com  | 1992-05-14  | £1,250.00
+C002       | Michael   | Chen      | m.chen@email.com   | 1988-11-23  | £3,420.50
+C003       | Priya     | Patel     | priya.p@email.com  | 1995-03-07  | £856.75</pre>
+        </div>
+        
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="highlight-box">
+                <h4>Other Examples Include:</h4>
+                <ul class="bullet-list" style="margin-top: 10px;">
+                    <li>Banking transactions and account records</li>
+                    <li>Inventory management systems</li>
+                    <li>Employee payroll databases</li>
+                    <li>E-commerce order histories</li>
+                    <li>Student academic records</li>
+                    <li>Medical appointment schedules</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h4>Common Storage Formats:</h4>
+                <ul class="bullet-list" style="margin-top: 10px;">
+                    <li>Relational databases (MySQL, PostgreSQL)</li>
+                    <li>Spreadsheets (Excel, Google Sheets)</li>
+                    <li>CSV (Comma-Separated Values) files</li>
+                    <li>JSON with consistent schema</li>
+                    <li>XML with defined structure</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Quantitative Data = Structured -->
+<div class="slide">
+    <h1>Quantitative Data is Structured</h1>
+    
+    <div class="card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.1) 100%); border-left: 5px solid #3B82F6;">
+        <div class="icon-box" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">KEY CONCEPT</div>
+        <h2 style="color: #3B82F6; margin-top: 10px;">Quantitative Data → Structured Data</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;"><strong>Quantitative data</strong> is numerical data that can be measured and counted. By its nature, quantitative data is <strong>always structured</strong> because numbers follow predictable formats and can be organised into defined fields.</p>
+    </div>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3>What Makes Quantitative Data Structured?</h3>
+            <div class="key-point" style="margin-top: 15px;">
+                <h4>🔢 Numerical Nature</h4>
+                <p>Numbers have consistent formats (integers, decimals, percentages). Can be stored in numeric data types.</p>
+            </div>
+            <div class="key-point">
+                <h4>➕ Mathematical Operations</h4>
+                <p>Can perform calculations (sum, average, median). Enables statistical analysis and comparisons.</p>
+            </div>
+            <div class="key-point">
+                <h4>📊 Predictable Schema</h4>
+                <p>Each measurement has defined units and ranges. Data validation is straightforward.</p>
+            </div>
+            <div class="key-point">
+                <h4>📈 Easy to Aggregate</h4>
+                <p>Can group, count, and summarise efficiently. Perfect for charts, graphs, and reports.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Examples of Quantitative Data</h3>
+            
+            <div class="example-box">
+                <h4 style="color: #3B82F6; margin-bottom: 10px;">Sales Performance Data</h4>
+                <pre style="color: #E2E8F0; line-height: 1.6;">
+Month      | Revenue    | Units Sold | Avg Order
+---------- | ---------- | ---------- | ----------
+January    | £45,230.00 | 1,247      | £36.27
+February   | £52,180.00 | 1,389      | £37.56
+March      | £48,650.00 | 1,312      | £37.08</pre>
+            </div>
+            
+            <div class="highlight-box" style="margin-top: 15px;">
+                <h4>More Examples:</h4>
+                <ul class="bullet-list" style="margin-top: 10px; font-size: 0.95em;">
+                    <li><strong>Test scores:</strong> 78%, 85%, 92% — stored as numbers</li>
+                    <li><strong>Website analytics:</strong> 14,523 page views, 3.2 min avg session</li>
+                    <li><strong>Temperature readings:</strong> 18.5°C, 22.1°C, 19.8°C</li>
+                    <li><strong>Product dimensions:</strong> Length: 15cm, Width: 8cm, Weight: 250g</li>
+                    <li><strong>Financial data:</strong> £1,234.56, €890.00, $2,100.00</li>
+                    <li><strong>Survey ratings:</strong> 1-5 star ratings, Net Promoter Scores</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Unstructured Data - Definition -->
+<div class="slide">
+    <h1>Unstructured Data</h1>
+    
+    <div class="card" style="border-left: 5px solid #F59E0B;">
+        <div class="icon-box" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">DEFINITION</div>
+        <h2 style="color: #F59E0B; margin-top: 10px;">What is Unstructured Data?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;"><strong>Unstructured data</strong> is data that doesn't have a predefined data model or isn't organised in a predefined manner. It doesn't fit neatly into traditional databases with rows and columns, and lacks a consistent format or schema.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>🎨 No Predefined Schema</h4>
+                    <p>Data structure varies from item to item. No consistent fields or format requirements.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>📝 Free-form Content</h4>
+                    <p>Can contain any type of information. Length, format, and structure are flexible.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>🔍 Difficult to Search</h4>
+                    <p>Cannot use simple SQL queries. Requires full-text search or AI analysis.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>💾 Complex Storage</h4>
+                    <p>Stored as files, documents, or media. Not organised in tabular format.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Unstructured Data - Purpose & Examples -->
+<div class="slide">
+    <h1>Unstructured Data: Purpose & Examples</h1>
+    
+    <div class="card">
+        <h3>Purpose of Unstructured Data</h3>
+        <div class="grid-3" style="margin-top: 20px;">
+            <div class="data-type-card" style="border-left: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B;">Rich Information</h4>
+                <p>Captures nuanced details that structured data cannot. Context, tone, and meaning preserved.</p>
+            </div>
+            <div class="data-type-card" style="border-left: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B;">Flexibility</h4>
+                <p>No rigid format constraints. Can adapt to different types of information naturally.</p>
+            </div>
+            <div class="data-type-card" style="border-left: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B;">Human-Readable</h4>
+                <p>Natural for humans to create and understand. Doesn't require database expertise to use.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>Common Examples</h3>
+        
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="highlight-box" style="background: rgba(245, 158, 11, 0.1); border-left-color: #F59E0B;">
+                <h4>Text-Based Content:</h4>
+                <ul class="bullet-list" style="margin-top: 10px;">
+                    <li>Email messages and correspondence</li>
+                    <li>Social media posts and comments</li>
+                    <li>Blog articles and web content</li>
+                    <li>Customer reviews and feedback</li>
+                    <li>Meeting notes and documentation</li>
+                    <li>PDF documents and Word files</li>
+                    <li>Chat conversations and instant messages</li>
+                </ul>
+            </div>
+            <div class="highlight-box" style="background: rgba(245, 158, 11, 0.1); border-left-color: #F59E0B;">
+                <h4>Multimedia Content:</h4>
+                <ul class="bullet-list" style="margin-top: 10px;">
+                    <li>Images and photographs</li>
+                    <li>Audio files and podcasts</li>
+                    <li>Video recordings</li>
+                    <li>Scanned documents</li>
+                    <li>Presentation slides with mixed content</li>
+                    <li>Voice recordings and transcripts</li>
+                    <li>Infographics and design files</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="example-box" style="margin-top: 20px; background: rgba(245, 158, 11, 0.05);">
+            <h4 style="color: #F59E0B; margin-bottom: 10px;">Example: Customer Review (Unstructured)</h4>
+            <p style="font-family: 'Inter', sans-serif; font-size: 1em; line-height: 1.7;">"I absolutely love this product! The delivery was surprisingly quick, arriving two days earlier than expected. The packaging could have been better though - the box was a bit damaged when it arrived. However, the product itself works perfectly and the customer service team was really helpful when I had questions about setup. Would definitely recommend to friends and family. The blue colour is even nicer in person than in the photos! 5 stars overall."</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Qualitative Data = Unstructured -->
+<div class="slide">
+    <h1>Qualitative Data is Unstructured</h1>
+    
+    <div class="card" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%); border-left: 5px solid #F59E0B;">
+        <div class="icon-box" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">KEY CONCEPT</div>
+        <h2 style="color: #F59E0B; margin-top: 10px;">Qualitative Data → Unstructured Data</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;"><strong>Qualitative data</strong> is descriptive information that captures qualities, characteristics, and attributes. By its nature, qualitative data is <strong>always unstructured</strong> because it consists of words, opinions, descriptions, and observations that don't fit into predefined categories.</p>
+    </div>
+    
+    <div class="grid-2">
+        <div class="card">
+            <h3>What Makes Qualitative Data Unstructured?</h3>
+            <div class="key-point" style="margin-top: 15px; border-left-color: #F59E0B;">
+                <h4>💬 Descriptive Nature</h4>
+                <p>Uses words and language to describe qualities. Cannot be reduced to numbers without losing meaning.</p>
+            </div>
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>🎨 Subjective Content</h4>
+                <p>Captures opinions, feelings, and perceptions. Each response is unique and unpredictable.</p>
+            </div>
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>📖 Variable Length & Format</h4>
+                <p>No standard length or structure. One person might write a sentence, another an essay.</p>
+            </div>
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>🔍 Contextual Meaning</h4>
+                <p>Meaning depends on context and interpretation. Cannot be mathematically analysed directly.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Examples of Qualitative Data</h3>
+            
+            <div class="example-box" style="background: rgba(245, 158, 11, 0.05);">
+                <h4 style="color: #F59E0B; margin-bottom: 10px;">Interview Responses</h4>
+                <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; line-height: 1.6; margin-bottom: 8px;"><strong>Q:</strong> "How do you feel about the new software interface?"</p>
+                <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; line-height: 1.6;"><strong>A:</strong> "It's quite intuitive overall, but I found the settings menu a bit confusing at first. After a few days of use, it became much easier to navigate. The colour scheme is pleasant and doesn't strain my eyes during long sessions."</p>
+            </div>
+            
+            <div class="highlight-box" style="margin-top: 15px; background: rgba(245, 158, 11, 0.1); border-left-color: #F59E0B;">
+                <h4>More Examples:</h4>
+                <ul class="bullet-list" style="margin-top: 10px; font-size: 0.95em;">
+                    <li><strong>Open-ended survey responses:</strong> "What improvements would you suggest?"</li>
+                    <li><strong>Customer feedback:</strong> "The service was excellent but the wait time was too long"</li>
+                    <li><strong>Focus group discussions:</strong> Recorded conversations about product preferences</li>
+                    <li><strong>Observational notes:</strong> "Patient appeared anxious during consultation"</li>
+                    <li><strong>Case study descriptions:</strong> Detailed narratives of business scenarios</li>
+                    <li><strong>Interview transcripts:</strong> Word-for-word records of spoken responses</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Comparison - Structured vs Unstructured -->
+<div class="slide">
+    <h1>Structured vs Unstructured: Direct Comparison</h1>
+    
+    <div class="comparison-grid">
+        <div class="structured-side">
+            <h2 style="color: #3B82F6; text-align: center; margin-bottom: 20px;">Structured Data</h2>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Organisation</h4>
+                <p>Highly organised with predefined schema. Fixed format with rows and columns.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Storage</h4>
+                <p>Relational databases, spreadsheets, CSV files. Optimised for efficient storage.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Searchability</h4>
+                <p>Easy to search using SQL queries. Fast filtering and sorting capabilities.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Analysis</h4>
+                <p>Straightforward statistical analysis. Can calculate averages, totals, trends.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Data Type</h4>
+                <p><strong>Quantitative</strong> — Numbers, dates, categories with fixed options.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #3B82F6;">
+                <h4>Examples</h4>
+                <p>Sales figures, inventory counts, customer IDs, transaction dates, test scores.</p>
+            </div>
+        </div>
+        
+        <div class="unstructured-side">
+            <h2 style="color: #F59E0B; text-align: center; margin-bottom: 20px;">Unstructured Data</h2>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Organisation</h4>
+                <p>No predefined structure. Free-form content with variable formats.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Storage</h4>
+                <p>Files, documents, media repositories. NoSQL databases or cloud storage.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Searchability</h4>
+                <p>Difficult to search. Requires full-text search or AI analysis to find information.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Analysis</h4>
+                <p>Complex analysis required. Needs text mining, natural language processing, or manual review.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Data Type</h4>
+                <p><strong>Qualitative</strong> — Descriptions, opinions, text, images, audio, video.</p>
+            </div>
+            
+            <div class="key-point" style="border-left-color: #F59E0B;">
+                <h4>Examples</h4>
+                <p>Email content, social media posts, customer reviews, meeting notes, photos, videos.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="margin-top: 25px; background: rgba(139, 92, 246, 0.1);">
+        <p style="text-align: center; font-size: 1.15em;"><strong>Remember:</strong> Quantitative data (numbers) is structured. Qualitative data (descriptions) is unstructured.</p>
+    </div>
+</div>
+
+<!-- Slide 10: Real-World Applications -->
+<div class="slide">
+    <h1>Real-World Applications</h1>
+    
+    <div class="card">
+        <h3>How Organisations Use Both Data Types</h3>
+        <p style="font-size: 1.1em; margin-bottom: 20px;">Most businesses work with both structured and unstructured data to get a complete picture of their operations and customer needs.</p>
+    </div>
+    
+    <div class="grid-2">
+        <div class="card" style="border-left: 4px solid #8B5CF6;">
+            <h4 style="color: #8B5CF6;">E-Commerce Platform</h4>
+            <div style="margin-top: 15px;">
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 12px;">
+                    <p style="font-size: 0.95em; margin-bottom: 5px;"><strong style="color: #3B82F6;">Structured:</strong></p>
+                    <ul class="bullet-list" style="font-size: 0.9em;">
+                        <li>Product prices: £29.99, £45.00, £12.50</li>
+                        <li>Order quantities: 1, 3, 2 items</li>
+                        <li>Customer IDs: C001, C002, C003</li>
+                        <li>Purchase dates: 15/01/2026, 16/01/2026</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-radius: 8px;">
+                    <p style="font-size: 0.95em; margin-bottom: 5px;"><strong style="color: #F59E0B;">Unstructured:</strong></p>
+                    <ul class="bullet-list" style="font-size: 0.9em;">
+                        <li>Product reviews and ratings explanations</li>
+                        <li>Customer service chat transcripts</li>
+                        <li>Product description text and images</li>
+                        <li>Customer feedback emails</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="border-left: 4px solid #8B5CF6;">
+            <h4 style="color: #8B5CF6;">Healthcare System</h4>
+            <div style="margin-top: 15px;">
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 12px;">
+                    <p style="font-size: 0.95em; margin-bottom: 5px;"><strong style="color: #3B82F6;">Structured:</strong></p>
+                    <ul class="bullet-list" style="font-size: 0.9em;">
+                        <li>Patient ID numbers: NHS123456789</li>
+                        <li>Blood pressure readings: 120/80 mmHg</li>
+                        <li>Temperature: 37.2°C, 36.8°C</li>
+                        <li>Appointment dates and times</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-radius: 8px;">
+                    <p style="font-size: 0.95em; margin-bottom: 5px;"><strong style="color: #F59E0B;">Unstructured:</strong></p>
+                    <ul class="bullet-list" style="font-size: 0.9em;">
+                        <li>Doctor's consultation notes</li>
+                        <li>X-ray and scan images</li>
+                        <li>Patient symptom descriptions</li>
+                        <li>Treatment plan documentation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(139, 92, 246, 0.1); margin-top: 20px;">
+        <h4 style="margin-bottom: 15px;">Why Use Both?</h4>
+        <div class="grid-3">
+            <div class="key-point">
+                <h4>Complete Picture</h4>
+                <p>Structured data shows "what happened" (numbers). Unstructured data shows "why it happened" (context).</p>
+            </div>
+            <div class="key-point">
+                <h4>Better Decisions</h4>
+                <p>Numbers provide objective metrics. Text provides customer sentiment and detailed feedback.</p>
+            </div>
+            <div class="key-point">
+                <h4>Complementary Insights</h4>
+                <p>Combine quantitative trends with qualitative explanations for comprehensive understanding.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Exam Question 1 (2 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 1</span>
+            <span class="marks">(2 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.3em; margin-bottom: 25px;"><span class="command-verb">State</span> what is meant by the term 'structured data'.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Provide a clear definition in your answer.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Exam Question 2 (3 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 2</span>
+            <span class="marks">(3 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A company stores customer data in a database with the following fields:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Customer ID (e.g., CU12345)</li>
+                    <li>Age (e.g., 28, 45, 67)</li>
+                    <li>Annual income (e.g., £35,000, £52,500)</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Explain</span> why this customer data is an example of quantitative, structured data.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your answer should reference both the quantitative nature and the structured organisation.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Exam Question 3 (4 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 3</span>
+            <span class="marks">(4 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A sports equipment retailer maintains information about their products and customers.</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 15px;">The retailer collects the following data:</p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Product names and descriptions</li>
+                    <li>Stock quantities (e.g., 47 units, 123 units)</li>
+                    <li>Product prices (e.g., £24.99, £89.50)</li>
+                    <li>Customer review comments (e.g., "Great quality, fast delivery")</li>
+                    <li>Product weights in kilograms (e.g., 1.2kg, 3.7kg)</li>
+                    <li>Customer support email conversations</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Identify</span> two examples of structured data from the list above. <em style="color: #94A3B8;">(2 marks)</em></p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Identify</span> two examples of unstructured data from the list above. <em style="color: #94A3B8;">(2 marks)</em></p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Exam Question 4 (6 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 4</span>
+            <span class="marks">(6 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A university is conducting research into student satisfaction with online learning.</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 15px;">The research team collects two types of data:</p>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Survey Question 1 (Multiple Choice):</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 10px;">"How many hours per week do you spend on online learning?"</p>
+                <ul class="bullet-list" style="font-size: 0.9em;">
+                    <li>0-5 hours</li>
+                    <li>6-10 hours</li>
+                    <li>11-15 hours</li>
+                    <li>16+ hours</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Survey Question 2 (Open-ended):</strong></p>
+                <p style="font-size: 0.95em;">"Please describe your experience with online learning and any suggestions for improvement."</p>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Explain</span> why the data from Survey Question 1 is an example of quantitative, structured data.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 20px;"><span class="command-verb">Explain</span> why the data from Survey Question 2 is an example of qualitative, unstructured data.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your explanations should reference the characteristics that make each data type structured or unstructured.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Exam Question 5 (9 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 5</span>
+            <span class="marks">(9 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A digital marketing agency analyses customer behaviour to improve advertising campaigns. They work with two distinct data sources:</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Data Source A: Website Analytics Database</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Page views per session: 4, 7, 3, 12</li>
+                    <li>Time spent on site: 2:34, 5:12, 1:45 (minutes:seconds)</li>
+                    <li>Click-through rates: 2.3%, 4.7%, 1.9%</li>
+                    <li>Conversion rates: £145.00, £0.00, £89.50</li>
+                    <li>Number of returning visitors: 1,247</li>
+                    <li>Stored in MySQL database with defined tables and fields</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Data Source B: Customer Feedback Collection</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Email responses to "Why did you choose our service?"</li>
+                    <li>Social media comments about recent campaigns</li>
+                    <li>Video testimonials from satisfied customers</li>
+                    <li>Phone call recordings with customer service team</li>
+                    <li>Written complaints and suggestions submitted via contact form</li>
+                    <li>Stored as individual files in cloud storage folders</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The marketing manager needs to decide which data source to prioritise for two different analysis tasks:</p>
+            
+            <div class="context-box" style="margin-top: 15px;">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Task 1:</strong> Calculate the average conversion rate across all campaigns this month and identify which campaigns performed above or below average.</p>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Task 2:</strong> Understand why customers prefer the company's service over competitors and discover unexpected pain points that weren't anticipated.</p>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> which data source (A or B) would be most appropriate for each task.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">In your answer, explain the advantages of structured and unstructured data in relation to these specific tasks. Consider how the organisation of each data type affects its suitability for the analysis required.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 16: Exam Question 6 (12 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 6</span>
+            <span class="marks">(12 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A national hospital trust is implementing a new integrated patient care system. The system needs to handle multiple types of patient information to improve healthcare delivery and operational efficiency.</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 15px;"><strong>Current Data Types Being Collected:</strong></p>
+                
+                <p style="font-size: 1.05em; margin-top: 12px; margin-bottom: 8px;"><strong>Category A: Patient Medical Records</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Patient ID numbers (e.g., NHS123456789)</li>
+                    <li>Blood pressure readings (e.g., 120/80 mmHg, 135/85 mmHg)</li>
+                    <li>Blood glucose levels (e.g., 5.2 mmol/L, 6.8 mmol/L)</li>
+                    <li>Medication dosages (e.g., 500mg, 1000mg)</li>
+                    <li>Appointment dates and times (e.g., 15/01/2026 14:30)</li>
+                    <li>Number of previous admissions (e.g., 0, 2, 5)</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 8px;"><strong>Category B: Clinical Notes & Observations</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Doctor's consultation notes: "Patient reports persistent headaches for 3 weeks, worsening in the mornings..."</li>
+                    <li>Nurse observations: "Patient appears anxious, walking with slight limp..."</li>
+                    <li>Patient symptom descriptions: "Sharp pain in lower back when bending..."</li>
+                    <li>Treatment plans and recommendations in paragraph form</li>
+                    <li>Discharge summaries with detailed care instructions</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 8px;"><strong>Category C: Diagnostic Media</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>X-ray images (chest, limbs, spine)</li>
+                    <li>MRI and CT scan images</li>
+                    <li>Ultrasound videos</li>
+                    <li>ECG printouts and recordings</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The hospital IT director needs to implement appropriate storage and analysis systems for each category of data.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> the suitability of structured and unstructured data storage solutions for each of the three data categories (A, B, and C).</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Recommend</span> appropriate storage technologies and analysis approaches for each category.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Consider: database requirements, searchability needs, analysis capabilities, data relationships, storage efficiency, and regulatory compliance for medical records. Justify your recommendations with reference to the characteristics of structured vs unstructured data.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17: Summary & Exam Tips -->
+<div class="slide">
+    <h1>Summary & Exam Tips</h1>
+    
+    <div class="card">
+        <h3 style="margin-bottom: 25px;">Key Points - Content Area 6.3.2 & 6.3.3</h3>
+        
+        <div class="data-type-card" style="border-left: 4px solid #3B82F6; margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #3B82F6;">Structured Data:</strong> Organised data with predefined schema. Fits into rows and columns. Easy to search, query, and analyse. Stored in databases and spreadsheets. Examples: numbers, dates, fixed categories.</p>
+        </div>
+
+        <div class="data-type-card" style="border-left: 4px solid #F59E0B; margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #F59E0B;">Unstructured Data:</strong> No predefined format or schema. Free-form content with variable structure. Difficult to search without AI. Stored as files, documents, media. Examples: text, images, videos, audio.</p>
+        </div>
+
+        <div class="data-type-card" style="border-left: 4px solid #10B981; margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #10B981;">Quantitative = Structured:</strong> Numerical data that can be measured and counted. Always structured because numbers follow consistent formats. Can perform mathematical operations and statistical analysis.</p>
+        </div>
+
+        <div class="data-type-card" style="border-left: 4px solid #EC4899; margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #EC4899;">Qualitative = Unstructured:</strong> Descriptive data capturing qualities and characteristics. Always unstructured because opinions and descriptions don't fit predefined formats. Requires interpretation and context.</p>
+        </div>
+    </div>
+
+    <div class="card" style="background: rgba(139, 92, 246, 0.1); margin-top: 25px;">
+        <h3 style="margin-bottom: 20px;">Exam Success Tips</h3>
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">1. Look for Organisation Clues</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">If data fits in a table with consistent fields → structured. If data is free-form text or media → unstructured.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">2. Identify Data Purpose</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Numbers for calculations → quantitative/structured. Descriptions for understanding opinions → qualitative/unstructured.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">3. Consider Storage Method</strong></p>
+                <p style="font-size: 0.95em;">Database with rows/columns → structured. Files, documents, media → unstructured.</p>
+            </div>
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">4. Use Specific Examples</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Don't just say "numbers are structured" — explain: "Customer ages (23, 45, 67) are structured because they fit in a numeric field with consistent format"</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">5. Link to Advantages/Disadvantages</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Structured data: fast queries, but loses context. Unstructured data: rich detail, but harder to analyse.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">6. Remember the Key Relationships</strong></p>
+                <p style="font-size: 0.95em;">Quantitative → Structured. Qualitative → Unstructured. These connections are fundamental.</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 25px; background: rgba(139, 92, 246, 0.2); border-radius: 15px;">
+        <h2 style="font-size: 2em; color: #8B5CF6; font-weight: 800;">Total: 36 marks</h2>
+        <p style="font-size: 1.1em; margin-top: 10px; color: #94A3B8;">Questions: 2 + 3 + 4 + 6 + 9 + 12</p>
+    </div>
+</div>
+
+</div><!-- End slide-container -->
+
+<!-- Navigation -->
+<div class="navigation">
+    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-number" id="slideCounter">1 / 17</span>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    if (n >= totalSlides) currentSlide = 0;
+    if (n < 0) currentSlide = totalSlides - 1;
+    
+    slides[currentSlide].classList.add('active');
+    
+    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+    document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    
+    slides[currentSlide].scrollTop = 0;
+}
+
+function changeSlide(direction) {
+    currentSlide += direction;
+    showSlide(currentSlide);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+});
+
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>

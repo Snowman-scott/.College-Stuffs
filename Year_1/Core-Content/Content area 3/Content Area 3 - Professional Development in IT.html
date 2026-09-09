@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Development in IT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            padding: 70px;
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 600px;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%) 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.9em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.8em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #2c3e50;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: #3b82f6;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 6px solid #3b82f6;
+            border: 1px solid #93c5fd;
+            border-left: 6px solid #3b82f6;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            font-size: 1.9em;
+            color: #2563eb;
+        }
+
+        .detail {
+            margin: 15px 0;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        .label {
+            font-weight: 700;
+            color: #2563eb;
+            margin-right: 8px;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .benefit-card {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid #3b82f6;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-card h4 {
+            color: #3b82f6;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #1f2937;
+        }
+
+        .pathway-card {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid #8b5cf6;
+        }
+
+        .pathway-card h4 {
+            color: #8b5cf6;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .pathway-card p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #1f2937;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 6px solid #f59e0b;
+            border: 1px solid #fcd34d;
+            border-left: 6px solid #f59e0b;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .stat-box h4 {
+            color: #f59e0b;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .stat-box p {
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: #1f2937;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 700;
+            color: #3b82f6;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+            color: white;
+        }
+
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button:disabled:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: #3b82f6;
+        }
+
+        button:disabled::before {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 6px solid #3b82f6;
+            border: 1px solid #93c5fd;
+            border-left: 6px solid #3b82f6;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .question-box h4 {
+            color: #3b82f6;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .example-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-left: 5px solid #22c55e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+        }
+
+        .example-box h4 {
+            color: #22c55e;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .standard-box {
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+        }
+
+        .standard-box h4 {
+            color: #f59e0b;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        em {
+            font-style: italic;
+            color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+                min-height: 500px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            li {
+                font-size: 1.1em;
+            }
+
+            .benefit-grid, .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="content center-content">
+                <h1>Professional Development in IT</h1>
+                <p class="subtitle">Building Your Career Through Continuous Learning</p>
+                <p class="subtitle" style="margin-top: 60px; font-size: 1.3em; color: #999;">Understanding the Benefits and Importance</p>
+            </div>
+            <div class="slide-number">1 / 16</div>
+        </div>
+
+        <!-- Slide 2: What is Professional Development? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What is Professional Development?</h2>
+                <div class="info-box">
+                    <h3>Definition</h3>
+                    <p class="detail"><span class="highlight">Professional development</span> is the ongoing process of acquiring new skills, knowledge, and competencies to improve performance and advance one's career.</p>
+                </div>
+                <ul>
+                    <li>A <strong>continuous journey</strong>, not a one-time event</li>
+                    <li>Includes formal education, training courses, certifications, workshops, and self-directed learning</li>
+                    <li>Essential in IT due to <strong>rapid technological change</strong> and evolving industry standards</li>
+                    <li>Benefits both the <strong>individual</strong> (career growth) and the <strong>organisation</strong> (skilled workforce)</li>
+                    <li>Demonstrates commitment to your profession and willingness to stay current</li>
+                </ul>
+            </div>
+            <div class="slide-number">2 / 16</div>
+        </div>
+
+        <!-- Slide 3: Overview of Benefits -->
+        <div class="slide">
+            <div class="content">
+                <h2>Three Key Benefits of Professional Development</h2>
+                <div class="benefit-grid">
+                    <div class="benefit-card">
+                        <h4>🎯 Increased Industry & Sector Competence</h4>
+                        <p>Develop deeper technical skills and stay current with emerging technologies, tools, and methodologies.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>💼 Increased Employability & Employment Security</h4>
+                        <p>Enhance your value to employers, improve job prospects, and protect against redundancy.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📋 Access to & Adherence to Industry Standards</h4>
+                        <p>Understand and implement best practices, compliance requirements, and professional standards.</p>
+                    </div>
+                </div>
+                <div class="stat-box" style="margin-top: 40px;">
+                    <h4>💡 Did You Know?</h4>
+                    <p>According to industry research, IT professionals who engage in regular professional development earn on average <strong>15-20% more</strong> than those who don't, and are <strong>twice as likely</strong> to be promoted.</p>
+                </div>
+            </div>
+            <div class="slide-number">3 / 16</div>
+        </div>
+
+        <!-- Slide 4: Increased Industry Competence - Introduction -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 1: Increased Industry & Sector Competence</h2>
+                <div class="info-box">
+                    <h3>What Does This Mean?</h3>
+                    <p class="detail">Industry competence refers to your ability to perform effectively within your sector, using current knowledge, skills, and understanding of technologies and practices.</p>
+                </div>
+                <h3>Why is This Important in IT?</h3>
+                <ul>
+                    <li><strong>Rapid Technological Change:</strong> New programming languages, frameworks, and tools emerge constantly</li>
+                    <li><strong>Evolving Threats:</strong> Cybersecurity threats change daily, requiring up-to-date knowledge</li>
+                    <li><strong>Shifting Methodologies:</strong> Development approaches (Agile, DevOps, Cloud-native) evolve</li>
+                    <li><strong>Platform Updates:</strong> Operating systems, databases, and platforms release major updates regularly</li>
+                    <li><strong>Industry Specialisation:</strong> Different sectors (healthcare, finance, retail) have unique IT requirements</li>
+                </ul>
+            </div>
+            <div class="slide-number">4 / 16</div>
+        </div>
+
+        <!-- Slide 5: How to Build Competence -->
+        <div class="slide">
+            <div class="content">
+                <h2>Building Industry Competence</h2>
+                <h3>Formal Learning</h3>
+                <ul>
+                    <li><strong>Professional Qualifications:</strong> T Levels, BTECs, degrees, master's programmes</li>
+                    <li><strong>Industry Certifications:</strong> CompTIA, Cisco CCNA, Microsoft Azure, AWS, Google Cloud</li>
+                    <li><strong>Vendor Training:</strong> Official courses from technology providers</li>
+                    <li><strong>Bootcamps:</strong> Intensive, focused training in specific technologies</li>
+                </ul>
+                <h3 style="margin-top: 30px;">Informal Learning</h3>
+                <ul>
+                    <li><strong>Online Courses:</strong> Platforms like Udemy, Coursera, LinkedIn Learning, Pluralsight</li>
+                    <li><strong>Technical Documentation:</strong> Reading official docs and technical guides</li>
+                    <li><strong>Personal Projects:</strong> Building applications, contributing to open source</li>
+                    <li><strong>Professional Communities:</strong> Forums, Stack Overflow, GitHub, Discord servers</li>
+                    <li><strong>Conferences & Webinars:</strong> Attending industry events and presentations</li>
+                </ul>
+            </div>
+            <div class="slide-number">5 / 16</div>
+        </div>
+
+        <!-- Slide 6: Competence Examples -->
+        <div class="slide">
+            <div class="content">
+                <h2>Real-World Examples of Increased Competence</h2>
+                <div class="example-box">
+                    <h4>Example 1: Cloud Migration</h4>
+                    <p>A systems administrator completes AWS certification. They can now architect and manage cloud infrastructure, enabling their organisation to migrate from on-premises servers, reducing costs and improving scalability.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example 2: Cybersecurity Specialist</h4>
+                    <p>A network engineer pursues CompTIA Security+ and CEH (Certified Ethical Hacker). They gain competence in threat detection and vulnerability assessment, protecting their organisation from cyber attacks.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example 3: Full-Stack Developer</h4>
+                    <p>A front-end developer learns back-end technologies through online courses. They become a full-stack developer, able to work on complete applications independently, increasing their value to the team.</p>
+                </div>
+            </div>
+            <div class="slide-number">6 / 16</div>
+        </div>
+
+        <!-- Slide 7: Employability Introduction -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 2: Increased Employability & Employment Security</h2>
+                <div class="info-box">
+                    <h3>What Does This Mean?</h3>
+                    <p class="detail"><strong>Employability</strong> is your ability to gain initial employment, maintain employment, and obtain new employment if required. <strong>Employment security</strong> is protection against job loss and redundancy.</p>
+                </div>
+                <div class="stat-box">
+                    <h4>⚠️ The Changing Job Market</h4>
+                    <p>The World Economic Forum predicts that <strong>40% of core skills</strong> required for jobs will change by 2025. Continuous professional development is essential to remain competitive.</p>
+                </div>
+                <h3>How Professional Development Helps</h3>
+                <ul>
+                    <li>Makes you <strong>more attractive to employers</strong> through demonstrable skills</li>
+                    <li>Provides <strong>evidence of commitment</strong> and self-motivation</li>
+                    <li>Increases your <strong>adaptability</strong> to changing job requirements</li>
+                    <li>Builds a <strong>diverse skill set</strong> that opens more career opportunities</li>
+                </ul>
+            </div>
+            <div class="slide-number">7 / 16</div>
+        </div>
+
+        <!-- Slide 8: Employability Factors -->
+        <div class="slide">
+            <div class="content">
+                <h2>Factors That Enhance Employability</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Technical Skills</h3>
+                        <ul style="font-size: 1.15em;">
+                            <li>Programming languages</li>
+                            <li>Database management</li>
+                            <li>Network administration</li>
+                            <li>Cloud platforms</li>
+                            <li>Cybersecurity knowledge</li>
+                            <li>DevOps tools and practices</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Professional Skills</h3>
+                        <ul style="font-size: 1.15em;">
+                            <li>Project management</li>
+                            <li>Communication skills</li>
+                            <li>Problem-solving ability</li>
+                            <li>Team collaboration</li>
+                            <li>Time management</li>
+                            <li>Business awareness</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 30px;">
+                    <h3>The T-Shaped Professional</h3>
+                    <p class="detail">Employers value "T-shaped" professionals: those with <strong>deep expertise</strong> in one area (the vertical bar) and <strong>broad knowledge</strong> across multiple areas (the horizontal bar). Professional development helps you become T-shaped.</p>
+                </div>
+            </div>
+            <div class="slide-number">8 / 16</div>
+        </div>
+
+        <!-- Slide 9: Employment Security -->
+        <div class="slide">
+            <div class="content">
+                <h2>Employment Security Through Development</h2>
+                <h3>Protection Against Redundancy</h3>
+                <ul>
+                    <li><strong>Skill Obsolescence:</strong> Without development, your skills become outdated, making you vulnerable to redundancy</li>
+                    <li><strong>Automation & AI:</strong> Many routine IT tasks are being automated; higher-level skills remain essential</li>
+                    <li><strong>Competitive Advantage:</strong> Organisations retain employees who add the most value</li>
+                    <li><strong>Adaptability:</strong> Ability to take on new roles within the organisation during restructuring</li>
+                </ul>
+                <h3 style="margin-top: 30px;">Career Progression</h3>
+                <ul>
+                    <li><strong>Promotion Opportunities:</strong> Qualifications and certifications often required for senior roles</li>
+                    <li><strong>Salary Increases:</strong> Additional skills justify higher compensation</li>
+                    <li><strong>Career Transitions:</strong> Easier to move between IT specialisms or into management</li>
+                    <li><strong>Professional Recognition:</strong> Certifications provide industry-recognised credentials</li>
+                </ul>
+            </div>
+            <div class="slide-number">9 / 16</div>
+        </div>
+
+        <!-- Slide 10: Employability Examples -->
+        <div class="slide">
+            <div class="content">
+                <h2>Real-World Examples of Enhanced Employability</h2>
+                <div class="example-box">
+                    <h4>Example 1: Career Change</h4>
+                    <p>A retail worker completes a coding bootcamp and builds a portfolio. They successfully transition into a junior developer role, demonstrating that professional development enables career changes.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example 2: Avoiding Redundancy</h4>
+                    <p>A database administrator learns cloud database services (Azure SQL, AWS RDS). When their company migrates to the cloud, they're retained to manage the new system rather than being made redundant.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example 3: Promotion to Management</h4>
+                    <p>A senior developer completes PRINCE2 project management certification and an MBA. They're promoted to IT Project Manager, demonstrating how development opens leadership opportunities.</p>
+                </div>
+            </div>
+            <div class="slide-number">10 / 16</div>
+        </div>
+
+        <!-- Slide 11: Industry Standards Introduction -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 3: Access to & Adherence to Industry Standards</h2>
+                <div class="info-box">
+                    <h3>What Are Industry Standards?</h3>
+                    <p class="detail">Industry standards are <strong>established norms, best practices, and technical specifications</strong> that ensure quality, security, compatibility, and professionalism across the IT sector.</p>
+                </div>
+                <h3>Why Do Standards Matter?</h3>
+                <ul>
+                    <li><strong>Quality Assurance:</strong> Standards ensure consistent, high-quality outputs</li>
+                    <li><strong>Interoperability:</strong> Systems built to standards work together seamlessly</li>
+                    <li><strong>Security:</strong> Security standards protect against known vulnerabilities</li>
+                    <li><strong>Legal Compliance:</strong> Many standards are legal requirements (GDPR, accessibility)</li>
+                    <li><strong>Professional Credibility:</strong> Following standards demonstrates professionalism</li>
+                    <li><strong>Risk Management:</strong> Standards help identify and mitigate risks</li>
+                </ul>
+            </div>
+            <div class="slide-number">11 / 16</div>
+        </div>
+
+        <!-- Slide 12: Types of Standards -->
+        <div class="slide">
+            <div class="content">
+                <h2>Types of IT Industry Standards</h2>
+                <div class="standard-box">
+                    <h4>Technical Standards</h4>
+                    <p>TCP/IP networking protocols, HTML/CSS web standards, SQL database standards, programming language standards (ISO C++, Java SE)</p>
+                </div>
+                <div class="standard-box">
+                    <h4>Security Standards</h4>
+                    <p>ISO 27001 (information security), PCI DSS (payment card data), NIST Cybersecurity Framework, Cyber Essentials</p>
+                </div>
+                <div class="standard-box">
+                    <h4>Quality Standards</h4>
+                    <p>ISO 9001 (quality management), CMMI (capability maturity model), Six Sigma methodologies</p>
+                </div>
+                <div class="standard-box">
+                    <h4>Professional Standards</h4>
+                    <p>BCS Code of Conduct, IEEE Code of Ethics, professional body membership requirements</p>
+                </div>
+                <div class="standard-box">
+                    <h4>Project Management Standards</h4>
+                    <p>PRINCE2, Agile methodologies (Scrum, Kanban), PMBOK (Project Management Body of Knowledge)</p>
+                </div>
+            </div>
+            <div class="slide-number">12 / 16</div>
+        </div>
+
+        <!-- Slide 13: Learning and Applying Standards -->
+        <div class="slide">
+            <div class="content">
+                <h2>How Professional Development Provides Access to Standards</h2>
+                <h3>Through Formal Training</h3>
+                <ul>
+                    <li><strong>Certification Courses:</strong> Teach specific standards (ISO 27001, ITIL, PCI DSS)</li>
+                    <li><strong>Professional Qualifications:</strong> T Levels and degrees embed industry standards in curriculum</li>
+                    <li><strong>Vendor Training:</strong> Teaches best practices for specific technologies</li>
+                    <li><strong>Compliance Training:</strong> Mandatory training on legal and regulatory standards</li>
+                </ul>
+                <h3 style="margin-top: 30px;">Through Professional Bodies</h3>
+                <ul>
+                    <li><strong>BCS (British Computer Society):</strong> Provides guidance on professional standards and ethics</li>
+                    <li><strong>IET (Institution of Engineering and Technology):</strong> Engineering standards for IT infrastructure</li>
+                    <li><strong>ISACA:</strong> Standards for IT governance, risk, and security</li>
+                    <li><strong>IEEE:</strong> Technical standards for computing and electronics</li>
+                </ul>
+                <h3 style="margin-top: 30px;">Through Workplace Experience</h3>
+                <ul>
+                    <li>Mentorship from experienced professionals who understand standards</li>
+                    <li>Exposure to real-world applications of standards in projects</li>
+                    <li>Learning organisational policies based on industry standards</li>
+                </ul>
+            </div>
+            <div class="slide-number">13 / 16</div>
+        </div>
+
+        <!-- Slide 14: Assessment Questions Section A -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 1 <span class="marks">2 marks</span></h4>
+                    <p><strong>State</strong> two ways that professional development can increase industry competence.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 2 <span class="marks">3 marks</span></h4>
+                    <p>A junior IT technician is considering pursuing industry certifications.</p>
+                    <p><strong>Explain</strong> how certifications can improve their employability.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 3 <span class="marks">4 marks</span></h4>
+                    <p><strong>Explain</strong> the difference between technical standards and professional standards, giving one example of each.</p>
+                </div>
+            </div>
+            <div class="slide-number">14 / 16</div>
+        </div>
+
+        <!-- Slide 15: Assessment Questions Section B -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">6 marks</span></h4>
+                    <p>A small IT company does not currently provide professional development opportunities for its employees.</p>
+                    <p><strong>Discuss</strong> the implications for the company if employees do not engage in professional development.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 5 <span class="marks">12 marks</span></h4>
+                    <p>An IT professional is planning their career development strategy. They are considering:</p>
+                    <ul style="margin-left: 50px; margin-top: 15px; font-size: 1.1em;">
+                        <li>Pursuing industry certifications (e.g., CompTIA, Cisco, AWS)</li>
+                        <li>Completing formal qualifications (e.g., degree, master's)</li>
+                        <li>Attending conferences and networking events</li>
+                        <li>Self-directed learning through online courses</li>
+                        <li>Joining professional bodies (e.g., BCS, ISACA)</li>
+                    </ul>
+                    <p style="margin-top: 20px;"><strong>Evaluate</strong> the effectiveness of these professional development approaches in terms of increasing industry competence, employability, and access to industry standards.</p>
+                    <p style="margin-top: 15px;">Make a supported judgement about which approach would be most beneficial for long-term career success in the IT industry.</p>
+                </div>
+            </div>
+            <div class="slide-number">15 / 16</div>
+        </div>
+
+        <!-- Slide 16: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>Professional development</strong> is a continuous journey essential for IT career success</li>
+                    <li><strong>Increased Industry Competence:</strong> Stay current with rapidly changing technologies, tools, and methodologies through formal and informal learning</li>
+                    <li><strong>Increased Employability:</strong> Enhanced skills make you more attractive to employers and protect against redundancy</li>
+                    <li><strong>Employment Security:</strong> Continuous development provides protection against skill obsolescence and automation</li>
+                    <li><strong>Access to Industry Standards:</strong> Professional development provides knowledge of best practices, compliance requirements, and professional ethics</li>
+                    <li><strong>Multiple Pathways:</strong> Certifications, formal qualifications, online courses, conferences, and professional bodies all contribute</li>
+                    <li><strong>T-Shaped Professionals:</strong> Develop both deep expertise in one area and broad knowledge across multiple areas</li>
+                    <li><strong>Career Progression:</strong> Qualifications and certifications open doors to promotions and leadership roles</li>
+                    <li>In IT, <strong>standing still means falling behind</strong> – commit to lifelong learning</li>
+                </ul>
+            </div>
+            <div class="slide-number">16 / 16</div>
+        </div>
+    </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            // Update progress bar
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+            if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

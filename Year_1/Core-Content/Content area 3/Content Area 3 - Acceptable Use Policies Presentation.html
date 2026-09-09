@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Acceptable Use Policies and IT Ethics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px 100px 20px;
+            color: #111827;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            padding: 70px;
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 600px;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.95) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 { color: #8b5cf6; font-size: 1.9em; margin-top: 30px; margin-bottom: 20px; font-weight: 700; }
+
+        .subtitle { color: #666; font-size: 1.8em; text-align: center; margin-top: 10px; font-weight: 300; }
+
+        .content { flex: 1; overflow-y: auto; padding-right: 15px; }
+
+        .content::-webkit-scrollbar { width: 10px; }
+        .content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .content::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 10px; }
+        .content::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); }
+
+        ul { margin-left: 30px; margin-top: 20px; }
+        li { margin-bottom: 20px; font-size: 1.3em; line-height: 1.8; color: #2c3e50; position: relative; padding-left: 10px; }
+        li::marker { color: #6366f1; font-size: 1.2em; }
+        strong { color: #8b5cf6; font-weight: 700; }
+
+        .info-box {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border: 1px solid #c4b5fd;
+            border-left: 6px solid #8b5cf6;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .info-box:hover { transform: translateX(5px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3); }
+        .info-box h3 { margin-top: 0; font-size: 1.9em; color: #6366f1; }
+
+        .detail { margin: 15px 0; font-size: 1.2em; line-height: 1.8; color: #2c3e50; }
+        .label { font-weight: 700; color: #8b5cf6; margin-right: 8px; }
+
+        .ethics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px; }
+        .ethics-card { background: #f9fafb; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb; border-left: 5px solid #6366f1; }
+        .ethics-card h4 { color: #6366f1; font-size: 1.5em; margin-bottom: 15px; }
+        .ethics-card p { font-size: 1.1em; line-height: 1.7; color: #1f2937; }
+
+        .scenario-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fcd34d;
+            border-left: 6px solid #f59e0b;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+        .scenario-box h4 { color: #f59e0b; font-size: 1.4em; margin-bottom: 15px; }
+        .scenario-box p { font-size: 1.15em; line-height: 1.7; color: #1f2937; }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        button {
+            background: #ffffff;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 700;
+            color: #6366f1;
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            transition: left 0.3s ease; z-index: -1;
+        }
+        button:hover::before { left: 0; }
+        button:hover { transform: translateY(-5px); box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4); color: #ffffff; }
+        button:active { transform: translateY(-2px); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        button:disabled:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.3); color: #6366f1; }
+        button:disabled::before { display: none; }
+
+        .progress-bar {
+            width: 240px;
+            height: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .progress-fill {
+            height: 100%;
+            background: #ffffff;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.6);
+            width: 0%;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; }
+
+        .question-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #fca5a5;
+            border-left: 6px solid #ef4444;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+        }
+        .question-box h4 { color: #ef4444; font-size: 1.4em; margin-bottom: 15px; }
+        .question-box p { font-size: 1.2em; line-height: 1.7; color: #2c3e50; margin: 10px 0; }
+        .marks { background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 0.9em; font-weight: 700; margin-left: 10px; }
+
+        .example-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-left: 5px solid #22c55e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+        }
+        .example-box h4 { color: #22c55e; font-size: 1.3em; margin-bottom: 10px; }
+
+        .dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px; }
+        .dos, .donts { background: #f9fafb; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb; }
+        .dos { border-left: 5px solid #22c55e; }
+        .donts { border-left: 5px solid #ef4444; }
+        .dos h4 { color: #22c55e; font-size: 1.5em; margin-bottom: 15px; }
+        .donts h4 { color: #ef4444; font-size: 1.5em; margin-bottom: 15px; }
+        .dos ul li, .donts ul li { color: #1f2937; }
+
+        em { font-style: italic; color: #6366f1; }
+
+        @media (max-width: 768px) {
+            .slide { padding: 40px; min-height: 500px; }
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            li { font-size: 1.1em; }
+            .ethics-grid, .dos-donts { grid-template-columns: 1fr; }
+            .navigation { gap: 12px; }
+            button { padding: 14px 24px; font-size: 1em; }
+            .progress-bar { width: 160px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation" aria-live="polite">
+        <!-- Slide 1: Title -->
+        <div class="slide active" tabindex="0">
+            <div class="content center-content">
+                <h1>Acceptable Use Policies</h1>
+                <p class="subtitle">Ethics in Information Technology</p>
+                <p class="subtitle" style="margin-top: 60px; font-size: 1.3em; color: #999;">Understanding responsible digital behaviour</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is an AUP -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>What is an Acceptable Use Policy</h2>
+                <div class="info-box">
+                    <h3>Definition</h3>
+                    <p class="detail">An <span class="highlight">Acceptable Use Policy</span> sets rules and guidance for using an organisation s systems, networks, and digital resources.</p>
+                </div>
+                <ul>
+                    <li>Sets out what users <strong>can</strong> and <strong>cannot</strong> do with technology</li>
+                    <li>Protects both the <strong>organisation</strong> and its <strong>users</strong></li>
+                    <li>Ensures legal compliance and maintains security</li>
+                    <li>Common in schools, businesses, libraries, and any setting providing IT access</li>
+                    <li>Users usually must accept the AUP before access is granted</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Purpose -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Purpose of Acceptable Use Policies</h2>
+                <div class="ethics-grid">
+                    <div class="ethics-card"><h4>🛡️ Protection</h4><p>Protects infrastructure from misuse, damage, and threat.</p></div>
+                    <div class="ethics-card"><h4>⚖️ Legal compliance</h4><p>Supports duties under Data Protection, Computer Misuse, and copyright law.</p></div>
+                    <div class="ethics-card"><h4>📋 Clarity</h4><p>Sets expectations for acceptable and unacceptable conduct.</p></div>
+                    <div class="ethics-card"><h4>⚠️ Consequences</h4><p>Explains what will happen if rules are broken.</p></div>
+                    <div class="ethics-card"><h4>🔒 Security</h4><p>Reduces risk of breaches and unauthorised access.</p></div>
+                    <div class="ethics-card"><h4>💼 Productivity</h4><p>Helps ensure resources are used for intended purposes.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Contents -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>What is included in an AUP</h2>
+                <ul>
+                    <li><strong>Internet usage</strong> guidance on browsing, downloading, and streaming</li>
+                    <li><strong>Email and communication</strong> professional standards and anti harassment</li>
+                    <li><strong>Password practice</strong> strong secrets and keeping credentials safe</li>
+                    <li><strong>Software installation</strong> approval for programs and apps</li>
+                    <li><strong>Data protection</strong> handling personal and sensitive data</li>
+                    <li><strong>Social media</strong> representing the organisation online</li>
+                    <li><strong>Copyright and IP</strong> using licensed content and respecting creators</li>
+                    <li><strong>Monitoring and privacy</strong> how activity may be monitored</li>
+                    <li><strong>Consequences</strong> actions that may follow violations</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: Do and Do not -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>AUP Do and Do not</h2>
+                <div class="dos-donts">
+                    <div class="dos">
+                        <h4>✓ Do</h4>
+                        <ul style="font-size: 1.15em;">
+                            <li>Use strong unique passwords</li>
+                            <li>Log out when stepping away</li>
+                            <li>Report incidents promptly</li>
+                            <li>Use technology for study or work purposes</li>
+                            <li>Respect privacy</li>
+                            <li>Follow licensing rules</li>
+                            <li>Keep software updated</li>
+                            <li>Use approved channels</li>
+                        </ul>
+                    </div>
+                    <div class="donts">
+                        <h4>✗ Do not</h4>
+                        <ul style="font-size: 1.15em;">
+                            <li>Share your password</li>
+                            <li>Install unauthorised software</li>
+                            <li>Access inappropriate content</li>
+                            <li>Harass or bully others</li>
+                            <li>Bypass security</li>
+                            <li>Connect personal devices without permission</li>
+                            <li>Share confidential information</li>
+                            <li>Engage in illegal activity</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Ethics intro -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Ethics in information technology</h2>
+                <div class="info-box">
+                    <h3>What are IT ethics</h3>
+                    <p class="detail"><span class="highlight">IT ethics</span> are principles that guide behaviour in the use, development, and management of technology.</p>
+                </div>
+                <ul>
+                    <li>Ethics go beyond what is legal and consider what is right</li>
+                    <li>Balance interests such as privacy and security, innovation and safety</li>
+                    <li>New capability can outpace law which creates dilemmas</li>
+                    <li>Every user has ethical responsibility</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Principles one two -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Key ethical principles in IT</h2>
+                <div class="info-box">
+                    <h3>Privacy</h3>
+                    <p class="detail">Respect the right to control personal information.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Do not access files or mail without permission even if you can.</p>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h3>Security</h3>
+                    <p class="detail">Protect systems, data, and users from unauthorised access and harm.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Use encryption and strong authentication for sensitive data.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Principles three four -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Key ethical principles continued</h2>
+                <div class="info-box">
+                    <h3>Intellectual property</h3>
+                    <p class="detail">Respect copyright, patents, and ownership of digital creations.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Do not pirate software or share protected material without permission.</p>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h3>Accuracy and honesty</h3>
+                    <p class="detail">Ensure information is truthful and not misleading.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Avoid fake accounts, misinformation, and data manipulation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Principles five six -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Further ethical principles</h2>
+                <div class="info-box">
+                    <h3>Accessibility</h3>
+                    <p class="detail">Design for people with diverse abilities and needs.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Provide alt text and support screen reader navigation.</p>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h3>Professional responsibility</h3>
+                    <p class="detail">Act with integrity and consider wider impact.</p>
+                    <div class="example-box">
+                        <h4>Example</h4>
+                        <p>Refuse work that would harm others or violate rights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Dilemmas -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Common ethical dilemmas</h2>
+                <div class="scenario-box">
+                    <h4>Surveillance and privacy</h4>
+                    <p>Employers want to record keystrokes to track productivity. Is this acceptable</p>
+                </div>
+                <div class="scenario-box">
+                    <h4>Data collection and consent</h4>
+                    <p>Apps gather extensive data and users rarely read terms. Is this acceptable</p>
+                </div>
+                <div class="scenario-box">
+                    <h4>Whistleblowing</h4>
+                    <p>Staff discover data is sold without consent. Should this be reported</p>
+                </div>
+                <div class="scenario-box">
+                    <h4>AI bias</h4>
+                    <p>An automated hiring tool disadvantages certain groups. Can it be used</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Legal -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>UK legal framework</h2>
+                <div class="info-box">
+                    <h3>Data Protection Act 2018 and UK GDPR</h3>
+                    <p class="detail">Rules for collection, storage, processing, and protection of personal data including subject rights.</p>
+                </div>
+                <div class="info-box">
+                    <h3>Computer Misuse Act 1990</h3>
+                    <p class="detail">Offences include unauthorised access, malware, and unauthorised modification.</p>
+                </div>
+                <div class="info-box">
+                    <h3>Copyright, Designs and Patents Act 1988</h3>
+                    <p class="detail">Protects software and creative works from unauthorised copying and distribution.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Consequences -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Consequences of violations</h2>
+                <h3>For individuals</h3>
+                <ul>
+                    <li><strong>Disciplinary action</strong> warning, suspension, dismissal</li>
+                    <li><strong>Legal outcomes</strong> fines and prison for serious offences</li>
+                    <li><strong>Loss of access</strong> IT privileges removed</li>
+                    <li><strong>Reputation damage</strong> harm to future opportunity</li>
+                </ul>
+                <h3 style="margin-top: 40px;">For organisations</h3>
+                <ul>
+                    <li><strong>Financial penalties</strong> large fines for breaches under GDPR</li>
+                    <li><strong>Legal liability</strong> claims from affected people and regulators</li>
+                    <li><strong>Reputation damage</strong> loss of trust and business</li>
+                    <li><strong>Operational disruption</strong> downtime and recovery cost</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Assessment A -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Assessment questions</h2>
+                <h3>Section A short response</h3>
+                <div class="question-box"><h4>Question 1 <span class="marks">2 marks</span></h4><p>Define Acceptable Use Policy.</p></div>
+                <div class="question-box"><h4>Question 2 <span class="marks">4 marks</span></h4><p>Give two reasons organisations use AUPs.</p></div>
+                <div class="question-box"><h4>Question 3 <span class="marks">6 marks</span></h4><p>Describe three ethical principles with one example for each.</p></div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Assessment B -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Assessment questions continued</h2>
+                <h3>Section B extended response</h3>
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">9 marks discuss</span></h4>
+                    <p>A college is considering full time content filtering on all devices to reduce distraction. Discuss benefits and drawbacks for learners, staff, and the organisation with reference to ethics and law.</p>
+                </div>
+                <div class="question-box">
+                    <h4>Question 5 <span class="marks">9 marks recommend</span></h4>
+                    <p>Draft three AUP rules for a bring your own device scheme. Justify how each rule improves security and fairness while respecting privacy.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Plenary -->
+        <div class="slide" tabindex="0">
+            <div class="content">
+                <h2>Plenary quick check</h2>
+                <ul>
+                    <li>Write a one sentence purpose for an AUP that a parent would understand.</li>
+                    <li>Identify one ethical issue that often appears in your online life and suggest a policy response.</li>
+                    <li>Circle which matters most to you in school IT security privacy usability or cost and explain why.</li>
+                </ul>
+                <div class="example-box">
+                    <h4>Exit ticket</h4>
+                    <p>On a sticky note write one thing you learned, one question you still have, and one action you will take.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Summary -->
+        <div class="slide" tabindex="0">
+            <div class="content center-content">
+                <h2>Summary and next steps</h2>
+                <ul style="max-width: 900px; text-align: left;">
+                    <li>AUPs set the rules for safe, legal, and ethical use.</li>
+                    <li>Ethics guide choices even when the law is silent.</li>
+                    <li>Legal duties exist for data, access, and intellectual property.</li>
+                    <li>Clear rules plus education build a healthy digital culture.</li>
+                </ul>
+                <p class="subtitle" style="margin-top: 40px;">Use Left or Right to navigate. Press Home for the first slide and End for the last.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation UI injected by script -->
+    <div class="navigation" aria-label="Slide navigation">
+        <button id="prevBtn" aria-label="Previous slide">◀ Previous</button>
+        <div class="progress-bar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+        <button id="nextBtn" aria-label="Next slide">Next ▶</button>
+    </div>
+
+    <script>
+        // Gather slides and UI
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const progressFill = document.getElementById("progressFill");
+
+        // Create dynamic slide numbers
+        slides.forEach((slide, i) => {
+            const num = document.createElement("div");
+            num.className = "slide-number";
+            num.setAttribute("aria-label", "Slide number");
+            num.textContent = `${i + 1} / ${slides.length}`;
+            slide.appendChild(num);
+        });
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("active", i === index);
+                if (i === index) slide.focus({ preventScroll: true });
+            });
+
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+
+            const pct = ((index + 1) / slides.length) * 100;
+            progressFill.style.width = pct + "%";
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Button handlers
+        prevBtn.addEventListener("click", prevSlide);
+        nextBtn.addEventListener("click", nextSlide);
+
+        // Keyboard handlers
+        document.addEventListener("keydown", (event) => {
+            const tag = document.activeElement && document.activeElement.tagName;
+            const typing = tag === "INPUT" || tag === "TEXTAREA" || document.activeElement.isContentEditable;
+            if (typing) return;
+
+            if (event.key === "ArrowRight" || event.key === " ") {
+                event.preventDefault();
+                nextSlide();
+            } else if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                prevSlide();
+            } else if (event.key === "Home") {
+                event.preventDefault();
+                currentSlide = 0;
+                showSlide(currentSlide);
+            } else if (event.key === "End") {
+                event.preventDefault();
+                currentSlide = slides.length - 1;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Click anywhere on slide to advance
+        slides.forEach(slide => slide.addEventListener("click", (e) => {
+            // Do not advance if clicking on a link or button
+            const t = e.target;
+            if (t.closest("a") || t.closest("button")) return;
+            nextSlide();
+        }));
+
+        // Initialise view
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

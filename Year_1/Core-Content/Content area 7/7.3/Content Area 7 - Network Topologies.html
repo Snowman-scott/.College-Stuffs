@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Topologies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            padding: 70px;
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 600px;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(44, 83, 100, 0.3);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #2c5364 0%, #0f2027 100%) 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            color: #2c5364;
+            font-size: 1.9em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.8em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #2c3e50;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: #2c5364;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #0f2027;
+            font-weight: 700;
+        }
+
+        .topology-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 6px solid #2c5364;
+            border: 1px solid #bae6fd;
+            border-left: 6px solid #2c5364;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(44, 83, 100, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topology-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(44, 83, 100, 0.2);
+        }
+
+        .topology-box h3 {
+            margin-top: 0;
+            font-size: 1.9em;
+            color: #2c5364;
+        }
+
+        .detail {
+            margin: 15px 0;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        .label {
+            font-weight: 700;
+            color: #0f2027;
+            margin-right: 8px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .pros, .cons {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+        }
+
+        .pros {
+            border-left: 5px solid #10b981;
+        }
+
+        .cons {
+            border-left: 5px solid #ef4444;
+        }
+
+        .pros h4 {
+            color: #10b981;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .cons h4 {
+            color: #ef4444;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .pros ul li, .cons ul li {
+            color: #1f2937;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: #e0f2fe;
+            border-radius: 12px;
+            border: 2px solid #0284c7;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
+        .diagram-placeholder {
+            font-size: 1.4em;
+            color: #0c4a6e;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 700;
+            color: #2c5364;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(44, 83, 100, 0.4);
+            color: white;
+        }
+
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button:disabled:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: #2c5364;
+        }
+
+        button:disabled::before {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .keyboard-hint {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1em;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .key {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 6px solid #f97316;
+            border: 1px solid #fed7aa;
+            border-left: 6px solid #f97316;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .question-box h4 {
+            color: #f97316;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: #f97316;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        em {
+            font-style: italic;
+            color: #2c5364;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+                min-height: 500px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            li {
+                font-size: 1.1em;
+            }
+
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="content center-content">
+                <h1>Network Topologies</h1>
+                <p class="subtitle">Understanding Network Architecture & Design</p>
+                <p class="subtitle" style="margin-top: 60px; font-size: 1.3em; color: #999;">A Comprehensive Guide to Network Structures</p>
+            </div>
+            <div class="slide-number">1 / 13</div>
+        </div>
+
+        <!-- Slide 2: What is a Network Topology? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What is a Network Topology?</h2>
+                <ul>
+                    <li>A <span class="highlight">network topology</span> is the physical or logical arrangement of devices (nodes) and connections in a computer network</li>
+                    <li>It defines how computers, servers, printers, and other devices are connected and communicate with each other</li>
+                    <li>Topology affects network <strong>performance</strong>, <strong>reliability</strong>, and <strong>cost</strong></li>
+                    <li>There are two types:
+                        <ul style="margin-top: 15px;">
+                            <li><strong>Physical topology:</strong> The actual layout of cables and devices</li>
+                            <li><strong>Logical topology:</strong> How data flows through the network</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="slide-number">2 / 13</div>
+        </div>
+
+        <!-- Slide 3: Bus Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Bus Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">All devices are connected to a single central cable (the "bus" or "backbone"). Data travels along the cable in both directions until it reaches its destination.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="600" height="120" viewBox="0 0 600 120" style="max-width: 100%;">
+                        <!-- Main bus line -->
+                        <line x1="50" y1="60" x2="550" y2="60" stroke="#0c4a6e" stroke-width="4"/>
+                        
+                        <!-- Devices -->
+                        <circle cx="100" cy="60" r="15" fill="#2c5364"/>
+                        <circle cx="200" cy="60" r="15" fill="#2c5364"/>
+                        <circle cx="300" cy="60" r="15" fill="#2c5364"/>
+                        <circle cx="400" cy="60" r="15" fill="#2c5364"/>
+                        <circle cx="500" cy="60" r="15" fill="#2c5364"/>
+                        
+                        <!-- Labels -->
+                        <text x="100" y="95" text-anchor="middle" fill="#0c4a6e" font-size="12">Device</text>
+                        <text x="200" y="95" text-anchor="middle" fill="#0c4a6e" font-size="12">Device</text>
+                        <text x="300" y="95" text-anchor="middle" fill="#0c4a6e" font-size="12">Device</text>
+                        <text x="400" y="95" text-anchor="middle" fill="#0c4a6e" font-size="12">Device</text>
+                        <text x="500" y="95" text-anchor="middle" fill="#0c4a6e" font-size="12">Device</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">Single cable (backbone) with devices attached</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Easy to install and extend</li>
+                            <li>Requires less cable than other topologies</li>
+                            <li>Cost-effective for small networks</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>If the main cable fails, entire network goes down</li>
+                            <li>Performance degrades as more devices are added</li>
+                            <li>Difficult to troubleshoot problems</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">3 / 13</div>
+        </div>
+
+        <!-- Slide 4: Ring Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Ring Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Each device is connected to exactly two other devices, forming a circular pathway. Data travels in one direction (or both in a dual-ring) around the ring.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="400" height="400" viewBox="0 0 400 400" style="max-width: 100%;">
+                        <!-- Ring connections -->
+                        <circle cx="200" cy="200" r="120" fill="none" stroke="#0c4a6e" stroke-width="4"/>
+                        
+                        <!-- Devices positioned around the ring -->
+                        <circle cx="200" cy="80" r="20" fill="#2c5364"/>
+                        <circle cx="320" cy="200" r="20" fill="#2c5364"/>
+                        <circle cx="200" cy="320" r="20" fill="#2c5364"/>
+                        <circle cx="80" cy="200" r="20" fill="#2c5364"/>
+                        <circle cx="285" cy="115" r="20" fill="#2c5364"/>
+                        <circle cx="115" cy="115" r="20" fill="#2c5364"/>
+                        
+                        <!-- Labels -->
+                        <text x="200" y="60" text-anchor="middle" fill="#0c4a6e" font-size="14" font-weight="600">Device 1</text>
+                        <text x="345" y="205" text-anchor="start" fill="#0c4a6e" font-size="14" font-weight="600">Device 2</text>
+                        <text x="200" y="355" text-anchor="middle" fill="#0c4a6e" font-size="14" font-weight="600">Device 3</text>
+                        <text x="55" y="205" text-anchor="end" fill="#0c4a6e" font-size="14" font-weight="600">Device 4</text>
+                        
+                        <!-- Arrow showing direction -->
+                        <path d="M 200 75 L 205 85 L 195 85 Z" fill="#f97316"/>
+                        <text x="200" y="45" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">Data Flow →</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">Circular connection - data travels in one direction</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Equal access for all devices</li>
+                            <li>Can handle larger networks than bus</li>
+                            <li>Performance is predictable</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Single device failure can break the network</li>
+                            <li>Difficult to add or remove devices</li>
+                            <li>Slower than star topology</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">4 / 13</div>
+        </div>
+
+        <!-- Slide 5: Star Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Star Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">All devices are connected to a central hub or switch. All data passes through this central device to reach its destination.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="500" height="400" viewBox="0 0 500 400" style="max-width: 100%;">
+                        <!-- Central hub/switch -->
+                        <rect x="225" y="175" width="50" height="50" fill="#f97316" stroke="#0c4a6e" stroke-width="2"/>
+                        <text x="250" y="205" text-anchor="middle" fill="white" font-size="16" font-weight="700">HUB</text>
+                        
+                        <!-- Connection lines -->
+                        <line x1="250" y1="175" x2="250" y2="80" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="250" y1="225" x2="250" y2="320" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="225" y1="200" x2="130" y2="200" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="275" y1="200" x2="370" y2="200" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="235" y1="185" x2="160" y2="110" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="265" y1="185" x2="340" y2="110" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="235" y1="215" x2="160" y2="290" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="265" y1="215" x2="340" y2="290" stroke="#0c4a6e" stroke-width="3"/>
+                        
+                        <!-- Devices -->
+                        <circle cx="250" cy="60" r="20" fill="#2c5364"/>
+                        <circle cx="250" cy="340" r="20" fill="#2c5364"/>
+                        <circle cx="110" cy="200" r="20" fill="#2c5364"/>
+                        <circle cx="390" cy="200" r="20" fill="#2c5364"/>
+                        <circle cx="150" cy="100" r="20" fill="#2c5364"/>
+                        <circle cx="350" cy="100" r="20" fill="#2c5364"/>
+                        <circle cx="150" cy="300" r="20" fill="#2c5364"/>
+                        <circle cx="350" cy="300" r="20" fill="#2c5364"/>
+                        
+                        <!-- Labels -->
+                        <text x="250" y="35" text-anchor="middle" fill="#0c4a6e" font-size="12" font-weight="600">Device</text>
+                        <text x="250" y="375" text-anchor="middle" fill="#0c4a6e" font-size="12" font-weight="600">Device</text>
+                        <text x="80" y="205" text-anchor="middle" fill="#0c4a6e" font-size="12" font-weight="600">Device</text>
+                        <text x="420" y="205" text-anchor="middle" fill="#0c4a6e" font-size="12" font-weight="600">Device</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">All devices connect to central hub/switch</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Easy to add/remove devices</li>
+                            <li>One device failure doesn't affect others</li>
+                            <li>Easy to troubleshoot and maintain</li>
+                            <li>Better performance than bus or ring</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>If central hub fails, network goes down</li>
+                            <li>Requires more cable than bus</li>
+                            <li>More expensive due to hub/switch cost</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">5 / 13</div>
+        </div>
+
+        <!-- Slide 6: Mesh Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Mesh Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Each device is connected to multiple (or all) other devices in the network. Can be full mesh (every device connected to every other) or partial mesh (some devices connected to multiple others).</div>
+                </div>
+                <div class="diagram">
+                    <svg width="400" height="400" viewBox="0 0 400 400" style="max-width: 100%;">
+                        <!-- Mesh connections (partial mesh example) -->
+                        <line x1="100" y1="100" x2="300" y2="100" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="100" y1="100" x2="100" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="100" y1="100" x2="300" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="300" y1="100" x2="300" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="300" y1="100" x2="100" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="100" y1="300" x2="300" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="200" y1="200" x2="100" y2="100" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="200" y1="200" x2="300" y2="100" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="200" y1="200" x2="100" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        <line x1="200" y1="200" x2="300" y2="300" stroke="#0c4a6e" stroke-width="3"/>
+                        
+                        <!-- Devices -->
+                        <circle cx="100" cy="100" r="22" fill="#2c5364"/>
+                        <circle cx="300" cy="100" r="22" fill="#2c5364"/>
+                        <circle cx="100" cy="300" r="22" fill="#2c5364"/>
+                        <circle cx="300" cy="300" r="22" fill="#2c5364"/>
+                        <circle cx="200" cy="200" r="22" fill="#2c5364"/>
+                        
+                        <!-- Labels -->
+                        <text x="100" y="75" text-anchor="middle" fill="#0c4a6e" font-size="13" font-weight="600">Device 1</text>
+                        <text x="300" y="75" text-anchor="middle" fill="#0c4a6e" font-size="13" font-weight="600">Device 2</text>
+                        <text x="100" y="335" text-anchor="middle" fill="#0c4a6e" font-size="13" font-weight="600">Device 3</text>
+                        <text x="300" y="335" text-anchor="middle" fill="#0c4a6e" font-size="13" font-weight="600">Device 4</text>
+                        <text x="200" y="175" text-anchor="middle" fill="#0c4a6e" font-size="13" font-weight="600">Device 5</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">Multiple interconnected paths between devices</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Extremely reliable and fault-tolerant</li>
+                            <li>Multiple paths for data transmission</li>
+                            <li>No single point of failure</li>
+                            <li>High data transfer capacity</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Very expensive to implement</li>
+                            <li>Complex installation and configuration</li>
+                            <li>Requires large amount of cabling</li>
+                            <li>Difficult to maintain</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">6 / 13</div>
+        </div>
+
+        <!-- Slide 7: Extended Star Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Extended Star (Hybrid) Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Multiple star networks are connected together via a central backbone or additional switches. Common in large organisations spanning multiple floors or buildings.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="600" height="400" viewBox="0 0 600 400" style="max-width: 100%;">
+                        <!-- Top star network -->
+                        <rect x="175" y="50" width="50" height="40" fill="#f97316" stroke="#0c4a6e" stroke-width="2"/>
+                        <text x="200" y="75" text-anchor="middle" fill="white" font-size="12" font-weight="700">Switch 1</text>
+                        <line x1="200" y1="50" x2="150" y2="20" stroke="#0c4a6e" stroke-width="2"/>
+                        <line x1="200" y1="50" x2="250" y2="20" stroke="#0c4a6e" stroke-width="2"/>
+                        <circle cx="150" cy="15" r="12" fill="#2c5364"/>
+                        <circle cx="250" cy="15" r="12" fill="#2c5364"/>
+                        
+                        <!-- Bottom star network -->
+                        <rect x="175" y="310" width="50" height="40" fill="#f97316" stroke="#0c4a6e" stroke-width="2"/>
+                        <text x="200" y="335" text-anchor="middle" fill="white" font-size="12" font-weight="700">Switch 2</text>
+                        <line x1="200" y1="350" x2="150" y2="380" stroke="#0c4a6e" stroke-width="2"/>
+                        <line x1="200" y1="350" x2="250" y2="380" stroke="#0c4a6e" stroke-width="2"/>
+                        <circle cx="150" cy="385" r="12" fill="#2c5364"/>
+                        <circle cx="250" cy="385" r="12" fill="#2c5364"/>
+                        
+                        <!-- Right star network -->
+                        <rect x="450" y="180" width="50" height="40" fill="#f97316" stroke="#0c4a6e" stroke-width="2"/>
+                        <text x="475" y="205" text-anchor="middle" fill="white" font-size="12" font-weight="700">Switch 3</text>
+                        <line x1="500" y1="200" x2="540" y2="170" stroke="#0c4a6e" stroke-width="2"/>
+                        <line x1="500" y1="200" x2="540" y2="230" stroke="#0c4a6e" stroke-width="2"/>
+                        <circle cx="545" cy="165" r="12" fill="#2c5364"/>
+                        <circle cx="545" cy="235" r="12" fill="#2c5364"/>
+                        
+                        <!-- Central backbone connections -->
+                        <line x1="200" y1="90" x2="200" y2="180" stroke="#10b981" stroke-width="5"/>
+                        <line x1="200" y1="220" x2="200" y2="310" stroke="#10b981" stroke-width="5"/>
+                        <line x1="225" y1="200" x2="450" y2="200" stroke="#10b981" stroke-width="5"/>
+                        
+                        <rect x="175" y="180" width="50" height="40" fill="#10b981" stroke="#0c4a6e" stroke-width="2"/>
+                        <text x="200" y="198" text-anchor="middle" fill="white" font-size="10" font-weight="700">MAIN</text>
+                        <text x="200" y="212" text-anchor="middle" fill="white" font-size="10" font-weight="700">SWITCH</text>
+                        
+                        <!-- Labels -->
+                        <text x="300" y="120" text-anchor="middle" fill="#10b981" font-size="14" font-weight="700">Backbone</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">Multiple star networks connected via backbone</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Scalable to large networks</li>
+                            <li>Failure in one star doesn't affect others</li>
+                            <li>Easy to expand and modify</li>
+                            <li>Good for multi-building organisations</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>More complex than simple star</li>
+                            <li>Requires additional switches/routers</li>
+                            <li>Higher overall cost</li>
+                            <li>Backbone failure affects multiple networks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">7 / 13</div>
+        </div>
+
+        <!-- Slide 8: Wireless Topology -->
+        <div class="slide">
+            <div class="content">
+                <h2>Wireless Topology</h2>
+                <div class="topology-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Devices connect to the network via wireless access points (WAPs) rather than physical cables. Often structured similar to star topology but without physical connections.</div>
+                </div>
+                <div class="diagram">
+                    <div class="diagram-placeholder">
+                        <pre style="font-size: 1.2em; color: #64748b;">
+    ●  📱  ●
+      ╲   ╱
+       ╲ ╱
+    💻  📡  🖥️
+       ╱ ╲
+      ╱   ╲
+    ●  ●  ●
+                        </pre>
+                    </div>
+                    <p style="margin-top: 15px; color: #64748b;">📡 = Wireless Access Point | Devices connect wirelessly</p>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>No cables required</li>
+                            <li>Easy to add devices</li>
+                            <li>Mobility and flexibility</li>
+                            <li>Good for temporary setups</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Less secure than wired networks</li>
+                            <li>Susceptible to interference</li>
+                            <li>Limited range</li>
+                            <li>Generally slower than wired</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">8 / 13</div>
+        </div>
+
+        <!-- Slide 9: Comparison Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Topology Comparison</h2>
+                <div class="topology-box">
+                    <h3>Key Factors to Consider</h3>
+                    <div class="detail"><span class="label">Cost:</span> Bus < Ring < Star < Extended Star < Mesh</div>
+                    <div class="detail"><span class="label">Reliability:</span> Mesh > Extended Star > Star > Ring > Bus</div>
+                    <div class="detail"><span class="label">Performance:</span> Mesh > Star > Extended Star > Ring > Bus</div>
+                    <div class="detail"><span class="label">Scalability:</span> Extended Star > Mesh > Star > Ring > Bus</div>
+                    <div class="detail"><span class="label">Ease of Installation:</span> Bus > Star > Wireless > Ring > Extended Star > Mesh</div>
+                </div>
+                <h3 style="margin-top: 40px;">Choosing the Right Topology</h3>
+                <ul>
+                    <li><strong>Small networks:</strong> Star or Bus</li>
+                    <li><strong>Medium businesses:</strong> Star or Extended Star</li>
+                    <li><strong>Large organisations:</strong> Extended Star or Hybrid</li>
+                    <li><strong>Mission-critical systems:</strong> Mesh or Partial Mesh</li>
+                    <li><strong>Temporary/flexible needs:</strong> Wireless</li>
+                </ul>
+            </div>
+            <div class="slide-number">9 / 13</div>
+        </div>
+
+        <!-- Slide 10: Assessment Questions - Section A -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 1 <span class="marks">2 marks</span></h4>
+                    <p>Define the term <em>network topology</em>.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 2 <span class="marks">3 marks</span></h4>
+                    <p>State three features of a bus topology.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 3 <span class="marks">4 marks</span></h4>
+                    <p>Explain two disadvantages of using a ring topology for a school computer network.</p>
+                </div>
+            </div>
+            <div class="slide-number">10 / 13</div>
+        </div>
+
+        <!-- Slide 11: Assessment Questions - Section B (Q4) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">6 marks – Discuss</span></h4>
+                    <p>Discuss the advantages and disadvantages of using a star topology in a medium-sized business with 40 employees.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.2em; color: #2c5364;"><strong>Command word: Discuss</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Present key points about different ideas or strengths and weaknesses of an idea. You should give a balanced answer showing multiple perspectives.</p>
+                </div>
+            </div>
+            <div class="slide-number">11 / 13</div>
+        </div>
+
+        <!-- Slide 12: Assessment Questions - Section B (Q5) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 5 <span class="marks">9 marks – Analyse</span></h4>
+                    <p>Analyse the suitability of a mesh topology for a hospital network that requires high reliability and continuous availability of patient data. In your answer, consider performance, fault tolerance, and cost.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.2em; color: #2c5364;"><strong>Command word: Analyse</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                </div>
+            </div>
+            <div class="slide-number">12 / 13</div>
+        </div>
+
+        <!-- Slide 13: Assessment Questions - Section B (Q6) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 6 <span class="marks">12 marks – Evaluate</span></h4>
+                    <p>A college is planning to expand its IT facilities. It must choose between an extended star topology and a wireless topology to connect 200 devices across several buildings. Evaluate both options and recommend which topology should be chosen. Justify your recommendation with evidence.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.2em; color: #2c5364;"><strong>Command word: Evaluate</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Judge the importance or success of something using evidence. Present a balanced argument with a clear conclusion and justified recommendation.</p>
+                </div>
+            </div>
+            <div class="slide-number">13 / 13</div>
+        </div>
+    </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+
+        <div class="keyboard-hint">
+            Press <span class="key">F11</span> for fullscreen presentation mode
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            // Update progress bar
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+            if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

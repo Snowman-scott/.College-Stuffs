@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Protocols (7.3.10) | T Level Digital</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0c1e47 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(30, 58, 138, 0.7);
+            border-radius: 32px;
+            padding: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(59, 130, 246, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            min-height: 700px;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.15));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 3.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, transparent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #60a5fa;
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.6em;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .content > p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 25px;
+        }
+
+        li {
+            margin-bottom: 22px;
+            font-size: 1.25em;
+            line-height: 1.8;
+            color: #e2e8f0;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::marker {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        strong {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 5px solid #3b82f6;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.8em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box ul {
+            margin-top: 20px;
+        }
+
+        .highlight-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: rgba(34, 211, 238, 0.08);
+            border-left: 5px solid #22d3ee;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .info-box h3 {
+            font-size: 1.8em;
+            color: #22d3ee;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            font-size: 1.4em;
+            color: #22d3ee;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            margin-top: 20px;
+        }
+
+        .info-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .grid-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+        }
+
+        .grid-item h4 {
+            color: #60a5fa;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .grid-item p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+        }
+
+        .comparison-table th {
+            padding: 25px;
+            text-align: left;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1.15em;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .comparison-table td {
+            padding: 25px;
+            color: #e2e8f0;
+            font-size: 1.1em;
+            line-height: 1.7;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .comparison-table tbody tr {
+            background: rgba(59, 130, 246, 0.03);
+            transition: background 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .quiz-container {
+            background: rgba(59, 130, 246, 0.05);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2em;
+            color: #e2e8f0;
+            margin-bottom: 35px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .quiz-question h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .quiz-question p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul {
+            font-size: 1em;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul li {
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 100px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        .navigation button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navigation button:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .navigation button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 700px;
+        }
+
+        .title-slide h1 {
+            font-size: 5em;
+            margin-bottom: 25px;
+        }
+
+        .title-badge {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 64, 175, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 12px 35px;
+            border-radius: 100px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            display: inline-block;
+        }
+
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .protocol-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #60a5fa;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        code {
+            background: rgba(59, 130, 246, 0.15);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #93c5fd;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#60a5fa"/>
+                    <path d="M2 17L12 22L22 17" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>T Level Digital</span>
+            </div>
+            <div>
+                <div class="title-badge">Content Area 7 - Section 7.3.10</div>
+                <h1>Network Protocols</h1>
+                <p class="subtitle">Understanding the rules that govern network communication</p>
+            </div>
+            <div class="slide-number">Slide 1 / 20</div>
+        </div>
+
+        <!-- Slide 2: Learning Objectives -->
+        <div class="slide">
+            <div class="content">
+                <h2>Learning Objectives</h2>
+                <p style="font-size: 1.2em; color: #94a3b8; margin-bottom: 40px;">By the end of this module, you will be able to:</p>
+                
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>Define network protocols:</strong> Explain what protocols are and why they're essential</li>
+                        <li><strong>Identify key protocols:</strong> Recognize and describe major protocols at each OSI layer</li>
+                        <li><strong>Understand TCP/IP suite:</strong> Explain the relationship between protocols in the TCP/IP model</li>
+                        <li><strong>Compare application protocols:</strong> Differentiate between HTTP, FTP, SMTP, DNS, and others</li>
+                        <li><strong>Explain port numbers:</strong> Understand how ports enable multiple services on one device</li>
+                        <li><strong>Select appropriate protocols:</strong> Choose the right protocol for specific use cases</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <p style="font-size: 1.2em; line-height: 1.8;"><strong>💡 Key Context:</strong> Network protocols are standardized rules that define how data is transmitted and received across networks. Without protocols, devices couldn't communicate effectively - like people speaking different languages.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 2 / 20</div>
+        </div>
+
+        <!-- Slide 3: What Are Network Protocols? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What Are Network Protocols?</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Definition</h3>
+                    <p>A <strong>network protocol</strong> is a set of rules and standards that define how data is transmitted, formatted, and received across a network. Protocols ensure that different devices and software can communicate effectively, regardless of manufacturer or operating system.</p>
+                </div>
+
+                <h3>Why Are Protocols Needed?</h3>
+                <ul>
+                    <li><strong>Standardization:</strong> Ensures devices from different manufacturers can communicate</li>
+                    <li><strong>Interoperability:</strong> Windows, Mac, Linux, Android, iOS can all connect to the same networks</li>
+                    <li><strong>Error handling:</strong> Protocols define how to detect and recover from transmission errors</li>
+                    <li><strong>Security:</strong> Many protocols include authentication and encryption mechanisms</li>
+                    <li><strong>Efficiency:</strong> Optimized methods for transmitting different types of data</li>
+                    <li><strong>Abstraction:</strong> Higher-level protocols don't need to know lower-level details</li>
+                </ul>
+
+                <h3>Protocol Characteristics</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Syntax</h4>
+                        <p><strong>Format and structure</strong> of data</p>
+                        <p style="margin-top: 10px;">Example: Header structure, field order, data encoding</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Semantics</h4>
+                        <p><strong>Meaning</strong> of each field and action</p>
+                        <p style="margin-top: 10px;">Example: What does a SYN flag in TCP mean?</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Timing</h4>
+                        <p><strong>When</strong> to send and how fast</p>
+                        <p style="margin-top: 10px;">Example: Flow control, speed matching</p>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Real-World Analogy</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">Think of protocols like rules for mailing a letter:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Syntax:</strong> Address goes in specific place on envelope, stamp in upper right corner</li>
+                        <li><strong>Semantics:</strong> Return address means "where it came from," recipient address means "where it's going"</li>
+                        <li><strong>Timing:</strong> Post letters before collection time, delivery takes 1-3 days</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;">Everyone follows these rules, so the postal service works reliably regardless of who sends or receives the letter.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 3 / 20</div>
+        </div>
+
+        <!-- Slide 4: TCP/IP Model and Protocol Layers -->
+        <div class="slide">
+            <div class="content">
+                <h2>TCP/IP Model & Protocol Layers</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">The TCP/IP model organizes protocols into four layers. Each layer has specific responsibilities and protocols.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>TCP/IP Layer</th>
+                            <th>OSI Equivalent</th>
+                            <th>Function</th>
+                            <th>Key Protocols</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Application Layer</strong></td>
+                            <td>Layers 7, 6, 5</td>
+                            <td>User-facing protocols for specific services</td>
+                            <td>HTTP, HTTPS, FTP, SMTP, POP3, IMAP, DNS, DHCP, SSH, Telnet</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transport Layer</strong></td>
+                            <td>Layer 4</td>
+                            <td>End-to-end communication, reliability, flow control</td>
+                            <td>TCP, UDP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Internet Layer</strong></td>
+                            <td>Layer 3</td>
+                            <td>Addressing, routing between networks</td>
+                            <td>IP (IPv4, IPv6), ICMP, ARP, IGMP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Network Access Layer</strong></td>
+                            <td>Layers 2, 1</td>
+                            <td>Physical transmission, MAC addressing</td>
+                            <td>Ethernet, Wi-Fi (802.11), PPP</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 40px;">Protocol Stack Example</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>When you browse a website (https://www.example.com):</strong></p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Application Layer:</strong> HTTPS protocol formats the HTTP request</li>
+                        <li><strong>Transport Layer:</strong> TCP ensures reliable delivery with acknowledgments</li>
+                        <li><strong>Internet Layer:</strong> IP addresses the packet and routes it across networks</li>
+                        <li><strong>Network Access Layer:</strong> Ethernet/Wi-Fi physically transmits the bits</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 1.15em; line-height: 1.8;">Each layer adds its own header with protocol-specific information. The receiving device strips headers layer by layer (de-encapsulation) to extract the original data.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 4 / 20</div>
+        </div>
+
+        <!-- Slide 5: HTTP and HTTPS -->
+        <div class="slide">
+            <div class="content">
+                <h2>HTTP & HTTPS</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">🌐</div>
+                        <h4>HTTP</h4>
+                        <p><strong>HyperText Transfer Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 80</p>
+                        <p style="margin-top: 10px;"><strong>Purpose:</strong> Transferring web pages and resources</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🔒</div>
+                        <h4>HTTPS</h4>
+                        <p><strong>HTTP Secure</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 443</p>
+                        <p style="margin-top: 10px;"><strong>Purpose:</strong> Encrypted web communication using TLS/SSL</p>
+                    </div>
+                </div>
+
+                <h3>How HTTP Works</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Request-Response Model:</strong></p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Client (browser) sends HTTP request:</strong> GET /index.html HTTP/1.1</li>
+                        <li><strong>Request includes:</strong> Method (GET, POST, PUT, DELETE), URL, headers (User-Agent, Accept), optional body</li>
+                        <li><strong>Server processes request:</strong> Locates resource, generates response</li>
+                        <li><strong>Server sends HTTP response:</strong> HTTP/1.1 200 OK</li>
+                        <li><strong>Response includes:</strong> Status code, headers (Content-Type, Content-Length), body (HTML, JSON, etc.)</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">HTTP Status Codes</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Code Range</th>
+                            <th>Category</th>
+                            <th>Common Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1xx</strong></td>
+                            <td>Informational</td>
+                            <td>100 Continue, 101 Switching Protocols</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2xx</strong></td>
+                            <td>Success</td>
+                            <td>200 OK, 201 Created, 204 No Content</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3xx</strong></td>
+                            <td>Redirection</td>
+                            <td>301 Moved Permanently, 302 Found, 304 Not Modified</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4xx</strong></td>
+                            <td>Client Error</td>
+                            <td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5xx</strong></td>
+                            <td>Server Error</td>
+                            <td>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 40px;">HTTPS Security</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>HTTPS = HTTP + TLS/SSL encryption</strong></p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Encryption:</strong> Data scrambled so eavesdroppers can't read it</li>
+                        <li><strong>Authentication:</strong> Digital certificates verify server identity</li>
+                        <li><strong>Data integrity:</strong> Detects if data was tampered with in transit</li>
+                        <li><strong>Essential for:</strong> Banking, shopping, login pages, any sensitive data</li>
+                        <li><strong>Visual indicator:</strong> Padlock icon in browser address bar</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 5 / 20</div>
+        </div>
+
+        <!-- Slide 6: FTP, SFTP, and FTPS -->
+        <div class="slide">
+            <div class="content">
+                <h2>File Transfer Protocols</h2>
+                
+                <h3>FTP - File Transfer Protocol</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Ports:</strong> 20 (data), 21 (control)</p>
+                    <p style="margin-top: 10px; font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Transferring files between client and server</p>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">Key Features:</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Two separate connections:</strong> Control channel for commands, data channel for file transfer</li>
+                        <li><strong>Authentication:</strong> Username and password (but transmitted in clear text)</li>
+                        <li><strong>Directory navigation:</strong> Can browse remote file systems</li>
+                        <li><strong>Active vs Passive mode:</strong> Different methods for establishing data connection</li>
+                        <li><strong>Limitations:</strong> No encryption - insecure for sensitive data</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">Secure Alternatives</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>SFTP</h4>
+                        <p><strong>SSH File Transfer Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 22 (uses SSH)</p>
+                        <p style="margin-top: 10px;"><strong>Security:</strong> All data encrypted including authentication</p>
+                        <p style="margin-top: 10px;"><strong>Advantages:</strong> Single encrypted connection, more secure than FTP, firewall-friendly</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Recommended for:</strong> Remote server administration, secure file transfers</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>FTPS</h4>
+                        <p><strong>FTP Secure (FTP over TLS/SSL)</strong></p>
+                        <p style="margin-top: 10px;"><strong>Ports:</strong> 990 (implicit), 21 (explicit)</p>
+                        <p style="margin-top: 10px;"><strong>Security:</strong> Adds TLS/SSL encryption to standard FTP</p>
+                        <p style="margin-top: 10px;"><strong>Advantages:</strong> Compatible with FTP infrastructure, encrypted data transfer</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Use case:</strong> Legacy FTP systems requiring security upgrade</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Comparison</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Security</th>
+                            <th>Complexity</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>FTP</strong></td>
+                            <td>❌ None - plaintext</td>
+                            <td>Simple</td>
+                            <td>Non-sensitive public file transfers (legacy)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SFTP</strong></td>
+                            <td>✅ Full encryption via SSH</td>
+                            <td>Moderate</td>
+                            <td>Modern secure file transfers</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FTPS</strong></td>
+                            <td>✅ TLS/SSL encryption</td>
+                            <td>Complex (two ports)</td>
+                            <td>Upgrading existing FTP infrastructure</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-number">Slide 6 / 20</div>
+        </div>
+
+        <!-- Slide 7: Email Protocols -->
+        <div class="slide">
+            <div class="content">
+                <h2>Email Protocols</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">Three main protocols handle email: one for sending, two for receiving.</p>
+
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">📤</div>
+                        <h4>SMTP</h4>
+                        <p><strong>Simple Mail Transfer Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 25 (standard), 587 (submission), 465 (SSL)</p>
+                        <p style="margin-top: 10px;"><strong>Purpose:</strong> Sending email from client to server and between servers</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Direction:</strong> Outgoing only</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">📥</div>
+                        <h4>POP3</h4>
+                        <p><strong>Post Office Protocol v3</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 110 (standard), 995 (SSL)</p>
+                        <p style="margin-top: 10px;"><strong>Purpose:</strong> Downloading email from server to client</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Behavior:</strong> Downloads and typically deletes from server</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🔄</div>
+                        <h4>IMAP</h4>
+                        <p><strong>Internet Message Access Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 143 (standard), 993 (SSL)</p>
+                        <p style="margin-top: 10px;"><strong>Purpose:</strong> Managing email on server with synchronization</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Behavior:</strong> Keeps email on server, syncs across devices</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">POP3 vs IMAP Comparison</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>POP3</th>
+                            <th>IMAP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Email Storage</strong></td>
+                            <td>Downloads to device, deletes from server</td>
+                            <td>Remains on server permanently</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multi-device Access</strong></td>
+                            <td>❌ No - email only on one device</td>
+                            <td>✅ Yes - syncs across all devices</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Server Storage</strong></td>
+                            <td>Minimal - emails removed after download</td>
+                            <td>High - all emails stored on server</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Folder Management</strong></td>
+                            <td>Local only - not synced</td>
+                            <td>Server-side - folders sync across devices</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Offline Access</strong></td>
+                            <td>✅ Full - emails are local</td>
+                            <td>Partial - need to sync first</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bandwidth Usage</strong></td>
+                            <td>Downloads full emails every time</td>
+                            <td>Can download headers only, fetch full email on demand</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Backup</strong></td>
+                            <td>User responsible - local backup needed</td>
+                            <td>Server maintains backup automatically</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Single device, limited server storage, offline use</td>
+                            <td>Multiple devices, cloud-based access, modern email use</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Modern Email Flow</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Sending:</strong> Client uses SMTP to send to sender's mail server → Sender's server uses SMTP to deliver to recipient's mail server</p>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;"><strong>Receiving:</strong> Client uses IMAP (or POP3) to retrieve from recipient's mail server</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 7 / 20</div>
+        </div>
+
+        <!-- Slide 8: DNS -->
+        <div class="slide">
+            <div class="content">
+                <h2>DNS - Domain Name System</h2>
+                
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Port:</strong> 53 (UDP for queries, TCP for zone transfers)</p>
+                    <p style="margin-top: 10px; font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Translates human-readable domain names (www.example.com) into IP addresses (93.184.216.34) that computers use to identify each other on networks</p>
+                </div>
+
+                <h3>Why DNS is Essential</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">Without DNS, you'd need to remember IP addresses for every website:</p>
+                    <ul style="margin-top: 15px;">
+                        <li>Instead of "google.com" → remember "142.250.185.206"</li>
+                        <li>Instead of "youtube.com" → remember "172.217.168.206"</li>
+                        <li>Not practical with billions of websites!</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;"><strong>DNS is like the phonebook of the internet</strong> - you know the name, DNS provides the number (IP address).</p>
+                </div>
+
+                <h3 style="margin-top: 40px;">How DNS Resolution Works</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="grid-item">
+                        <div class="icon-large">1️⃣</div>
+                        <h4>User Query</h4>
+                        <p>Type "www.example.com" in browser</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">2️⃣</div>
+                        <h4>Local Cache</h4>
+                        <p>Computer checks its DNS cache for recent lookups</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">3️⃣</div>
+                        <h4>Recursive Resolver</h4>
+                        <p>Query sent to ISP's DNS server (or configured DNS like 8.8.8.8)</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">4️⃣</div>
+                        <h4>Root Server</h4>
+                        <p>Resolver queries root server: "Where are .com servers?"</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">5️⃣</div>
+                        <h4>TLD Server</h4>
+                        <p>Query .com TLD server: "Where is example.com?"</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">6️⃣</div>
+                        <h4>Authoritative Server</h4>
+                        <p>Query example.com nameserver, get IP address: 93.184.216.34</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">7️⃣</div>
+                        <h4>Cache & Return</h4>
+                        <p>Resolver caches result and returns IP to your computer</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">8️⃣</div>
+                        <h4>Connection</h4>
+                        <p>Browser connects to 93.184.216.34 and loads website</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">DNS Record Types</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Record Type</th>
+                            <th>Purpose</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>A</strong></td>
+                            <td>Maps domain to IPv4 address</td>
+                            <td>example.com → 93.184.216.34</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AAAA</strong></td>
+                            <td>Maps domain to IPv6 address</td>
+                            <td>example.com → 2606:2800:220:1:248:1893:25c8:1946</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CNAME</strong></td>
+                            <td>Alias - points one domain to another</td>
+                            <td>www.example.com → example.com</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MX</strong></td>
+                            <td>Mail server for domain</td>
+                            <td>example.com → mail.example.com (priority 10)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TXT</strong></td>
+                            <td>Text information (SPF, DKIM, verification)</td>
+                            <td>Various verification and security records</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NS</strong></td>
+                            <td>Nameserver responsible for domain</td>
+                            <td>example.com → ns1.example.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-number">Slide 8 / 20</div>
+        </div>
+
+        <!-- Slide 9: DHCP -->
+        <div class="slide">
+            <div class="content">
+                <h2>DHCP - Dynamic Host Configuration Protocol</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">What is DHCP?</h3>
+                    <p><strong>Port:</strong> 67 (server), 68 (client) - uses UDP</p>
+                    <p style="margin-top: 10px;"><strong>Purpose:</strong> Automatically assigns IP addresses and network configuration to devices when they connect to a network</p>
+                </div>
+
+                <h3>Why DHCP is Needed</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Without DHCP:</strong> Network administrators would have to manually configure IP address, subnet mask, gateway, and DNS servers on every device. This is:</p>
+                    <ul style="margin-top: 15px;">
+                        <li>Time-consuming and error-prone</li>
+                        <li>Difficult to track which IPs are in use</li>
+                        <li>Requires technical knowledge from users</li>
+                        <li>Doesn't scale for large networks or mobile devices</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;"><strong>With DHCP:</strong> Devices automatically receive all network settings - plug in and go!</p>
+                </div>
+
+                <h3 style="margin-top: 40px;">DHCP Process (DORA)</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="grid-item">
+                        <div class="icon-large">D</div>
+                        <h4>Discover</h4>
+                        <p><strong>Client broadcasts:</strong> "I need an IP address!"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Broadcast to 255.255.255.255</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">O</div>
+                        <h4>Offer</h4>
+                        <p><strong>DHCP server responds:</strong> "You can use 192.168.1.100"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Includes subnet, gateway, DNS</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">R</div>
+                        <h4>Request</h4>
+                        <p><strong>Client accepts:</strong> "I'll take 192.168.1.100"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Confirms acceptance</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">A</div>
+                        <h4>Acknowledge</h4>
+                        <p><strong>Server confirms:</strong> "IP assigned, lease time 24 hours"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Configuration complete</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">DHCP Configuration Elements</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IP Address</strong></td>
+                            <td>Unique identifier for device on network</td>
+                            <td>192.168.1.100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subnet Mask</strong></td>
+                            <td>Defines network portion vs host portion</td>
+                            <td>255.255.255.0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Default Gateway</strong></td>
+                            <td>Router IP for accessing other networks/internet</td>
+                            <td>192.168.1.1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DNS Servers</strong></td>
+                            <td>Servers for domain name resolution</td>
+                            <td>8.8.8.8, 8.8.4.4</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lease Time</strong></td>
+                            <td>How long device can use the IP before renewal</td>
+                            <td>24 hours, 7 days</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 40px;">DHCP Reservation</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Static DHCP / IP Reservation:</strong> Assigns the same IP address to a specific device (identified by MAC address) every time it connects</p>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;"><strong>Best for:</strong> Printers, servers, network cameras - devices that need consistent IP addresses but benefit from centralized DHCP management</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 9 / 20</div>
+        </div>
+
+        <!-- Slide 10: SSH and Telnet -->
+        <div class="slide">
+            <div class="content">
+                <h2>SSH & Telnet</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">Both protocols provide remote command-line access to servers and network devices.</p>
+
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">🔐</div>
+                        <h4>SSH</h4>
+                        <p><strong>Secure Shell</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 22</p>
+                        <p style="margin-top: 10px;"><strong>Security:</strong> ✅ Fully encrypted</p>
+                        <p style="margin-top: 10px;"><strong>Authentication:</strong> Password, public key, or certificate</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">⚠️</div>
+                        <h4>Telnet</h4>
+                        <p><strong>Teletype Network</strong></p>
+                        <p style="margin-top: 10px;"><strong>Port:</strong> 23</p>
+                        <p style="margin-top: 10px;"><strong>Security:</strong> ❌ No encryption - plaintext</p>
+                        <p style="margin-top: 10px;"><strong>Authentication:</strong> Username/password (unencrypted)</p>
+                    </div>
+                </div>
+
+                <h3>SSH Features and Uses</h3>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>Remote administration:</strong> Manage Linux/Unix servers from anywhere</li>
+                        <li><strong>Secure file transfer:</strong> SFTP and SCP use SSH for encrypted file transfers</li>
+                        <li><strong>Tunneling:</strong> Encrypt other protocols through SSH tunnel (port forwarding)</li>
+                        <li><strong>Public key authentication:</strong> More secure than passwords, automated access for scripts</li>
+                        <li><strong>X11 forwarding:</strong> Run graphical applications remotely</li>
+                        <li><strong>Network device management:</strong> Configure routers, switches, firewalls</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">SSH vs Telnet Comparison</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>SSH</th>
+                            <th>Telnet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Encryption</strong></td>
+                            <td>✅ Full encryption of all data</td>
+                            <td>❌ No encryption - everything in plaintext</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Risk</strong></td>
+                            <td>Low - secure for internet use</td>
+                            <td>Critical - credentials and data easily intercepted</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Authentication</strong></td>
+                            <td>Multiple methods: password, keys, certificates</td>
+                            <td>Basic password only (visible on network)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Additional Features</strong></td>
+                            <td>SFTP, tunneling, X11 forwarding</td>
+                            <td>Basic terminal access only</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Slightly slower due to encryption</td>
+                            <td>Faster (no encryption overhead)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modern Use</strong></td>
+                            <td>✅ Standard for remote access</td>
+                            <td>❌ Deprecated - security risk</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Appropriate For</strong></td>
+                            <td>Any remote access over network/internet</td>
+                            <td>Only isolated lab networks for legacy device testing</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">⚠️ Security Warning</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Telnet should never be used</strong> for production systems or over the internet. It transmits passwords and all commands in plaintext, making credentials trivially easy to intercept with network sniffing tools.</p>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;"><strong>Always use SSH instead</strong> - it provides the same functionality with strong encryption.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 10 / 20</div>
+        </div>
+
+        <!-- Slide 11: TCP and UDP (Transport Layer) -->
+        <div class="slide">
+            <div class="content">
+                <h2>TCP & UDP - Transport Layer</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">These protocols operate at Layer 4 and provide end-to-end communication between applications.</p>
+
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>TCP</h4>
+                        <p><strong>Transmission Control Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Type:</strong> Connection-oriented, reliable</p>
+                        <p style="margin-top: 10px;"><strong>Key features:</strong> Guaranteed delivery, ordered packets, error checking, flow control, congestion control</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Common uses:</strong> HTTP/HTTPS, FTP, SMTP, SSH</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>UDP</h4>
+                        <p><strong>User Datagram Protocol</strong></p>
+                        <p style="margin-top: 10px;"><strong>Type:</strong> Connectionless, unreliable</p>
+                        <p style="margin-top: 10px;"><strong>Key features:</strong> Fast, low overhead, no guarantees, no connection setup</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Common uses:</strong> DNS, DHCP, VoIP, video streaming, online gaming</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Port Numbers</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">TCP and UDP use <strong>port numbers</strong> (0-65535) to identify which application or service should receive the data.</p>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">Port Ranges</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Well-known ports (0-1023):</strong> Reserved for standard services (HTTP:80, HTTPS:443, SSH:22)</li>
+                        <li><strong>Registered ports (1024-49151):</strong> Assigned to specific applications by IANA</li>
+                        <li><strong>Dynamic/private ports (49152-65535):</strong> Used by client applications for temporary connections</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">How Ports Work</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8; margin-top: 10px;">IP address identifies the device, port number identifies the application/service on that device.</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; margin-top: 10px;"><strong>Example:</strong> 192.168.1.100:80 means "device at 192.168.1.100, web server service (port 80)"</p>
+                </div>
+
+                <h3 style="margin-top: 40px;">Common Port Numbers</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Protocol</th>
+                            <th>Service</th>
+                            <th>Transport</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>20, 21</strong></td><td>FTP</td><td>File Transfer</td><td>TCP</td></tr>
+                        <tr><td><strong>22</strong></td><td>SSH, SFTP</td><td>Secure Shell, Secure File Transfer</td><td>TCP</td></tr>
+                        <tr><td><strong>23</strong></td><td>Telnet</td><td>Remote terminal (insecure)</td><td>TCP</td></tr>
+                        <tr><td><strong>25</strong></td><td>SMTP</td><td>Email sending</td><td>TCP</td></tr>
+                        <tr><td><strong>53</strong></td><td>DNS</td><td>Domain Name System</td><td>UDP/TCP</td></tr>
+                        <tr><td><strong>67, 68</strong></td><td>DHCP</td><td>Dynamic IP addressing</td><td>UDP</td></tr>
+                        <tr><td><strong>80</strong></td><td>HTTP</td><td>Web traffic</td><td>TCP</td></tr>
+                        <tr><td><strong>110</strong></td><td>POP3</td><td>Email retrieval</td><td>TCP</td></tr>
+                        <tr><td><strong>143</strong></td><td>IMAP</td><td>Email management</td><td>TCP</td></tr>
+                        <tr><td><strong>443</strong></td><td>HTTPS</td><td>Secure web traffic</td><td>TCP</td></tr>
+                        <tr><td><strong>3389</strong></td><td>RDP</td><td>Remote Desktop Protocol</td><td>TCP</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-number">Slide 11 / 20</div>
+        </div>
+
+        <!-- Slide 12: IP, ICMP, ARP -->
+        <div class="slide">
+            <div class="content">
+                <h2>Internet Layer Protocols</h2>
+                
+                <h3>IP - Internet Protocol</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Routing packets between networks using IP addresses</p>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">IPv4</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Format:</strong> 32-bit address (4 octets) - Example: 192.168.1.1</li>
+                        <li><strong>Address space:</strong> ~4.3 billion addresses (exhausted)</li>
+                        <li><strong>Classes:</strong> Class A, B, C for different network sizes</li>
+                        <li><strong>Private ranges:</strong> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">IPv6</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Format:</strong> 128-bit address (8 groups of 4 hex digits) - Example: 2001:0db8:85a3::8a2e:0370:7334</li>
+                        <li><strong>Address space:</strong> 340 undecillion addresses (virtually unlimited)</li>
+                        <li><strong>Benefits:</strong> Eliminates NAT need, built-in security (IPsec), simplified header</li>
+                        <li><strong>Adoption:</strong> Growing but IPv4 still dominant</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">ICMP - Internet Control Message Protocol</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Error reporting and diagnostic functions for IP</p>
+                    
+                    <h4 style="margin-top: 20px; color: #22d3ee;">Common ICMP Messages</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Echo Request/Reply:</strong> Used by <code>ping</code> to test connectivity and measure latency</li>
+                        <li><strong>Destination Unreachable:</strong> Host/network/port cannot be reached</li>
+                        <li><strong>Time Exceeded:</strong> TTL expired (packet looping or path too long)</li>
+                        <li><strong>Redirect:</strong> Better route available for destination</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #22d3ee;">Tools Using ICMP</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>ping:</strong> Tests connectivity and measures round-trip time</li>
+                        <li><strong>traceroute/tracert:</strong> Shows path packets take through network, identifying each hop</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">ARP - Address Resolution Protocol</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Maps IP addresses to MAC addresses on local network</p>
+                    
+                    <h4 style="margin-top: 20px; color: #60a5fa;">How ARP Works</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Problem:</strong> Device knows destination IP but needs MAC address to send frame</li>
+                        <li><strong>ARP Request:</strong> "Who has IP 192.168.1.5? Tell 192.168.1.10" (broadcast to all)</li>
+                        <li><strong>ARP Reply:</strong> Device with 192.168.1.5 responds with its MAC address</li>
+                        <li><strong>ARP Cache:</strong> Mappings cached temporarily to avoid repeated broadcasts</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px; color: #60a5fa;">Why ARP Matters</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8; margin-top: 10px;">ARP bridges Layer 3 (IP) and Layer 2 (MAC addresses). Without ARP, devices on the same network couldn't send frames to each other even though they know IP addresses.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 12 / 20</div>
+        </div>
+
+        <!-- Slide 13: SNMP and NTP -->
+        <div class="slide">
+            <div class="content">
+                <h2>Network Management Protocols</h2>
+                
+                <h3>SNMP - Simple Network Management Protocol</h3>
+                <div class="highlight-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Ports:</strong> 161 (agent), 162 (trap) - uses UDP</p>
+                    <p style="margin-top: 10px; font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Monitoring and managing network devices remotely (routers, switches, servers, printers)</p>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">Components</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>SNMP Manager:</strong> Central monitoring system that queries devices</li>
+                        <li><strong>SNMP Agent:</strong> Software on network devices that collects and reports data</li>
+                        <li><strong>MIB (Management Information Base):</strong> Database of device information that can be queried</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">What SNMP Monitors</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Device status:</strong> Up/down, reachable/unreachable</li>
+                        <li><strong>Performance metrics:</strong> CPU usage, memory usage, bandwidth utilization</li>
+                        <li><strong>Interface status:</strong> Link up/down, errors, packet counts</li>
+                        <li><strong>Environmental data:</strong> Temperature, fan speed, power supply status</li>
+                        <li><strong>Traps/alerts:</strong> Devices send notifications when thresholds exceeded</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">NTP - Network Time Protocol</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Port:</strong> 123 - uses UDP</p>
+                    <p style="margin-top: 10px; font-size: 1.15em; line-height: 1.8;"><strong>Purpose:</strong> Synchronizes clocks across network devices to within milliseconds of UTC (Coordinated Universal Time)</p>
+                    
+                    <h4 style="margin-top: 25px; color: #22d3ee;">Why Time Synchronization Matters</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Log correlation:</strong> Match events across multiple systems in security investigations</li>
+                        <li><strong>Distributed systems:</strong> Database transactions, distributed computing require accurate timestamps</li>
+                        <li><strong>Certificates:</strong> SSL/TLS certificates have validity periods - clock skew causes failures</li>
+                        <li><strong>Authentication:</strong> Kerberos and other protocols use time-based tokens</li>
+                        <li><strong>Compliance:</strong> Financial and healthcare regulations require accurate time records</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #22d3ee;">NTP Hierarchy (Stratum)</h4>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Stratum 0:</strong> Reference clocks (atomic clocks, GPS)</li>
+                        <li><strong>Stratum 1:</strong> Servers directly connected to Stratum 0</li>
+                        <li><strong>Stratum 2:</strong> Servers syncing from Stratum 1</li>
+                        <li><strong>And so on...</strong> Each level adds slight latency but maintains accuracy</li>
+                    </ul>
+                    
+                    <p style="margin-top: 20px; font-size: 1.15em; line-height: 1.8;"><strong>Typical accuracy:</strong> Within 10ms over internet, <1ms on LAN</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 13 / 20</div>
+        </div>
+
+        <!-- Slide 14: Protocol Summary Table -->
+        <div class="slide">
+            <div class="content">
+                <h2>Protocol Quick Reference</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Port(s)</th>
+                            <th>Layer</th>
+                            <th>Transport</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>HTTP</strong></td><td>80</td><td>Application</td><td>TCP</td><td>Web page transfer (unsecure)</td></tr>
+                        <tr><td><strong>HTTPS</strong></td><td>443</td><td>Application</td><td>TCP</td><td>Secure web page transfer</td></tr>
+                        <tr><td><strong>FTP</strong></td><td>20, 21</td><td>Application</td><td>TCP</td><td>File transfer (insecure)</td></tr>
+                        <tr><td><strong>SFTP</strong></td><td>22</td><td>Application</td><td>TCP</td><td>Secure file transfer over SSH</td></tr>
+                        <tr><td><strong>SMTP</strong></td><td>25, 587</td><td>Application</td><td>TCP</td><td>Sending email</td></tr>
+                        <tr><td><strong>POP3</strong></td><td>110, 995</td><td>Application</td><td>TCP</td><td>Retrieving email (download and delete)</td></tr>
+                        <tr><td><strong>IMAP</strong></td><td>143, 993</td><td>Application</td><td>TCP</td><td>Managing email on server</td></tr>
+                        <tr><td><strong>DNS</strong></td><td>53</td><td>Application</td><td>UDP/TCP</td><td>Domain name to IP resolution</td></tr>
+                        <tr><td><strong>DHCP</strong></td><td>67, 68</td><td>Application</td><td>UDP</td><td>Automatic IP configuration</td></tr>
+                        <tr><td><strong>SSH</strong></td><td>22</td><td>Application</td><td>TCP</td><td>Secure remote terminal access</td></tr>
+                        <tr><td><strong>Telnet</strong></td><td>23</td><td>Application</td><td>TCP</td><td>Remote terminal (insecure, deprecated)</td></tr>
+                        <tr><td><strong>SNMP</strong></td><td>161, 162</td><td>Application</td><td>UDP</td><td>Network device monitoring</td></tr>
+                        <tr><td><strong>NTP</strong></td><td>123</td><td>Application</td><td>UDP</td><td>Time synchronization</td></tr>
+                        <tr><td><strong>TCP</strong></td><td>N/A</td><td>Transport</td><td>-</td><td>Reliable, connection-oriented delivery</td></tr>
+                        <tr><td><strong>UDP</strong></td><td>N/A</td><td>Transport</td><td>-</td><td>Fast, connectionless delivery</td></tr>
+                        <tr><td><strong>IP</strong></td><td>N/A</td><td>Internet</td><td>-</td><td>Packet routing and addressing</td></tr>
+                        <tr><td><strong>ICMP</strong></td><td>N/A</td><td>Internet</td><td>-</td><td>Error messages and diagnostics</td></tr>
+                        <tr><td><strong>ARP</strong></td><td>N/A</td><td>Internet</td><td>-</td><td>IP to MAC address mapping</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-number">Slide 14 / 20</div>
+        </div>
+
+        <!-- Slide 15: T Level Exam Questions 1-3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Content Area 7 - Network Protocols</h2>
+                <p style="font-size: 1.2em; color: #f59e0b; font-weight: 700; margin-bottom: 40px;">Important!</p>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 1 – 2 marks</h4>
+                        <p>Define the term <strong>network protocol</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 2 – 3 marks</h4>
+                        <p>State three advantages of using HTTPS instead of HTTP for a website.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 3 – 4 marks</h4>
+                        <p>Explain the purpose of the DNS protocol and describe how DNS resolution works.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 15 / 20</div>
+        </div>
+
+        <!-- Slide 16: Question 4 - Discuss (6 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 4</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 4 – 6 marks – Discuss</h4>
+                        <p style="margin-top: 20px;">An IT manager needs to provide remote access to company servers for system administrators. The current solution uses Telnet for command-line access. A cybersecurity consultant has recommended migrating to SSH.</p>
+                        <p style="margin-top: 20px;">Discuss the advantages and disadvantages of migrating from Telnet to SSH for this use case.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Discuss</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Present key points about different ideas or strengths and weaknesses of an idea. You should give a balanced answer showing multiple perspectives.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 16 / 20</div>
+        </div>
+
+        <!-- Slide 17: Question 5 - Analyse (9 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 5</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 5 – 9 marks – Analyse</h4>
+                        <p style="margin-top: 20px;">A small office network has been experiencing intermittent connectivity issues. Investigation reveals the following symptoms:</p>
+                        <ul style="margin-top: 15px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Users report being unable to access websites by name (e.g., www.example.com) but can access them by IP address (e.g., 93.184.216.34)</li>
+                            <li>Some devices receive IP addresses in the 169.254.x.x range instead of the expected 192.168.1.x range</li>
+                            <li>When using <code>ping</code> to test connectivity, some devices respond while others show "Destination Host Unreachable"</li>
+                            <li>Email retrieval works intermittently - sometimes emails download, other times the connection times out</li>
+                        </ul>
+                        <p style="margin-top: 20px;">Analyse which network protocols are likely involved in each symptom. In your answer, explain how each protocol failure would cause the described symptom and suggest what network components or services should be investigated.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Analyse</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 17 / 20</div>
+        </div>
+
+        <!-- Slide 18: Question 6 - Evaluate (12 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 6</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 6 – 12 marks – Evaluate</h4>
+                        <p style="margin-top: 20px;">A financial services company with 200 employees is designing a new email infrastructure. They must decide between two approaches:</p>
+                        <p style="margin-top: 20px;"><strong>Option A: POP3-based system</strong></p>
+                        <ul style="margin-top: 10px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Users connect via POP3 to download emails to their primary work computers</li>
+                            <li>Email stored locally on each user's workstation</li>
+                            <li>Minimal server storage requirements (emails deleted after download)</li>
+                            <li>Users responsible for backing up their own email data</li>
+                            <li>Estimated setup cost: £15,000</li>
+                        </ul>
+                        <p style="margin-top: 20px;"><strong>Option B: IMAP-based system with centralized storage</strong></p>
+                        <ul style="margin-top: 10px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Users connect via IMAP with email remaining on central servers</li>
+                            <li>Automatic synchronization across devices (desktop, laptop, mobile)</li>
+                            <li>Requires 5TB server storage with automated backup systems</li>
+                            <li>Enables remote access from any location</li>
+                            <li>Estimated setup cost: £45,000 (includes storage infrastructure)</li>
+                        </ul>
+                        <p style="margin-top: 20px;">Many employees work remotely part-time and need to access email from multiple devices. The company must maintain email records for 7 years for regulatory compliance.</p>
+                        <p style="margin-top: 20px;">Evaluate both options and recommend which approach the company should implement. Justify your recommendation with evidence, considering factors such as usability, regulatory compliance, business continuity, total cost of ownership, and scalability.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Evaluate</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Make a reasoned judgement after considering the advantages and disadvantages of different options, supported by evidence or examples.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 18 / 20</div>
+        </div>
+
+        <!-- Slide 19: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Module Summary - Network Protocols</h2>
+                
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Key Takeaways</h3>
+                    <ul>
+                        <li><strong>Protocols are rules:</strong> Standardized methods for devices to communicate effectively</li>
+                        <li><strong>Layered architecture:</strong> TCP/IP model organizes protocols into four layers with specific functions</li>
+                        <li><strong>Application layer protocols:</strong> HTTP/HTTPS, FTP/SFTP, SMTP/POP3/IMAP, DNS, DHCP provide user services</li>
+                        <li><strong>Transport layer:</strong> TCP ensures reliability, UDP prioritizes speed</li>
+                        <li><strong>Internet layer:</strong> IP routes packets, ICMP reports errors, ARP maps IPs to MACs</li>
+                        <li><strong>Port numbers:</strong> Enable multiple services on one device (0-65535)</li>
+                        <li><strong>Security matters:</strong> Always use encrypted protocols (HTTPS, SFTP, SSH) over insecure versions</li>
+                        <li><strong>Network management:</strong> SNMP monitors devices, NTP synchronizes time</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Protocol Selection Principles</h3>
+                    <ul>
+                        <li><strong>Security requirements:</strong> Use encrypted protocols for sensitive data</li>
+                        <li><strong>Reliability needs:</strong> TCP for critical data, UDP for real-time/speed-critical</li>
+                        <li><strong>Multi-device access:</strong> IMAP for email, cloud-based for files</li>
+                        <li><strong>Legacy compatibility:</strong> Sometimes forced to support older protocols</li>
+                        <li><strong>Performance considerations:</strong> Balance features against overhead</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="font-size: 1.8em; color: #60a5fa; font-weight: 700;">🎉 Module Complete!</p>
+                    <p style="font-size: 1.3em; color: #94a3b8; margin-top: 15px;">You now understand the protocols that power network communication</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 19 / 20</div>
+        </div>
+
+        <!-- Slide 20: Protocol Decision Tree -->
+        <div class="slide">
+            <div class="content">
+                <h2>Protocol Selection Guide</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Web Services</h4>
+                        <p><strong>Use HTTPS</strong> (not HTTP)</p>
+                        <p style="margin-top: 10px;">✅ Encrypted<br>✅ User trust<br>✅ SEO benefits</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>File Transfer</h4>
+                        <p><strong>Use SFTP or FTPS</strong> (not FTP)</p>
+                        <p style="margin-top: 10px;">✅ Encrypted<br>✅ Secure authentication<br>❌ Never plain FTP over internet</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Remote Access</h4>
+                        <p><strong>Use SSH</strong> (never Telnet)</p>
+                        <p style="margin-top: 10px;">✅ Encrypted<br>✅ Key-based auth<br>✅ Tunneling capable</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Email Retrieval</h4>
+                        <p><strong>Use IMAP</strong> for modern needs</p>
+                        <p style="margin-top: 10px;">✅ Multi-device sync<br>✅ Server-side storage<br>POP3 only for single-device</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Real-time Communication</h4>
+                        <p><strong>Use UDP-based protocols</strong></p>
+                        <p style="margin-top: 10px;">✅ Low latency<br>✅ Fast<br>Good for VoIP, gaming, video</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Reliable Data Transfer</h4>
+                        <p><strong>Use TCP-based protocols</strong></p>
+                        <p style="margin-top: 10px;">✅ Guaranteed delivery<br>✅ Error checking<br>Good for downloads, databases</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Remember the Fundamentals</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Every application</strong> you use relies on network protocols:</p>
+                    <ul style="margin-top: 15px;">
+                        <li>Web browsing = HTTP/HTTPS + DNS + TCP + IP</li>
+                        <li>Video call = UDP + IP + various application protocols</li>
+                        <li>Sending email = SMTP + TCP + IP + DNS</li>
+                        <li>Online gaming = UDP + IP + custom game protocols</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 1.15em; line-height: 1.8;">Understanding protocols means understanding how the internet actually works!</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 20 / 20</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progress = document.getElementById('progressFill');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            updateNavigation();
+        });
+    </script>
+</body>
+</html>

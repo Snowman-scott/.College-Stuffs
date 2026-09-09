@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Server Models</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            padding: 70px;
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 600px;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(44, 83, 100, 0.3);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #2c5364 0%, #0f2027 100%) 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            color: #2c5364;
+            font-size: 1.9em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.8em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #2c3e50;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: #2c5364;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #0f2027;
+            font-weight: 700;
+        }
+
+        .model-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 6px solid #2c5364;
+            border: 1px solid #bae6fd;
+            border-left: 6px solid #2c5364;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(44, 83, 100, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .model-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(44, 83, 100, 0.2);
+        }
+
+        .model-box h3 {
+            margin-top: 0;
+            font-size: 1.9em;
+            color: #2c5364;
+        }
+
+        .detail {
+            margin: 15px 0;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        .label {
+            font-weight: 700;
+            color: #0f2027;
+            margin-right: 8px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .pros, .cons {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e5e7eb;
+        }
+
+        .pros {
+            border-left: 5px solid #10b981;
+        }
+
+        .cons {
+            border-left: 5px solid #ef4444;
+        }
+
+        .pros h4 {
+            color: #10b981;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .cons h4 {
+            color: #ef4444;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .pros ul li, .cons ul li {
+            color: #1f2937;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: #e0f2fe;
+            border-radius: 12px;
+            border: 2px solid #0284c7;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 700;
+            color: #2c5364;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c5364 0%, #0f2027 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(44, 83, 100, 0.4);
+            color: white;
+        }
+
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button:disabled:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: #2c5364;
+        }
+
+        button:disabled::before {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .keyboard-hint {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1em;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .key {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 6px solid #f97316;
+            border: 1px solid #fed7aa;
+            border-left: 6px solid #f97316;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .question-box h4 {
+            color: #f97316;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: #f97316;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        em {
+            font-style: italic;
+            color: #2c5364;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 6px solid #10b981;
+            border: 1px solid #bbf7d0;
+            border-left: 6px solid #10b981;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .example-box h4 {
+            color: #10b981;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .code-snippet {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+                min-height: 500px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            li {
+                font-size: 1.1em;
+            }
+
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="content center-content">
+                <h1>Client-Server Models</h1>
+                <p class="subtitle">Understanding Networked Application Architecture</p>
+                <p class="subtitle" style="margin-top: 60px; font-size: 1.3em; color: #999;">T Level Digital: Software Development</p>
+            </div>
+            <div class="slide-number">1 / 15</div>
+        </div>
+
+        <!-- Slide 2: What is Client-Server? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What is Client-Server Architecture?</h2>
+                <ul>
+                    <li>A <span class="highlight">client-server model</span> is a distributed computing architecture where tasks are divided between service providers (servers) and service requesters (clients)</li>
+                    <li><strong>Client:</strong> A device or application that requests services or resources from a server</li>
+                    <li><strong>Server:</strong> A powerful computer or application that provides services, resources, or data to clients</li>
+                    <li>Clients and servers communicate over a network using defined protocols</li>
+                    <li>This model forms the foundation of most modern networked applications and the Internet</li>
+                </ul>
+            </div>
+            <div class="slide-number">2 / 15</div>
+        </div>
+
+        <!-- Slide 3: Basic Client-Server Diagram -->
+        <div class="slide">
+            <div class="content">
+                <h2>Basic Client-Server Model</h2>
+                <div class="diagram">
+                    <svg width="700" height="350" viewBox="0 0 700 350" style="max-width: 100%;">
+                        <!-- Server -->
+                        <rect x="280" y="30" width="140" height="180" fill="#2c5364" stroke="#0f2027" stroke-width="3" rx="8"/>
+                        <text x="350" y="70" text-anchor="middle" fill="white" font-size="20" font-weight="700">SERVER</text>
+                        <rect x="295" y="90" width="110" height="15" fill="#10b981" rx="3"/>
+                        <rect x="295" y="115" width="110" height="15" fill="#10b981" rx="3"/>
+                        <rect x="295" y="140" width="110" height="15" fill="#10b981" rx="3"/>
+                        <text x="350" y="180" text-anchor="middle" fill="white" font-size="14">Database</text>
+                        <text x="350" y="200" text-anchor="middle" fill="white" font-size="14">Files</text>
+                        
+                        <!-- Clients -->
+                        <rect x="50" y="250" width="100" height="80" fill="#0284c7" stroke="#0c4a6e" stroke-width="2" rx="6"/>
+                        <text x="100" y="285" text-anchor="middle" fill="white" font-size="16" font-weight="700">CLIENT 1</text>
+                        <text x="100" y="305" text-anchor="middle" fill="white" font-size="12">Desktop PC</text>
+                        
+                        <rect x="230" y="250" width="100" height="80" fill="#0284c7" stroke="#0c4a6e" stroke-width="2" rx="6"/>
+                        <text x="280" y="285" text-anchor="middle" fill="white" font-size="16" font-weight="700">CLIENT 2</text>
+                        <text x="280" y="305" text-anchor="middle" fill="white" font-size="12">Laptop</text>
+                        
+                        <rect x="410" y="250" width="100" height="80" fill="#0284c7" stroke="#0c4a6e" stroke-width="2" rx="6"/>
+                        <text x="460" y="285" text-anchor="middle" fill="white" font-size="16" font-weight="700">CLIENT 3</text>
+                        <text x="460" y="305" text-anchor="middle" fill="white" font-size="12">Mobile</text>
+                        
+                        <rect x="550" y="250" width="100" height="80" fill="#0284c7" stroke="#0c4a6e" stroke-width="2" rx="6"/>
+                        <text x="600" y="285" text-anchor="middle" fill="white" font-size="16" font-weight="700">CLIENT 4</text>
+                        <text x="600" y="305" text-anchor="middle" fill="white" font-size="12">Tablet</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 100 250 L 320 210" stroke="#f97316" stroke-width="3" fill="none" marker-end="url(#arrowRequest)"/>
+                        <path d="M 280 250 L 340 210" stroke="#f97316" stroke-width="3" fill="none" marker-end="url(#arrowRequest)"/>
+                        <path d="M 460 250 L 360 210" stroke="#f97316" stroke-width="3" fill="none" marker-end="url(#arrowRequest)"/>
+                        <path d="M 600 250 L 380 210" stroke="#f97316" stroke-width="3" fill="none" marker-end="url(#arrowRequest)"/>
+                        
+                        <path d="M 330 210 L 110 250" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowResponse)"/>
+                        <path d="M 350 210 L 290 250" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowResponse)"/>
+                        <path d="M 370 210 L 470 250" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowResponse)"/>
+                        <path d="M 390 210 L 610 250" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowResponse)"/>
+                        
+                        <!-- Arrow markers -->
+                        <defs>
+                            <marker id="arrowRequest" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f97316" />
+                            </marker>
+                            <marker id="arrowResponse" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+                            </marker>
+                        </defs>
+                        
+                        <!-- Labels -->
+                        <text x="150" y="230" fill="#f97316" font-size="14" font-weight="600">Requests</text>
+                        <text x="500" y="230" fill="#10b981" font-size="14" font-weight="600">Responses</text>
+                    </svg>
+                    <p style="margin-top: 15px; color: #0c4a6e; font-weight: 600;">Multiple clients requesting services from a central server</p>
+                </div>
+            </div>
+            <div class="slide-number">3 / 15</div>
+        </div>
+
+        <!-- Slide 4: How It Works -->
+        <div class="slide">
+            <div class="content">
+                <h2>How Client-Server Communication Works</h2>
+                <div class="model-box">
+                    <h3>The Request-Response Cycle</h3>
+                    <ol style="margin-left: 30px; margin-top: 20px;">
+                        <li style="font-size: 1.2em; margin-bottom: 20px;"><strong>Client sends a request:</strong> The client initiates communication by sending a request to the server for a specific service or resource</li>
+                        <li style="font-size: 1.2em; margin-bottom: 20px;"><strong>Server processes the request:</strong> The server receives the request, processes it, and accesses necessary resources (database, files, etc.)</li>
+                        <li style="font-size: 1.2em; margin-bottom: 20px;"><strong>Server sends a response:</strong> The server sends back the requested data or confirmation to the client</li>
+                        <li style="font-size: 1.2em; margin-bottom: 20px;"><strong>Client receives and displays:</strong> The client receives the response and presents it to the user</li>
+                    </ol>
+                </div>
+                <div class="example-box">
+                    <h4>Real-World Example: Web Browsing</h4>
+                    <p><strong>1.</strong> You type a URL in your browser (client)</p>
+                    <p><strong>2.</strong> Browser sends HTTP request to web server</p>
+                    <p><strong>3.</strong> Server retrieves the webpage files</p>
+                    <p><strong>4.</strong> Server sends HTML, CSS, JS back to browser</p>
+                    <p><strong>5.</strong> Browser displays the webpage</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 15</div>
+        </div>
+
+        <!-- Slide 5: Advantages -->
+        <div class="slide">
+            <div class="content">
+                <h2>Advantages of Client-Server Model</h2>
+                <ul>
+                    <li><strong>Centralized data management:</strong> All data is stored in one location, making it easier to manage, backup, and secure</li>
+                    <li><strong>Improved security:</strong> Servers can implement robust security measures, access controls, and authentication</li>
+                    <li><strong>Resource sharing:</strong> Multiple clients can access the same resources simultaneously (printers, databases, files)</li>
+                    <li><strong>Scalability:</strong> Easy to add more clients without major infrastructure changes</li>
+                    <li><strong>Centralised updates:</strong> Software and data updates only need to be applied on the server</li>
+                    <li><strong>Better performance:</strong> Powerful servers can handle complex processing tasks efficiently</li>
+                    <li><strong>Reduced data duplication:</strong> Single source of truth for data across the organisation</li>
+                </ul>
+            </div>
+            <div class="slide-number">5 / 15</div>
+        </div>
+
+        <!-- Slide 6: Disadvantages -->
+        <div class="slide">
+            <div class="content">
+                <h2>Disadvantages of Client-Server Model</h2>
+                <ul>
+                    <li><strong>Single point of failure:</strong> If the server goes down, all clients lose access to services</li>
+                    <li><strong>High initial cost:</strong> Servers are expensive to purchase and maintain</li>
+                    <li><strong>Network dependency:</strong> Requires a reliable network connection; poor network affects all users</li>
+                    <li><strong>Server maintenance:</strong> Requires skilled IT staff to manage and maintain servers</li>
+                    <li><strong>Scalability limits:</strong> Server can become overloaded if too many clients connect simultaneously</li>
+                    <li><strong>Complexity:</strong> More complex to set up and configure than peer-to-peer networks</li>
+                    <li><strong>Network congestion:</strong> Heavy traffic can slow down the entire network</li>
+                </ul>
+            </div>
+            <div class="slide-number">6 / 15</div>
+        </div>
+
+        <!-- Slide 7: Types - Two-Tier -->
+        <div class="slide">
+            <div class="content">
+                <h2>Two-Tier Client-Server Architecture</h2>
+                <div class="model-box">
+                    <h3>Overview</h3>
+                    <div class="detail">The client communicates directly with the database server. The client contains the presentation layer and business logic, while the server manages data.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="600" height="250" viewBox="0 0 600 250" style="max-width: 100%;">
+                        <!-- Client Tier -->
+                        <rect x="50" y="50" width="200" height="150" fill="#0284c7" stroke="#0c4a6e" stroke-width="3" rx="8"/>
+                        <text x="150" y="85" text-anchor="middle" fill="white" font-size="18" font-weight="700">CLIENT TIER</text>
+                        <text x="150" y="115" text-anchor="middle" fill="white" font-size="14">Presentation Layer</text>
+                        <text x="150" y="140" text-anchor="middle" fill="white" font-size="14">Business Logic</text>
+                        <text x="150" y="165" text-anchor="middle" fill="white" font-size="14">User Interface</text>
+                        
+                        <!-- Server Tier -->
+                        <rect x="350" y="50" width="200" height="150" fill="#2c5364" stroke="#0f2027" stroke-width="3" rx="8"/>
+                        <text x="450" y="85" text-anchor="middle" fill="white" font-size="18" font-weight="700">SERVER TIER</text>
+                        <text x="450" y="115" text-anchor="middle" fill="white" font-size="14">Database Server</text>
+                        <text x="450" y="140" text-anchor="middle" fill="white" font-size="14">Data Management</text>
+                        <text x="450" y="165" text-anchor="middle" fill="white" font-size="14">Data Storage</text>
+                        
+                        <!-- Arrow -->
+                        <path d="M 250 125 L 350 125" stroke="#f97316" stroke-width="4" fill="none" marker-end="url(#arrow2tier)"/>
+                        <text x="300" y="115" text-anchor="middle" fill="#f97316" font-size="14" font-weight="600">Direct Connection</text>
+                        
+                        <defs>
+                            <marker id="arrow2tier" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#f97316" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Simple architecture</li>
+                            <li>Fast communication</li>
+                            <li>Easy to maintain</li>
+                            <li>Lower cost</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Less secure</li>
+                            <li>Poor scalability</li>
+                            <li>Client must be powerful</li>
+                            <li>Database exposed to clients</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">7 / 15</div>
+        </div>
+
+        <!-- Slide 8: Types - Three-Tier -->
+        <div class="slide">
+            <div class="content">
+                <h2>Three-Tier Client-Server Architecture</h2>
+                <div class="model-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Introduces a middle tier (application server) between client and database. The client handles presentation, application server handles business logic, and database server manages data.</div>
+                </div>
+                <div class="diagram">
+                    <svg width="700" height="250" viewBox="0 0 700 250" style="max-width: 100%;">
+                        <!-- Presentation Tier -->
+                        <rect x="30" y="50" width="170" height="150" fill="#0284c7" stroke="#0c4a6e" stroke-width="3" rx="8"/>
+                        <text x="115" y="80" text-anchor="middle" fill="white" font-size="16" font-weight="700">PRESENTATION</text>
+                        <text x="115" y="100" text-anchor="middle" fill="white" font-size="16" font-weight="700">TIER</text>
+                        <text x="115" y="130" text-anchor="middle" fill="white" font-size="13">User Interface</text>
+                        <text x="115" y="150" text-anchor="middle" fill="white" font-size="13">Display Logic</text>
+                        <text x="115" y="170" text-anchor="middle" fill="white" font-size="13">Client Device</text>
+                        
+                        <!-- Application Tier -->
+                        <rect x="265" y="50" width="170" height="150" fill="#f97316" stroke="#c2410c" stroke-width="3" rx="8"/>
+                        <text x="350" y="80" text-anchor="middle" fill="white" font-size="16" font-weight="700">APPLICATION</text>
+                        <text x="350" y="100" text-anchor="middle" fill="white" font-size="16" font-weight="700">TIER</text>
+                        <text x="350" y="130" text-anchor="middle" fill="white" font-size="13">Business Logic</text>
+                        <text x="350" y="150" text-anchor="middle" fill="white" font-size="13">Processing</text>
+                        <text x="350" y="170" text-anchor="middle" fill="white" font-size="13">Application Server</text>
+                        
+                        <!-- Data Tier -->
+                        <rect x="500" y="50" width="170" height="150" fill="#2c5364" stroke="#0f2027" stroke-width="3" rx="8"/>
+                        <text x="585" y="80" text-anchor="middle" fill="white" font-size="16" font-weight="700">DATA TIER</text>
+                        <text x="585" y="110" text-anchor="middle" fill="white" font-size="13">Database</text>
+                        <text x="585" y="130" text-anchor="middle" fill="white" font-size="13">Data Storage</text>
+                        <text x="585" y="150" text-anchor="middle" fill="white" font-size="13">Data Management</text>
+                        <text x="585" y="170" text-anchor="middle" fill="white" font-size="13">Database Server</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 200 125 L 265 125" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrow3tier)"/>
+                        <path d="M 435 125 L 500 125" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrow3tier)"/>
+                        
+                        <defs>
+                            <marker id="arrow3tier" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>Better security (database isolated)</li>
+                            <li>Excellent scalability</li>
+                            <li>Easier to maintain and update</li>
+                            <li>Clients can be lightweight</li>
+                            <li>Reusable business logic</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Disadvantages</h4>
+                        <ul style="font-size: 1.1em;">
+                            <li>More complex to design</li>
+                            <li>Higher cost (additional servers)</li>
+                            <li>Slower than two-tier</li>
+                            <li>Requires more expertise</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">8 / 15</div>
+        </div>
+
+        <!-- Slide 9: N-Tier Architecture -->
+        <div class="slide">
+            <div class="content">
+                <h2>N-Tier Architecture</h2>
+                <div class="model-box">
+                    <h3>Overview</h3>
+                    <div class="detail">Extends beyond three tiers to include additional specialized layers such as caching servers, load balancers, API gateways, and microservices. Common in large-scale enterprise applications.</div>
+                </div>
+                <h3>Common Additional Tiers</h3>
+                <ul>
+                    <li><strong>Load Balancer:</strong> Distributes incoming requests across multiple servers</li>
+                    <li><strong>Web Server Tier:</strong> Handles HTTP requests and serves static content</li>
+                    <li><strong>API Gateway:</strong> Manages and routes API requests</li>
+                    <li><strong>Cache Tier:</strong> Stores frequently accessed data for faster retrieval</li>
+                    <li><strong>Message Queue:</strong> Handles asynchronous communication between services</li>
+                    <li><strong>Search Tier:</strong> Dedicated servers for search functionality</li>
+                </ul>
+                <div class="example-box">
+                    <h4>Example: Netflix Architecture</h4>
+                    <p>Netflix uses an N-tier architecture with presentation (web/mobile apps), API gateway, microservices (recommendations, user profiles, payments), caching layers, and distributed databases across multiple data centres.</p>
+                </div>
+            </div>
+            <div class="slide-number">9 / 15</div>
+        </div>
+
+        <!-- Slide 10: Thin vs Thick Clients -->
+        <div class="slide">
+            <div class="content">
+                <h2>Thin Client vs Thick Client</h2>
+                <div class="pros-cons">
+                    <div class="pros" style="border-left: 5px solid #0284c7;">
+                        <h4 style="color: #0284c7;">Thin Client</h4>
+                        <p style="font-size: 1.1em; margin-bottom: 15px; color: #2c3e50;"><strong>Definition:</strong> Minimal processing on client; most work done on server</p>
+                        <ul style="font-size: 1.05em;">
+                            <li><strong>Characteristics:</strong> Lightweight, browser-based, minimal local storage</li>
+                            <li><strong>Examples:</strong> Web applications, Google Docs, cloud-based email</li>
+                            <li><strong>Advantages:</strong> Low maintenance, easy updates, works on any device</li>
+                            <li><strong>Disadvantages:</strong> Requires constant network, limited offline functionality</li>
+                        </ul>
+                    </div>
+                    <div class="cons" style="border-left: 5px solid #f97316;">
+                        <h4 style="color: #f97316;">Thick Client</h4>
+                        <p style="font-size: 1.1em; margin-bottom: 15px; color: #2c3e50;"><strong>Definition:</strong> Significant processing on client; server for data storage</p>
+                        <ul style="font-size: 1.05em;">
+                            <li><strong>Characteristics:</strong> Desktop applications, local processing, rich features</li>
+                            <li><strong>Examples:</strong> Microsoft Office, Adobe Photoshop, video games</li>
+                            <li><strong>Advantages:</strong> Better performance, offline capability, rich UI</li>
+                            <li><strong>Disadvantages:</strong> Installation required, harder to update, platform-specific</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">10 / 15</div>
+        </div>
+
+        <!-- Slide 11: Real-World Applications -->
+        <div class="slide">
+            <div class="content">
+                <h2>Real-World Client-Server Applications</h2>
+                <div class="model-box">
+                    <h3>Email Systems</h3>
+                    <div class="detail"><span class="label">Clients:</span> Outlook, Gmail app, Thunderbird</div>
+                    <div class="detail"><span class="label">Servers:</span> Mail servers (SMTP, POP3, IMAP)</div>
+                    <div class="detail"><span class="label">Architecture:</span> Three-tier with email client, mail server, and database</div>
+                </div>
+                <div class="model-box">
+                    <h3>Web Applications</h3>
+                    <div class="detail"><span class="label">Clients:</span> Web browsers (Chrome, Firefox, Safari)</div>
+                    <div class="detail"><span class="label">Servers:</span> Web servers (Apache, Nginx), application servers</div>
+                    <div class="detail"><span class="label">Architecture:</span> N-tier with load balancers, caching, CDNs</div>
+                </div>
+                <div class="model-box">
+                    <h3>Online Banking</h3>
+                    <div class="detail"><span class="label">Clients:</span> Banking apps, ATMs, web portals</div>
+                    <div class="detail"><span class="label">Servers:</span> Transaction servers, database servers, authentication servers</div>
+                    <div class="detail"><span class="label">Architecture:</span> Highly secure multi-tier with encryption and redundancy</div>
+                </div>
+            </div>
+            <div class="slide-number">11 / 15</div>
+        </div>
+
+        <!-- Slide 12: Client-Server vs Peer-to-Peer -->
+        <div class="slide">
+            <div class="content">
+                <h2>Client-Server vs Peer-to-Peer</h2>
+                <div class="pros-cons">
+                    <div class="pros" style="border-left: 5px solid #2c5364;">
+                        <h4 style="color: #2c5364;">Client-Server</h4>
+                        <ul style="font-size: 1.05em;">
+                            <li>Centralised control and management</li>
+                            <li>Better security and access control</li>
+                            <li>Easier to back up and maintain</li>
+                            <li>Requires dedicated server hardware</li>
+                            <li>Single point of failure</li>
+                            <li>Higher initial cost</li>
+                            <li>Professional administration needed</li>
+                        </ul>
+                    </div>
+                    <div class="cons" style="border-left: 5px solid #8b5cf6;">
+                        <h4 style="color: #8b5cf6;">Peer-to-Peer (P2P)</h4>
+                        <ul style="font-size: 1.05em;">
+                            <li>Decentralised - all devices equal</li>
+                            <li>Lower cost (no dedicated server)</li>
+                            <li>No single point of failure</li>
+                            <li>Harder to manage and secure</li>
+                            <li>Difficult to back up</li>
+                            <li>Poor scalability</li>
+                            <li>Best for small networks (under 10 devices)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">12 / 15</div>
+        </div>
+
+        <!-- Slide 13: Assessment Questions A -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 1 <span class="marks">2 marks</span></h4>
+                    <p>Define what is meant by a <em>client-server model</em> in computer networking.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 2 <span class="marks">3 marks</span></h4>
+                    <p>State three advantages of using a client-server architecture over a peer-to-peer network.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 3 <span class="marks">4 marks</span></h4>
+                    <p>Explain the difference between a <em>thin client</em> and a <em>thick client</em>, providing one example of each.</p>
+                </div>
+            </div>
+            <div class="slide-number">13 / 15</div>
+        </div>
+
+        <!-- Slide 14: Assessment Questions B -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">6 marks – Discuss</span></h4>
+                    <p>Discuss the potential disadvantages for a small business adopting a client–server model instead of a peer-to-peer setup.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.2em; color: #2c5364;"><strong>Command verb: Discuss</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Present key points about different ideas or strengths and weaknesses, showing multiple perspectives.</p>
+                </div>
+            </div>
+            <div class="slide-number">14 / 15</div>
+        </div>
+
+        <!-- Slide 15: Assessment Questions C -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 5 <span class="marks">12 marks – Evaluate</span></h4>
+                    <p>Evaluate the suitability of a client–server network for a college that requires centralised control, user authentication, and reliable data access for 300 users.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.2em; color: #2c5364;"><strong>Command verb: Evaluate</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Judge the importance or success of something using evidence. Present a balanced argument with a clear, justified conclusion.</p>
+                </div>
+            </div>
+            <div class="slide-number">15 / 15</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <div class="keyboard-hint">
+        Press <span class="key">F11</span> for fullscreen presentation mode
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+            if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) changeSlide(1);
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

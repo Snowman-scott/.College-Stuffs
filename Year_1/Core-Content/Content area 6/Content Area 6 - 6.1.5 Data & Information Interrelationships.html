@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Area 6: Data & Information Interrelationships</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a1628;
+            background-image: 
+                radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
+                radial-gradient(at 40% 80%, rgba(29, 78, 216, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            overflow: auto;
+            min-height: 100vh;
+        }
+
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding: 80px 100px 150px 100px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3.8em;
+            margin-bottom: 30px;
+            color: #60a5fa;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+
+        h2 {
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            color: #60a5fa;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.3);
+        }
+
+        h3 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #93c5fd;
+        }
+
+        h4 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #93c5fd;
+        }
+
+        p, li {
+            font-size: 1.4em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border-left: 5px solid #60a5fa;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(10, 22, 40, 0.9);
+            padding: 15px 40px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(96, 165, 250, 0.4);
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .pyramid-level {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border: 2px solid rgba(96, 165, 250, 0.4);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 10px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .pyramid-level:hover {
+            transform: scale(1.05);
+            border-color: #60a5fa;
+        }
+
+        .level-1 { width: 80%; }
+        .level-2 { width: 60%; }
+        .level-3 { width: 40%; }
+
+        .example-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .warning-box h4 {
+            color: #fca5a5;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+            font-size: 1.3em;
+        }
+
+        .comparison-table td {
+            font-size: 1.2em;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            font-size: 1.2em;
+            color: rgba(147, 197, 253, 0.5);
+        }
+
+        .best-practice {
+            background: rgba(96, 165, 250, 0.05);
+            border-left: 4px solid #60a5fa;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .judgement-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .judgement-card:hover {
+            transform: translateY(-5px);
+            border-color: #60a5fa;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .transformation-box {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .data-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+
+        .data-step {
+            background: rgba(96, 165, 250, 0.1);
+            border: 2px solid #60a5fa;
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .data-arrow {
+            font-size: 2em;
+            color: #60a5fa;
+        }
+
+        .suitability-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .suitable {
+            border-left: 4px solid #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .unsuitable {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="center-content">
+                <h1>DATA & INFORMATION INTERRELATIONSHIPS</h1>
+                <p style="font-size: 1.5em; color: #93c5fd;">Content Area 6: Data - 6.1.5</p>
+                <div class="highlight-box" style="margin-top: 60px; max-width: 1000px;">
+                    <h3 style="text-align: center;">Understanding Data, Information & Suitability</h3>
+                    <p style="text-align: center;">Exploring the relationships between data, information, generation methods, and making judgements about suitability for digital software development.</p>
+                </div>
+            </div>
+            <div class="slide-number">1 / 23</div>
+        </div>
+
+        <!-- Slide 2: Data vs Information vs Knowledge -->
+        <div class="slide">
+            <h2>Data, Information & Knowledge</h2>
+            <div class="pyramid">
+                <div class="pyramid-level level-3">
+                    <div class="icon">💡</div>
+                    <h3>Knowledge</h3>
+                    <p>Understanding gained from experience, enabling informed decisions and actions</p>
+                    <p><strong>Example:</strong> "We should increase server capacity on Fridays because sales peak then"</p>
+                </div>
+                <div class="pyramid-level level-2">
+                    <div class="icon">📊</div>
+                    <h3>Information</h3>
+                    <p>Data processed and given context, revealing patterns and meaning</p>
+                    <p><strong>Example:</strong> "Website traffic increased 40% last Friday evening"</p>
+                </div>
+                <div class="pyramid-level level-1">
+                    <div class="icon">🔢</div>
+                    <h3>Data</h3>
+                    <p>Raw, unprocessed facts and figures without context or meaning</p>
+                    <p><strong>Example:</strong> "15.2, 23.8, 45.1, 18.7" (numbers without labels)</p>
+                </div>
+            </div>
+            <div class="slide-number">2 / 23</div>
+        </div>
+
+        <!-- Slide 3: The Hierarchy Explained -->
+        <div class="slide">
+            <h2>The Data-Information-Knowledge Hierarchy</h2>
+            <div class="transformation-box">
+                <h3>📊 Data → Information → Knowledge</h3>
+                <p>Each level builds upon the previous, adding context, analysis, and understanding.</p>
+            </div>
+            <div class="card">
+                <h4>Real-World Example: E-commerce Website</h4>
+                <div class="data-flow">
+                    <div class="data-step">
+                        <h4>Data</h4>
+                        <p>User ID: 12345</p>
+                        <p>Product ID: ABC789</p>
+                        <p>Timestamp: 14:35:22</p>
+                        <p>Action: Click</p>
+                        <p style="margin-top: 15px; color: #93c5fd;"><strong>Raw facts with no meaning</strong></p>
+                    </div>
+                    <div class="data-arrow">→</div>
+                    <div class="data-step">
+                        <h4>Information</h4>
+                        <p>"Customer 12345 viewed running shoes (ABC789) at 2:35 PM but didn't purchase"</p>
+                        <p style="margin-top: 15px; color: #93c5fd;"><strong>Data with context</strong></p>
+                    </div>
+                    <div class="data-arrow">→</div>
+                    <div class="data-step">
+                        <h4>Knowledge</h4>
+                        <p>"This customer views items multiple times before buying. Send a 10% discount in 24 hours to encourage purchase"</p>
+                        <p style="margin-top: 15px; color: #93c5fd;"><strong>Actionable insight</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Key Distinction</h4>
+                <p>• <strong>Data</strong> answers "what?" • <strong>Information</strong> answers "what does it mean?" • <strong>Knowledge</strong> answers "what should we do?"</p>
+            </div>
+            <div class="slide-number">3 / 23</div>
+        </div>
+
+        <!-- Slide 4: Data Generation Methods Revisited -->
+        <div class="slide">
+            <h2>Data Generation Methods</h2>
+            <div class="highlight-box">
+                <h3>🔄 How Data is Created Affects Its Value</h3>
+                <p>The method used to generate data directly impacts its accuracy, reliability, completeness, and suitability for different purposes.</p>
+            </div>
+            <div class="three-column">
+                <div class="judgement-card">
+                    <div class="icon">👥</div>
+                    <h4>Human-Generated</h4>
+                    <p><strong>Methods:</strong> Surveys, forms, interviews, manual entry</p>
+                    <p><strong>Strengths:</strong> Captures opinions, qualitative insights, context</p>
+                    <p><strong>Weaknesses:</strong> Prone to bias, errors, slow, inconsistent</p>
+                </div>
+                <div class="judgement-card">
+                    <div class="icon">📡</div>
+                    <h4>Sensor/IoT</h4>
+                    <p><strong>Methods:</strong> Automated measurement, continuous monitoring</p>
+                    <p><strong>Strengths:</strong> Objective, accurate, real-time, continuous</p>
+                    <p><strong>Weaknesses:</strong> No context, no "why", hardware failures</p>
+                </div>
+                <div class="judgement-card">
+                    <div class="icon">🤖</div>
+                    <h4>AI/ML</h4>
+                    <p><strong>Methods:</strong> Predictions, classifications, generated content</p>
+                    <p><strong>Strengths:</strong> Fast, scalable, pattern detection</p>
+                    <p><strong>Weaknesses:</strong> Feedback loops, biased training data</p>
+                </div>
+            </div>
+            <div class="card">
+                <h4>💳 Transaction Data</h4>
+                <p><strong>Methods:</strong> Automated recording of business transactions</p>
+                <p><strong>Strengths:</strong> Accurate, complete records, high veracity, factual</p>
+                <p><strong>Weaknesses:</strong> Only captures completed actions, not intent or reasons</p>
+            </div>
+            <div class="slide-number">4 / 23</div>
+        </div>
+
+        <!-- Slide 5: How Generation Method Affects Quality -->
+        <div class="slide">
+            <h2>Generation Method Impacts Data Quality</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Quality Factor</th>
+                        <th>Human Surveys</th>
+                        <th>Sensor Data</th>
+                        <th>AI Predictions</th>
+                        <th>Transaction Logs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Accuracy</strong></td>
+                        <td>Variable (subject to errors, bias)</td>
+                        <td>Very High (objective measurements)</td>
+                        <td>Depends on training data</td>
+                        <td>Very High (exact records)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completeness</strong></td>
+                        <td>Often incomplete (skipped questions)</td>
+                        <td>Complete (continuous capture)</td>
+                        <td>Complete within scope</td>
+                        <td>Complete (all fields required)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Timeliness</strong></td>
+                        <td>Slow (manual process)</td>
+                        <td>Real-time</td>
+                        <td>Fast (near real-time)</td>
+                        <td>Real-time</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Context</strong></td>
+                        <td>Rich (explanations, reasons)</td>
+                        <td>None (just numbers)</td>
+                        <td>Limited (statistical patterns)</td>
+                        <td>Limited (factual only)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Consistency</strong></td>
+                        <td>Low (interpretation varies)</td>
+                        <td>Very High (same method)</td>
+                        <td>High (algorithmic)</td>
+                        <td>Very High (standardised)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="best-practice">
+                <h4>Implication for Software Development</h4>
+                <p>Choose data generation methods based on what you're trying to achieve. User requirements gathering needs human input for context; performance monitoring needs sensor data for accuracy; personalisation needs transaction data for patterns.</p>
+            </div>
+            <div class="slide-number">5 / 23</div>
+        </div>
+
+        <!-- Slide 6: Interrelationships -->
+        <div class="slide">
+            <h2>Interrelationships: Source Affects Information Quality</h2>
+            <div class="highlight-box">
+                <h3>🔗 The Chain of Influence</h3>
+                <p>Data generation method → Data quality → Information quality → Decision quality. Each link in the chain affects the next.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>❌ Poor Chain Example</h4>
+                    <ol>
+                        <li><strong>Generation:</strong> Survey with leading questions ("Don't you agree our app is great?")</li>
+                        <li><strong>Data Quality:</strong> Biased responses, low validity</li>
+                        <li><strong>Information:</strong> "95% of users love the app"</li>
+                        <li><strong>Decision:</strong> Don't invest in improvements (incorrect)</li>
+                        <li><strong>Outcome:</strong> App remains flawed, users leave</li>
+                    </ol>
+                </div>
+                <div class="card">
+                    <h4>✅ Good Chain Example</h4>
+                    <ol>
+                        <li><strong>Generation:</strong> Neutral survey + usage analytics + support tickets</li>
+                        <li><strong>Data Quality:</strong> Balanced, accurate, comprehensive</li>
+                        <li><strong>Information:</strong> "60% satisfied, but checkout process has high abandonment"</li>
+                        <li><strong>Decision:</strong> Prioritise checkout redesign</li>
+                        <li><strong>Outcome:</strong> Improved conversion rate, happier users</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Critical Insight</h4>
+                <p>You cannot fix poor-quality data with sophisticated analysis. "Garbage in, garbage out" (GIGO) means that flawed data, no matter how well analysed, produces unreliable information and poor decisions.</p>
+            </div>
+            <div class="slide-number">6 / 23</div>
+        </div>
+
+        <!-- Slide 7: Context Transforms Data into Information -->
+        <div class="slide">
+            <h2>Context Transforms Data into Information</h2>
+            <div class="card">
+                <h3>📝 The Same Data, Different Contexts</h3>
+                <p>Raw data: <strong>"82"</strong></p>
+            </div>
+            <div class="three-column">
+                <div class="transformation-box">
+                    <h4>Context 1: Temperature</h4>
+                    <p><strong>Information:</strong> "82°C - Water is very hot, near boiling"</p>
+                    <p><strong>Action:</strong> Wait before drinking</p>
+                </div>
+                <div class="transformation-box">
+                    <h4>Context 2: Test Score</h4>
+                    <p><strong>Information:</strong> "82% - Student achieved a B grade"</p>
+                    <p><strong>Action:</strong> Good performance, minor improvement needed</p>
+                </div>
+                <div class="transformation-box">
+                    <h4>Context 3: Heart Rate</h4>
+                    <p><strong>Information:</strong> "82 BPM - Normal resting heart rate"</p>
+                    <p><strong>Action:</strong> No medical concern</p>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Software Development Example</h4>
+                <p><strong>Data:</strong> "Response time: 250"</p>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Without Context:</strong> Meaningless number</p>
+                    </div>
+                    <div>
+                        <p><strong>With Context:</strong> "API response time: 250ms - Within acceptable limits (&lt;500ms target)"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Adding Context in Software Development</h4>
+                <p>• Metadata (labels, units, timestamps) • Baseline comparisons (previous periods) • Thresholds (acceptable ranges) • Related metrics (CPU + memory together) • Business context (what action triggered this data)</p>
+            </div>
+            <div class="slide-number">7 / 23</div>
+        </div>
+
+        <!-- Slide 8: Suitability - Requirements Gathering -->
+        <div class="slide">
+            <h2>Suitability for Requirements Gathering</h2>
+            <div class="highlight-box">
+                <h3>💭 Understanding What Users Need</h3>
+                <p>Requirements gathering determines what software should do. The data generation method must capture user needs, preferences, and pain points.</p>
+            </div>
+            <div class="suitability-grid">
+                <div class="judgement-card suitable">
+                    <h4>✅ Highly Suitable</h4>
+                    <ul class="checklist">
+                        <li><strong>User interviews:</strong> Rich qualitative insights, understand "why"</li>
+                        <li><strong>Focus groups:</strong> Discover needs through discussion</li>
+                        <li><strong>Surveys with open questions:</strong> Allow users to express desires</li>
+                        <li><strong>Observation studies:</strong> Watch how users interact with current systems</li>
+                        <li><strong>Prototype feedback:</strong> Iterate based on user reactions</li>
+                    </ul>
+                </div>
+                <div class="judgement-card unsuitable">
+                    <h4>❌ Unsuitable</h4>
+                    <ul>
+                        <li><strong>Sensor data:</strong> No insight into what users want, just measurements</li>
+                        <li><strong>Server logs:</strong> Show what happened, not what should happen</li>
+                        <li><strong>AI predictions alone:</strong> Can't predict entirely new features users haven't mentioned</li>
+                        <li><strong>Transaction data:</strong> Shows past behaviour, not future desires</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Mobile Banking App Requirements</h4>
+                <p><strong>Suitable approach:</strong> Conduct user interviews discovering customers struggle to find transaction history → Requirement: "Clear, searchable transaction history on home screen"</p>
+                <p><strong>Unsuitable approach:</strong> Analyse server logs showing page views → Can't tell you what features users wish existed</p>
+            </div>
+            <div class="slide-number">8 / 23</div>
+        </div>
+
+        <!-- Slide 9: Suitability - Testing Data -->
+        <div class="slide">
+            <h2>Suitability for Testing Data</h2>
+            <div class="card">
+                <h3>🧪 Ensuring Software Works Correctly</h3>
+                <p>Testing requires data that covers typical use cases, edge cases, and invalid inputs to verify the software handles all scenarios properly.</p>
+            </div>
+            <div class="two-column">
+                <div class="judgement-card suitable">
+                    <h4>✅ Highly Suitable</h4>
+                    <ul class="checklist">
+                        <li><strong>Synthetic test data:</strong> Controlled, specific scenarios (boundary testing)</li>
+                        <li><strong>Production data (anonymised):</strong> Real-world scenarios and edge cases</li>
+                        <li><strong>Transaction logs:</strong> Actual user workflows to replay</li>
+                        <li><strong>Generated datasets:</strong> Large volumes for performance testing</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>E-commerce testing:</strong> Create orders with £0.01, £999,999.99, negative values, special characters in names—test boundary conditions</p>
+                    </div>
+                </div>
+                <div class="judgement-card unsuitable">
+                    <h4>❌ Less Suitable</h4>
+                    <ul>
+                        <li><strong>User surveys:</strong> Don't provide actual data to test with</li>
+                        <li><strong>Small samples:</strong> Won't reveal rare bugs or performance issues</li>
+                        <li><strong>Single-source data:</strong> Doesn't cover all scenarios</li>
+                        <li><strong>Real production data (unmodified):</strong> GDPR/privacy violations, security risks</li>
+                    </ul>
+                    <div class="warning-box">
+                        <p><strong>Critical:</strong> Never use real customer PII in test environments without anonymisation!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">9 / 23</div>
+        </div>
+
+        <!-- Slide 10: Suitability - Analytics and Metrics -->
+        <div class="slide">
+            <h2>Suitability for Analytics & Metrics</h2>
+            <div class="card">
+                <h3>📊 Measuring Software Performance & Usage</h3>
+                <p>Analytics requires accurate, continuous, quantitative data to track KPIs, performance metrics, and user behaviour patterns.</p>
+            </div>
+            <div class="two-column">
+                <div class="judgement-card suitable">
+                    <h4>✅ Highly Suitable</h4>
+                    <ul class="checklist">
+                        <li><strong>Automated logging:</strong> Captures every event consistently</li>
+                        <li><strong>Sensor/IoT data:</strong> Precise performance measurements (CPU, memory, latency)</li>
+                        <li><strong>Transaction data:</strong> Complete records of user actions</li>
+                        <li><strong>Analytics tools:</strong> Google Analytics, Mixpanel (user journeys)</li>
+                        <li><strong>A/B testing data:</strong> Statistical comparison of variants</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>Example:</strong> Website analytics automatically tracks page views, bounce rates, conversion funnels—millions of data points analysed to understand user behaviour patterns</p>
+                    </div>
+                </div>
+                <div class="judgement-card unsuitable">
+                    <h4>❌ Unsuitable</h4>
+                    <ul>
+                        <li><strong>Manual surveys:</strong> Too slow, incomplete picture, biased sample</li>
+                        <li><strong>Anecdotal reports:</strong> Not statistically valid</li>
+                        <li><strong>Incomplete logs:</strong> Missing data creates blind spots</li>
+                        <li><strong>Inconsistent data:</strong> Different measurement methods over time</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Key Metrics for Software</h4>
+                <p>• <strong>Performance:</strong> Response time, throughput, error rates • <strong>Usage:</strong> Active users, feature adoption, session duration • <strong>Business:</strong> Conversion rates, revenue per user, churn rate</p>
+            </div>
+            <div class="slide-number">10 / 23</div>
+        </div>
+
+        <!-- Slide 11: Suitability - User Research -->
+        <div class="slide">
+            <h2>Suitability for User Research</h2>
+            <div class="card">
+                <h3>🔍 Understanding User Behaviour & Motivations</h3>
+                <p>User research uncovers the "why" behind user actions—motivations, frustrations, workflows, and needs. This requires qualitative and quantitative methods combined.</p>
+            </div>
+            <div class="card">
+                <h4>Combined Approach Works Best</h4>
+                <div class="two-column">
+                    <div class="transformation-box">
+                        <h4>Quantitative Data</h4>
+                        <p><strong>What:</strong> Analytics show "what" users do</p>
+                        <ul>
+                            <li>Where users click</li>
+                            <li>Which features used most</li>
+                            <li>Where users drop off</li>
+                            <li>How long tasks take</li>
+                        </ul>
+                        <p><strong>Suitable sources:</strong> Analytics, heatmaps, session recordings, transaction logs</p>
+                    </div>
+                    <div class="transformation-box">
+                        <h4>Qualitative Data</h4>
+                        <p><strong>Why:</strong> Research reveals "why" users act this way</p>
+                        <ul>
+                            <li>Motivations for behaviour</li>
+                            <li>Pain points and frustrations</li>
+                            <li>Workarounds they've created</li>
+                            <li>Unmet needs</li>
+                        </ul>
+                        <p><strong>Suitable sources:</strong> Interviews, usability testing, surveys, feedback forms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: E-learning Platform Research</h4>
+                <p><strong>Quantitative:</strong> Analytics show 70% of students abandon courses at module 3</p>
+                <p><strong>Qualitative:</strong> Interviews reveal module 3 is too difficult without prerequisite knowledge</p>
+                <p><strong>Combined insight:</strong> Add prerequisites checker and introductory content before module 3</p>
+                <p><strong>Result:</strong> Course completion rate increases to 85%</p>
+            </div>
+            <div class="slide-number">11 / 23</div>
+        </div>
+
+        <!-- Slide 12: Judgement Criteria - Accuracy & Reliability -->
+        <div class="slide">
+            <h2>Making Judgements: Accuracy & Reliability</h2>
+            <div class="two-column">
+                <div class="card">
+                    <h3>🎯 Accuracy</h3>
+                    <p><strong>Question:</strong> Is the data correct and precise?</p>
+                    <h4>Assessment Criteria:</h4>
+                    <ul class="checklist">
+                        <li>How was it measured/collected?</li>
+                        <li>What's the margin of error?</li>
+                        <li>Has it been validated?</li>
+                        <li>Are there known issues with the source?</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>High accuracy:</strong> Temperature sensor calibrated to ±0.1°C</p>
+                        <p><strong>Low accuracy:</strong> User self-reported age (people lie)</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔄 Reliability</h3>
+                    <p><strong>Question:</strong> Can we consistently trust this source?</p>
+                    <h4>Assessment Criteria:</h4>
+                    <ul class="checklist">
+                        <li>Does it produce consistent results?</li>
+                        <li>How often does it fail?</li>
+                        <li>Can we verify the data?</li>
+                        <li>What's the track record?</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>High reliability:</strong> Bank transaction logs (audited, consistent)</p>
+                        <p><strong>Low reliability:</strong> Crowdsourced data from anonymous users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Software Development Application</h4>
+                <p>When choosing data for bug reports: System logs (high accuracy, high reliability) are better than user descriptions (low accuracy—"it's broken" isn't specific—but valuable for context). Combine both for best results.</p>
+            </div>
+            <div class="slide-number">12 / 23</div>
+        </div>
+
+        <!-- Slide 13: Judgement Criteria - Relevance & Completeness -->
+        <div class="slide">
+            <h2>Making Judgements: Relevance & Completeness</h2>
+            <div class="two-column">
+                <div class="card">
+                    <h3>🎯 Relevance</h3>
+                    <p><strong>Question:</strong> Does this data actually help answer our question?</p>
+                    <h4>Assessment Criteria:</h4>
+                    <ul class="checklist">
+                        <li>Is it directly related to the problem?</li>
+                        <li>Does it provide actionable insights?</li>
+                        <li>Is it at the right level of detail?</li>
+                        <li>Does it match the use case?</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>Relevant:</strong> For optimising checkout flow, track cart abandonment rates and error messages</p>
+                        <p><strong>Irrelevant:</strong> User's favourite colour won't help fix checkout bugs</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📋 Completeness</h3>
+                    <p><strong>Question:</strong> Do we have all the data we need?</p>
+                    <h4>Assessment Criteria:</h4>
+                    <ul class="checklist">
+                        <li>Are there gaps in coverage?</li>
+                        <li>Are all scenarios represented?</li>
+                        <li>Is the time period sufficient?</li>
+                        <li>Do we have enough samples?</li>
+                    </ul>
+                    <div class="warning-box">
+                        <p><strong>Incomplete example:</strong> Testing only on Chrome desktop when 40% of users are on mobile Safari—missing critical bugs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">13 / 23</div>
+        </div>
+
+        <!-- Slide 14: Judgement Criteria - Timeliness & Cost -->
+        <div class="slide">
+            <h2>Making Judgements: Timeliness & Cost</h2>
+            <div class="two-column">
+                <div class="card">
+                    <h3>⏰ Timeliness</h3>
+                    <p><strong>Question:</strong> Is the data current enough for our needs?</p>
+                    <h4>Considerations:</h4>
+                    <ul>
+                        <li><strong>Real-time needs:</strong> Stock trading, fraud detection require immediate data</li>
+                        <li><strong>Recent trends:</strong> User preferences change—last month's data may be stale</li>
+                        <li><strong>Historical value:</strong> Long-term patterns require years of data</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>Suitable timeframe:</strong> For sprint planning, last 3 sprints' velocity data</p>
+                        <p><strong>Too old:</strong> Using 2-year-old velocity when team has changed significantly</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>💰 Cost</h3>
+                    <p><strong>Question:</strong> Is obtaining this data worth the resources?</p>
+                    <h4>Cost Factors:</h4>
+                    <ul>
+                        <li><strong>Collection cost:</strong> Time, tools, personnel</li>
+                        <li><strong>Storage cost:</strong> Database capacity, cloud storage</li>
+                        <li><strong>Processing cost:</strong> Computational resources, analysis time</li>
+                        <li><strong>Opportunity cost:</strong> Could resources be better spent elsewhere?</li>
+                    </ul>
+                    <div class="best-practice">
+                        <p><strong>Trade-off:</strong> Detailed user surveys provide rich insights but take weeks and cost thousands. Simple analytics are instant and free but less detailed.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">14 / 23</div>
+        </div>
+
+        <!-- Slide 15: Trade-offs in Data Selection -->
+        <div class="slide">
+            <h2>Trade-offs in Data Selection</h2>
+            <div class="highlight-box">
+                <h3>⚖️ Balancing Competing Priorities</h3>
+                <p>Perfect data rarely exists. Software developers must balance accuracy, speed, cost, and completeness based on project needs.</p>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Priority</th>
+                        <th>Trade-off Accepted</th>
+                        <th>Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MVP Launch</strong></td>
+                        <td>Speed to market</td>
+                        <td>Limited user research, basic analytics</td>
+                        <td>Quick validation more important than perfect data—iterate later</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Banking Software</strong></td>
+                        <td>Accuracy & reliability</td>
+                        <td>Higher cost, slower collection</td>
+                        <td>Financial accuracy is non-negotiable—worth the investment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Optimisation</strong></td>
+                        <td>Precision & completeness</td>
+                        <td>Complex instrumentation, detailed logs</td>
+                        <td>Need exact measurements to identify bottlenecks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Research Study</strong></td>
+                        <td>Depth of insight</td>
+                        <td>Small sample size, high time investment</td>
+                        <td>Rich qualitative data from 10 users beats shallow data from 1,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A/B Testing</strong></td>
+                        <td>Statistical significance</td>
+                        <td>Wait for enough data before deciding</td>
+                        <td>Premature conclusions from small samples lead to wrong decisions</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="slide-number">15 / 23</div>
+        </div>
+
+        <!-- Slide 16: Real-World Scenario 1 -->
+        <div class="slide">
+            <h2>Real-World Scenario: Mobile App Development</h2>
+            <div class="card">
+                <h3>📱 Fitness Tracking App</h3>
+                <p><strong>Challenge:</strong> Determine which new feature to develop next</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Data Available</h4>
+                    <ul>
+                        <li><strong>Analytics:</strong> Current feature usage rates (high accuracy, large sample)</li>
+                        <li><strong>App store reviews:</strong> User complaints and requests (biased sample—angry users more vocal)</li>
+                        <li><strong>User survey:</strong> 200 responses about desired features (voluntary response bias)</li>
+                        <li><strong>Competitor analysis:</strong> Features in rival apps (secondary source)</li>
+                        <li><strong>Support tickets:</strong> Issues users report (problem-focused, not aspirational)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Judgement Process</h4>
+                    <ol>
+                        <li><strong>Most relevant:</strong> User survey (directly asks what they want) + analytics (shows what they actually use)</li>
+                        <li><strong>Support findings:</strong> Survey shows 60% want meal planning integration</li>
+                        <li><strong>Validation:</strong> Analytics confirm nutrition tracking is heavily used feature</li>
+                        <li><strong>Competitor check:</strong> Top rival lacks this feature—opportunity!</li>
+                        <li><strong>Decision:</strong> Prioritise meal planning feature</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Why This Works</h4>
+                <p>Combined multiple data sources (triangulation) to offset individual weaknesses. Survey showed demand, analytics confirmed related feature usage, competitor analysis validated uniqueness. No single source was perfect, but together they provided strong evidence.</p>
+            </div>
+            <div class="slide-number">16 / 23</div>
+        </div>
+
+        <!-- Slide 17: Real-World Scenario 2 -->
+        <div class="slide">
+            <h2>Real-World Scenario: Website Performance</h2>
+            <div class="card">
+                <h3>🌐 E-commerce Site Slowdown</h3>
+                <p><strong>Problem:</strong> Customers complaining about slow page loads, but cause unknown</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Available Data Sources</h4>
+                    <ol>
+                        <li><strong>Customer complaints:</strong> "Site is slow" (subjective, lacks detail)</li>
+                        <li><strong>Server logs:</strong> Response times, error rates (objective, precise)</li>
+                        <li><strong>Monitoring tools:</strong> CPU, memory, network usage (real-time, accurate)</li>
+                        <li><strong>User analytics:</strong> Actual page load times by browser/location</li>
+                    </ol>
+                </div>
+                <div class="card">
+                    <h4>Suitability Analysis</h4>
+                    <div class="judgement-card suitable">
+                        <h4>✅ Most Suitable</h4>
+                        <p><strong>Server logs + monitoring tools</strong></p>
+                        <p>Objective, precise measurements identify exact bottleneck—database queries taking 3+ seconds</p>
+                    </div>
+                    <div class="judgement-card unsuitable">
+                        <h4>❌ Less Suitable</h4>
+                        <p><strong>Customer complaints alone</strong></p>
+                        <p>Useful to identify issue exists, but too vague to pinpoint solution</p>
+                    </div>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Resolution Process</h4>
+                <p><strong>Step 1:</strong> Monitoring tools show database CPU at 95% during peak hours</p>
+                <p><strong>Step 2:</strong> Server logs identify slow queries accessing unindexed tables</p>
+                <p><strong>Step 3:</strong> Add database indexes to frequently queried columns</p>
+                <p><strong>Result:</strong> Page load times drop from 4 seconds to 800ms—problem solved</p>
+                <p><strong>Validation:</strong> User analytics confirm improvement, complaints cease</p>
+            </div>
+            <div class="slide-number">17 / 23</div>
+        </div>
+
+        <!-- Slide 18: Critical Evaluation Framework -->
+        <div class="slide">
+            <h2>Critical Evaluation Framework</h2>
+            <div class="highlight-box">
+                <h3>🔍 Systematic Approach to Judging Data Suitability</h3>
+                <p>Use this framework when evaluating whether data is suitable for your software development needs.</p>
+            </div>
+            <div class="card">
+                <h4>The 7-Question Framework</h4>
+                <ol>
+                    <li><strong>Purpose Alignment:</strong> Does this data directly address our specific question or need?</li>
+                    <li><strong>Generation Method:</strong> How was this data collected, and does the method affect reliability?</li>
+                    <li><strong>Quality Assessment:</strong> Is it accurate, complete, consistent, and current?</li>
+                    <li><strong>Sample Adequacy:</strong> Is the sample size sufficient and representative?</li>
+                    <li><strong>Context Availability:</strong> Do we have enough context to interpret this data correctly?</li>
+                    <li><strong>Trade-off Justification:</strong> Are any limitations acceptable given our constraints (time, budget, accuracy needs)?</li>
+                    <li><strong>Alternative Consideration:</strong> Is there better data available, or should we combine multiple sources?</li>
+                </ol>
+            </div>
+            <div class="best-practice">
+                <h4>Document Your Reasoning</h4>
+                <p>In professional software development, document why you chose specific data sources and what limitations you accepted. This justifies decisions to stakeholders and helps future teams understand your reasoning.</p>
+            </div>
+            <div class="slide-number">18 / 23</div>
+        </div>
+
+        <!-- Slide 19: Exam Question 1 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 1 (6 marks)</h3>
+                <p><strong>Scenario:</strong> A software development team is building a new feature for their mobile app. They have two data sources to help them decide how to design the user interface:</p>
+                <ul>
+                    <li><strong>Source A:</strong> Analytics data showing 80% of users access the app on smartphones with screens smaller than 6 inches</li>
+                    <li><strong>Source B:</strong> A user survey (20 responses) where 15 users said they prefer large buttons and simple interfaces</li>
+                </ul>
+                <p><strong>Question:</strong> Evaluate the suitability of each data source for making UI design decisions. Which source is more suitable and why?</p>
+            </div>
+            <div class="slide-number">19 / 23</div>
+        </div>
+
+        <!-- Slide 20: Exam Question 1 Answer -->
+        <div class="slide">
+            <h2>Question 1: Model Answer</h2>
+            <div class="card">
+                <h4>Source A Evaluation (3 marks)</h4>
+                <p>The analytics data showing 80% of users have screens smaller than 6 inches is highly suitable for UI design decisions ✓. This data is objective, based on actual device measurements from the app's entire user base, providing high accuracy and reliability. It directly informs design choices—small screens require larger touch targets, simplified layouts, and thumb-friendly navigation ✓. The large sample size (all app users) makes it statistically significant and representative, unlike a small survey. This quantitative data provides concrete constraints for the design—the team knows definitively that they must optimise for small screens ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Source B Evaluation (2 marks)</h4>
+                <p>The user survey with 20 responses provides useful qualitative insight into user preferences ✓, but has significant limitations. The sample size is too small to be statistically significant—20 responses may not represent the entire user base accurately. There's potential for response bias (people who respond to surveys may have different preferences than those who don't). However, the finding that 75% prefer large buttons and simple interfaces does validate the direction suggested by Source A ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Conclusion (1 mark)</h4>
+                <p>Source A (analytics) is more suitable as the primary data source for UI decisions because it provides objective, comprehensive data about actual usage constraints ✓. However, the ideal approach would combine both sources—use Source A to define technical requirements (button sizes must work on small screens) and Source B to validate that users appreciate simplified interfaces. The survey confirms users want what the analytics data suggests they need.</p>
+            </div>
+            <div class="slide-number">20 / 23</div>
+        </div>
+
+        <!-- Slide 21: Exam Question 2 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 2 (8 marks)</h3>
+                <p><strong>Scenario:</strong> A development team is investigating why their web application crashes intermittently. They are considering three data sources:</p>
+                <ul>
+                    <li><strong>Source 1:</strong> User-reported bug descriptions via email ("The app crashed when I clicked the button")</li>
+                    <li><strong>Source 2:</strong> Automated server error logs with timestamps, error codes, and stack traces</li>
+                    <li><strong>Source 3:</strong> User surveys asking about crash frequency and circumstances</li>
+                </ul>
+                <p><strong>Question:</strong> Analyse the interrelationships between these data sources and evaluate their suitability for debugging the application. Explain which combination of sources would be most effective and why.</p>
+            </div>
+            <div class="slide-number">21 / 23</div>
+        </div>
+
+        <!-- Slide 22: Exam Question 2 Answer -->
+        <div class="slide">
+            <h2>Question 2: Model Answer</h2>
+            <div class="card">
+                <p><strong>Interrelationships (3 marks):</strong> These three data sources are interconnected and complementary ✓. User-reported bugs (Source 1) provide context about what users were trying to accomplish when crashes occurred, but lack technical precision about the underlying cause. Server error logs (Source 2) provide exact technical details (error codes, stack traces) that pinpoint the code causing crashes, but don't explain the user's perspective or steps to reproduce ✓. User surveys (Source 3) could identify patterns in crash frequency and common scenarios, but rely on user memory which may be unreliable and lack technical detail. Each source compensates for weaknesses in the others—combining them creates a complete picture ✓.</p>
+            </div>
+            <div class="card">
+                <p><strong>Suitability Analysis (3 marks):</strong> Source 2 (server logs) is most suitable for actually debugging the application ✓ because error logs provide objective, precise technical information necessary to identify and fix code errors. The stack traces show exactly which line of code failed and under what conditions. This data is highly accurate, complete, and generated automatically in real-time. However, Source 1 (user reports) is valuable for reproduction steps ✓—knowing "the crash happens when clicking the submit button on the checkout page" helps developers reproduce the bug reliably. Source 3 (surveys) is least suitable for debugging ✓ because it's too slow, relies on subjective user memory, and doesn't provide technical detail, though it might help prioritise which crashes to fix first based on frequency.</p>
+            </div>
+            <div class="card">
+                <p><strong>Recommendation (2 marks):</strong> The most effective approach combines Sources 1 and 2 ✓. Start with server error logs to identify when and where crashes occur technically, then correlate these with user bug reports to understand the user actions triggering the errors. For example, error logs might show "NullPointerException at line 247" whilst user reports explain "crashed when checkout form was empty"—together revealing that the code doesn't handle empty form submission. This combination provides both technical precision for fixing the bug and user context for testing the solution ✓. Source 3 is less critical for debugging but could be used afterwards to verify the fix resolved user-facing issues.</p>
+            </div>
+            <div class="slide-number">22 / 23</div>
+        </div>
+
+        <!-- Slide 23: Summary -->
+        <div class="slide">
+            <h2>Summary: Data & Information Interrelationships</h2>
+            <div class="card">
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Hierarchy:</strong> Data becomes information when given context; information becomes knowledge when applied with understanding</li>
+                    <li><strong>Generation Method Matters:</strong> How data is created (human, sensor, AI, transaction) fundamentally affects its quality, accuracy, and suitability</li>
+                    <li><strong>Interrelationships:</strong> Data source → data quality → information quality → decision quality. Flawed data produces flawed decisions ("garbage in, garbage out")</li>
+                    <li><strong>Context is Essential:</strong> The same raw data means different things in different contexts—labels, units, baselines, and business context transform data into actionable information</li>
+                    <li><strong>Suitability Varies by Purpose:</strong> Human input suits requirements gathering; sensors suit performance monitoring; transaction data suits analytics; combine sources for research</li>
+                    <li><strong>Judgement Criteria:</strong> Evaluate data on accuracy, reliability, relevance, completeness, timeliness, and cost—perfect data rarely exists</li>
+                    <li><strong>Trade-offs Required:</strong> Balance speed vs accuracy, cost vs completeness, depth vs breadth based on project priorities and constraints</li>
+                    <li><strong>Software Development Application:</strong> Different development phases need different data—requirements need qualitative insight, testing needs controlled scenarios, analytics needs quantitative measurements</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h3>🎯 Remember</h3>
+                <p>Critical thinking about data suitability is essential for successful software development. Don't accept data at face value—question its origin, assess its quality, understand its limitations, and choose sources that genuinely serve your needs. When possible, combine multiple data sources to offset individual weaknesses and strengthen conclusions.</p>
+            </div>
+            <div class="slide-number">23 / 23</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressFill = document.getElementById('progressFill');
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateProgress();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(slides.length - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

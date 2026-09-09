@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Area 6: How Organisations Use Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a1628;
+            background-image: 
+                radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
+                radial-gradient(at 40% 80%, rgba(29, 78, 216, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            overflow: auto;
+            min-height: 100vh;
+        }
+
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding: 80px 100px 150px 100px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 30px;
+            color: #60a5fa;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+
+        h2 {
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            color: #60a5fa;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.3);
+        }
+
+        h3 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #93c5fd;
+        }
+
+        h4 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #93c5fd;
+        }
+
+        p, li {
+            font-size: 1.4em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border-left: 5px solid #60a5fa;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .four-column {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(10, 22, 40, 0.9);
+            padding: 15px 40px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(96, 165, 250, 0.4);
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .use-case-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(96, 165, 250, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-5px);
+            border-color: #60a5fa;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .example-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .warning-box h4 {
+            color: #fca5a5;
+        }
+
+        .info-box {
+            background: rgba(96, 165, 250, 0.1);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+            font-size: 1.3em;
+        }
+
+        .comparison-table td {
+            font-size: 1.2em;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            font-size: 1.2em;
+            color: rgba(147, 197, 253, 0.5);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: #60a5fa;
+            transform: translateX(10px);
+        }
+
+        .best-practice {
+            background: rgba(96, 165, 250, 0.05);
+            border-left: 4px solid #60a5fa;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .pattern-box {
+            background: rgba(96, 165, 250, 0.08);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .data-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+
+        .data-step {
+            background: rgba(96, 165, 250, 0.1);
+            border: 2px solid #60a5fa;
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .data-arrow {
+            font-size: 2em;
+            color: #60a5fa;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .status-good {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 2px solid #22c55e;
+        }
+
+        .status-warning {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fde047;
+            border: 2px solid #fbbf24;
+        }
+
+        .status-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 2px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="center-content">
+                <h1>HOW ORGANISATIONS USE DATA</h1>
+                <p style="font-size: 1.5em; color: #93c5fd;">Content Area 6: Data - 6.1.4</p>
+                <div class="highlight-box" style="margin-top: 60px; max-width: 900px;">
+                    <h3 style="text-align: center;">Practical Applications of Data Analysis</h3>
+                    <p style="text-align: center;">Exploring how organisations leverage data for pattern analysis, system monitoring, user tracking, targeted marketing, and strategic assessment.</p>
+                </div>
+            </div>
+            <div class="slide-number">1 / 25</div>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <h2>Why Organisations Use Data</h2>
+            <div class="highlight-box">
+                <h3>📊 Data Drives Decisions</h3>
+                <p>Modern organisations generate and collect vast amounts of data. The key to competitive advantage lies not in collecting data, but in using it effectively to inform decisions, optimise operations, and understand customers.</p>
+            </div>
+            <div class="four-column">
+                <div class="use-case-card">
+                    <div class="icon">🔍</div>
+                    <h4>Pattern Analysis</h4>
+                    <p>Identify trends and behaviours in data</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">⚙️</div>
+                    <h4>System Performance</h4>
+                    <p>Monitor and optimise infrastructure</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">👥</div>
+                    <h4>User Monitoring</h4>
+                    <p>Track access and resource usage</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">🎯</div>
+                    <h4>Targeted Marketing</h4>
+                    <p>Personalise offers and promotions</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">🔐</div>
+                <h4>Threat & Opportunity Assessment</h4>
+                <p>Evaluate competitors, security risks, compliance requirements, and market opportunities</p>
+            </div>
+            <div class="slide-number">2 / 25</div>
+        </div>
+
+        <!-- Slide 3: Pattern Analysis Overview -->
+        <div class="slide">
+            <h2>Analysis to Identify Patterns</h2>
+            <div class="card">
+                <h3>🔍 Finding Meaningful Insights in Data</h3>
+                <p>Pattern analysis involves examining data to discover recurring trends, relationships, and anomalies that provide business insights and inform strategic decisions.</p>
+            </div>
+            <div class="two-column">
+                <div class="use-case-card">
+                    <div class="icon">🛒</div>
+                    <h4>Customer Behaviour Patterns</h4>
+                    <ul>
+                        <li><strong>Purchase Patterns:</strong> When, what, and how often customers buy</li>
+                        <li><strong>Browsing Behaviour:</strong> Which products viewed, time spent</li>
+                        <li><strong>Cart Abandonment:</strong> Why customers don't complete purchases</li>
+                        <li><strong>Seasonal Trends:</strong> Demand fluctuations throughout the year</li>
+                        <li><strong>Customer Segmentation:</strong> Grouping similar customer behaviours</li>
+                    </ul>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">📈</div>
+                    <h4>Sales & Revenue Patterns</h4>
+                    <ul>
+                        <li><strong>Sales Cycles:</strong> Peak and slow periods</li>
+                        <li><strong>Product Performance:</strong> Best and worst sellers</li>
+                        <li><strong>Geographic Patterns:</strong> Regional sales variations</li>
+                        <li><strong>Correlation Analysis:</strong> What factors drive sales</li>
+                        <li><strong>Forecasting:</strong> Predicting future sales trends</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Tesco Clubcard Analysis</h4>
+                <p>Tesco analyses millions of transactions to identify purchasing patterns: families buy nappies with beer on Friday nights, health-conscious shoppers buy organic vegetables with vitamins, ready-meal buyers shop on weekday evenings. These patterns drive product placement, promotional timing, and personalised vouchers.</p>
+            </div>
+            <div class="slide-number">3 / 25</div>
+        </div>
+
+        <!-- Slide 4: Pattern Recognition Techniques -->
+        <div class="slide">
+            <h2>Pattern Recognition Techniques</h2>
+            <div class="three-column">
+                <div class="pattern-box">
+                    <h4>📊 Trend Analysis</h4>
+                    <p><strong>What it identifies:</strong> Upward or downward trends over time</p>
+                    <p><strong>Example:</strong> Website traffic increasing 15% month-over-month</p>
+                    <p><strong>Business Use:</strong> Resource planning, inventory forecasting</p>
+                </div>
+                <div class="pattern-box">
+                    <h4>🔄 Cyclical Patterns</h4>
+                    <p><strong>What it identifies:</strong> Repeating patterns at regular intervals</p>
+                    <p><strong>Example:</strong> Ice cream sales peak every summer</p>
+                    <p><strong>Business Use:</strong> Seasonal staffing, stock management</p>
+                </div>
+                <div class="pattern-box">
+                    <h4>🔗 Association Rules</h4>
+                    <p><strong>What it identifies:</strong> Items frequently purchased together</p>
+                    <p><strong>Example:</strong> "Customers who bought X also bought Y"</p>
+                    <p><strong>Business Use:</strong> Product bundling, cross-selling</p>
+                </div>
+            </div>
+            <div class="three-column">
+                <div class="pattern-box">
+                    <h4>👥 Clustering</h4>
+                    <p><strong>What it identifies:</strong> Groups of similar customers/products</p>
+                    <p><strong>Example:</strong> "Budget shoppers" vs "Premium buyers"</p>
+                    <p><strong>Business Use:</strong> Targeted marketing campaigns</p>
+                </div>
+                <div class="pattern-box">
+                    <h4>⚠️ Anomaly Detection</h4>
+                    <p><strong>What it identifies:</strong> Unusual patterns or outliers</p>
+                    <p><strong>Example:</strong> Sudden spike in failed login attempts</p>
+                    <p><strong>Business Use:</strong> Fraud detection, security alerts</p>
+                </div>
+                <div class="pattern-box">
+                    <h4>🎯 Predictive Patterns</h4>
+                    <p><strong>What it identifies:</strong> Future behaviour based on past patterns</p>
+                    <p><strong>Example:</strong> Customer likely to cancel subscription</p>
+                    <p><strong>Business Use:</strong> Retention campaigns, churn prevention</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 25</div>
+        </div>
+
+        <!-- Slide 5: System Performance Analysis -->
+        <div class="slide">
+            <h2>System Performance Analysis</h2>
+            <div class="highlight-box">
+                <h3>⚙️ Monitoring Infrastructure Health</h3>
+                <p>System performance analysis involves continuously measuring and evaluating how IT systems operate, identifying bottlenecks, predicting failures, and optimising resource allocation.</p>
+            </div>
+            <div class="four-column">
+                <div class="metric-card">
+                    <div class="icon">📊</div>
+                    <h4>Load</h4>
+                    <p>System resource usage and capacity</p>
+                </div>
+                <div class="metric-card">
+                    <div class="icon">⚠️</div>
+                    <h4>Outage</h4>
+                    <p>Service disruptions and downtime</p>
+                </div>
+                <div class="metric-card">
+                    <div class="icon">⚡</div>
+                    <h4>Throughput</h4>
+                    <p>Volume processed per time unit</p>
+                </div>
+                <div class="metric-card">
+                    <div class="icon">✓</div>
+                    <h4>Status</h4>
+                    <p>Current health and operational state</p>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Why System Performance Matters</h4>
+                <div class="two-column">
+                    <div>
+                        <p><strong>User Experience:</strong> Slow systems frustrate users and drive them away</p>
+                        <p><strong>Cost Optimisation:</strong> Right-size infrastructure—don't overpay for unused capacity</p>
+                        <p><strong>Availability:</strong> Prevent downtime that costs revenue and reputation</p>
+                    </div>
+                    <div>
+                        <p><strong>Capacity Planning:</strong> Know when to add resources before issues occur</p>
+                        <p><strong>Incident Response:</strong> Detect and resolve problems quickly</p>
+                        <p><strong>Compliance:</strong> Meet SLA commitments to customers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">5 / 25</div>
+        </div>
+
+        <!-- Slide 6: Load Analysis -->
+        <div class="slide">
+            <h2>Load Analysis & Capacity Planning</h2>
+            <div class="card">
+                <h3>📊 Understanding System Resource Usage</h3>
+                <p>Load analysis measures how much of system capacity is being used—CPU, memory, disk, network—to ensure adequate resources and identify when scaling is needed.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Key Load Metrics</h4>
+                    <ul>
+                        <li><strong>CPU Usage:</strong> Percentage of processor capacity used (aim for &lt;70% average)</li>
+                        <li><strong>Memory Utilisation:</strong> RAM consumption (high memory = slow performance)</li>
+                        <li><strong>Disk I/O:</strong> Read/write operations per second</li>
+                        <li><strong>Network Bandwidth:</strong> Data transfer rates</li>
+                        <li><strong>Concurrent Users:</strong> Number of simultaneous active sessions</li>
+                        <li><strong>Queue Length:</strong> Requests waiting to be processed</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Load Patterns</h4>
+                    <div class="pattern-box">
+                        <p><span class="status-indicator status-good">Normal Load</span></p>
+                        <p>System operating within designed capacity, responsive performance</p>
+                    </div>
+                    <div class="pattern-box">
+                        <p><span class="status-indicator status-warning">High Load</span></p>
+                        <p>Approaching capacity limits, performance degradation begins, plan scaling</p>
+                    </div>
+                    <div class="pattern-box">
+                        <p><span class="status-indicator status-critical">Overload</span></p>
+                        <p>Exceeds capacity, severe slowdown or failures, immediate action needed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Netflix Load Management</h4>
+                <p>Netflix analyses load patterns to predict peak viewing times (evenings, weekends, when popular shows release). They pre-position content on edge servers in high-demand areas and scale cloud infrastructure automatically to handle spikes—ensuring smooth streaming for 230M+ subscribers worldwide.</p>
+            </div>
+            <div class="slide-number">6 / 25</div>
+        </div>
+
+        <!-- Slide 7: Outage Detection -->
+        <div class="slide">
+            <h2>Outage Detection & Prevention</h2>
+            <div class="card">
+                <h3>⚠️ Minimising Service Disruption</h3>
+                <p>Outage analysis tracks service availability, identifies causes of failures, and implements preventive measures to maintain uptime and meet SLA commitments.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Types of Outages</h4>
+                    <ul>
+                        <li><strong>Complete Outage:</strong> Service entirely unavailable</li>
+                        <li><strong>Partial Outage:</strong> Some features/regions affected</li>
+                        <li><strong>Degraded Performance:</strong> Service slow but functional</li>
+                        <li><strong>Planned Maintenance:</strong> Scheduled downtime for updates</li>
+                    </ul>
+                    <h4>Common Causes</h4>
+                    <ul>
+                        <li><strong>Hardware Failure:</strong> Server/disk crashes</li>
+                        <li><strong>Software Bugs:</strong> Code errors causing crashes</li>
+                        <li><strong>Network Issues:</strong> Connectivity problems</li>
+                        <li><strong>Capacity Exceeded:</strong> Traffic overwhelms systems</li>
+                        <li><strong>Security Incidents:</strong> DDoS attacks, breaches</li>
+                        <li><strong>Human Error:</strong> Misconfiguration, accidents</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Outage Metrics</h4>
+                    <ul>
+                        <li><strong>Uptime Percentage:</strong> 99.9% = 8.76 hours downtime/year</li>
+                        <li><strong>MTBF (Mean Time Between Failures):</strong> Average time before next outage</li>
+                        <li><strong>MTTR (Mean Time To Repair):</strong> Average resolution time</li>
+                        <li><strong>Incident Frequency:</strong> How often problems occur</li>
+                    </ul>
+                    <h4>Prevention Strategies</h4>
+                    <ul class="checklist">
+                        <li>Redundancy - backup systems automatically take over</li>
+                        <li>Health checks - continuous monitoring alerts issues early</li>
+                        <li>Load balancing - distribute traffic across multiple servers</li>
+                        <li>Automated failover - switch to backup instantly</li>
+                        <li>Regular maintenance - patch and update during low-traffic periods</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Example: AWS Outage Impact</h4>
+                <p>In December 2021, a major AWS outage affected numerous services including Netflix, Disney+, and Amazon itself. The incident highlighted the importance of multi-region redundancy—companies relying on a single AWS region faced complete service disruption.</p>
+            </div>
+            <div class="slide-number">7 / 25</div>
+        </div>
+
+        <!-- Slide 8: Throughput Measurement -->
+        <div class="slide">
+            <h2>Throughput Measurement & Optimisation</h2>
+            <div class="card">
+                <h3>⚡ How Much Work Gets Done?</h3>
+                <p>Throughput measures the volume of work a system processes in a given time period. Higher throughput means more transactions, requests, or data processed efficiently.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Throughput Metrics by System</h4>
+                    <ul>
+                        <li><strong>Web Servers:</strong> Requests per second (RPS)</li>
+                        <li><strong>Databases:</strong> Queries per second, transactions per minute</li>
+                        <li><strong>Networks:</strong> Megabits per second (Mbps), packets per second</li>
+                        <li><strong>E-commerce:</strong> Orders processed per hour</li>
+                        <li><strong>Payment Systems:</strong> Transactions per second (TPS)</li>
+                        <li><strong>Manufacturing:</strong> Units produced per shift</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Factors Affecting Throughput</h4>
+                    <ul>
+                        <li><strong>System Capacity:</strong> Hardware specifications</li>
+                        <li><strong>Bottlenecks:</strong> Slowest component limits overall speed</li>
+                        <li><strong>Concurrency:</strong> Parallel processing vs sequential</li>
+                        <li><strong>Efficiency:</strong> Code optimisation, caching</li>
+                        <li><strong>Network Latency:</strong> Data transfer delays</li>
+                        <li><strong>Database Indexing:</strong> Query performance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Visa Payment Network</h4>
+                <p>Visa's network handles an average of <strong>1,700 transactions per second</strong> with peak capacity exceeding <strong>65,000 TPS</strong>. They continuously monitor throughput to ensure instant payment authorisation globally, optimising database queries, network routing, and server capacity to maintain performance during Black Friday and holiday shopping peaks.</p>
+            </div>
+            <div class="best-practice">
+                <h4>Optimisation Strategies</h4>
+                <p>• Database query optimisation and indexing • Content Delivery Networks (CDNs) for static assets • Caching frequently accessed data • Load balancing across multiple servers • Asynchronous processing for non-critical tasks • Code profiling to identify slow functions</p>
+            </div>
+            <div class="slide-number">8 / 25</div>
+        </div>
+
+        <!-- Slide 9: Status Monitoring -->
+        <div class="slide">
+            <h2>Status Monitoring & Health Checks</h2>
+            <div class="card">
+                <h3>✓ Is Everything Working?</h3>
+                <p>Status monitoring continuously checks whether system components are operational, healthy, and performing within expected parameters. It provides real-time visibility into infrastructure health.</p>
+            </div>
+            <div class="three-column">
+                <div class="use-case-card">
+                    <h4>What is Monitored</h4>
+                    <ul>
+                        <li><strong>Service Availability:</strong> Is it up or down?</li>
+                        <li><strong>Response Time:</strong> How fast does it respond?</li>
+                        <li><strong>Error Rates:</strong> How many failures?</li>
+                        <li><strong>Resource Health:</strong> CPU, memory, disk OK?</li>
+                        <li><strong>Dependencies:</strong> Are external services working?</li>
+                    </ul>
+                </div>
+                <div class="use-case-card">
+                    <h4>Monitoring Methods</h4>
+                    <ul>
+                        <li><strong>Health Check Endpoints:</strong> Regular pings to verify service</li>
+                        <li><strong>Synthetic Monitoring:</strong> Automated test transactions</li>
+                        <li><strong>Real User Monitoring:</strong> Actual user experience data</li>
+                        <li><strong>Log Analysis:</strong> Examine error logs</li>
+                        <li><strong>Alerting:</strong> Notifications when issues detected</li>
+                    </ul>
+                </div>
+                <div class="use-case-card">
+                    <h4>Status Dashboards</h4>
+                    <p><span class="status-indicator status-good">Operational</span></p>
+                    <p>All systems functioning normally</p>
+                    <p><span class="status-indicator status-warning">Degraded</span></p>
+                    <p>Performance issues, investigating</p>
+                    <p><span class="status-indicator status-critical">Outage</span></p>
+                    <p>Service unavailable, incident response active</p>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: GitHub Status Page</h4>
+                <p>GitHub maintains a public status page (githubstatus.com) showing real-time status of Git operations, API, webhooks, and other services. Subscribers receive alerts about incidents, and GitHub posts updates during outages—transparency builds trust with developers worldwide.</p>
+            </div>
+            <div class="slide-number">9 / 25</div>
+        </div>
+
+        <!-- Slide 10: User Monitoring Overview -->
+        <div class="slide">
+            <h2>User Monitoring</h2>
+            <div class="highlight-box">
+                <h3>👥 Tracking User Activity</h3>
+                <p>User monitoring involves logging and analysing how users interact with systems—when they log in/out, which resources they access, and how they use applications. This data serves security, compliance, and optimisation purposes.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <div class="icon">🔐</div>
+                    <h4>Security Benefits</h4>
+                    <ul>
+                        <li><strong>Anomaly Detection:</strong> Spot unusual access patterns (login from unexpected location)</li>
+                        <li><strong>Unauthorised Access:</strong> Identify attempts to access restricted resources</li>
+                        <li><strong>Audit Trails:</strong> Track who accessed what and when</li>
+                        <li><strong>Compliance:</strong> Meet regulatory logging requirements (GDPR, SOX)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="icon">📊</div>
+                    <h4>Operational Benefits</h4>
+                    <ul>
+                        <li><strong>Usage Patterns:</strong> Understand peak times and popular features</li>
+                        <li><strong>Resource Planning:</strong> Allocate capacity based on demand</li>
+                        <li><strong>User Experience:</strong> Identify pain points and bottlenecks</li>
+                        <li><strong>Licence Management:</strong> Ensure software licence compliance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Privacy Considerations</h4>
+                <p>User monitoring must balance security/operational needs with privacy rights. Under GDPR, users must be informed about monitoring, data should be minimised to what's necessary, and access to monitoring data should be restricted. Avoid excessive surveillance that violates employee privacy or customer trust.</p>
+            </div>
+            <div class="slide-number">10 / 25</div>
+        </div>
+
+        <!-- Slide 11: Login/Logout Tracking -->
+        <div class="slide">
+            <h2>Login/Logout Tracking</h2>
+            <div class="card">
+                <h3>🔓 Authentication Event Monitoring</h3>
+                <p>Tracking login and logout events provides critical security data and usage insights, helping identify unauthorised access attempts and understand user activity patterns.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>What is Logged</h4>
+                    <ul>
+                        <li><strong>Timestamp:</strong> Exact date and time of login/logout</li>
+                        <li><strong>User ID:</strong> Which account was accessed</li>
+                        <li><strong>IP Address:</strong> Where the connection originated</li>
+                        <li><strong>Device Information:</strong> Computer, phone, browser type</li>
+                        <li><strong>Location:</strong> Geographic location (from IP)</li>
+                        <li><strong>Success/Failure:</strong> Was authentication successful?</li>
+                        <li><strong>Session Duration:</strong> How long user was logged in</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Use Cases</h4>
+                    <div class="example-box">
+                        <h4>Security Alert Example</h4>
+                        <p><strong>Normal:</strong> User logs in from London at 9 AM</p>
+                        <p><strong>Suspicious:</strong> Same user logs in from Romania 2 hours later</p>
+                        <p><strong>Action:</strong> Alert triggered, account locked, user notified</p>
+                    </div>
+                    <div class="example-box">
+                        <h4>Usage Pattern Example</h4>
+                        <p>Company analyses login times: 80% of employees log in between 8-9 AM, creating network congestion. Solution: Stagger start times or upgrade bandwidth during peak hours.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Failed Login Monitoring</h4>
+                <p>Multiple failed login attempts often indicate brute-force attacks. Systems typically lock accounts or add delays after 3-5 failed attempts. Security teams monitor for patterns like many failed attempts across different accounts (credential stuffing attack).</p>
+            </div>
+            <div class="slide-number">11 / 25</div>
+        </div>
+
+        <!-- Slide 12: Resources Accessed Monitoring -->
+        <div class="slide">
+            <h2>Resources Accessed Monitoring</h2>
+            <div class="card">
+                <h3>📂 Tracking What Users Do</h3>
+                <p>Beyond login/logout, organisations monitor which files, databases, applications, and features users access. This ensures security, optimises resource allocation, and provides audit trails.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>What is Tracked</h4>
+                    <ul>
+                        <li><strong>File Access:</strong> Documents opened, edited, downloaded, deleted</li>
+                        <li><strong>Database Queries:</strong> Which data accessed, by whom, when</li>
+                        <li><strong>Application Usage:</strong> Which software used, features accessed</li>
+                        <li><strong>Web Activity:</strong> Sites visited (in corporate environments)</li>
+                        <li><strong>Email:</strong> Sent/received (metadata, not usually content)</li>
+                        <li><strong>Print Jobs:</strong> What documents printed</li>
+                        <li><strong>API Calls:</strong> Which services/endpoints accessed</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Security Applications</h4>
+                    <div class="warning-box">
+                        <h4>⚠️ Insider Threat Detection</h4>
+                        <p><strong>Scenario:</strong> Employee downloads 10,000 customer records to USB drive before resignation</p>
+                        <p><strong>Detection:</strong> Unusual data access pattern triggers alert</p>
+                        <p><strong>Action:</strong> Security team investigates, prevents data exfiltration</p>
+                    </div>
+                    <div class="best-practice">
+                        <h4>Compliance Use Case</h4>
+                        <p>Healthcare: NHS must track who accesses patient records (GDPR, Data Protection Act). If a celebrity's medical records are accessed by unauthorised staff, audit logs identify the violation for disciplinary action.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Google Workspace Admin Console</h4>
+                <p>Administrators can see detailed logs: which documents users created/shared, when they accessed Gmail, which Drive files were downloaded. This helps identify suspicious activity (e.g., mass file downloads before employee departure) and optimise licences (remove inactive users).</p>
+            </div>
+            <div class="slide-number">12 / 25</div>
+        </div>
+
+        <!-- Slide 13: Targeted Marketing Overview -->
+        <div class="slide">
+            <h2>Targeted Marketing</h2>
+            <div class="highlight-box">
+                <h3>🎯 Personalised Marketing Using Data</h3>
+                <p>Targeted marketing uses customer data to deliver personalised messages, offers, and recommendations to specific individuals or segments, increasing relevance and conversion rates whilst reducing wasted marketing spend.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Data Used for Targeting</h4>
+                    <ul>
+                        <li><strong>Purchase History:</strong> What they've bought before</li>
+                        <li><strong>Browsing Behaviour:</strong> Products viewed, time spent</li>
+                        <li><strong>Demographics:</strong> Age, location, income</li>
+                        <li><strong>Preferences:</strong> Stated interests, communication choices</li>
+                        <li><strong>Cart Abandonment:</strong> Items added but not purchased</li>
+                        <li><strong>Email Engagement:</strong> Open rates, click-through rates</li>
+                        <li><strong>Lifecycle Stage:</strong> New customer, loyal, at-risk</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Benefits vs Untargeted Marketing</h4>
+                    <div class="info-box">
+                        <p><strong>Untargeted:</strong> Send same email to all 100,000 customers</p>
+                        <p>• 2% conversion rate = 2,000 sales</p>
+                        <p>• 98% receive irrelevant messages</p>
+                        <p>• High unsubscribe rates</p>
+                    </div>
+                    <div class="example-box">
+                        <p><strong>Targeted:</strong> Segment customers, personalise messages</p>
+                        <p>• 8% conversion rate = 8,000 sales</p>
+                        <p>• Customers receive relevant offers</p>
+                        <p>• Lower unsubscribe rates, better engagement</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">13 / 25</div>
+        </div>
+
+        <!-- Slide 14: Discounts & Personalisation -->
+        <div class="slide">
+            <h2>Targeted Discounts & Personalisation</h2>
+            <div class="card">
+                <h3>💰 The Right Offer to the Right Person</h3>
+                <p>Rather than offering the same discount to everyone, organisations use data to determine which customers need incentives, which products to discount, and when to send offers for maximum impact.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Discount Targeting Strategies</h4>
+                    <ul>
+                        <li><strong>First Purchase Incentive:</strong> 15% off for new customers (acquisition)</li>
+                        <li><strong>Cart Abandonment:</strong> 10% discount sent within 24 hours to complete purchase</li>
+                        <li><strong>Win-Back Campaigns:</strong> 20% off for inactive customers (not purchased in 3 months)</li>
+                        <li><strong>Birthday/Anniversary:</strong> Special offer on customer's birthday</li>
+                        <li><strong>Price Sensitivity:</strong> Bigger discounts to bargain hunters, smaller to loyal customers</li>
+                        <li><strong>Category Specific:</strong> Discount on products customer has viewed but not bought</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Personalisation Beyond Discounts</h4>
+                    <ul>
+                        <li><strong>Product Recommendations:</strong> "Based on your purchase of X"</li>
+                        <li><strong>Content Personalisation:</strong> Show running shoes to marathon runners</li>
+                        <li><strong>Email Subject Lines:</strong> Use customer's name, reference past purchases</li>
+                        <li><strong>Timing:</strong> Send emails when customer typically opens them</li>
+                        <li><strong>Channel Preference:</strong> Email vs SMS vs app notification</li>
+                        <li><strong>Loyalty Rewards:</strong> Points/perks based on spending level</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example-box">
+                <h4>Example: Amazon Personalised Discounts</h4>
+                <p>Amazon analyses your wishlist, viewed items, and cart abandonment. If you've viewed a £50 item three times but haven't purchased, you might receive a £10 voucher specifically for that product category—just enough incentive to convert browsing into a sale without over-discounting.</p>
+            </div>
+            <div class="slide-number">14 / 25</div>
+        </div>
+
+        <!-- Slide 15: Upselling & Cross-Selling -->
+        <div class="slide">
+            <h2>Upselling & Cross-Selling</h2>
+            <div class="two-column">
+                <div class="card">
+                    <div class="icon">⬆️</div>
+                    <h3>Upselling</h3>
+                    <p><strong>Definition:</strong> Encouraging customers to buy a more expensive or upgraded version of what they're considering</p>
+                    <h4>Techniques:</h4>
+                    <ul>
+                        <li><strong>Feature Comparison:</strong> Show benefits of premium version</li>
+                        <li><strong>"Customers also considered":</strong> Display higher-tier options</li>
+                        <li><strong>Limited-Time Upgrades:</strong> "Upgrade to Pro for only £5 more today"</li>
+                        <li><strong>Social Proof:</strong> "90% of customers choose Premium"</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>Examples</h4>
+                        <p>• <strong>Airlines:</strong> Economy → Premium Economy</p>
+                        <p>• <strong>Software:</strong> Basic plan → Pro plan</p>
+                        <p>• <strong>Cars:</strong> Standard model → Luxury trim</p>
+                        <p>• <strong>Hotels:</strong> Standard room → Suite</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon">➕</div>
+                    <h3>Cross-Selling</h3>
+                    <p><strong>Definition:</strong> Recommending complementary products that enhance the main purchase</p>
+                    <h4>Techniques:</h4>
+                    <ul>
+                        <li><strong>"Frequently bought together":</strong> Show common combinations</li>
+                        <li><strong>"Complete the set":</strong> Suggest missing items</li>
+                        <li><strong>Bundles:</strong> Package deals at slight discount</li>
+                        <li><strong>Accessories:</strong> Essential add-ons for purchased item</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>Examples</h4>
+                        <p>• <strong>Camera:</strong> + Memory card, lens, bag</p>
+                        <p>• <strong>Phone:</strong> + Case, screen protector, charger</p>
+                        <p>• <strong>Laptop:</strong> + Mouse, laptop bag, warranty</p>
+                        <p>• <strong>Fast Food:</strong> Burger → Add fries and drink</p>
+                    </div>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Example: McDonald's "Would you like fries with that?"</h4>
+                <p>This simple cross-sell prompt increases average transaction value by 20-30%. Data shows customers who buy burgers often want fries and drinks—so staff are trained to suggest them. Digital kiosks now use algorithms to recommend optimal combinations based on order history.</p>
+            </div>
+            <div class="slide-number">15 / 25</div>
+        </div>
+
+        <!-- Slide 16: Threat Assessment -->
+        <div class="slide">
+            <h2>Threat Assessment</h2>
+            <div class="highlight-box">
+                <h3>🔐 Identifying Risks</h3>
+                <p>Threat assessment involves analysing data to identify potential dangers to the organisation—from competitors, security vulnerabilities, and compliance failures.</p>
+            </div>
+            <div class="three-column">
+                <div class="use-case-card">
+                    <div class="icon">🏢</div>
+                    <h4>Competitor Threats</h4>
+                    <p><strong>Data Sources:</strong></p>
+                    <ul>
+                        <li>Market share data</li>
+                        <li>Pricing information</li>
+                        <li>Product launches</li>
+                        <li>Customer sentiment analysis</li>
+                        <li>Social media monitoring</li>
+                    </ul>
+                    <p><strong>Analysis:</strong> Identify competitive moves (new products, price cuts) and respond strategically</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">🛡️</div>
+                    <h4>Security Threats</h4>
+                    <p><strong>Data Sources:</strong></p>
+                    <ul>
+                        <li>Failed login attempts</li>
+                        <li>Network traffic patterns</li>
+                        <li>Vulnerability scans</li>
+                        <li>Threat intelligence feeds</li>
+                        <li>User access logs</li>
+                    </ul>
+                    <p><strong>Analysis:</strong> Detect attacks, identify vulnerabilities, prevent breaches</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="icon">📋</div>
+                    <h4>Compliance Threats</h4>
+                    <p><strong>Data Sources:</strong></p>
+                    <ul>
+                        <li>Data handling logs</li>
+                        <li>Consent records</li>
+                        <li>Audit trails</li>
+                        <li>Regulatory updates</li>
+                        <li>Incident reports</li>
+                    </ul>
+                    <p><strong>Analysis:</strong> Ensure GDPR compliance, avoid regulatory fines</p>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Example: SolarWinds Supply Chain Attack (2020)</h4>
+                <p>Organisations monitoring software updates detected unusual network traffic from their SolarWinds Orion software—a backdoor inserted by attackers. Companies with robust threat monitoring identified the compromise early and isolated affected systems, whilst those without monitoring remained vulnerable for months.</p>
+            </div>
+            <div class="slide-number">16 / 25</div>
+        </div>
+
+        <!-- Slide 17: Opportunity Assessment -->
+        <div class="slide">
+            <h2>Opportunity Assessment</h2>
+            <div class="highlight-box">
+                <h3>🎯 Finding Growth Potential</h3>
+                <p>Opportunity assessment analyses data to identify market gaps, emerging trends, customer needs, and strategic advantages that can drive business growth.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <div class="icon">📈</div>
+                    <h4>Market Opportunities</h4>
+                    <p><strong>Data Analysis:</strong></p>
+                    <ul>
+                        <li><strong>Unmet Needs:</strong> Customer complaints/requests reveal product gaps</li>
+                        <li><strong>Emerging Trends:</strong> Social media sentiment shows rising interests</li>
+                        <li><strong>Geographic Expansion:</strong> Sales data shows high-demand untapped regions</li>
+                        <li><strong>Demographic Shifts:</strong> Census data reveals growing customer segments</li>
+                        <li><strong>Seasonal Opportunities:</strong> Traffic spikes indicate promotional timing</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>Example:</strong> Analysis shows 20% of website visitors search for "gluten-free" products but company doesn't offer them. Opportunity: Launch gluten-free product line.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon">✓</div>
+                    <h4>Compliance as Opportunity</h4>
+                    <p><strong>Data Analysis:</strong></p>
+                    <ul>
+                        <li><strong>Certifications:</strong> Industry data shows customers prefer certified suppliers (ISO 27001, SOC 2)</li>
+                        <li><strong>Privacy Standards:</strong> GDPR compliance attracts privacy-conscious EU customers</li>
+                        <li><strong>Sustainability:</strong> ESG reporting opens doors to institutional investors</li>
+                        <li><strong>Accessibility:</strong> Meeting WCAG standards expands market to disabled users</li>
+                    </ul>
+                    <div class="example-box">
+                        <p><strong>Example:</strong> Apple's privacy features (App Tracking Transparency) positioned them as the privacy-focused phone, attracting customers who value data protection—turning compliance into competitive advantage.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">17 / 25</div>
+        </div>
+
+        <!-- Slide 18: Real-World Case Study -->
+        <div class="slide">
+            <h2>Case Study: Spotify's Data-Driven Success</h2>
+            <div class="card">
+                <h3>🎵 How Spotify Uses Data Across All Categories</h3>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Pattern Analysis</h4>
+                    <p>Analyses 100 billion data points daily: listening history, skips, playlist additions, time of day. Identifies patterns: users listening to workout music at 6 AM, relaxing music at 10 PM.</p>
+                    <p><strong>Result:</strong> Creates personalised "Discover Weekly" playlists with 40% of users regularly listening.</p>
+                </div>
+                <div class="card">
+                    <h4>System Performance</h4>
+                    <p>Monitors: streaming quality, buffering rates, throughput (millions of simultaneous streams), load on servers across regions.</p>
+                    <p><strong>Result:</strong> 99.9% uptime, instant playback, automatic quality adjustment based on network.</p>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>User Monitoring</h4>
+                    <p>Tracks: which devices used, offline downloads, family account sharing patterns, feature usage (lyrics, podcasts).</p>
+                    <p><strong>Result:</strong> Optimises mobile app for commuters, car mode for drivers, improves most-used features.</p>
+                </div>
+                <div class="card">
+                    <h4>Targeted Marketing</h4>
+                    <p>Segments users: students, commuters, workout enthusiasts, podcast listeners. Personalises emails and in-app messages.</p>
+                    <p><strong>Result:</strong> Student discount for price-sensitive segment, Premium Family plans for household users.</p>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Threat & Opportunity Assessment</h4>
+                <p><strong>Threats:</strong> Monitors competitor moves (Apple Music, YouTube Music), tracks churn indicators (decreased listening), detects account sharing abuse.</p>
+                <p><strong>Opportunities:</strong> Identified podcast listening growth → invested heavily in podcast platform, acquired exclusive content, now competing with traditional radio.</p>
+            </div>
+            <div class="slide-number">18 / 25</div>
+        </div>
+
+        <!-- Slide 19: Exam Question 1 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 1 (6 marks)</h3>
+                <p><strong>Scenario:</strong> An online streaming service notices that their servers experience extremely high load between 7-10 PM every evening, causing buffering and slow performance for users.</p>
+                <p><strong>Question:</strong> Explain how the streaming service could use system performance analysis to address this problem. In your answer, describe:</p>
+                <ul>
+                    <li>What data they should analyse (2 marks)</li>
+                    <li>What solutions they could implement based on this analysis (4 marks)</li>
+                </ul>
+            </div>
+            <div class="slide-number">19 / 25</div>
+        </div>
+
+        <!-- Slide 20: Exam Question 1 Answer -->
+        <div class="slide">
+            <h2>Question 1: Model Answer</h2>
+            <div class="card">
+                <h4>Data to Analyse (2 marks)</h4>
+                <p>The streaming service should analyse load metrics during peak hours including CPU usage, memory utilisation, network bandwidth consumption, and the number of concurrent active streams ✓. They should also examine throughput data (streams per second), response times, buffering rates, and which geographic regions experience the highest demand to identify where capacity issues occur ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Solutions Based on Analysis (4 marks)</h4>
+                <p>The service could implement auto-scaling to automatically add more servers during peak evening hours (7-10 PM) and scale down during quieter periods, reducing costs whilst ensuring adequate capacity when demand is high ✓. They could deploy Content Delivery Networks (CDNs) to cache popular content closer to users geographically, reducing load on central servers and improving streaming quality by serving content from nearby edge locations ✓.</p>
+                <p>Additionally, they could implement load balancing to distribute incoming streams evenly across multiple servers, preventing any single server from becoming overwhelmed and ensuring consistent performance ✓. Finally, they could offer adaptive bitrate streaming that automatically adjusts video quality based on each user's available bandwidth, allowing more users to stream simultaneously without overwhelming the infrastructure—users with slower connections receive lower quality whilst those with fast connections maintain high quality ✓.</p>
+            </div>
+            <div class="slide-number">20 / 25</div>
+        </div>
+
+        <!-- Slide 21: Exam Question 2 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 2 (8 marks)</h3>
+                <p><strong>Scenario:</strong> A supermarket chain analyses customer transaction data and identifies that 60% of customers who buy nappies also purchase baby food, but only 15% of baby food buyers purchase nappies.</p>
+                <p><strong>Question:</strong> Evaluate how the supermarket could use this pattern analysis for targeted marketing. In your answer, discuss:</p>
+                <ul>
+                    <li>Two different marketing strategies based on this data (4 marks)</li>
+                    <li>The benefits of targeted marketing compared to sending the same offer to all customers (4 marks)</li>
+                </ul>
+            </div>
+            <div class="slide-number">21 / 25</div>
+        </div>
+
+        <!-- Slide 22: Exam Question 2 Answer -->
+        <div class="slide">
+            <h2>Question 2: Model Answer</h2>
+            <div class="card">
+                <h4>Marketing Strategy 1: Cross-Selling to Nappy Buyers (2 marks)</h4>
+                <p>Since 60% of nappy buyers also purchase baby food, the supermarket could target customers buying nappies with personalised vouchers for baby food (e.g., "£1 off baby food with your nappy purchase") ✓. This cross-selling strategy encourages customers to complete their baby shopping in one transaction, increasing basket value. The supermarket could also place baby food displays near nappies in-store or send targeted email offers to online shoppers who add nappies to their cart, capitalising on the established purchasing pattern ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Marketing Strategy 2: Identifying New Parents (2 marks)</h4>
+                <p>The supermarket could identify customers who suddenly start buying baby food but aren't yet purchasing nappies—these are likely new parents whose babies haven't started using solid food yet ✓. The supermarket could proactively send these customers nappy discounts and parenting guides, anticipating their future needs. This targets customers at the right stage in their parenting journey, building loyalty by being helpful before the need arises. Alternatively, they could create "new parent starter bundles" combining both products at a discount to encourage purchasing both items together ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Benefits of Targeted Marketing (4 marks)</h4>
+                <p>Targeted marketing significantly improves conversion rates because customers receive offers relevant to their actual needs ✓—parents with babies are far more likely to use a nappy voucher than childless customers, reducing wasted marketing spend. It increases customer satisfaction and loyalty because personalised offers feel helpful rather than spammy ✓, whereas untargeted mass emails about baby products would annoy customers without children and lead to unsubscribes.</p>
+                <p>Targeted approaches are more cost-effective as the supermarket saves money by only sending offers to customers likely to respond ✓—instead of mailing 100,000 baby food vouchers to all customers (costing thousands in printing/postage) with low response rates, they send to 10,000 relevant customers with much higher response rates. Finally, targeted marketing based on data insights allows the supermarket to predict future needs and time offers perfectly ✓—sending nappy discounts when a baby is likely transitioning sizes or needs vary, maximising the chance of conversion.</p>
+            </div>
+            <div class="slide-number">22 / 25</div>
+        </div>
+
+        <!-- Slide 23: Exam Question 3 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 3 (6 marks)</h3>
+                <p><strong>Scenario:</strong> A company's IT department monitors user login activity and notices an employee's account logged in from London at 9:00 AM, then from New York at 9:30 AM the same day.</p>
+                <p><strong>Question:</strong> Explain why this user monitoring data indicates a security threat and describe two actions the company should take in response.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>Mark Scheme Guidance:</h4>
+                <p><strong>6 marks total:</strong></p>
+                <ul>
+                    <li>2 marks: Clear explanation of why this is suspicious</li>
+                    <li>4 marks: Two appropriate security responses (2 marks each)</li>
+                </ul>
+            </div>
+            <div class="slide-number">23 / 25</div>
+        </div>
+
+        <!-- Slide 24: Exam Question 3 Answer -->
+        <div class="slide">
+            <h2>Question 3: Model Answer</h2>
+            <div class="card">
+                <h4>Why This Indicates a Threat (2 marks)</h4>
+                <p>This login pattern indicates a security threat because it is physically impossible for the same person to travel from London to New York in 30 minutes ✓. This suggests either the employee's credentials (username and password) have been compromised and stolen, or someone is using the employee's account without authorisation—possibly through phishing, password theft, or a previous data breach. One of these logins is definitely unauthorised, indicating the account has been compromised ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Response Action 1: Immediate Account Lockdown (2 marks)</h4>
+                <p>The company should immediately lock or suspend the employee's account to prevent further unauthorised access ✓. This stops the attacker from accessing sensitive company data, systems, or resources whilst the security team investigates. The account should remain locked until security confirms which login was legitimate, the employee's identity is reverified through alternative channels (e.g., phone call), and the password has been reset with multi-factor authentication enabled ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Response Action 2: Investigation and Audit (2 marks)</h4>
+                <p>The IT security team should conduct a full audit of the account's recent activity to determine what data or resources were accessed from the suspicious New York location ✓. They should examine which files were viewed or downloaded, emails sent, systems accessed, and whether any sensitive information was compromised. This audit trail helps assess the damage, identify what data may have been stolen, determine if other accounts are affected, and establish whether this is part of a broader attack. The company should also notify the employee immediately to confirm their actual location and warn them about the compromise ✓.</p>
+            </div>
+            <div class="slide-number">24 / 25</div>
+        </div>
+
+        <!-- Slide 25: Summary -->
+        <div class="slide">
+            <h2>Summary: How Organisations Use Data</h2>
+            <div class="card">
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Pattern Analysis:</strong> Organisations identify customer behaviours, sales trends, and market patterns to inform strategy, from market basket analysis to seasonal forecasting</li>
+                    <li><strong>System Performance:</strong> Continuous monitoring of load, outages, throughput, and status ensures infrastructure reliability, optimal performance, and capacity planning</li>
+                    <li><strong>User Monitoring:</strong> Tracking login/logout and resource access serves dual purposes—security (detecting unauthorised access, insider threats) and operations (usage patterns, capacity planning)</li>
+                    <li><strong>Targeted Marketing:</strong> Data-driven personalisation through discounts, upselling, and cross-selling increases conversion rates and customer satisfaction whilst reducing wasted marketing spend</li>
+                    <li><strong>Threat Assessment:</strong> Analysis of competitor moves, security vulnerabilities, and compliance risks enables proactive risk management and incident prevention</li>
+                    <li><strong>Opportunity Assessment:</strong> Data reveals market gaps, emerging trends, and growth opportunities—including competitive advantages from compliance and certifications</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h3>🎯 Remember</h3>
+                <p>Effective data use requires more than collection—it demands analysis, interpretation, and action. Organisations that successfully leverage data across these categories gain competitive advantages through better decisions, optimised operations, enhanced security, and superior customer experiences. The key is integrating data insights into daily operations and strategic planning.</p>
+            </div>
+            <div class="slide-number">25 / 25</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressFill = document.getElementById('progressFill');
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateProgress();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(slides.length - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/Adams/Downloads/7.4.1_Virtual_Environments.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.4.1 Virtual Environments</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .progress-container { margin-bottom: 20px; }
+        .progress-text { 
+            color: #58a6ff; 
+            text-align: right; 
+            font-size: 14px; 
+            margin-bottom: 5px; 
+            font-weight: 600;
+        }
+        .progress-bar-bg { 
+            background: #21262d; 
+            height: 8px; 
+            border-radius: 4px; 
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        .progress-bar { 
+            background: linear-gradient(90deg, #58a6ff 0%, #1f6feb 100%); 
+            height: 100%; 
+            transition: width 0.3s;
+        }
+        
+        .slide-container { 
+            background: #161b22;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            padding: 60px;
+            min-height: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slide { display: none; position: relative; z-index: 1; }
+        .slide.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        h1 { 
+            font-size: 3.5em;
+            color: #58a6ff;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+        }
+        h2 { 
+            color: #58a6ff; 
+            font-size: 2.5em; 
+            margin: 30px 0 20px; 
+            font-weight: 600;
+        }
+        h3 { 
+            color: #79c0ff; 
+            font-size: 2em; 
+            margin: 20px 0 15px; 
+            font-weight: 600;
+        }
+        p { 
+            color: #c9d1d9; 
+            line-height: 1.8; 
+            margin-bottom: 15px; 
+            font-size: 1.3rem; 
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #8b949e;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+        
+        .info-box { 
+            border-radius: 6px;
+            padding: 30px; 
+            margin: 30px 0; 
+            transition: all 0.3s ease;
+            border: 1px solid;
+        }
+        .info-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .blue-box { 
+            background: #0d419d15;
+            border-color: #1f6feb;
+        }
+        .blue-box:hover {
+            background: #0d419d25;
+            box-shadow: 0 8px 24px rgba(31, 111, 235, 0.2);
+        }
+        
+        .green-box { 
+            background: #04260f15;
+            border-color: #238636;
+        }
+        .green-box:hover {
+            background: #04260f25;
+            box-shadow: 0 8px 24px rgba(35, 134, 54, 0.2);
+        }
+        
+        .purple-box { 
+            background: #2e113615;
+            border-color: #8957e5;
+        }
+        .purple-box:hover {
+            background: #2e113625;
+            box-shadow: 0 8px 24px rgba(137, 87, 229, 0.2);
+        }
+        
+        .yellow-box { 
+            background: #3d280315;
+            border-color: #f0883e;
+        }
+        .yellow-box:hover {
+            background: #3d280325;
+            box-shadow: 0 8px 24px rgba(240, 136, 62, 0.2);
+        }
+        
+        .red-box { 
+            background: #49010115;
+            border-color: #da3633;
+        }
+        .red-box:hover {
+            background: #49010125;
+            box-shadow: 0 8px 24px rgba(218, 54, 51, 0.2);
+        }
+        
+        .gray-box {
+            background: #161b2215;
+            border-color: #6e7681;
+        }
+        .gray-box:hover {
+            background: #161b2225;
+            box-shadow: 0 8px 24px rgba(110, 118, 129, 0.2);
+        }
+        
+        .blue-box h3 { color: #58a6ff; }
+        .green-box h3 { color: #3fb950; }
+        .purple-box h3 { color: #a371f7; }
+        .yellow-box h3 { color: #f0883e; }
+        .red-box h3 { color: #f85149; }
+        .gray-box h3 { color: #8b949e; }
+        
+        .grid { display: grid; gap: 25px; margin: 30px 0; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        
+        .card { 
+            border-radius: 6px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-blue {
+            background: #0d419d15;
+            border-color: #1f6feb;
+        }
+        .card-blue:hover {
+            background: #0d419d25;
+            box-shadow: 0 8px 24px rgba(31, 111, 235, 0.3);
+        }
+        
+        .card-green {
+            background: #04260f15;
+            border-color: #238636;
+        }
+        .card-green:hover {
+            background: #04260f25;
+            box-shadow: 0 8px 24px rgba(35, 134, 54, 0.3);
+        }
+        
+        .card-purple {
+            background: #2e113615;
+            border-color: #8957e5;
+        }
+        .card-purple:hover {
+            background: #2e113625;
+            box-shadow: 0 8px 24px rgba(137, 87, 229, 0.3);
+        }
+        
+        .card-yellow {
+            background: #3d280315;
+            border-color: #f0883e;
+        }
+        .card-yellow:hover {
+            background: #3d280325;
+            box-shadow: 0 8px 24px rgba(240, 136, 62, 0.3);
+        }
+        
+        .card-red {
+            background: #49010115;
+            border-color: #da3633;
+        }
+        .card-red:hover {
+            background: #49010125;
+            box-shadow: 0 8px 24px rgba(218, 54, 51, 0.3);
+        }
+        
+        .card-title { 
+            display: block; 
+            font-size: 2.2rem; 
+            margin-bottom: 15px; 
+            font-weight: 700;
+        }
+        .card-blue .card-title { color: #58a6ff; }
+        .card-green .card-title { color: #3fb950; }
+        .card-purple .card-title { color: #a371f7; }
+        .card-yellow .card-title { color: #f0883e; }
+        .card-red .card-title { color: #f85149; }
+        
+        .card-desc { 
+            font-size: 1.2rem; 
+            color: #8b949e; 
+            margin: 0; 
+            line-height: 1.6;
+        }
+        
+        ul { 
+            margin: 20px 0 20px 40px; 
+            color: #c9d1d9; 
+        }
+        li { 
+            margin-bottom: 15px; 
+            line-height: 1.8;
+            font-size: 1.3rem;
+        }
+        strong { color: #58a6ff; }
+        
+        /* Interactive Drag and Drop Styles */
+        .drag-drop-area {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .category-zone {
+            background: #0d1117;
+            border: 2px dashed #30363d;
+            border-radius: 6px;
+            padding: 25px;
+            min-height: 300px;
+            transition: all 0.3s;
+        }
+        
+        .category-zone.drag-over {
+            background: #0d419d15;
+            border-color: #58a6ff;
+            border-style: solid;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #58a6ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .items-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 25px;
+            background: #0d1117;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+        }
+        
+        .draggable-item {
+            background: #21262d;
+            border: 1px solid #30363d;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: move;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            color: #c9d1d9;
+        }
+        
+        .draggable-item:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+            transform: translateY(-3px);
+        }
+        
+        .draggable-item.dragging {
+            opacity: 0.5;
+        }
+        
+        .draggable-item.correct {
+            background: #04260f;
+            border-color: #238636;
+            color: #3fb950;
+        }
+        
+        .draggable-item.incorrect {
+            background: #490101;
+            border-color: #da3633;
+            color: #f85149;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container { 
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 30px; 
+            margin: 30px 0; 
+            border-radius: 6px;
+        }
+        .quiz-question { 
+            font-weight: 700; 
+            font-size: 1.4rem; 
+            color: #58a6ff; 
+            margin-bottom: 20px;
+        }
+        .quiz-option { 
+            display: block; 
+            width: 100%; 
+            padding: 18px 25px; 
+            margin: 12px 0; 
+            border: 1px solid #30363d; 
+            border-radius: 6px; 
+            background: #161b22; 
+            cursor: pointer; 
+            text-align: left;
+            font-size: 1.2rem;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { 
+            border-color: #58a6ff; 
+            background: #0d419d15; 
+            transform: translateX(5px);
+        }
+        .quiz-option:disabled { 
+            cursor: not-allowed; 
+            opacity: 0.6;
+        }
+        .quiz-option.correct { 
+            border-color: #238636; 
+            background: #04260f; 
+            color: #3fb950;
+            font-weight: 600;
+        }
+        .quiz-option.incorrect { 
+            border-color: #da3633; 
+            background: #490101;
+            color: #f85149;
+        }
+        .quiz-feedback { 
+            margin-top: 20px; 
+            padding: 20px 25px; 
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-feedback.correct { 
+            background: #04260f; 
+            color: #3fb950;
+            border: 1px solid #238636;
+        }
+        .quiz-feedback.incorrect { 
+            background: #490101; 
+            color: #f85149;
+            border: 1px solid #da3633;
+        }
+        
+        /* Scenario Box */
+        .scenario-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-left: 4px solid #8957e5;
+            border-radius: 6px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .scenario-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #a371f7;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #0d1117;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        
+        .comparison-table th {
+            background: #21262d;
+            color: #58a6ff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #30363d;
+            color: #c9d1d9;
+            font-size: 1.1rem;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background: #161b22;
+        }
+        
+        /* Navigation */
+        .navigation { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 40px;
+            gap: 20px;
+        }
+        .nav-btn { 
+            padding: 18px 40px; 
+            border: 1px solid #30363d;
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #21262d;
+            color: #58a6ff;
+        }
+        .nav-btn:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+        .nav-btn:hover:not(:disabled) { 
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+        
+        .dots-container { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+        .dot { 
+            width: 14px; 
+            height: 14px; 
+            border-radius: 50%; 
+            background: #21262d; 
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #30363d;
+        }
+        .dot:hover { 
+            background: #30363d; 
+            transform: scale(1.2);
+            border-color: #58a6ff;
+        }
+        .dot.active { 
+            width: 40px; 
+            background: #58a6ff;
+            border-radius: 7px;
+            border-color: #58a6ff;
+        }
+        .dot.completed { 
+            background: #238636;
+            border-color: #238636;
+        }
+        
+        .counter { 
+            text-align: center; 
+            margin-top: 25px; 
+            color: #8b949e; 
+            font-weight: 700; 
+            font-size: 1.3rem;
+        }
+        
+        .reset-btn, .check-btn {
+            border: 1px solid #30363d;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        
+        .reset-btn {
+            background: #490101;
+            border-color: #da3633;
+            color: #f85149;
+        }
+        
+        .reset-btn:hover {
+            background: #5a0101;
+            border-color: #f85149;
+        }
+        
+        .check-btn {
+            background: #04260f;
+            border-color: #238636;
+            color: #3fb950;
+        }
+        
+        .check-btn:hover {
+            background: #05360f;
+            border-color: #3fb950;
+        }
+        
+        .highlight-box {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        code {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #79c0ff;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 768px) { 
+            .slide-container { padding: 30px 20px; min-height: 600px; }
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 1.8em; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .navigation { flex-direction: column; }
+            .nav-btn { width: 100%; }
+            .drag-drop-area { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.9rem; }
+            .comparison-table th, .comparison-table td { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-text" id="progressText">5% Complete</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progressBar" style="width: 5%;"></div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slideContainer"><div class="slide active"><h1>🖥️ 7.4 Virtual Environments</h1>
+            <p class="subtitle">Understanding Virtual Environment Components</p>
+            <div class="highlight-box">
+                <h2 style="margin: 0; font-size: 2rem; color: #58a6ff;">T Level Digital Software Development</h2>
+                <p style="font-size: 1.3rem; margin-top: 15px; color: #8b949e;">7.4.1 Role and characteristics of virtual environment components</p>
+            </div>
+            <div class="grid grid-2" style="margin-top: 40px;">
+                <div class="card card-blue">
+                    <span class="card-title">💻</span>
+                    <p class="card-desc" style="font-size: 1.3rem; color: #c9d1d9;">Virtual Machines</p>
+                    <p class="card-desc" style="margin-top: 10px;">Clients &amp; Servers</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">⚡</span>
+                    <p class="card-desc" style="font-size: 1.3rem; color: #c9d1d9;">Hypervisors</p>
+                    <p class="card-desc" style="margin-top: 10px;">Type 1 &amp; Type 2</p>
+                </div>
+            </div></div><div class="slide"><h1>🌐 What is Virtualization?</h1>
+            <div class="info-box blue-box">
+                <h3>Definition</h3>
+                <p style="font-size: 1.3rem;"><strong>Virtualization</strong> is the process of creating a software-based (virtual) version of physical computing resources such as servers, storage devices, networks, or operating systems. It allows multiple virtual instances to run on a single physical machine.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Key Benefits</h3>
+                    <ul>
+                        <li><strong>Resource Efficiency:</strong> Multiple VMs share one physical server</li>
+                        <li><strong>Cost Savings:</strong> Reduced hardware and energy costs</li>
+                        <li><strong>Isolation:</strong> VMs operate independently and securely</li>
+                        <li><strong>Flexibility:</strong> Easy to create, move, or delete VMs</li>
+                        <li><strong>Disaster Recovery:</strong> Quick snapshots and backups</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Common Use Cases</h3>
+                    <ul>
+                        <li><strong>Server Consolidation:</strong> Reduce physical servers</li>
+                        <li><strong>Development &amp; Testing:</strong> Isolated test environments</li>
+                        <li><strong>Cloud Computing:</strong> Foundation of cloud services</li>
+                        <li><strong>Desktop Virtualization:</strong> Virtual PCs for users</li>
+                        <li><strong>Legacy Applications:</strong> Run old software safely</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Real-World Example</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Before virtualization, a company with 100 applications needed 100 physical servers. With virtualization, they can run all 100 applications across just 10-15 physical servers, saving massive amounts on hardware, space, cooling, and electricity.
+                </p>
+            </div></div><div class="slide"><h1>💻 Virtual Machines (VMs)</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Virtual Machine?</h3>
+                <p style="font-size: 1.3rem;">A <strong>virtual machine</strong> is a software-based emulation of a physical computer. It runs an operating system and applications just like a physical computer, but exists as files on a host machine. Each VM operates independently with its own virtual hardware (CPU, RAM, storage, network).</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card card-blue">
+                    <span class="card-title">🖥️ Virtual CPU</span>
+                    <p class="card-desc" style="margin-top: 15px;">Allocated processing power from physical CPU cores</p>
+                </div>
+                <div class="card card-green">
+                    <span class="card-title">💾 Virtual RAM</span>
+                    <p class="card-desc" style="margin-top: 15px;">Reserved memory from physical RAM</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">💿 Virtual Disk</span>
+                    <p class="card-desc" style="margin-top: 15px;">Storage space as virtual hard drive files</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="card card-yellow">
+                    <span class="card-title">🌐 Virtual NIC</span>
+                    <p class="card-desc" style="margin-top: 15px;">Virtual network interface card for connectivity</p>
+                </div>
+                <div class="card card-blue">
+                    <span class="card-title">🎮 Virtual GPU</span>
+                    <p class="card-desc" style="margin-top: 15px;">Graphics processing (optional)</p>
+                </div>
+            </div>
+            <div class="info-box gray-box">
+                <h3>🔑 Key Characteristics</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Isolation:</strong> Each VM is completely separate from others</li>
+                    <li><strong>Encapsulation:</strong> Entire VM exists as files that can be copied/moved</li>
+                    <li><strong>Hardware Independence:</strong> VMs can run on different physical hardware</li>
+                    <li><strong>Portability:</strong> Easy to migrate between hosts</li>
+                </ul>
+            </div></div><div class="slide"><h1>🖱️ Virtual Machine Clients</h1>
+            <div class="info-box blue-box">
+                <h3>What are VM Clients?</h3>
+                <p style="font-size: 1.3rem;">VM clients are virtual machines that provide end-user computing environments or network infrastructure services. They include virtual PCs, virtual switches, and virtual routers.</p>
+            </div>
+            <div class="info-box green-box">
+                <h3>💻 Virtual PC (Virtual Desktop)</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">A virtual machine configured as a desktop/workstation environment for end users.</p>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Purpose:</strong> Provide desktop computing without physical PCs</li>
+                    <li><strong>Components:</strong> OS (Windows/Linux), applications, user data</li>
+                    <li><strong>Access:</strong> Via thin clients, web browsers, or remote desktop</li>
+                    <li><strong>Benefits:</strong> Centralized management, easy updates, secure data</li>
+                    <li><strong>Use Cases:</strong> VDI (Virtual Desktop Infrastructure), remote work, BYOD policies</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Virtual PC in Practice</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company provides employees with thin client devices (simple terminals). When users log in, they connect to their personal virtual PC running on servers in the data centre. Each user's virtual PC has Windows 11, Microsoft Office, and company applications. If a thin client breaks, the user simply logs in from another device—all their work is preserved on the virtual PC.
+                </p>
+            </div></div><div class="slide"><h1>🌐 Virtual Switches &amp; Routers</h1>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>🔀 Virtual Switch</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px;">Software-based network switch that connects VMs together and to physical networks.</p>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Function:</strong> Forward network traffic between VMs</li>
+                        <li><strong>Layer:</strong> Operates at Layer 2 (Data Link)</li>
+                        <li><strong>Features:</strong> VLANs, port mirroring, QoS</li>
+                        <li><strong>Examples:</strong> VMware vSwitch, Hyper-V Virtual Switch</li>
+                        <li><strong>Connects:</strong> VMs to each other and external networks</li>
+                    </ul>
+                </div>
+                <div class="info-box blue-box">
+                    <h3>🛤️ Virtual Router</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px;">Software-based router that directs network traffic between different virtual networks.</p>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Function:</strong> Route traffic between network segments</li>
+                        <li><strong>Layer:</strong> Operates at Layer 3 (Network)</li>
+                        <li><strong>Features:</strong> Routing protocols, NAT, firewall rules</li>
+                        <li><strong>Examples:</strong> VyOS, pfSense, Cisco CSR</li>
+                        <li><strong>Use:</strong> Network segmentation, multi-tenant environments</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box yellow-box">
+                <h3>🔍 Key Differences</h3>
+                <table class="comparison-table">
+                    <tbody><tr>
+                        <th>Feature</th>
+                        <th>Virtual Switch</th>
+                        <th>Virtual Router</th>
+                    </tr>
+                    <tr>
+                        <td><strong>OSI Layer</strong></td>
+                        <td>Layer 2 (Data Link)</td>
+                        <td>Layer 3 (Network)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary Function</strong></td>
+                        <td>Connect VMs in same network</td>
+                        <td>Route between different networks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Addressing</strong></td>
+                        <td>MAC addresses</td>
+                        <td>IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Simpler</td>
+                        <td>More complex</td>
+                    </tr>
+                </tbody></table>
+            </div></div><div class="slide"><h1>🖥️ Virtual Servers</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Virtual Server?</h3>
+                <p style="font-size: 1.3rem;">A <strong>virtual server</strong> is a VM configured to provide server services (web hosting, databases, email, file storage, etc.). Unlike virtual PCs designed for interactive desktop use, virtual servers run background services and applications.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Characteristics</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Headless:</strong> No GUI, managed remotely</li>
+                        <li><strong>Always On:</strong> Runs 24/7 providing services</li>
+                        <li><strong>Resource-Optimized:</strong> Configured for specific workloads</li>
+                        <li><strong>Server OS:</strong> Windows Server, Linux Server editions</li>
+                        <li><strong>Specialized Roles:</strong> Dedicated to specific services</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Common Virtual Server Types</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Web Server:</strong> Apache, Nginx, IIS</li>
+                        <li><strong>Database Server:</strong> MySQL, PostgreSQL, SQL Server</li>
+                        <li><strong>Application Server:</strong> Java, .NET, Node.js apps</li>
+                        <li><strong>File Server:</strong> Network file storage</li>
+                        <li><strong>Mail Server:</strong> Exchange, Postfix</li>
+                        <li><strong>Domain Controller:</strong> Active Directory</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: E-commerce Infrastructure</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    An online store might use: <br>
+                    • 2x Virtual Web Servers (load balanced)<br>
+                    • 1x Virtual Database Server (customer data, products)<br>
+                    • 1x Virtual Application Server (payment processing)<br>
+                    • 1x Virtual File Server (product images, documents)<br>
+                    <br>
+                    All running on 2 physical servers instead of needing 5 separate machines.
+                </p>
+            </div></div><div class="slide"><h1>📝 Quick Check: Virtual Machines</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q1: What is the main difference between a virtual PC and a virtual server?</p>
+                <button class="quiz-option" onclick="checkAnswer(1, 0, false)">A) Virtual PCs are faster than virtual servers</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 1, true)">B) Virtual PCs provide interactive desktop environments; virtual servers provide background services</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 2, false)">C) Virtual servers cannot run Windows</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 3, false)">D) There is no difference</button>
+                <div id="feedback-1" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q2: At which OSI layer does a virtual switch operate?</p>
+                <button class="quiz-option" onclick="checkAnswer(2, 0, false)">A) Layer 1 (Physical)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 1, true)">B) Layer 2 (Data Link)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 2, false)">C) Layer 3 (Network)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 3, false)">D) Layer 4 (Transport)</button>
+                <div id="feedback-2" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q3: What addressing method does a virtual router use?</p>
+                <button class="quiz-option" onclick="checkAnswer(3, 0, false)">A) MAC addresses</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 1, true)">B) IP addresses</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 2, false)">C) Port numbers</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 3, false)">D) Domain names</button>
+                <div id="feedback-3" class="quiz-feedback"></div>
+            </div></div><div class="slide"><h1>⚡ Hypervisors</h1>
+            <div class="info-box purple-box">
+                <h3>What is a Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>hypervisor</strong> (also called a Virtual Machine Monitor - VMM) is software, firmware, or hardware that creates and manages virtual machines. It sits between the physical hardware and the VMs, allocating resources and ensuring VMs remain isolated from each other.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🔑 Key Functions</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Resource Allocation:</strong> Distributes CPU, RAM, storage to VMs</li>
+                    <li><strong>Isolation:</strong> Keeps VMs separate and secure</li>
+                    <li><strong>Hardware Abstraction:</strong> Presents virtual hardware to VMs</li>
+                    <li><strong>Scheduling:</strong> Manages which VM uses physical resources when</li>
+                    <li><strong>Management:</strong> Controls VM lifecycle (create, pause, delete)</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="card card-blue">
+                    <span class="card-title">1️⃣</span>
+                    <h3 style="color: #58a6ff; margin-top: 10px;">Type 1 Hypervisor</h3>
+                    <p class="card-desc" style="margin-top: 15px; font-size: 1.15rem;">Bare Metal - Runs directly on hardware</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">2️⃣</span>
+                    <h3 style="color: #a371f7; margin-top: 10px;">Type 2 Hypervisor</h3>
+                    <p class="card-desc" style="margin-top: 15px; font-size: 1.15rem;">Hosted - Runs on top of an OS</p>
+                </div>
+            </div></div><div class="slide"><h1>1️⃣ Type 1 Hypervisor (Bare Metal)</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Type 1 Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>Type 1 hypervisor</strong> runs directly on the physical hardware without needing a host operating system. It controls the hardware and manages all virtual machines directly. Also called "bare metal" or "native" hypervisors.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Advantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Performance:</strong> Direct hardware access = faster</li>
+                        <li><strong>Efficiency:</strong> No OS overhead</li>
+                        <li><strong>Security:</strong> Smaller attack surface</li>
+                        <li><strong>Stability:</strong> More reliable for production</li>
+                        <li><strong>Resource Control:</strong> Better hardware utilization</li>
+                    </ul>
+                </div>
+                <div class="info-box red-box">
+                    <h3>❌ Disadvantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Complexity:</strong> Harder to set up and manage</li>
+                        <li><strong>Cost:</strong> Enterprise licenses expensive</li>
+                        <li><strong>Hardware Support:</strong> Limited driver availability</li>
+                        <li><strong>Learning Curve:</strong> Requires specialized knowledge</li>
+                        <li><strong>Dedicated Hardware:</strong> Entire machine committed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box purple-box">
+                <h3>🏢 Popular Type 1 Hypervisors</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>VMware ESXi:</strong> Industry standard, enterprise features, paid</li>
+                    <li><strong>Microsoft Hyper-V Server:</strong> Free, integrates with Windows ecosystem</li>
+                    <li><strong>Citrix Hypervisor (XenServer):</strong> Open-source based, good performance</li>
+                    <li><strong>KVM (Kernel-based Virtual Machine):</strong> Linux kernel module, open-source</li>
+                    <li><strong>Proxmox VE:</strong> Open-source, includes container support</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Typical Use Case</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A data centre runs VMware ESXi on 50 physical servers. Each server hosts 20-30 virtual machines running various applications and services. The IT team manages all VMs centrally through vCenter Server. This setup maximizes hardware utilization and provides easy VM migration for maintenance.
+                </p>
+            </div></div><div class="slide"><h1>2️⃣ Type 2 Hypervisor (Hosted)</h1>
+            <div class="info-box purple-box">
+                <h3>What is a Type 2 Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>Type 2 hypervisor</strong> runs as an application on top of a conventional operating system (Windows, macOS, Linux). The host OS manages hardware, and the hypervisor runs VMs as processes within that OS. Also called "hosted" hypervisors.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Advantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Ease of Use:</strong> Simple installation like any application</li>
+                        <li><strong>Flexibility:</strong> Run VMs alongside normal applications</li>
+                        <li><strong>Cost:</strong> Free options available</li>
+                        <li><strong>Hardware Support:</strong> Leverages host OS drivers</li>
+                        <li><strong>Convenience:</strong> Don't need dedicated hardware</li>
+                    </ul>
+                </div>
+                <div class="info-box red-box">
+                    <h3>❌ Disadvantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Performance:</strong> Slower due to OS overhead</li>
+                        <li><strong>Resource Competition:</strong> Host OS and VMs share resources</li>
+                        <li><strong>Security:</strong> Larger attack surface (host OS vulnerabilities)</li>
+                        <li><strong>Stability:</strong> Host OS crash affects all VMs</li>
+                        <li><strong>Scalability:</strong> Limited to host OS capabilities</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box blue-box">
+                <h3>💻 Popular Type 2 Hypervisors</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Oracle VirtualBox:</strong> Free, cross-platform, feature-rich</li>
+                    <li><strong>VMware Workstation/Fusion:</strong> Professional features, paid (free Player version)</li>
+                    <li><strong>Parallels Desktop:</strong> macOS focused, excellent Mac integration</li>
+                    <li><strong>QEMU:</strong> Open-source, works with KVM</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Typical Use Case</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A software developer uses Windows 11 as their main OS with VMware Workstation installed. They run VMs for testing: one with Ubuntu Linux for development, one with Windows Server for testing deployment, and another with an older Windows 7 for legacy application compatibility testing. All while using Chrome and Visual Studio Code on the host OS.
+                </p>
+            </div></div><div class="slide"><h1>⚖️ Type 1 vs Type 2 Comparison</h1>
+            <div class="info-box gray-box">
+                <h3>Side-by-Side Comparison</h3>
+                <table class="comparison-table">
+                    <tbody><tr>
+                        <th>Feature</th>
+                        <th>Type 1 (Bare Metal)</th>
+                        <th>Type 2 (Hosted)</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Installation</strong></td>
+                        <td>Directly on hardware</td>
+                        <td>On top of existing OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>⭐⭐⭐⭐⭐ Excellent</td>
+                        <td>⭐⭐⭐ Good</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ease of Use</strong></td>
+                        <td>⭐⭐ Complex</td>
+                        <td>⭐⭐⭐⭐⭐ Very Easy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>⭐⭐⭐⭐⭐ High</td>
+                        <td>⭐⭐⭐ Moderate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Usually expensive (enterprise)</td>
+                        <td>Often free or low cost</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary Use</strong></td>
+                        <td>Production servers, data centres</td>
+                        <td>Development, testing, desktop use</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware Access</strong></td>
+                        <td>Direct</td>
+                        <td>Through host OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scalability</strong></td>
+                        <td>⭐⭐⭐⭐⭐ Excellent</td>
+                        <td>⭐⭐⭐ Limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Examples</strong></td>
+                        <td>VMware ESXi, Hyper-V Server, KVM</td>
+                        <td>VirtualBox, VMware Workstation, Parallels</td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <div class="grid grid-2" style="margin-top: 30px;">
+                <div class="info-box blue-box">
+                    <h3>🏢 When to Use Type 1</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Enterprise production environments</li>
+                        <li>Cloud service providers</li>
+                        <li>High-performance requirements</li>
+                        <li>Running many VMs simultaneously</li>
+                        <li>Critical services requiring maximum uptime</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>💻 When to Use Type 2</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Software development and testing</li>
+                        <li>Personal experimentation and learning</li>
+                        <li>Running occasional VMs</li>
+                        <li>Desktop virtualization for single users</li>
+                        <li>When you need both VMs and host OS applications</li>
+                    </ul>
+                </div>
+            </div></div><div class="slide"><h1>🎯 Interactive Activity: Match Components</h1>
+            <p style="font-size: 1.3rem; text-align: center; margin-bottom: 30px;">Drag each item to the correct category:</p>
+            
+            <div class="items-pool" id="itemsPool">
+                <div class="draggable-item" draggable="true" data-category="client">Virtual PC</div>
+                <div class="draggable-item" draggable="true" data-category="server">Database Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">VMware ESXi</div>
+                <div class="draggable-item" draggable="true" data-category="type2">Oracle VirtualBox</div>
+                <div class="draggable-item" draggable="true" data-category="client">Virtual Switch</div>
+                <div class="draggable-item" draggable="true" data-category="server">Web Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">Microsoft Hyper-V Server</div>
+                <div class="draggable-item" draggable="true" data-category="type2">VMware Workstation</div>
+                <div class="draggable-item" draggable="true" data-category="client">Virtual Router</div>
+                <div class="draggable-item" draggable="true" data-category="server">Mail Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">KVM</div>
+                <div class="draggable-item" draggable="true" data-category="type2">Parallels Desktop</div>
+            </div>
+            
+            <div class="drag-drop-area">
+                <div class="category-zone" data-category="client">
+                    <div class="category-title">💻 VM Clients</div>
+                </div>
+                <div class="category-zone" data-category="server">
+                    <div class="category-title">🖥️ Virtual Servers</div>
+                </div>
+            </div>
+            <div class="drag-drop-area">
+                <div class="category-zone" data-category="type1">
+                    <div class="category-title">1️⃣ Type 1 Hypervisors</div>
+                </div>
+                <div class="category-zone" data-category="type2">
+                    <div class="category-title">2️⃣ Type 2 Hypervisors</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="check-btn" onclick="checkDragDrop()">✓ Check Answers</button>
+                <button class="reset-btn" onclick="resetDragDrop()">↻ Reset</button>
+                <div id="dragDropFeedback" style="margin-top: 20px; font-size: 1.3rem; font-weight: 700;"></div>
+            </div></div><div class="slide"><h1>🏗️ Virtual Environment Architecture</h1>
+            <div class="info-box blue-box">
+                <h3>Type 1 Architecture (Bare Metal)</h3>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 30px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    ┌─────────────────────────────────────────┐<br>
+                    │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VM 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 2&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 3&nbsp;&nbsp;&nbsp;│<br>
+                    │ ┌───────────┐ ┌─────────┐ ┌─────────┐ │<br>
+                    │ │&nbsp;Guest OS&nbsp;&nbsp;│ │Guest OS │ │Guest OS │ │<br>
+                    │ │&nbsp;&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │<br>
+                    │ └───────────┘ └─────────┘ └─────────┘ │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type 1 Hypervisor (ESXi/KVM)<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Hardware (CPU, RAM, Disk)
+                </div>
+            </div>
+            <div class="info-box purple-box">
+                <h3>Type 2 Architecture (Hosted)</h3>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 30px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    ┌─────────────────────────────────────────┐<br>
+                    │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VM 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 2&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 3&nbsp;&nbsp;&nbsp;│<br>
+                    │ ┌───────────┐ ┌─────────┐ ┌─────────┐ │<br>
+                    │ │&nbsp;Guest OS&nbsp;&nbsp;│ │Guest OS │ │Guest OS │ │<br>
+                    │ │&nbsp;&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │<br>
+                    │ └───────────┘ └─────────┘ └─────────┘ │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ┌─────────────────────────────────────────┐<br>
+                    │&nbsp;Type 2 Hypervisor (VirtualBox/VMware) │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Host OS (Windows/macOS/Linux) + Apps<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Hardware (CPU, RAM, Disk)
+                </div>
+            </div>
+            <div class="info-box green-box">
+                <h3>🔍 Key Architectural Differences</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Type 1:</strong> Hypervisor has direct hardware access - VMs communicate directly with physical resources</li>
+                    <li><strong>Type 2:</strong> All hardware access goes through the host OS - adds an extra layer</li>
+                    <li><strong>Performance Impact:</strong> Type 1 avoids OS overhead, Type 2 must share resources with host applications</li>
+                    <li><strong>Isolation:</strong> Type 1 provides stronger VM isolation; Type 2 VMs depend on host OS stability</li>
+                </ul>
+            </div></div><div class="slide"><h1>📝 Quick Check: Hypervisors</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q4: Which of these is a Type 1 hypervisor?</p>
+                <button class="quiz-option" onclick="checkAnswer(4, 0, false)">A) Oracle VirtualBox</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 1, true)">B) VMware ESXi</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 2, false)">C) VMware Workstation</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 3, false)">D) Parallels Desktop</button>
+                <div id="feedback-4" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q5: What is the main advantage of Type 1 hypervisors over Type 2?</p>
+                <button class="quiz-option" onclick="checkAnswer(5, 0, true)">A) Better performance due to direct hardware access</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 1, false)">B) Easier to install and use</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 2, false)">C) They are always free</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 3, false)">D) They can run more types of guest operating systems</button>
+                <div id="feedback-5" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q6: Where would you typically use a Type 2 hypervisor?</p>
+                <button class="quiz-option" onclick="checkAnswer(6, 0, false)">A) Large enterprise data centre</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 1, false)">B) Cloud service provider infrastructure</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 2, true)">C) Developer's laptop for testing</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 3, false)">D) Mission-critical production servers</button>
+                <div id="feedback-6" class="quiz-feedback"></div>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 1</h1>
+            <div class="info-box blue-box">
+                <h3>Question (2 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Define what is meant by a 'virtual machine'.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>1 mark:</strong> Basic definition mentioning software-based computer</li>
+                    <li><strong>2 marks:</strong> Clear definition including emulation/abstraction of hardware AND operating independently</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (2 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A virtual machine is a software-based emulation of a physical computer that runs an operating system and applications <strong>(1)</strong>. It operates independently with its own virtual hardware (CPU, RAM, storage) allocated from a physical host machine, allowing multiple VMs to run simultaneously on a single physical server <strong>(1)</strong>.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 2</h1>
+            <div class="info-box blue-box">
+                <h3>Question (4 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Explain the difference between a virtual switch and a virtual router in a virtual environment.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>4 marks total:</strong> 2 marks for virtual switch explanation, 2 marks for virtual router explanation</li>
+                    <li>Must cover OSI layer and primary function for each</li>
+                    <li>Award marks for clear differentiation between the two</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (4 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A virtual switch operates at Layer 2 (Data Link layer) <strong>(1)</strong> and connects virtual machines within the same network segment using MAC addresses <strong>(1)</strong>.
+                    <br><br>
+                    A virtual router operates at Layer 3 (Network layer) <strong>(1)</strong> and routes traffic between different network segments using IP addresses, enabling communication between separate virtual networks <strong>(1)</strong>.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 3</h1>
+            <div class="info-box blue-box">
+                <h3>Question (6 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Compare Type 1 and Type 2 hypervisors. Your answer should include the architecture of each type and explain why Type 1 hypervisors typically offer better performance.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Correct description of Type 1 architecture (bare metal/direct hardware access)</li>
+                    <li><strong>2 marks:</strong> Correct description of Type 2 architecture (hosted/runs on OS)</li>
+                    <li><strong>2 marks:</strong> Clear explanation of performance difference with justification</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (6 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A Type 1 hypervisor runs directly on the physical hardware without requiring a host operating system <strong>(1)</strong>. This is known as bare metal architecture, where the hypervisor has direct control over all hardware resources <strong>(1)</strong>.
+                    <br><br>
+                    A Type 2 hypervisor runs as an application on top of a conventional operating system such as Windows or Linux <strong>(1)</strong>. The host OS manages the hardware, and the hypervisor creates VMs as processes within that operating system <strong>(1)</strong>.
+                    <br><br>
+                    Type 1 hypervisors offer better performance because they have direct access to hardware resources without the overhead of a host operating system <strong>(1)</strong>. Type 2 hypervisors must go through the host OS layer to access hardware, adding latency and requiring resource sharing with host OS applications, which reduces efficiency <strong>(1)</strong>.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 4</h1>
+            <div class="info-box blue-box">
+                <h3>Question (9 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A company currently has 30 physical servers in their data centre, each running a single application. They are considering virtualizing their infrastructure using Type 1 hypervisors.
+                    <br><br>
+                    Evaluate the potential benefits and drawbacks of implementing virtualization for this company. Your answer should consider technical, financial, and operational factors.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 3 (7-9 marks):</strong> Comprehensive evaluation covering multiple benefits and drawbacks with detailed justification. Makes reasoned judgements about suitability. Shows clear understanding of technical and business implications.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Good coverage of benefits and drawbacks with reasonable explanation. Some judgements made. Shows understanding of key concepts.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Basic list of benefits or drawbacks with limited explanation. Minimal evaluation or judgement.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 500px; overflow-y: auto;">
+                <h3>✅ Example Answer (9 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    <strong>Benefits:</strong>
+                    <br><br>
+                    From a <strong>resource efficiency</strong> perspective, virtualization would allow the company to consolidate their 30 physical servers down to perhaps 5-10 physical hosts. With Type 1 hypervisors like VMware ESXi providing excellent performance and direct hardware access, each physical server could easily host 5-6 virtual machines running their applications. This consolidation would dramatically reduce the data centre footprint, freeing up valuable physical space.
+                    <br><br>
+                    <strong>Financial benefits</strong> would be substantial. Initial capital expenditure would decrease as the company would need to purchase fewer physical servers going forward. Operating costs would reduce significantly through lower electricity consumption (fewer servers drawing power and generating heat), reduced cooling requirements, and decreased maintenance contracts for physical hardware. Over a 3-5 year period, these savings could offset the cost of Type 1 hypervisor licensing and the initial virtualization project. Additionally, the company could implement a more flexible "pay-as-you-grow" model, adding virtual machines without purchasing new hardware until capacity is reached.
+                    <br><br>
+                    <strong>Operational advantages</strong> would include much faster VM deployment—creating a new virtual machine takes minutes compared to weeks for procuring and configuring physical hardware. The IT team could implement robust disaster recovery through VM snapshots and replication to another site, protecting against data loss and ensuring business continuity. VM mobility features would enable live migration of applications during hardware maintenance, eliminating downtime. Resource allocation could be adjusted dynamically, giving applications more CPU or RAM when needed without physical reconfiguration.
+                    <br><br>
+                    <strong>Drawbacks and Challenges:</strong>
+                    <br><br>
+                    The <strong>initial implementation</strong> presents significant challenges. Type 1 hypervisors require specialized knowledge and training for the IT team, potentially necessitating expensive training courses or hiring experienced virtualization engineers. The migration process itself carries risk—moving 30 applications from physical to virtual requires careful planning, testing, and execution, with potential for service disruptions during the transition period. This migration project could take 6-12 months and require substantial staff resources.
+                    <br><br>
+                    <strong>Financial considerations</strong> include high upfront costs. Enterprise Type 1 hypervisors like VMware ESXi require expensive licensing, potentially £5,000-10,000 per physical host plus annual support contracts. Management tools like vCenter Server add additional licensing costs. The company would also need to purchase powerful physical hosts with more CPU cores, RAM, and faster storage than their current servers to support multiple VMs effectively. While long-term savings exist, the initial investment could be £100,000+.
+                    <br><br>
+                    <strong>Technical risks</strong> include the creation of single points of failure—if a physical host running 6 VMs fails, all 6 applications go down simultaneously rather than just one as in the current setup. This requires investment in redundancy, clustering, and high-availability features. Performance overhead exists even with Type 1 hypervisors, though minimal—some applications with extremely high performance requirements might not achieve the same speed as dedicated physical hardware. Storage performance becomes critical as multiple VMs share storage systems, potentially requiring expensive SAN or NAS infrastructure.
+                    <br><br>
+                    <strong>Evaluation:</strong>
+                    <br><br>
+                    Overall, virtualization using Type 1 hypervisors would be highly beneficial for this company. The current situation of 30 underutilized physical servers running single applications is inefficient and costly. The consolidation benefits, operational flexibility, and long-term cost savings significantly outweigh the implementation challenges and upfront costs. However, success depends on proper planning, adequate investment in redundancy and high-availability features, staff training, and careful migration execution. The company should implement virtualization in phases, starting with non-critical applications to gain experience before migrating mission-critical systems. With proper implementation, they could expect 60-80% reduction in hardware costs, faster application deployment, improved disaster recovery capabilities, and better resource utilization—making this a sound strategic investment despite the initial challenges.
+                </p>
+            </div></div><div class="slide"><h1>📚 Summary &amp; Key Takeaways</h1>
+            <div class="grid grid-3">
+                <div class="info-box blue-box">
+                    <h3>💻 Virtual Machines</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>VM Clients:</strong> Virtual PCs, switches, routers</li>
+                        <li><strong>Virtual Servers:</strong> Web, database, application servers</li>
+                        <li><strong>Characteristics:</strong> Isolation, portability, encapsulation</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>1️⃣ Type 1 Hypervisors</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>Architecture:</strong> Bare metal, direct hardware access</li>
+                        <li><strong>Benefits:</strong> High performance, security, scalability</li>
+                        <li><strong>Use:</strong> Enterprise, production, data centres</li>
+                    </ul>
+                </div>
+                <div class="info-box green-box">
+                    <h3>2️⃣ Type 2 Hypervisors</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>Architecture:</strong> Hosted, runs on OS</li>
+                        <li><strong>Benefits:</strong> Easy to use, flexible, cost-effective</li>
+                        <li><strong>Use:</strong> Development, testing, learning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box yellow-box">
+                <h3>🎯 Critical Concepts to Remember</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Virtualization separates:</strong> Software from physical hardware, enabling resource sharing</li>
+                    <li><strong>Virtual switches:</strong> Layer 2, connect VMs using MAC addresses</li>
+                    <li><strong>Virtual routers:</strong> Layer 3, route between networks using IP addresses</li>
+                    <li><strong>Type 1 = Performance:</strong> Best for production, direct hardware access</li>
+                    <li><strong>Type 2 = Convenience:</strong> Best for development, runs on existing OS</li>
+                    <li><strong>Hypervisors manage:</strong> Resource allocation, VM isolation, hardware abstraction</li>
+                </ul>
+            </div>
+            <div class="info-box blue-box" style="text-align: center; padding: 40px;">
+                <h2 style="margin: 0; color: #58a6ff;">🏆 Excellent Work!</h2>
+                <p style="font-size: 1.4rem; margin-top: 20px; color: #c9d1d9;">You now understand the components and architecture of virtual environments!</p>
+                <p style="font-size: 1.2rem; margin-top: 15px; color: #8b949e;">Virtualization is fundamental to modern computing—powering cloud services, data centres, and development environments worldwide.</p>
+            </div></div></div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="prevSlide()" id="prevBtn" disabled="">← Previous</button>
+            <div class="dots-container" id="dotsContainer"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Next →</button>
+        </div>
+
+        <div class="counter" id="counter">Slide 1 of 19</div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 19;
+        const completed = new Set([0]);
+        const quizAnswers = {};
+
+        const slidesContent = [
+            // Slide 1 - Title
+            `<h1>🖥️ 7.4 Virtual Environments</h1>
+            <p class="subtitle">Understanding Virtual Environment Components</p>
+            <div class="highlight-box">
+                <h2 style="margin: 0; font-size: 2rem; color: #58a6ff;">T Level Digital Software Development</h2>
+                <p style="font-size: 1.3rem; margin-top: 15px; color: #8b949e;">7.4.1 Role and characteristics of virtual environment components</p>
+            </div>
+            <div class="grid grid-2" style="margin-top: 40px;">
+                <div class="card card-blue">
+                    <span class="card-title">💻</span>
+                    <p class="card-desc" style="font-size: 1.3rem; color: #c9d1d9;">Virtual Machines</p>
+                    <p class="card-desc" style="margin-top: 10px;">Clients & Servers</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">⚡</span>
+                    <p class="card-desc" style="font-size: 1.3rem; color: #c9d1d9;">Hypervisors</p>
+                    <p class="card-desc" style="margin-top: 10px;">Type 1 & Type 2</p>
+                </div>
+            </div>`,
+
+            // Slide 2 - What is Virtualization
+            `<h1>🌐 What is Virtualization?</h1>
+            <div class="info-box blue-box">
+                <h3>Definition</h3>
+                <p style="font-size: 1.3rem;"><strong>Virtualization</strong> is the process of creating a software-based (virtual) version of physical computing resources such as servers, storage devices, networks, or operating systems. It allows multiple virtual instances to run on a single physical machine.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Key Benefits</h3>
+                    <ul>
+                        <li><strong>Resource Efficiency:</strong> Multiple VMs share one physical server</li>
+                        <li><strong>Cost Savings:</strong> Reduced hardware and energy costs</li>
+                        <li><strong>Isolation:</strong> VMs operate independently and securely</li>
+                        <li><strong>Flexibility:</strong> Easy to create, move, or delete VMs</li>
+                        <li><strong>Disaster Recovery:</strong> Quick snapshots and backups</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Common Use Cases</h3>
+                    <ul>
+                        <li><strong>Server Consolidation:</strong> Reduce physical servers</li>
+                        <li><strong>Development & Testing:</strong> Isolated test environments</li>
+                        <li><strong>Cloud Computing:</strong> Foundation of cloud services</li>
+                        <li><strong>Desktop Virtualization:</strong> Virtual PCs for users</li>
+                        <li><strong>Legacy Applications:</strong> Run old software safely</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Real-World Example</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Before virtualization, a company with 100 applications needed 100 physical servers. With virtualization, they can run all 100 applications across just 10-15 physical servers, saving massive amounts on hardware, space, cooling, and electricity.
+                </p>
+            </div>`,
+
+            // Slide 3 - Virtual Machines Overview
+            `<h1>💻 Virtual Machines (VMs)</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Virtual Machine?</h3>
+                <p style="font-size: 1.3rem;">A <strong>virtual machine</strong> is a software-based emulation of a physical computer. It runs an operating system and applications just like a physical computer, but exists as files on a host machine. Each VM operates independently with its own virtual hardware (CPU, RAM, storage, network).</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card card-blue">
+                    <span class="card-title">🖥️ Virtual CPU</span>
+                    <p class="card-desc" style="margin-top: 15px;">Allocated processing power from physical CPU cores</p>
+                </div>
+                <div class="card card-green">
+                    <span class="card-title">💾 Virtual RAM</span>
+                    <p class="card-desc" style="margin-top: 15px;">Reserved memory from physical RAM</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">💿 Virtual Disk</span>
+                    <p class="card-desc" style="margin-top: 15px;">Storage space as virtual hard drive files</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="card card-yellow">
+                    <span class="card-title">🌐 Virtual NIC</span>
+                    <p class="card-desc" style="margin-top: 15px;">Virtual network interface card for connectivity</p>
+                </div>
+                <div class="card card-blue">
+                    <span class="card-title">🎮 Virtual GPU</span>
+                    <p class="card-desc" style="margin-top: 15px;">Graphics processing (optional)</p>
+                </div>
+            </div>
+            <div class="info-box gray-box">
+                <h3>🔑 Key Characteristics</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Isolation:</strong> Each VM is completely separate from others</li>
+                    <li><strong>Encapsulation:</strong> Entire VM exists as files that can be copied/moved</li>
+                    <li><strong>Hardware Independence:</strong> VMs can run on different physical hardware</li>
+                    <li><strong>Portability:</strong> Easy to migrate between hosts</li>
+                </ul>
+            </div>`,
+
+            // Slide 4 - VM Clients
+            `<h1>🖱️ Virtual Machine Clients</h1>
+            <div class="info-box blue-box">
+                <h3>What are VM Clients?</h3>
+                <p style="font-size: 1.3rem;">VM clients are virtual machines that provide end-user computing environments or network infrastructure services. They include virtual PCs, virtual switches, and virtual routers.</p>
+            </div>
+            <div class="info-box green-box">
+                <h3>💻 Virtual PC (Virtual Desktop)</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">A virtual machine configured as a desktop/workstation environment for end users.</p>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Purpose:</strong> Provide desktop computing without physical PCs</li>
+                    <li><strong>Components:</strong> OS (Windows/Linux), applications, user data</li>
+                    <li><strong>Access:</strong> Via thin clients, web browsers, or remote desktop</li>
+                    <li><strong>Benefits:</strong> Centralized management, easy updates, secure data</li>
+                    <li><strong>Use Cases:</strong> VDI (Virtual Desktop Infrastructure), remote work, BYOD policies</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Virtual PC in Practice</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company provides employees with thin client devices (simple terminals). When users log in, they connect to their personal virtual PC running on servers in the data centre. Each user's virtual PC has Windows 11, Microsoft Office, and company applications. If a thin client breaks, the user simply logs in from another device—all their work is preserved on the virtual PC.
+                </p>
+            </div>`,
+
+            // Slide 5 - Virtual Switches and Routers
+            `<h1>🌐 Virtual Switches & Routers</h1>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>🔀 Virtual Switch</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px;">Software-based network switch that connects VMs together and to physical networks.</p>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Function:</strong> Forward network traffic between VMs</li>
+                        <li><strong>Layer:</strong> Operates at Layer 2 (Data Link)</li>
+                        <li><strong>Features:</strong> VLANs, port mirroring, QoS</li>
+                        <li><strong>Examples:</strong> VMware vSwitch, Hyper-V Virtual Switch</li>
+                        <li><strong>Connects:</strong> VMs to each other and external networks</li>
+                    </ul>
+                </div>
+                <div class="info-box blue-box">
+                    <h3>🛤️ Virtual Router</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px;">Software-based router that directs network traffic between different virtual networks.</p>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Function:</strong> Route traffic between network segments</li>
+                        <li><strong>Layer:</strong> Operates at Layer 3 (Network)</li>
+                        <li><strong>Features:</strong> Routing protocols, NAT, firewall rules</li>
+                        <li><strong>Examples:</strong> VyOS, pfSense, Cisco CSR</li>
+                        <li><strong>Use:</strong> Network segmentation, multi-tenant environments</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box yellow-box">
+                <h3>🔍 Key Differences</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Virtual Switch</th>
+                        <th>Virtual Router</th>
+                    </tr>
+                    <tr>
+                        <td><strong>OSI Layer</strong></td>
+                        <td>Layer 2 (Data Link)</td>
+                        <td>Layer 3 (Network)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary Function</strong></td>
+                        <td>Connect VMs in same network</td>
+                        <td>Route between different networks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Addressing</strong></td>
+                        <td>MAC addresses</td>
+                        <td>IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Simpler</td>
+                        <td>More complex</td>
+                    </tr>
+                </table>
+            </div>`,
+
+            // Slide 6 - Virtual Servers
+            `<h1>🖥️ Virtual Servers</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Virtual Server?</h3>
+                <p style="font-size: 1.3rem;">A <strong>virtual server</strong> is a VM configured to provide server services (web hosting, databases, email, file storage, etc.). Unlike virtual PCs designed for interactive desktop use, virtual servers run background services and applications.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Characteristics</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Headless:</strong> No GUI, managed remotely</li>
+                        <li><strong>Always On:</strong> Runs 24/7 providing services</li>
+                        <li><strong>Resource-Optimized:</strong> Configured for specific workloads</li>
+                        <li><strong>Server OS:</strong> Windows Server, Linux Server editions</li>
+                        <li><strong>Specialized Roles:</strong> Dedicated to specific services</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Common Virtual Server Types</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Web Server:</strong> Apache, Nginx, IIS</li>
+                        <li><strong>Database Server:</strong> MySQL, PostgreSQL, SQL Server</li>
+                        <li><strong>Application Server:</strong> Java, .NET, Node.js apps</li>
+                        <li><strong>File Server:</strong> Network file storage</li>
+                        <li><strong>Mail Server:</strong> Exchange, Postfix</li>
+                        <li><strong>Domain Controller:</strong> Active Directory</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: E-commerce Infrastructure</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    An online store might use: <br>
+                    • 2x Virtual Web Servers (load balanced)<br>
+                    • 1x Virtual Database Server (customer data, products)<br>
+                    • 1x Virtual Application Server (payment processing)<br>
+                    • 1x Virtual File Server (product images, documents)<br>
+                    <br>
+                    All running on 2 physical servers instead of needing 5 separate machines.
+                </p>
+            </div>`,
+
+            // Slide 7 - Quiz on VMs
+            `<h1>📝 Quick Check: Virtual Machines</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q1: What is the main difference between a virtual PC and a virtual server?</p>
+                <button class="quiz-option" onclick="checkAnswer(1, 0, false)">A) Virtual PCs are faster than virtual servers</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 1, true)">B) Virtual PCs provide interactive desktop environments; virtual servers provide background services</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 2, false)">C) Virtual servers cannot run Windows</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 3, false)">D) There is no difference</button>
+                <div id="feedback-1" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q2: At which OSI layer does a virtual switch operate?</p>
+                <button class="quiz-option" onclick="checkAnswer(2, 0, false)">A) Layer 1 (Physical)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 1, true)">B) Layer 2 (Data Link)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 2, false)">C) Layer 3 (Network)</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 3, false)">D) Layer 4 (Transport)</button>
+                <div id="feedback-2" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q3: What addressing method does a virtual router use?</p>
+                <button class="quiz-option" onclick="checkAnswer(3, 0, false)">A) MAC addresses</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 1, true)">B) IP addresses</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 2, false)">C) Port numbers</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 3, false)">D) Domain names</button>
+                <div id="feedback-3" class="quiz-feedback"></div>
+            </div>`,
+
+            // Slide 8 - Hypervisors Introduction
+            `<h1>⚡ Hypervisors</h1>
+            <div class="info-box purple-box">
+                <h3>What is a Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>hypervisor</strong> (also called a Virtual Machine Monitor - VMM) is software, firmware, or hardware that creates and manages virtual machines. It sits between the physical hardware and the VMs, allocating resources and ensuring VMs remain isolated from each other.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🔑 Key Functions</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Resource Allocation:</strong> Distributes CPU, RAM, storage to VMs</li>
+                    <li><strong>Isolation:</strong> Keeps VMs separate and secure</li>
+                    <li><strong>Hardware Abstraction:</strong> Presents virtual hardware to VMs</li>
+                    <li><strong>Scheduling:</strong> Manages which VM uses physical resources when</li>
+                    <li><strong>Management:</strong> Controls VM lifecycle (create, pause, delete)</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="card card-blue">
+                    <span class="card-title">1️⃣</span>
+                    <h3 style="color: #58a6ff; margin-top: 10px;">Type 1 Hypervisor</h3>
+                    <p class="card-desc" style="margin-top: 15px; font-size: 1.15rem;">Bare Metal - Runs directly on hardware</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">2️⃣</span>
+                    <h3 style="color: #a371f7; margin-top: 10px;">Type 2 Hypervisor</h3>
+                    <p class="card-desc" style="margin-top: 15px; font-size: 1.15rem;">Hosted - Runs on top of an OS</p>
+                </div>
+            </div>`,
+
+            // Slide 9 - Type 1 Hypervisor
+            `<h1>1️⃣ Type 1 Hypervisor (Bare Metal)</h1>
+            <div class="info-box blue-box">
+                <h3>What is a Type 1 Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>Type 1 hypervisor</strong> runs directly on the physical hardware without needing a host operating system. It controls the hardware and manages all virtual machines directly. Also called "bare metal" or "native" hypervisors.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Advantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Performance:</strong> Direct hardware access = faster</li>
+                        <li><strong>Efficiency:</strong> No OS overhead</li>
+                        <li><strong>Security:</strong> Smaller attack surface</li>
+                        <li><strong>Stability:</strong> More reliable for production</li>
+                        <li><strong>Resource Control:</strong> Better hardware utilization</li>
+                    </ul>
+                </div>
+                <div class="info-box red-box">
+                    <h3>❌ Disadvantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Complexity:</strong> Harder to set up and manage</li>
+                        <li><strong>Cost:</strong> Enterprise licenses expensive</li>
+                        <li><strong>Hardware Support:</strong> Limited driver availability</li>
+                        <li><strong>Learning Curve:</strong> Requires specialized knowledge</li>
+                        <li><strong>Dedicated Hardware:</strong> Entire machine committed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box purple-box">
+                <h3>🏢 Popular Type 1 Hypervisors</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>VMware ESXi:</strong> Industry standard, enterprise features, paid</li>
+                    <li><strong>Microsoft Hyper-V Server:</strong> Free, integrates with Windows ecosystem</li>
+                    <li><strong>Citrix Hypervisor (XenServer):</strong> Open-source based, good performance</li>
+                    <li><strong>KVM (Kernel-based Virtual Machine):</strong> Linux kernel module, open-source</li>
+                    <li><strong>Proxmox VE:</strong> Open-source, includes container support</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Typical Use Case</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A data centre runs VMware ESXi on 50 physical servers. Each server hosts 20-30 virtual machines running various applications and services. The IT team manages all VMs centrally through vCenter Server. This setup maximizes hardware utilization and provides easy VM migration for maintenance.
+                </p>
+            </div>`,
+
+            // Slide 10 - Type 2 Hypervisor
+            `<h1>2️⃣ Type 2 Hypervisor (Hosted)</h1>
+            <div class="info-box purple-box">
+                <h3>What is a Type 2 Hypervisor?</h3>
+                <p style="font-size: 1.3rem;">A <strong>Type 2 hypervisor</strong> runs as an application on top of a conventional operating system (Windows, macOS, Linux). The host OS manages hardware, and the hypervisor runs VMs as processes within that OS. Also called "hosted" hypervisors.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Advantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Ease of Use:</strong> Simple installation like any application</li>
+                        <li><strong>Flexibility:</strong> Run VMs alongside normal applications</li>
+                        <li><strong>Cost:</strong> Free options available</li>
+                        <li><strong>Hardware Support:</strong> Leverages host OS drivers</li>
+                        <li><strong>Convenience:</strong> Don't need dedicated hardware</li>
+                    </ul>
+                </div>
+                <div class="info-box red-box">
+                    <h3>❌ Disadvantages</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Performance:</strong> Slower due to OS overhead</li>
+                        <li><strong>Resource Competition:</strong> Host OS and VMs share resources</li>
+                        <li><strong>Security:</strong> Larger attack surface (host OS vulnerabilities)</li>
+                        <li><strong>Stability:</strong> Host OS crash affects all VMs</li>
+                        <li><strong>Scalability:</strong> Limited to host OS capabilities</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box blue-box">
+                <h3>💻 Popular Type 2 Hypervisors</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Oracle VirtualBox:</strong> Free, cross-platform, feature-rich</li>
+                    <li><strong>VMware Workstation/Fusion:</strong> Professional features, paid (free Player version)</li>
+                    <li><strong>Parallels Desktop:</strong> macOS focused, excellent Mac integration</li>
+                    <li><strong>QEMU:</strong> Open-source, works with KVM</li>
+                </ul>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Typical Use Case</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A software developer uses Windows 11 as their main OS with VMware Workstation installed. They run VMs for testing: one with Ubuntu Linux for development, one with Windows Server for testing deployment, and another with an older Windows 7 for legacy application compatibility testing. All while using Chrome and Visual Studio Code on the host OS.
+                </p>
+            </div>`,
+
+            // Slide 11 - Type 1 vs Type 2 Comparison
+            `<h1>⚖️ Type 1 vs Type 2 Comparison</h1>
+            <div class="info-box gray-box">
+                <h3>Side-by-Side Comparison</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Type 1 (Bare Metal)</th>
+                        <th>Type 2 (Hosted)</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Installation</strong></td>
+                        <td>Directly on hardware</td>
+                        <td>On top of existing OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>⭐⭐⭐⭐⭐ Excellent</td>
+                        <td>⭐⭐⭐ Good</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ease of Use</strong></td>
+                        <td>⭐⭐ Complex</td>
+                        <td>⭐⭐⭐⭐⭐ Very Easy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>⭐⭐⭐⭐⭐ High</td>
+                        <td>⭐⭐⭐ Moderate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Usually expensive (enterprise)</td>
+                        <td>Often free or low cost</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary Use</strong></td>
+                        <td>Production servers, data centres</td>
+                        <td>Development, testing, desktop use</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware Access</strong></td>
+                        <td>Direct</td>
+                        <td>Through host OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scalability</strong></td>
+                        <td>⭐⭐⭐⭐⭐ Excellent</td>
+                        <td>⭐⭐⭐ Limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Examples</strong></td>
+                        <td>VMware ESXi, Hyper-V Server, KVM</td>
+                        <td>VirtualBox, VMware Workstation, Parallels</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid grid-2" style="margin-top: 30px;">
+                <div class="info-box blue-box">
+                    <h3>🏢 When to Use Type 1</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Enterprise production environments</li>
+                        <li>Cloud service providers</li>
+                        <li>High-performance requirements</li>
+                        <li>Running many VMs simultaneously</li>
+                        <li>Critical services requiring maximum uptime</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>💻 When to Use Type 2</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Software development and testing</li>
+                        <li>Personal experimentation and learning</li>
+                        <li>Running occasional VMs</li>
+                        <li>Desktop virtualization for single users</li>
+                        <li>When you need both VMs and host OS applications</li>
+                    </ul>
+                </div>
+            </div>`,
+
+            // Slide 12 - Interactive Drag and Drop
+            `<h1>🎯 Interactive Activity: Match Components</h1>
+            <p style="font-size: 1.3rem; text-align: center; margin-bottom: 30px;">Drag each item to the correct category:</p>
+            
+            <div class="items-pool" id="itemsPool">
+                <div class="draggable-item" draggable="true" data-category="client">Virtual PC</div>
+                <div class="draggable-item" draggable="true" data-category="server">Database Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">VMware ESXi</div>
+                <div class="draggable-item" draggable="true" data-category="type2">Oracle VirtualBox</div>
+                <div class="draggable-item" draggable="true" data-category="client">Virtual Switch</div>
+                <div class="draggable-item" draggable="true" data-category="server">Web Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">Microsoft Hyper-V Server</div>
+                <div class="draggable-item" draggable="true" data-category="type2">VMware Workstation</div>
+                <div class="draggable-item" draggable="true" data-category="client">Virtual Router</div>
+                <div class="draggable-item" draggable="true" data-category="server">Mail Server</div>
+                <div class="draggable-item" draggable="true" data-category="type1">KVM</div>
+                <div class="draggable-item" draggable="true" data-category="type2">Parallels Desktop</div>
+            </div>
+            
+            <div class="drag-drop-area">
+                <div class="category-zone" data-category="client">
+                    <div class="category-title">💻 VM Clients</div>
+                </div>
+                <div class="category-zone" data-category="server">
+                    <div class="category-title">🖥️ Virtual Servers</div>
+                </div>
+            </div>
+            <div class="drag-drop-area">
+                <div class="category-zone" data-category="type1">
+                    <div class="category-title">1️⃣ Type 1 Hypervisors</div>
+                </div>
+                <div class="category-zone" data-category="type2">
+                    <div class="category-title">2️⃣ Type 2 Hypervisors</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="check-btn" onclick="checkDragDrop()">✓ Check Answers</button>
+                <button class="reset-btn" onclick="resetDragDrop()">↻ Reset</button>
+                <div id="dragDropFeedback" style="margin-top: 20px; font-size: 1.3rem; font-weight: 700;"></div>
+            </div>`,
+
+            // Slide 13 - Architecture Diagrams
+            `<h1>🏗️ Virtual Environment Architecture</h1>
+            <div class="info-box blue-box">
+                <h3>Type 1 Architecture (Bare Metal)</h3>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 30px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    ┌─────────────────────────────────────────┐<br>
+                    │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VM 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 2&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 3&nbsp;&nbsp;&nbsp;│<br>
+                    │ ┌───────────┐ ┌─────────┐ ┌─────────┐ │<br>
+                    │ │&nbsp;Guest OS&nbsp;&nbsp;│ │Guest OS │ │Guest OS │ │<br>
+                    │ │&nbsp;&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │<br>
+                    │ └───────────┘ └─────────┘ └─────────┘ │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type 1 Hypervisor (ESXi/KVM)<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Hardware (CPU, RAM, Disk)
+                </div>
+            </div>
+            <div class="info-box purple-box">
+                <h3>Type 2 Architecture (Hosted)</h3>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 30px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    ┌─────────────────────────────────────────┐<br>
+                    │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VM 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 2&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;VM 3&nbsp;&nbsp;&nbsp;│<br>
+                    │ ┌───────────┐ ┌─────────┐ ┌─────────┐ │<br>
+                    │ │&nbsp;Guest OS&nbsp;&nbsp;│ │Guest OS │ │Guest OS │ │<br>
+                    │ │&nbsp;&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;Apps&nbsp;&nbsp;&nbsp;│ │<br>
+                    │ └───────────┘ └─────────┘ └─────────┘ │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ┌─────────────────────────────────────────┐<br>
+                    │&nbsp;Type 2 Hypervisor (VirtualBox/VMware) │<br>
+                    └─────────────────────────────────────────┘<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Host OS (Windows/macOS/Linux) + Apps<br>
+                    ═══════════════════════════════════════════<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Hardware (CPU, RAM, Disk)
+                </div>
+            </div>
+            <div class="info-box green-box">
+                <h3>🔍 Key Architectural Differences</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Type 1:</strong> Hypervisor has direct hardware access - VMs communicate directly with physical resources</li>
+                    <li><strong>Type 2:</strong> All hardware access goes through the host OS - adds an extra layer</li>
+                    <li><strong>Performance Impact:</strong> Type 1 avoids OS overhead, Type 2 must share resources with host applications</li>
+                    <li><strong>Isolation:</strong> Type 1 provides stronger VM isolation; Type 2 VMs depend on host OS stability</li>
+                </ul>
+            </div>`,
+
+            // Slide 14 - Quiz on Hypervisors
+            `<h1>📝 Quick Check: Hypervisors</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q4: Which of these is a Type 1 hypervisor?</p>
+                <button class="quiz-option" onclick="checkAnswer(4, 0, false)">A) Oracle VirtualBox</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 1, true)">B) VMware ESXi</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 2, false)">C) VMware Workstation</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 3, false)">D) Parallels Desktop</button>
+                <div id="feedback-4" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q5: What is the main advantage of Type 1 hypervisors over Type 2?</p>
+                <button class="quiz-option" onclick="checkAnswer(5, 0, true)">A) Better performance due to direct hardware access</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 1, false)">B) Easier to install and use</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 2, false)">C) They are always free</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 3, false)">D) They can run more types of guest operating systems</button>
+                <div id="feedback-5" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q6: Where would you typically use a Type 2 hypervisor?</p>
+                <button class="quiz-option" onclick="checkAnswer(6, 0, false)">A) Large enterprise data centre</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 1, false)">B) Cloud service provider infrastructure</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 2, true)">C) Developer's laptop for testing</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 3, false)">D) Mission-critical production servers</button>
+                <div id="feedback-6" class="quiz-feedback"></div>
+            </div>`,
+
+            // Slide 15 - Exam Question 1
+            `<h1>📝 Exam-Style Question 1</h1>
+            <div class="info-box blue-box">
+                <h3>Question (2 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Define what is meant by a 'virtual machine'.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>1 mark:</strong> Basic definition mentioning software-based computer</li>
+                    <li><strong>2 marks:</strong> Clear definition including emulation/abstraction of hardware AND operating independently</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (2 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A virtual machine is a software-based emulation of a physical computer that runs an operating system and applications <strong>(1)</strong>. It operates independently with its own virtual hardware (CPU, RAM, storage) allocated from a physical host machine, allowing multiple VMs to run simultaneously on a single physical server <strong>(1)</strong>.
+                </p>
+            </div>`,
+
+            // Slide 16 - Exam Question 2
+            `<h1>📝 Exam-Style Question 2</h1>
+            <div class="info-box blue-box">
+                <h3>Question (4 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Explain the difference between a virtual switch and a virtual router in a virtual environment.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>4 marks total:</strong> 2 marks for virtual switch explanation, 2 marks for virtual router explanation</li>
+                    <li>Must cover OSI layer and primary function for each</li>
+                    <li>Award marks for clear differentiation between the two</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (4 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A virtual switch operates at Layer 2 (Data Link layer) <strong>(1)</strong> and connects virtual machines within the same network segment using MAC addresses <strong>(1)</strong>.
+                    <br><br>
+                    A virtual router operates at Layer 3 (Network layer) <strong>(1)</strong> and routes traffic between different network segments using IP addresses, enabling communication between separate virtual networks <strong>(1)</strong>.
+                </p>
+            </div>`,
+
+            // Slide 17 - Exam Question 3
+            `<h1>📝 Exam-Style Question 3</h1>
+            <div class="info-box blue-box">
+                <h3>Question (6 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Compare Type 1 and Type 2 hypervisors. Your answer should include the architecture of each type and explain why Type 1 hypervisors typically offer better performance.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Correct description of Type 1 architecture (bare metal/direct hardware access)</li>
+                    <li><strong>2 marks:</strong> Correct description of Type 2 architecture (hosted/runs on OS)</li>
+                    <li><strong>2 marks:</strong> Clear explanation of performance difference with justification</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (6 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A Type 1 hypervisor runs directly on the physical hardware without requiring a host operating system <strong>(1)</strong>. This is known as bare metal architecture, where the hypervisor has direct control over all hardware resources <strong>(1)</strong>.
+                    <br><br>
+                    A Type 2 hypervisor runs as an application on top of a conventional operating system such as Windows or Linux <strong>(1)</strong>. The host OS manages the hardware, and the hypervisor creates VMs as processes within that operating system <strong>(1)</strong>.
+                    <br><br>
+                    Type 1 hypervisors offer better performance because they have direct access to hardware resources without the overhead of a host operating system <strong>(1)</strong>. Type 2 hypervisors must go through the host OS layer to access hardware, adding latency and requiring resource sharing with host OS applications, which reduces efficiency <strong>(1)</strong>.
+                </p>
+            </div>`,
+
+            // Slide 18 - Exam Question 4
+            `<h1>📝 Exam-Style Question 4</h1>
+            <div class="info-box blue-box">
+                <h3>Question (9 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A company currently has 30 physical servers in their data centre, each running a single application. They are considering virtualizing their infrastructure using Type 1 hypervisors.
+                    <br><br>
+                    Evaluate the potential benefits and drawbacks of implementing virtualization for this company. Your answer should consider technical, financial, and operational factors.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 3 (7-9 marks):</strong> Comprehensive evaluation covering multiple benefits and drawbacks with detailed justification. Makes reasoned judgements about suitability. Shows clear understanding of technical and business implications.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Good coverage of benefits and drawbacks with reasonable explanation. Some judgements made. Shows understanding of key concepts.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Basic list of benefits or drawbacks with limited explanation. Minimal evaluation or judgement.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 500px; overflow-y: auto;">
+                <h3>✅ Example Answer (9 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    <strong>Benefits:</strong>
+                    <br><br>
+                    From a <strong>resource efficiency</strong> perspective, virtualization would allow the company to consolidate their 30 physical servers down to perhaps 5-10 physical hosts. With Type 1 hypervisors like VMware ESXi providing excellent performance and direct hardware access, each physical server could easily host 5-6 virtual machines running their applications. This consolidation would dramatically reduce the data centre footprint, freeing up valuable physical space.
+                    <br><br>
+                    <strong>Financial benefits</strong> would be substantial. Initial capital expenditure would decrease as the company would need to purchase fewer physical servers going forward. Operating costs would reduce significantly through lower electricity consumption (fewer servers drawing power and generating heat), reduced cooling requirements, and decreased maintenance contracts for physical hardware. Over a 3-5 year period, these savings could offset the cost of Type 1 hypervisor licensing and the initial virtualization project. Additionally, the company could implement a more flexible "pay-as-you-grow" model, adding virtual machines without purchasing new hardware until capacity is reached.
+                    <br><br>
+                    <strong>Operational advantages</strong> would include much faster VM deployment—creating a new virtual machine takes minutes compared to weeks for procuring and configuring physical hardware. The IT team could implement robust disaster recovery through VM snapshots and replication to another site, protecting against data loss and ensuring business continuity. VM mobility features would enable live migration of applications during hardware maintenance, eliminating downtime. Resource allocation could be adjusted dynamically, giving applications more CPU or RAM when needed without physical reconfiguration.
+                    <br><br>
+                    <strong>Drawbacks and Challenges:</strong>
+                    <br><br>
+                    The <strong>initial implementation</strong> presents significant challenges. Type 1 hypervisors require specialized knowledge and training for the IT team, potentially necessitating expensive training courses or hiring experienced virtualization engineers. The migration process itself carries risk—moving 30 applications from physical to virtual requires careful planning, testing, and execution, with potential for service disruptions during the transition period. This migration project could take 6-12 months and require substantial staff resources.
+                    <br><br>
+                    <strong>Financial considerations</strong> include high upfront costs. Enterprise Type 1 hypervisors like VMware ESXi require expensive licensing, potentially £5,000-10,000 per physical host plus annual support contracts. Management tools like vCenter Server add additional licensing costs. The company would also need to purchase powerful physical hosts with more CPU cores, RAM, and faster storage than their current servers to support multiple VMs effectively. While long-term savings exist, the initial investment could be £100,000+.
+                    <br><br>
+                    <strong>Technical risks</strong> include the creation of single points of failure—if a physical host running 6 VMs fails, all 6 applications go down simultaneously rather than just one as in the current setup. This requires investment in redundancy, clustering, and high-availability features. Performance overhead exists even with Type 1 hypervisors, though minimal—some applications with extremely high performance requirements might not achieve the same speed as dedicated physical hardware. Storage performance becomes critical as multiple VMs share storage systems, potentially requiring expensive SAN or NAS infrastructure.
+                    <br><br>
+                    <strong>Evaluation:</strong>
+                    <br><br>
+                    Overall, virtualization using Type 1 hypervisors would be highly beneficial for this company. The current situation of 30 underutilized physical servers running single applications is inefficient and costly. The consolidation benefits, operational flexibility, and long-term cost savings significantly outweigh the implementation challenges and upfront costs. However, success depends on proper planning, adequate investment in redundancy and high-availability features, staff training, and careful migration execution. The company should implement virtualization in phases, starting with non-critical applications to gain experience before migrating mission-critical systems. With proper implementation, they could expect 60-80% reduction in hardware costs, faster application deployment, improved disaster recovery capabilities, and better resource utilization—making this a sound strategic investment despite the initial challenges.
+                </p>
+            </div>`,
+
+            // Slide 19 - Summary
+            `<h1>📚 Summary & Key Takeaways</h1>
+            <div class="grid grid-3">
+                <div class="info-box blue-box">
+                    <h3>💻 Virtual Machines</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>VM Clients:</strong> Virtual PCs, switches, routers</li>
+                        <li><strong>Virtual Servers:</strong> Web, database, application servers</li>
+                        <li><strong>Characteristics:</strong> Isolation, portability, encapsulation</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>1️⃣ Type 1 Hypervisors</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>Architecture:</strong> Bare metal, direct hardware access</li>
+                        <li><strong>Benefits:</strong> High performance, security, scalability</li>
+                        <li><strong>Use:</strong> Enterprise, production, data centres</li>
+                    </ul>
+                </div>
+                <div class="info-box green-box">
+                    <h3>2️⃣ Type 2 Hypervisors</h3>
+                    <ul style="font-size: 1.15rem;">
+                        <li><strong>Architecture:</strong> Hosted, runs on OS</li>
+                        <li><strong>Benefits:</strong> Easy to use, flexible, cost-effective</li>
+                        <li><strong>Use:</strong> Development, testing, learning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box yellow-box">
+                <h3>🎯 Critical Concepts to Remember</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Virtualization separates:</strong> Software from physical hardware, enabling resource sharing</li>
+                    <li><strong>Virtual switches:</strong> Layer 2, connect VMs using MAC addresses</li>
+                    <li><strong>Virtual routers:</strong> Layer 3, route between networks using IP addresses</li>
+                    <li><strong>Type 1 = Performance:</strong> Best for production, direct hardware access</li>
+                    <li><strong>Type 2 = Convenience:</strong> Best for development, runs on existing OS</li>
+                    <li><strong>Hypervisors manage:</strong> Resource allocation, VM isolation, hardware abstraction</li>
+                </ul>
+            </div>
+            <div class="info-box blue-box" style="text-align: center; padding: 40px;">
+                <h2 style="margin: 0; color: #58a6ff;">🏆 Excellent Work!</h2>
+                <p style="font-size: 1.4rem; margin-top: 20px; color: #c9d1d9;">You now understand the components and architecture of virtual environments!</p>
+                <p style="font-size: 1.2rem; margin-top: 15px; color: #8b949e;">Virtualization is fundamental to modern computing—powering cloud services, data centres, and development environments worldwide.</p>
+            </div>`
+        ];
+
+        function initSlides() {
+            const container = document.getElementById('slideContainer');
+            slidesContent.forEach((content, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = content;
+                container.appendChild(slideDiv);
+            });
+            updateUI();
+            createDots();
+            
+            // Initialize drag and drop on slide 12
+            if (currentSlide === 11) {
+                initDragAndDrop();
+            }
+        }
+
+        function updateUI() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            const progress = Math.round(((currentSlide + 1) / totalSlides) * 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress + '% Complete';
+            
+            document.getElementById('counter').textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            
+            updateDots();
+            completed.add(currentSlide);
+            
+            // Re-initialize drag and drop when navigating to slide 12
+            if (currentSlide === 11) {
+                setTimeout(initDragAndDrop, 100);
+            }
+        }
+
+        function createDots() {
+            const container = document.getElementById('dotsContainer');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.onclick = () => goToSlide(i);
+                container.appendChild(dot);
+            }
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else if (completed.has(index)) {
+                    dot.classList.add('completed');
+                }
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateUI();
+        }
+
+        function checkAnswer(questionId, optionIndex, isCorrect) {
+            if (quizAnswers[questionId]) return;
+            
+            quizAnswers[questionId] = true;
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            const allOptions = feedback.parentNode.querySelectorAll('.quiz-option');
+            
+            allOptions.forEach((opt, idx) => {
+                opt.disabled = true;
+                if (idx === optionIndex) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            feedback.style.display = 'block';
+            feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = isCorrect ? '✓ Correct! Well done!' : '✗ Incorrect. Review the material to understand why.';
+        }
+
+        // Drag and Drop Functionality
+        let draggedElement = null;
+
+        function initDragAndDrop() {
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropZones = document.querySelectorAll('.category-zone');
+            
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            this.classList.add('drag-over');
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            this.classList.remove('drag-over');
+            
+            if (draggedElement) {
+                this.appendChild(draggedElement);
+            }
+            
+            return false;
+        }
+
+        function checkDragDrop() {
+            const items = document.querySelectorAll('.draggable-item');
+            let correct = 0;
+            let total = items.length;
+            
+            items.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                const parentZone = item.parentElement;
+                const zoneCategory = parentZone.getAttribute('data-category');
+                
+                item.classList.remove('correct', 'incorrect');
+                
+                if (itemCategory === zoneCategory) {
+                    item.classList.add('correct');
+                    correct++;
+                } else {
+                    item.classList.add('incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById('dragDropFeedback');
+            if (correct === total) {
+                feedback.textContent = `🎉 Perfect! All ${total} items correctly categorised!`;
+                feedback.style.color = '#3fb950';
+            } else {
+                feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                feedback.style.color = '#f85149';
+            }
+        }
+
+        function resetDragDrop() {
+            const items = document.querySelectorAll('.draggable-item');
+            const pool = document.getElementById('itemsPool');
+            
+            items.forEach(item => {
+                item.classList.remove('correct', 'incorrect');
+                pool.appendChild(item);
+            });
+            
+            document.getElementById('dragDropFeedback').textContent = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.addEventListener('DOMContentLoaded', initSlides);
+    </script>
+
+
+</body></html>
