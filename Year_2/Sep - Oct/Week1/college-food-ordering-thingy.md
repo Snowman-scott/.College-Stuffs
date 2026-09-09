@@ -41,3 +41,11 @@ GET    /notifications/:userId
 ## Records
 GET    /transactions/:userId
 ```
+
+## Requests methods
+
+- GET — read/fetch data (doesn't change anything)
+- POST — create something new (e.g. a new order)
+- PATCH — update part of an existing thing (e.g. just the status field on an order)
+- PUT — replace the whole thing with a new version (less common for small updates)
+- DELETE — remove something
