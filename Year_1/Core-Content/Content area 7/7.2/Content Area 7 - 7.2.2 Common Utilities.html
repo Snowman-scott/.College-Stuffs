@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7.2.2 Common Utilities - T Level DPDD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0e27;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 50px 100px;
+    display: none;
+    opacity: 0;
+    background: linear-gradient(135deg, #0f1729 0%, #1a1f3a 100%);
+    overflow-y: auto;
+}
+
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: #1E293B;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: #10B981;
+    border-radius: 4px;
+}
+
+.slide.active {
+    display: block;
+    animation: slideIn 0.6s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    z-index: 10;
+}
+
+h1 {
+    font-size: clamp(2.2em, 3.5vw, 4em);
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(1.6em, 2.5vw, 2.8em);
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-weight: 800;
+}
+
+h3 {
+    font-size: clamp(1.2em, 1.6vw, 1.9em);
+    margin-bottom: 15px;
+    color: #10B981;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: clamp(1em, 1.3vw, 1.5em);
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+p, li {
+    font-size: clamp(0.9em, 1.05vw, 1.2em);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #E2E8F0;
+}
+
+ul, ol {
+    margin-left: 25px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%);
+    border-left: 4px solid #10B981;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.navigation {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 14px 30px;
+    border-radius: 60px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    z-index: 1000;
+}
+
+button {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 11px 26px;
+    font-size: 0.95em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.progress-bar {
+    width: 220px;
+    height: 7px;
+    background: rgba(51, 65, 85, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.slide-number {
+    font-size: 0.95em;
+    color: rgba(226, 232, 240, 0.8);
+    font-weight: 600;
+    min-width: 65px;
+    text-align: center;
+}
+
+.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+    text-align: center;
+}
+
+.hero-title {
+    font-size: clamp(3em, 6vw, 7em);
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #10B981 50%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 25px;
+    line-height: 1;
+}
+
+.divider {
+    height: 4px;
+    width: 200px;
+    background: linear-gradient(90deg, transparent, #10B981, transparent);
+    margin: 30px auto;
+    border-radius: 2px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 5px;
+}
+
+.badge-green {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+}
+
+.badge-blue {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+}
+
+.badge-purple {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+}
+
+.utility-box {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 22px;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.utility-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+}
+
+.util-file { border-color: #3B82F6; }
+.util-defrag { border-color: #8B5CF6; }
+.util-compress { border-color: #F59E0B; }
+.util-package { border-color: #EC4899; }
+.util-protect { border-color: #EF4444; }
+
+.example-box {
+    background: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid #10B981;
+    padding: 18px 22px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+th {
+    background: rgba(16, 185, 129, 0.2);
+    padding: 14px;
+    text-align: left;
+    font-weight: 700;
+    color: #10B981;
+    font-size: 1.05em;
+}
+
+td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    font-size: 1em;
+}
+
+tr:hover {
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.question-number {
+    font-size: 1.6em;
+    font-weight: 800;
+    color: #10B981;
+}
+
+.marks {
+    background: rgba(16, 185, 129, 0.2);
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 700;
+    color: #10B981;
+    font-size: 1.2em;
+}
+
+.command-verb {
+    color: #10B981;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.context-box {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid #3B82F6;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.code-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+@media (max-width: 1024px) {
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .slide {
+        padding: 35px 50px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 1: Title -->
+<div class="slide active">
+    <div class="center-content">
+        <h1 class="hero-title">COMMON UTILITIES</h1>
+        <div class="divider"></div>
+        <p style="font-size: clamp(1.5em, 2.5vw, 3em); color: #10B981; font-weight: 700; margin-bottom: 18px;">Content Area 7.2.2</p>
+        <p style="font-size: clamp(1.1em, 1.8vw, 2.2em); color: #94A3B8; margin-bottom: 30px;">Features and Use of Common Utilities</p>
+        
+        <div style="background: rgba(30, 41, 59, 0.6); padding: 35px 50px; border-radius: 20px; backdrop-filter: blur(20px); border: 1px solid rgba(16, 185, 129, 0.3); max-width: 900px;">
+            <div class="grid-2" style="gap: 30px; text-align: left;">
+                <div>
+                    <p style="font-size: 1.2em; margin-bottom: 12px;">📁 <strong>File Management</strong></p>
+                    <p style="font-size: 1.2em; margin-bottom: 12px;">🔧 <strong>Defragmenters</strong></p>
+                    <p style="font-size: 1.2em;">🗜️ <strong>File Compression</strong></p>
+                </div>
+                <div>
+                    <p style="font-size: 1.2em; margin-bottom: 12px;">📦 <strong>Package Managers</strong></p>
+                    <p style="font-size: 1.2em;">🛡️ <strong>Protection Software</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <span class="status-badge badge-green">T Level DPDD</span>
+            <span class="status-badge badge-blue">Content Area 7.2.2</span>
+            <span class="status-badge badge-purple">14 Slides</span>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Overview of Common Utilities -->
+<div class="slide">
+    <h1>What are Common Utilities?</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Utility software</strong> (utilities) are programs that perform specific maintenance, management, or optimization tasks on a computer system. Unlike application software (Word, Photoshop), utilities manage the system itself.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 25px;">
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Key Characteristics</h4>
+                <ul style="margin-left: 20px;">
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>System-focused:</strong> Manage system rather than create user content</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Maintenance tasks:</strong> Keep system running smoothly</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Performance optimization:</strong> Improve speed, storage, security</li>
+                    <li style="font-size: 1.05em;"><strong>Often automated:</strong> Run in background without user intervention</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 15px;">Five Categories</h4>
+                <ul style="margin-left: 20px;">
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #3B82F6;">File Management:</strong> Organize, search, manipulate files</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">Defragmenters:</strong> Reorganize fragmented data on disk</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #F59E0B;">Compression:</strong> Reduce file sizes to save space</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #EC4899;">Package Managers:</strong> Install/update/remove software</li>
+                    <li style="font-size: 1.05em;"><strong style="color: #EF4444;">Protection Software:</strong> Defend against malware and threats</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Example:</strong> When your computer runs slowly, you might use a <strong>defragmenter</strong> to reorganize files, <strong>file compression</strong> to free up space, and <strong>antivirus software</strong> to check for malware. These are all utilities helping maintain system performance.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: File Management Utilities -->
+<div class="slide">
+    <h1>File Management</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>File management utilities</strong> help users organize, locate, manipulate, and maintain files and folders on storage devices. Essential for keeping data organized and accessible.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 15px;">Core Functions</h4>
+                <ul style="margin-left: 20px;">
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Browse & Navigate:</strong> Explore folder hierarchy, navigate directory structure</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Create/Delete:</strong> Make new folders, delete unwanted files</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Copy/Move/Rename:</strong> Organize files, move between folders</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Search:</strong> Find files by name, date modified, file type, content</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Properties:</strong> View file size, type, date created/modified, permissions</li>
+                    <li style="font-size: 1.05em;"><strong>Batch Operations:</strong> Perform actions on multiple files simultaneously</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Common Examples</h4>
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Windows File Explorer</strong></p>
+                    <p style="font-size: 0.95em;">Built-in utility. Navigate C: drive, Quick Access, preview files, search, drag-and-drop operations, context menu (right-click)</p>
+                </div>
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>macOS Finder</strong></p>
+                    <p style="font-size: 0.95em;">Apple's file manager. Column view, icon view, list view, Spotlight search integration, tags for organization</p>
+                </div>
+                <div class="example-box">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Linux File Managers</strong></p>
+                    <p style="font-size: 0.95em;">Nautilus (GNOME), Dolphin (KDE), command-line tools (ls, cp, mv, rm)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(59, 130, 246, 0.1); margin-top: 20px;">
+            <h4 style="color: #3B82F6; margin-bottom: 15px;">Advanced Features</h4>
+            <div class="grid-3">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>File Permissions:</strong></p>
+                    <p style="font-size: 0.95em;">Control who can read/write/execute files (especially important on network systems)</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Hidden Files:</strong></p>
+                    <p style="font-size: 0.95em;">Show/hide system files and folders (e.g., .config files in Linux, AppData in Windows)</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>File Recovery:</strong></p>
+                    <p style="font-size: 0.95em;">Restore deleted files from Recycle Bin/Trash before permanent deletion</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Why Important:</strong> Without file management utilities, finding documents would be impossible. Imagine 10,000 files in one folder with no search or organization—chaos! Good file management saves time and prevents data loss.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Defragmenters -->
+<div class="slide">
+    <h1>Defragmenters</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Defragmentation utilities</strong> reorganize fragmented data on hard disk drives (HDDs) so files are stored in contiguous blocks, improving read/write performance.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #8B5CF6;">
+                <h4 style="color: #8B5CF6; margin-bottom: 15px;">What is Fragmentation?</h4>
+                <p style="font-size: 1.05em; margin-bottom: 15px;">When files are saved, deleted, and modified over time, data becomes scattered across non-contiguous disk sectors.</p>
+                
+                <div class="code-box" style="font-size: 0.85em;">
+<pre style="color: #E2E8F0; line-height: 1.6;">
+<strong style="color: #8B5CF6;">FRAGMENTED DISK:</strong>
+Sector: [1][2][3][4][5][6][7][8][9][10]
+Data:   [A][B][ ][A][C][ ][A][D][C][ ]
+        └File A split across sectors 1,4,7
+        └File C split across sectors 5,9
+
+<strong style="color: #10B981;">DEFRAGMENTED DISK:</strong>
+Sector: [1][2][3][4][5][6][7][8][9][10]
+Data:   [A][A][A][B][C][C][D][ ][ ][ ]
+        └File A now contiguous (1,2,3)
+        └File C now contiguous (5,6)
+</pre>
+                </div>
+
+                <p style="font-size: 1em; margin-top: 15px;"><strong>Problem:</strong> Hard disk drive read/write head must physically move to multiple locations to read one file—slow!</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">How Defragmentation Works</h4>
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Process:</strong></p>
+                <ol style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Analyse:</strong> Scan disk to identify fragmented files</li>
+                    <li style="margin-bottom: 8px;"><strong>Reorganize:</strong> Move file fragments to adjacent sectors</li>
+                    <li style="margin-bottom: 8px;"><strong>Consolidate:</strong> Group free space together</li>
+                    <li style="margin-bottom: 15px;"><strong>Optimize:</strong> Place frequently accessed files at faster disk areas</li>
+                </ol>
+
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Benefits:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 5px;">Faster file access (fewer disk head movements)</li>
+                    <li style="margin-bottom: 5px;">Reduced wear on mechanical HDD components</li>
+                    <li style="margin-bottom: 5px;">Improved boot times and application loading</li>
+                    <li>Can improve performance by 20-50% on heavily fragmented drives</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(139, 92, 246, 0.1); margin-top: 20px;">
+            <h4 style="color: #8B5CF6; margin-bottom: 15px;">Important Notes</h4>
+            <div class="grid-2">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #10B981;">✓ HDDs Need Defragmentation:</strong></p>
+                    <p style="font-size: 0.95em;">Traditional hard drives with spinning platters and moving read/write heads. Fragmentation significantly impacts performance.</p>
+                    <p style="font-size: 0.95em; margin-top: 10px;"><strong>Examples:</strong> Windows Disk Defragmenter, Defraggler, MyDefrag</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #EF4444;">✗ SSDs Do NOT Need Defragmentation:</strong></p>
+                    <p style="font-size: 0.95em;">Solid State Drives have no moving parts—access any sector instantly. Defragmentation provides zero benefit and wastes SSD write cycles (reducing lifespan).</p>
+                    <p style="font-size: 0.95em; margin-top: 10px;"><strong>Important:</strong> Modern Windows automatically disables defragmentation on SSDs</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Real-World Scenario:</strong></p>
+            <p style="font-size: 0.95em;">Old laptop with 500GB HDD takes 3 minutes to boot, programs load slowly. After defragmentation, boot time drops to 1.5 minutes, programs load noticeably faster. Disk head makes fewer movements to read files.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: File Compression -->
+<div class="slide">
+    <h1>File Compression</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>File compression utilities</strong> reduce file sizes by encoding data more efficiently, saving storage space and reducing transfer times. Files must be decompressed before use.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #F59E0B;">
+                <h4 style="color: #F59E0B; margin-bottom: 15px;">How Compression Works</h4>
+                <p style="font-size: 1.05em; margin-bottom: 15px;"><strong>Basic Concept:</strong> Identify and eliminate redundancy in data</p>
+                
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Simple Example:</strong></p>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Original:</strong> "AAAAAABBBBCCCCCCCC" (18 characters)</p>
+                    <p style="font-size: 0.9em;"><strong>Compressed:</strong> "6A4B8C" (6 characters) = 67% reduction!</p>
+                    <p style="font-size: 0.85em; margin-top: 8px; color: #94A3B8;">This is "run-length encoding" - replacing repeated characters with count+character</p>
+                </div>
+
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Compression Types:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Lossless:</strong> Perfect reconstruction (ZIP, RAR, 7z) - no data lost. Used for documents, programs, archives</li>
+                    <li style="margin-bottom: 8px;"><strong>Lossy:</strong> Some quality sacrificed (JPEG, MP3, MP4) - smaller sizes but can't perfectly recreate original. Used for media where slight quality loss acceptable</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Common Formats & Tools</h4>
+                
+                <table style="font-size: 0.85em;">
+                    <tr>
+                        <th>Format</th>
+                        <th>Type</th>
+                        <th>Typical Use</th>
+                    </tr>
+                    <tr>
+                        <td><strong>.zip</strong></td>
+                        <td>Lossless</td>
+                        <td>General purpose, built into Windows/macOS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.rar</strong></td>
+                        <td>Lossless</td>
+                        <td>Better compression than ZIP, requires WinRAR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.7z</strong></td>
+                        <td>Lossless</td>
+                        <td>Best compression ratio, free 7-Zip software</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.tar.gz</strong></td>
+                        <td>Lossless</td>
+                        <td>Linux/Unix archives, tar+gzip compression</td>
+                    </tr>
+                </table>
+
+                <p style="font-size: 1em; margin-top: 15px; margin-bottom: 10px;"><strong>Popular Tools:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 5px;"><strong>Windows:</strong> Built-in ZIP, WinRAR, 7-Zip, WinZip</li>
+                    <li style="margin-bottom: 5px;"><strong>macOS:</strong> Built-in ZIP, The Unarchiver, Keka</li>
+                    <li><strong>Linux:</strong> tar, gzip, bzip2, zip (command-line)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(245, 158, 11, 0.1); margin-top: 20px;">
+            <h4 style="color: #F59E0B; margin-bottom: 15px;">Benefits & Use Cases</h4>
+            <div class="grid-3">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Save Storage Space:</strong></p>
+                    <p style="font-size: 0.95em;">Compress rarely-used files. Example: 5GB of old photos → 2GB compressed = 60% space saved</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Faster File Transfer:</strong></p>
+                    <p style="font-size: 0.95em;">Email 100MB folder as 30MB ZIP—uploads 3x faster. Crucial for slow internet connections</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Bundle Multiple Files:</strong></p>
+                    <p style="font-size: 0.95em;">Combine 50 files into one archive—easier to organize, share, and backup</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Real-World Example:</strong></p>
+            <p style="font-size: 0.95em;">Student needs to submit coursework (20 documents, 50 images, 5 videos = 300MB). Compress to ZIP (120MB), upload to Google Classroom—60% faster upload, teacher receives organized single file.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Package Managers -->
+<div class="slide">
+    <h1>Package Managers</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Package managers</strong> automate the process of installing, updating, configuring, and removing software packages. Handle dependencies automatically and keep software up-to-date.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #EC4899;">
+                <h4 style="color: #EC4899; margin-bottom: 15px;">Core Functions</h4>
+                <ul style="margin-left: 20px;">
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Install Software:</strong> Download and install programs from repositories</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Update Software:</strong> Keep all installed programs current with latest versions</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Remove Software:</strong> Uninstall programs cleanly, removing all files</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Dependency Management:</strong> Automatically install required libraries/dependencies</li>
+                    <li style="font-size: 1.05em; margin-bottom: 10px;"><strong>Search Packages:</strong> Browse thousands of available programs</li>
+                    <li style="font-size: 1.05em;"><strong>Verify Integrity:</strong> Check software hasn't been tampered with (checksums)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Why Package Managers Matter</h4>
+                
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Without Package Manager:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">1. Find software website (is it legitimate?)</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">2. Download installer (might include bloatware)</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">3. Run installer, click through wizard</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">4. Manually install dependencies (which ones?)</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">5. Update each program individually</p>
+                    <p style="font-size: 0.95em;">⏱️ <strong>Time:</strong> 15-30 minutes per program</p>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>With Package Manager:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">1. Type: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">apt install firefox</code></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">2. Dependencies installed automatically</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">3. Software verified from trusted repository</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">4. Updates: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">apt upgrade</code> (updates everything)</p>
+                    <p style="font-size: 0.95em;">⏱️ <strong>Time:</strong> 2-3 minutes, fully automated</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(236, 72, 153, 0.1); margin-top: 20px;">
+            <h4 style="color: #EC4899; margin-bottom: 15px;">Common Package Managers</h4>
+            <div class="grid-3">
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>Linux APT</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">Debian/Ubuntu distributions</p>
+                    <div class="code-box" style="font-size: 0.85em; margin-top: 10px;">
+<pre>apt update
+apt install vlc
+apt upgrade</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>macOS Homebrew</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">Third-party package manager</p>
+                    <div class="code-box" style="font-size: 0.85em; margin-top: 10px;">
+<pre>brew update
+brew install git
+brew upgrade</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>Windows winget</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">Windows 11 built-in</p>
+                    <div class="code-box" style="font-size: 0.85em; margin-top: 10px;">
+<pre>winget search chrome
+winget install chrome
+winget upgrade --all</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>Python pip</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">Python packages/libraries</p>
+                    <div class="code-box" style="font-size: 0.85em; margin-top: 10px;">
+<pre>pip install pandas
+pip install requests
+pip list</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>Node npm</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">JavaScript packages</p>
+                    <div class="code-box" style="font-size: 0.85em; margin-top: 10px;">
+<pre>npm install express
+npm install react
+npm update</pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.1em; margin-bottom: 8px;"><strong>Android APK Store</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">Google Play Store (GUI)</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;">Tap "Install" → handles dependencies, updates, permissions automatically</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Key Benefits:</strong> Security (verified sources), efficiency (one command updates all software), dependency resolution (no "missing DLL" errors), consistency (same software versions across systems)</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Protection Software -->
+<div class="slide">
+    <h1>Protection Software</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Protection software</strong> (security utilities) defend computer systems against malware, unauthorized access, and security threats. Essential for maintaining system integrity and data security.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #EF4444;">
+                <h4 style="color: #EF4444; margin-bottom: 15px;">Antivirus Software</h4>
+                <p style="font-size: 1.05em; margin-bottom: 12px;"><strong>Purpose:</strong> Detect, prevent, and remove malware (viruses, trojans, worms, ransomware)</p>
+                
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>How Antivirus Works:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Signature-Based Detection:</strong> Compare files against database of known malware signatures (patterns)</li>
+                    <li style="margin-bottom: 8px;"><strong>Heuristic Analysis:</strong> Identify suspicious behaviour (e.g., program trying to modify system files)</li>
+                    <li style="margin-bottom: 8px;"><strong>Real-Time Scanning:</strong> Monitor files as they're accessed/downloaded</li>
+                    <li style="margin-bottom: 8px;"><strong>Scheduled Scans:</strong> Full system scan weekly/monthly</li>
+                    <li style="margin-bottom: 8px;"><strong>Quarantine:</strong> Isolate infected files safely</li>
+                    <li><strong>Automatic Updates:</strong> Download latest malware definitions daily</li>
+                </ul>
+
+                <div class="example-box" style="margin-top: 15px;">
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Examples:</strong></p>
+                    <p style="font-size: 0.95em;">• Windows Defender (built-in Windows)</p>
+                    <p style="font-size: 0.95em;">• Norton AntiVirus, McAfee, Kaspersky</p>
+                    <p style="font-size: 0.95em;">• Avast, AVG (free options)</p>
+                    <p style="font-size: 0.95em;">• ClamAV (open-source, Linux)</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #F59E0B;">
+                <h4 style="color: #F59E0B; margin-bottom: 15px;">Firewall Software</h4>
+                <p style="font-size: 1.05em; margin-bottom: 12px;"><strong>Purpose:</strong> Control incoming/outgoing network traffic, block unauthorized access</p>
+                
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>How Firewalls Work:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Packet Filtering:</strong> Inspect data packets, allow/block based on rules (IP address, port, protocol)</li>
+                    <li style="margin-bottom: 8px;"><strong>Application Control:</strong> Decide which programs can access internet</li>
+                    <li style="margin-bottom: 8px;"><strong>Inbound Protection:</strong> Block hackers trying to access your computer remotely</li>
+                    <li style="margin-bottom: 8px;"><strong>Outbound Protection:</strong> Prevent malware from sending data out (e.g., ransomware contacting command server)</li>
+                    <li><strong>Logging:</strong> Record blocked connection attempts</li>
+                </ul>
+
+                <div class="example-box" style="margin-top: 15px;">
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Examples:</strong></p>
+                    <p style="font-size: 0.95em;">• Windows Defender Firewall (built-in)</p>
+                    <p style="font-size: 0.95em;">• iptables (Linux command-line firewall)</p>
+                    <p style="font-size: 0.95em;">• ZoneAlarm, Comodo Firewall</p>
+                    <p style="font-size: 0.95em;">• Hardware firewalls in routers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 10px;">Anti-Spyware</h4>
+                <p style="font-size: 0.95em; margin-bottom: 8px;">Detect and remove spyware/adware that tracks user activity or displays unwanted ads</p>
+                <p style="font-size: 0.9em; margin-top: 10px;"><strong>Examples:</strong> Malwarebytes, Spybot Search & Destroy</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #8B5CF6;">
+                <h4 style="color: #8B5CF6; margin-bottom: 10px;">VPN Software</h4>
+                <p style="font-size: 0.95em; margin-bottom: 8px;">Encrypt internet connection, hide IP address, protect privacy on public WiFi</p>
+                <p style="font-size: 0.9em; margin-top: 10px;"><strong>Examples:</strong> NordVPN, ExpressVPN, ProtonVPN</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 10px;">Password Managers</h4>
+                <p style="font-size: 0.95em; margin-bottom: 8px;">Securely store passwords, generate strong passwords, auto-fill login forms</p>
+                <p style="font-size: 0.9em; margin-top: 10px;"><strong>Examples:</strong> LastPass, 1Password, Bitwarden</p>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Layered Security Approach:</strong> Best practice is to use multiple protection types together:</p>
+            <p style="font-size: 0.95em;">Antivirus (detect malware) + Firewall (block unauthorized access) + Regular updates (patch vulnerabilities) + User awareness (avoid phishing) = Comprehensive protection</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Comparison Summary -->
+<div class="slide">
+    <h1>Common Utilities - Summary</h1>
+    <div class="card">
+        <table style="font-size: 0.88em;">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Utility Type</th>
+                    <th style="width: 25%;">Purpose</th>
+                    <th style="width: 20%;">Key Functions</th>
+                    <th style="width: 18%;">Examples</th>
+                    <th style="width: 22%;">Benefits</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong style="color: #3B82F6;">File Management</strong></td>
+                    <td>Organize, locate, manipulate files and folders</td>
+                    <td>Browse, search, copy/move, delete, rename, batch operations</td>
+                    <td>Windows Explorer, macOS Finder, Nautilus</td>
+                    <td>Keep data organized, find files quickly, prevent data loss</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #8B5CF6;">Defragmenters</strong></td>
+                    <td>Reorganize fragmented data on HDDs</td>
+                    <td>Analyse disk, move file fragments to adjacent sectors, optimize layout</td>
+                    <td>Windows Disk Defragmenter, Defraggler</td>
+                    <td>Faster file access (20-50% improvement), reduced HDD wear, quicker boot times</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #F59E0B;">File Compression</strong></td>
+                    <td>Reduce file sizes to save space</td>
+                    <td>Compress files/folders, create archives, decompress, support multiple formats</td>
+                    <td>ZIP (built-in), WinRAR, 7-Zip, tar/gzip</td>
+                    <td>Save 50-70% storage, faster uploads/downloads, bundle multiple files</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #EC4899;">Package Managers</strong></td>
+                    <td>Automate software installation/updates</td>
+                    <td>Install, update, remove software, dependency management, search repositories</td>
+                    <td>apt (Linux), Homebrew (macOS), winget (Windows), pip, npm</td>
+                    <td>Automated updates, dependency resolution, security (verified sources), efficiency</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #EF4444;">Protection Software</strong></td>
+                    <td>Defend against malware and security threats</td>
+                    <td>Real-time scanning, signature detection, heuristics, firewall, quarantine</td>
+                    <td>Windows Defender, Norton, Kaspersky, firewalls, VPNs</td>
+                    <td>Prevent malware infections, block unauthorized access, protect data/privacy</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 20px;">
+        <p style="font-size: 1.05em;"><strong>Key Concept:</strong> Utilities maintain and optimize the system itself (unlike applications which create user content). Essential for performance, organization, security, and reliability.</p>
+    </div>
+</div>
+
+<!-- EXAM QUESTIONS START HERE -->
+
+<!-- Slide 9: Exam Question 1 (2 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #10B981;">
+        <div class="question-header">
+            <span class="question-number">Question 1</span>
+            <span class="marks">(2 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.3em;"><span class="command-verb">State</span> two benefits of using file compression utilities.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Exam Question 2 (4 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #10B981;">
+        <div class="question-header">
+            <span class="question-number">Question 2</span>
+            <span class="marks">(4 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">A computer with a traditional hard disk drive (HDD) has become noticeably slower over time. Programs take longer to open and boot time has increased.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Explain</span> how a defragmentation utility could improve the computer's performance.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your answer should explain what fragmentation is and how defragmentation addresses the problem.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Exam Question 3 (6 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #10B981;">
+        <div class="question-header">
+            <span class="question-number">Question 3</span>
+            <span class="marks">(6 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">A small business is setting up new computers for their office network. The IT manager needs to install the following software on all 20 computers:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list">
+                    <li>Office productivity suite (word processor, spreadsheet)</li>
+                    <li>PDF reader</li>
+                    <li>Web browser</li>
+                    <li>Antivirus software</li>
+                    <li>Development tools (Python, Node.js)</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The IT manager is deciding between manually installing each program from individual installers or using a package manager (e.g., winget on Windows).</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Describe</span> three advantages of using a package manager for this scenario.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Exam Question 4 (9 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #10B981;">
+        <div class="question-header">
+            <span class="question-number">Question 4</span>
+            <span class="marks">(9 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A secondary school provides laptop computers to all students for educational use. The school's IT team has noticed several security issues:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list">
+                    <li>Some students have accidentally downloaded malware from untrusted websites</li>
+                    <li>Several laptops have been infected with viruses that spread via USB drives</li>
+                    <li>Unauthorized programs have been installed without permission</li>
+                    <li>Students sometimes connect to unsecured public WiFi networks</li>
+                    <li>Personal data has been at risk when laptops were stolen</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The school needs to implement appropriate protection software to address these security concerns.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> how different types of protection software could help secure the school's laptop computers.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your answer should cover multiple types of protection software (antivirus, firewall, etc.) and explain how each addresses specific security threats.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Exam Question 5 (12 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #10B981;">
+        <div class="question-header">
+            <span class="question-number">Question 5</span>
+            <span class="marks">(12 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A video production company creates high-resolution marketing videos for clients. Their workflow involves:</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Current Situation:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>5 editors working on 4K video projects (raw footage files 50-200GB each)</li>
+                    <li>Storage: 10TB traditional HDDs on each workstation (mechanical, 7200 RPM)</li>
+                    <li>Projects take 2-3 weeks to complete</li>
+                    <li>Frequent file transfers to clients via cloud storage</li>
+                    <li>Archive completed projects for 3 years (legal requirement)</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Problems Identified:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Video editing software stutters when scrubbing through 4K footage</li>
+                    <li>Exporting final videos takes 6-8 hours per project</li>
+                    <li>Storage almost full—only 15% free space remaining</li>
+                    <li>Uploading completed videos (20GB files) to clients takes 4+ hours on office broadband</li>
+                    <li>System seems progressively slower over past 6 months</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The company's IT consultant has suggested using <strong>defragmentation utilities</strong> and <strong>file compression utilities</strong> to address some of these issues.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> the suitability of:</p>
+            <ul class="bullet-list" style="margin-top: 15px; font-size: 1.15em;">
+                <li><strong>Defragmentation utilities</strong> for improving video editing performance</li>
+                <li><strong>File compression utilities</strong> for managing storage and file transfers</li>
+            </ul>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Recommend</span> which utility would be most beneficial for the company's specific needs, justifying your decision.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Consider the advantages, limitations, and practical implications of each utility in this professional video production context.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Summary -->
+<div class="slide">
+    <h1>Summary & Exam Tips</h1>
+    <div class="card">
+        <h3 style="margin-bottom: 25px;">Key Points - Content Area 7.2.2</h3>
+        
+        <div class="utility-box util-file" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #3B82F6;">File Management:</strong> Organize, search, manipulate files (Windows Explorer, Finder) - Essential for data organization</p>
+        </div>
+
+        <div class="utility-box util-defrag" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #8B5CF6;">Defragmenters:</strong> Reorganize fragmented HDD data for 20-50% faster access - HDD only, NOT for SSDs</p>
+        </div>
+
+        <div class="utility-box util-compress" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #F59E0B;">File Compression:</strong> Reduce file sizes (ZIP, RAR, 7z) - Save 50-70% storage, faster transfers</p>
+        </div>
+
+        <div class="utility-box util-package" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #EC4899;">Package Managers:</strong> Automate software install/update (apt, Homebrew, winget) - Efficiency, dependency management, security</p>
+        </div>
+
+        <div class="utility-box util-protect" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #EF4444;">Protection Software:</strong> Antivirus (detect malware) + Firewall (block access) - Layered security approach</p>
+        </div>
+    </div>
+
+    <div class="card" style="background: rgba(16, 185, 129, 0.1); margin-top: 25px;">
+        <h3 style="margin-bottom: 20px;">Exam Success Tips</h3>
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">1. Understand Purpose</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Know what problem each utility solves and when to use it</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">2. Real-World Context</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Give practical examples showing how utilities benefit users/businesses</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">3. Know Limitations</strong></p>
+                <p style="font-size: 0.95em;">Defrag doesn't help SSDs, compression won't reduce already-compressed files (JPEG, MP3)</p>
+            </div>
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">4. Technical Detail</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Explain HOW utilities work, not just what they do (e.g., signature-based detection in antivirus)</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">5. Compare Options</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">For evaluation questions, weigh advantages vs disadvantages of different approaches</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">6. Justify Recommendations</strong></p>
+                <p style="font-size: 0.95em;">Always explain WHY you recommend something specific to the scenario</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 25px; background: rgba(16, 185, 129, 0.2); border-radius: 15px;">
+        <h2 style="font-size: 2em; color: #10B981; font-weight: 800;">Total: 33 marks</h2>
+        <p style="font-size: 1.1em; margin-top: 10px; color: #94A3B8;">Questions: 2 + 4 + 6 + 9 + 12</p>
+    </div>
+</div>
+
+</div><!-- End slide-container -->
+
+<!-- Navigation -->
+<div class="navigation">
+    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-number" id="slideCounter">1 / 14</span>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    if (n >= totalSlides) currentSlide = 0;
+    if (n < 0) currentSlide = totalSlides - 1;
+    
+    slides[currentSlide].classList.add('active');
+    
+    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+    document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    
+    slides[currentSlide].scrollTop = 0;
+}
+
+function changeSlide(direction) {
+    currentSlide += direction;
+    showSlide(currentSlide);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+});
+
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>

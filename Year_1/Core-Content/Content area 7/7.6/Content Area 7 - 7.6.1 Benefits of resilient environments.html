@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)file:///C:/Users/Adams/Downloads/Benefits_of_Resilient_Environments.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benefits of Resilient Environments | T Level Digital</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(124, 58, 237, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 32px;
+            padding: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(124, 58, 237, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            min-height: 700px;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(124, 58, 237, 0.15));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(124, 58, 237, 0.4);
+            color: #a78bfa;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 3.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, transparent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #a78bfa;
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.6em;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 25px;
+        }
+
+        li {
+            margin-bottom: 22px;
+            font-size: 1.25em;
+            line-height: 1.8;
+            color: #e2e8f0;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::marker {
+            color: #a78bfa;
+            font-size: 1.3em;
+        }
+
+        strong {
+            color: #a78bfa;
+            font-weight: 700;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+            border-left: 4px solid #7c3aed;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .info-box:hover {
+            transform: translateX(8px);
+            border-color: #7c3aed;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.2);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border-left: 4px solid #3b82f6;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-8px);
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.08);
+            box-shadow: 0 30px 60px rgba(124, 58, 237, 0.2);
+        }
+
+        .grid-item h4 {
+            color: #a78bfa;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+
+        .grid-item p {
+            color: #e2e8f0;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* Interactive Task Styles */
+        .drag-drop-container {
+            margin: 40px 0;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .draggable {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.08));
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(124, 58, 237, 0.3);
+            cursor: move;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            color: #e2e8f0;
+        }
+
+        .draggable:hover {
+            border-color: #7c3aed;
+            transform: scale(1.02);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+        }
+
+        .drop-zones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .drop-zone {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(124, 58, 237, 0.4);
+            border-radius: 16px;
+            padding: 30px;
+            min-height: 200px;
+            transition: all 0.3s;
+        }
+
+        .drop-zone h4 {
+            color: #a78bfa;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .drop-zone.drag-over {
+            background: rgba(124, 58, 237, 0.15);
+            border-color: #7c3aed;
+            border-style: solid;
+        }
+
+        .dropped-item {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #e2e8f0;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            margin-top: 20px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 18px 25px;
+            border-radius: 12px;
+            border: 2px solid rgba(124, 58, 237, 0.2);
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            color: #e2e8f0;
+        }
+
+        .quiz-option:hover {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+            transform: translateX(8px);
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1em;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #10b981;
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        /* Matching Activity */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .matching-column h4 {
+            color: #a78bfa;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .matching-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(124, 58, 237, 0.2);
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            color: #e2e8f0;
+        }
+
+        .matching-item:hover {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .matching-item.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .matching-item.matched {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            cursor: default;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            z-index: 100;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .navigation button {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .navigation button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .navigation button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #a78bfa);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .check-button {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .check-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 15px;
+        }
+
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.4);
+        }
+
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 50px;
+            }
+            h1 {
+                font-size: 3.5em;
+            }
+            h2 {
+                font-size: 2.5em;
+            }
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" opacity="0.8"></path>
+                    <path d="M2 17L12 22L22 17" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M2 12L12 17L22 12" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                T Level Digital
+            </div>
+            <div class="content center-content">
+                <p style="font-size: 1.4em; color: #a78bfa; margin-bottom: 20px; letter-spacing: 2px;">Content Area 7: Digital Environments</p>
+                <h1 style="font-size: 5em;">Benefits of<br>Resilient Environments</h1>
+                <p class="subtitle">Understanding 7.6.1 | Building Robust Digital Systems</p>
+            </div>
+            <div class="slide-number">Slide 1 / 18</div>
+        </div>
+
+        <!-- Slide 2: Learning Objectives -->
+        <div class="slide">
+            <div class="content">
+                <h2>Learning Objectives</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">By the end of this session, you will be able to:</p>
+                </div>
+                <ul style="margin-top: 30px;">
+                    <li>Define what makes a digital environment <strong>resilient</strong></li>
+                    <li>Identify and explain the <strong>key benefits</strong> of implementing resilient systems</li>
+                    <li>Analyse how resilience contributes to <strong>business continuity</strong></li>
+                    <li>Evaluate the <strong>cost-benefit</strong> considerations of resilient architectures</li>
+                    <li>Apply resilience concepts to <strong>real-world scenarios</strong></li>
+                </ul>
+                <div style="text-align: center; margin-top: 50px;">
+                    <div style="font-size: 8em; opacity: 0.3;">🛡️</div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 2 / 18</div>
+        </div>
+
+        <!-- Slide 3: What is a Resilient Environment? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What is a Resilient Environment?</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">A <strong style="color: #3b82f6;">resilient environment</strong> is a digital infrastructure designed to <strong>maintain operations</strong> and <strong>quickly recover</strong> from disruptions, failures, or attacks while ensuring <strong>minimal service interruption</strong> to users.</p>
+                </div>
+                <h3>Key Characteristics</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⚡</div>
+                        <h4>High Availability</h4>
+                        <p>Systems remain operational and accessible when needed</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔄</div>
+                        <h4>Fault Tolerance</h4>
+                        <p>Ability to continue functioning despite component failures</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⏱️</div>
+                        <h4>Rapid Recovery</h4>
+                        <p>Quick restoration of services after disruptions</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔐</div>
+                        <h4>Data Protection</h4>
+                        <p>Safeguarding information against loss or corruption</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 3 / 18</div>
+        </div>
+
+        <!-- Slide 4: Core Benefits Overview -->
+        <div class="slide">
+            <div class="content">
+                <h2>Core Benefits of Resilient Environments</h2>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">💼</div>
+                        <h4>Business Continuity</h4>
+                        <p>Maintain operations during disruptions</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">💰</div>
+                        <h4>Cost Reduction</h4>
+                        <p>Minimize downtime expenses</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">😊</div>
+                        <h4>Customer Satisfaction</h4>
+                        <p>Consistent service availability</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">📈</div>
+                        <h4>Competitive Advantage</h4>
+                        <p>Outperform less resilient competitors</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⚖️</div>
+                        <h4>Regulatory Compliance</h4>
+                        <p>Meet industry standards</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🏆</div>
+                        <h4>Brand Protection</h4>
+                        <p>Preserve reputation and trust</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 4 / 18</div>
+        </div>
+
+        <!-- Slide 5: Business Continuity -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 1: Business Continuity</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">Resilient environments ensure that critical business functions continue operating during and after adverse events, preventing complete service outages.</p>
+                </div>
+                <h3>How It Works</h3>
+                <ul>
+                    <li><strong>Redundancy:</strong> Multiple instances of critical systems eliminate single points of failure</li>
+                    <li><strong>Failover mechanisms:</strong> Automatic switching to backup systems when primary systems fail</li>
+                    <li><strong>Geographic distribution:</strong> Services spread across multiple locations to survive regional disasters</li>
+                    <li><strong>Regular backups:</strong> Frequent data snapshots enable restoration to recent states</li>
+                </ul>
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 30px; border-radius: 16px; margin-top: 30px; border: 1px solid rgba(59, 130, 246, 0.3);">
+                    <p style="font-size: 1.2em; color: #3b82f6;"><strong>Real-World Example:</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">A major bank uses resilient infrastructure to maintain online banking services 24/7. Even during hardware failures or natural disasters, customers can access their accounts because the system automatically routes traffic to healthy data centers.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 5 / 18</div>
+        </div>
+
+        <!-- Slide 6: Cost Reduction -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 2: Reduced Downtime Costs</h2>
+                <div class="two-column">
+                    <div>
+                        <h3 style="margin-top: 0;">The True Cost of Downtime</h3>
+                        <ul style="margin-top: 20px;">
+                            <li><strong>Lost revenue</strong> from interrupted transactions</li>
+                            <li><strong>Productivity losses</strong> when employees can't work</li>
+                            <li><strong>Recovery expenses</strong> for restoring systems</li>
+                            <li><strong>Reputational damage</strong> affecting future business</li>
+                            <li><strong>Regulatory fines</strong> for service level breaches</li>
+                            <li><strong>Customer compensation</strong> and refunds</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.08)); padding: 30px; border-radius: 16px; border: 1px solid rgba(239, 68, 68, 0.3); margin-bottom: 20px;">
+                            <h4 style="color: #ef4444; font-size: 1.6em; margin-bottom: 15px;">💸 Without Resilience</h4>
+                            <p style="font-size: 3em; color: #ef4444; font-weight: 700; text-align: center; margin: 20px 0;">£5,600</p>
+                            <p style="text-align: center; color: #e2e8f0;">per minute of downtime<br>(enterprise average)</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.08)); padding: 30px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                            <h4 style="color: #10b981; font-size: 1.6em; margin-bottom: 15px;">✅ With Resilience</h4>
+                            <p style="font-size: 2em; color: #10b981; font-weight: 700; text-align: center; margin: 20px 0;">99.99% Uptime</p>
+                            <p style="text-align: center; color: #e2e8f0;">~52 minutes downtime<br>per year maximum</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 6 / 18</div>
+        </div>
+
+        <!-- Slide 7: Customer Satisfaction -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 3: Enhanced Customer Experience</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">Customers expect <strong style="color: #3b82f6;">always-on services</strong>. Resilient environments deliver consistent, reliable access that builds trust and loyalty.</p>
+                </div>
+                <h3>Impact on Customer Satisfaction</h3>
+                <div style="margin-top: 30px;">
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(124, 58, 237, 0.2); margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 2.5em;">⚡</div>
+                            <div style="flex: 1;">
+                                <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 8px;">Reliable Access</h4>
+                                <p style="color: #e2e8f0; font-size: 1.1em;">Services available when customers need them, day or night</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(124, 58, 237, 0.2); margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 2.5em;">🎯</div>
+                            <div style="flex: 1;">
+                                <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 8px;">Consistent Performance</h4>
+                                <p style="color: #e2e8f0; font-size: 1.1em;">Fast, responsive systems maintain user engagement</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(124, 58, 237, 0.2); margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 2.5em;">🤝</div>
+                            <div style="flex: 1;">
+                                <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 8px;">Trust Building</h4>
+                                <p style="color: #e2e8f0; font-size: 1.1em;">Dependability strengthens customer relationships</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(124, 58, 237, 0.2); margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 2.5em;">💡</div>
+                            <div style="flex: 1;">
+                                <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 8px;">Reduced Frustration</h4>
+                                <p style="color: #e2e8f0; font-size: 1.1em;">Fewer service interruptions mean happier users</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 7 / 18</div>
+        </div>
+
+        <!-- Slide 8: Competitive Advantage -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 4: Competitive Advantage</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">Organizations with resilient systems can <strong>outperform competitors</strong> who experience frequent outages, gaining market share and customer loyalty.</p>
+                </div>
+                <div class="two-column" style="margin-top: 40px;">
+                    <div style="background: rgba(124, 58, 237, 0.1); padding: 35px; border-radius: 20px; border: 1px solid rgba(124, 58, 237, 0.3);">
+                        <h4 style="color: #a78bfa; font-size: 1.8em; margin-bottom: 20px; text-align: center;">📉 Your Competitor</h4>
+                        <ul style="text-align: left; margin-left: 20px;">
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Frequent service disruptions</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Long recovery times</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Customer complaints</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Loss of trust</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0;">Declining market share</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 35px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <h4 style="color: #10b981; font-size: 1.8em; margin-bottom: 20px; text-align: center;">📈 Your Organization</h4>
+                        <ul style="text-align: left; margin-left: 20px;">
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Consistent availability</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Rapid incident response</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Satisfied customers</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 15px;">Strong reputation</li>
+                            <li style="font-size: 1.1em; color: #e2e8f0;">Growing customer base</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 40px; padding: 25px; background: rgba(59, 130, 246, 0.08); border-radius: 16px;">
+                    <p style="font-size: 1.4em; color: #3b82f6; font-weight: 600;">Customer switching costs mean reliability is a key differentiator</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 8 / 18</div>
+        </div>
+
+        <!-- Slide 9: Regulatory Compliance -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 5: Regulatory Compliance</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">Many industries have <strong style="color: #3b82f6;">mandatory requirements</strong> for system availability and data protection. Resilient environments help meet these obligations.</p>
+                </div>
+                <h3>Key Regulations &amp; Standards</h3>
+                <div style="margin-top: 30px;">
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(124, 58, 237, 0.2);">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 10px;">🔒 GDPR (General Data Protection Regulation)</h4>
+                        <p style="color: #e2e8f0; font-size: 1.1em;">Requires organizations to protect personal data with appropriate technical measures</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(124, 58, 237, 0.2);">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 10px;">🏥 ISO 27001</h4>
+                        <p style="color: #e2e8f0; font-size: 1.1em;">Information security standard requiring business continuity planning</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(124, 58, 237, 0.2);">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 10px;">💳 PCI DSS</h4>
+                        <p style="color: #e2e8f0; font-size: 1.1em;">Payment card industry standard demanding secure, available systems</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(124, 58, 237, 0.2);">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 10px;">⚖️ SOX (Sarbanes-Oxley)</h4>
+                        <p style="color: #e2e8f0; font-size: 1.1em;">Financial reporting regulations requiring data integrity and availability</p>
+                    </div>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 25px; border-radius: 16px; margin-top: 30px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <p style="font-size: 1.2em; color: #ef4444;"><strong>⚠️ Non-Compliance Risks:</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">Fines, legal action, loss of certifications, and reputational damage</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 9 / 18</div>
+        </div>
+
+        <!-- Slide 10: Brand Protection -->
+        <div class="slide">
+            <div class="content">
+                <h2>Benefit 6: Brand &amp; Reputation Protection</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.3em; line-height: 1.9; color: #e2e8f0;">A company's reputation can take <strong>years to build</strong> but only <strong>moments to destroy</strong>. Resilient systems protect against reputation-damaging incidents.</p>
+                </div>
+                <h3>The Reputation Impact Chain</h3>
+                <div style="margin-top: 30px; position: relative;">
+                    <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #7c3aed, #a78bfa); transform: translateX(-50%);"></div>
+                    <div style="position: relative; z-index: 1;">
+                        <div style="background: rgba(239, 68, 68, 0.15); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #ef4444; margin-left: 50%; padding-left: 40px;">
+                            <h4 style="color: #ef4444; font-size: 1.4em; margin-bottom: 10px;">1. System Failure</h4>
+                            <p style="color: #e2e8f0; font-size: 1.1em;">Service becomes unavailable</p>
+                        </div>
+                        <div style="background: rgba(251, 146, 60, 0.15); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #fb923c; margin-right: 50%; padding-right: 40px;">
+                            <h4 style="color: #fb923c; font-size: 1.4em; margin-bottom: 10px;">2. Customer Impact</h4>
+                            <p style="color: #e2e8f0; font-size: 1.1em;">Users unable to access services</p>
+                        </div>
+                        <div style="background: rgba(234, 179, 8, 0.15); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #eab308; margin-left: 50%; padding-left: 40px;">
+                            <h4 style="color: #eab308; font-size: 1.4em; margin-bottom: 10px;">3. Social Media Backlash</h4>
+                            <p style="color: #e2e8f0; font-size: 1.1em;">Negative sentiment spreads rapidly</p>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.15); padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #ef4444; margin-right: 50%; padding-right: 40px;">
+                            <h4 style="color: #ef4444; font-size: 1.4em; margin-bottom: 10px;">4. Long-term Damage</h4>
+                            <p style="color: #e2e8f0; font-size: 1.1em;">Lost trust, reduced customer lifetime value</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); padding: 25px; border-radius: 16px; margin-top: 30px; border: 1px solid rgba(16, 185, 129, 0.3); text-align: center;">
+                    <p style="font-size: 1.3em; color: #10b981; font-weight: 600;">🛡️ Resilient systems prevent this chain reaction</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 10 / 18</div>
+        </div>
+
+        <!-- Slide 11: Interactive Activity 1 - Drag & Drop -->
+        <div class="slide">
+            <div class="content">
+                <h2>Interactive Activity: Categorize Benefits</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.2em; line-height: 1.9; color: #e2e8f0;">Drag each benefit into the correct category: <strong>Financial</strong> or <strong>Non-Financial</strong></p>
+                </div>
+                
+                <div class="drag-drop-container">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Benefits to Categorize</h3>
+                    <div class="benefits-list" id="benefitsList">
+                        
+                        
+                        
+                        
+                        
+                        
+                    <div class="draggable" draggable="true" data-category="non-financial">Regulatory compliance achievement</div><div class="draggable" draggable="true" data-category="financial">Lower insurance premiums</div><div class="draggable" draggable="true" data-category="financial">Reduced downtime costs</div><div class="draggable" draggable="true" data-category="non-financial">Improved brand reputation</div><div class="draggable" draggable="true" data-category="financial">Avoided regulatory fines</div><div class="draggable" draggable="true" data-category="non-financial">Enhanced customer trust</div></div>
+
+                    <div class="drop-zones">
+                        <div class="drop-zone" data-zone="financial">
+                            <h4>💰 Financial Benefits</h4>
+                            <p style="font-size: 1em; color: #94a3b8; margin-bottom: 15px;">Measurable monetary impacts</p>
+                        </div>
+                        <div class="drop-zone" data-zone="non-financial">
+                            <h4>🏆 Non-Financial Benefits</h4>
+                            <p style="font-size: 1em; color: #94a3b8; margin-bottom: 15px;">Qualitative organizational gains</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button class="check-button" onclick="checkDragDrop()">Check Answers</button>
+                        <button class="reset-button" onclick="resetDragDrop()">Reset</button>
+                    </div>
+                    <div id="dragDropFeedback" style="margin-top: 20px; padding: 20px; border-radius: 12px; display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgb(239, 68, 68); color: rgb(239, 68, 68);"><strong>You got 4 out of 6 correct. Try again!</strong></div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 11 / 18</div>
+        </div>
+
+        <!-- Slide 12: Interactive Quiz -->
+        <div class="slide">
+            <div class="content">
+                <h2>Quick Knowledge Check</h2>
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 20px;">Question: Which of the following BEST describes a resilient environment?</h4>
+                        <div class="quiz-options" id="quiz1">
+                            <div class="quiz-option" onclick="checkQuiz(1, 1, false)">A) A system that never experiences any failures</div>
+                            <div class="quiz-option" onclick="checkQuiz(1, 2, false)">B) A system that is always the cheapest to maintain</div>
+                            <div class="quiz-option" onclick="checkQuiz(1, 3, true)">C) A system that can maintain operations and recover quickly from disruptions</div>
+                            <div class="quiz-option" onclick="checkQuiz(1, 4, false)">D) A system that requires no human intervention</div>
+                        </div>
+                        <div id="feedback1" class="quiz-feedback"></div>
+                    </div>
+
+                    <div class="quiz-question" style="margin-top: 30px;">
+                        <h4 style="color: #a78bfa; font-size: 1.4em; margin-bottom: 20px;">Question: What is the PRIMARY financial benefit of implementing resilient systems?</h4>
+                        <div class="quiz-options" id="quiz2">
+                            <div class="quiz-option" onclick="checkQuiz(2, 1, false)">A) Increased marketing opportunities</div>
+                            <div class="quiz-option" onclick="checkQuiz(2, 2, true)">B) Reduced costs from system downtime</div>
+                            <div class="quiz-option" onclick="checkQuiz(2, 3, false)">C) Higher employee satisfaction</div>
+                            <div class="quiz-option" onclick="checkQuiz(2, 4, false)">D) Better social media presence</div>
+                        </div>
+                        <div id="feedback2" class="quiz-feedback"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 12 / 18</div>
+        </div>
+
+        <!-- Slide 13: Matching Activity -->
+        <div class="slide">
+            <div class="content">
+                <h2>Matching Activity: Connect Benefits to Scenarios</h2>
+                <div class="info-box">
+                    <p style="font-size: 1.2em; color: #e2e8f0;">Click on a benefit, then click on the matching scenario. Match all pairs correctly!</p>
+                </div>
+                
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <h4>🎯 Benefits</h4>
+                        <div class="matching-item" data-benefit="1" onclick="selectMatching(&#39;benefit&#39;, 1)">Business Continuity</div>
+                        <div class="matching-item" data-benefit="2" onclick="selectMatching(&#39;benefit&#39;, 2)">Customer Satisfaction</div>
+                        <div class="matching-item" data-benefit="3" onclick="selectMatching(&#39;benefit&#39;, 3)">Regulatory Compliance</div>
+                        <div class="matching-item" data-benefit="4" onclick="selectMatching(&#39;benefit&#39;, 4)">Brand Protection</div>
+                    </div>
+                    <div class="matching-column">
+                        <h4>📋 Scenarios</h4>
+                        <div class="matching-item" data-scenario="1" onclick="selectMatching(&#39;scenario&#39;, 1)">Users always access services without interruption</div>
+                        <div class="matching-item" data-scenario="2" onclick="selectMatching(&#39;scenario&#39;, 2)">Company avoids negative press coverage</div>
+                        <div class="matching-item" data-scenario="3" onclick="selectMatching(&#39;scenario&#39;, 3)">Operations continue during a power outage</div>
+                        <div class="matching-item" data-scenario="4" onclick="selectMatching(&#39;scenario&#39;, 4)">Organization meets ISO 27001 requirements</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 25px;">
+                    <button class="reset-button" onclick="resetMatching()">Reset Matches</button>
+                </div>
+                <div id="matchingFeedback" style="margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; display: none;"></div>
+            </div>
+            <div class="slide-number">Slide 13 / 18</div>
+        </div>
+
+        <!-- Slide 14: Assessment Question 1 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-left: 4px solid #7c3aed; border-radius: 20px; padding: 35px; margin: 25px 0; border: 1px solid rgba(124, 58, 237, 0.25);">
+                    <h4 style="color: #a78bfa; font-size: 1.5em; margin-bottom: 20px;">Question 1 <span style="background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.7em; font-weight: 700; margin-left: 12px;">2 marks</span></h4>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 10px 0;">State two key benefits of implementing a resilient digital environment.</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-left: 4px solid #7c3aed; border-radius: 20px; padding: 35px; margin: 25px 0; border: 1px solid rgba(124, 58, 237, 0.25);">
+                    <h4 style="color: #a78bfa; font-size: 1.5em; margin-bottom: 20px;">Question 2 <span style="background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.7em; font-weight: 700; margin-left: 12px;">3 marks</span></h4>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 10px 0;">Explain how resilient environments contribute to business continuity. Include one specific technical approach in your answer.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.08); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <p style="font-size: 1.2em; color: #3b82f6;"><strong>Command verb: Explain</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">Set out purposes or reasons, make the relationships between things clear, and show logical connections.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 14 / 18</div>
+        </div>
+
+        <!-- Slide 15: Assessment Question 3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions (continued)</h3>
+                
+                <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-left: 4px solid #7c3aed; border-radius: 20px; padding: 35px; margin: 25px 0; border: 1px solid rgba(124, 58, 237, 0.25);">
+                    <h4 style="color: #a78bfa; font-size: 1.5em; margin-bottom: 20px;">Question 3 <span style="background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.7em; font-weight: 700; margin-left: 12px;">4 marks</span></h4>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 10px 0;">A retail company experiences frequent website outages during peak shopping periods. Describe two ways that implementing a resilient environment could improve their situation.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.08); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <p style="font-size: 1.2em; color: #3b82f6;"><strong>Command verb: Describe</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">Give an account of something. Include characteristics, features, and relevant details to paint a clear picture.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 15 / 18</div>
+        </div>
+
+        <!-- Slide 16: Assessment Question 4 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-left: 4px solid #7c3aed; border-radius: 20px; padding: 35px; margin: 25px 0; border: 1px solid rgba(124, 58, 237, 0.25);">
+                    <h4 style="color: #a78bfa; font-size: 1.5em; margin-bottom: 20px;">Question 4 <span style="background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.7em; font-weight: 700; margin-left: 12px;">9 marks – Analyse</span></h4>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 10px 0;">A financial services company currently operates with minimal redundancy in its systems. The IT director is proposing a significant investment in resilient infrastructure, including failover systems, geographic redundancy, and automated backup solutions.</p>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 15px 0;">Analyse the potential benefits and challenges of this proposal for the financial services company. Consider both financial and non-financial factors in your response.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.08); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <p style="font-size: 1.2em; color: #3b82f6;"><strong>Command verb: Analyse</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 16 / 18</div>
+        </div>
+
+        <!-- Slide 17: Assessment Question 5 -->
+        <div class="slide active">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions (continued)</h3>
+                
+                <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05)); border-left: 4px solid #7c3aed; border-radius: 20px; padding: 35px; margin: 25px 0; border: 1px solid rgba(124, 58, 237, 0.25);">
+                    <h4 style="color: #a78bfa; font-size: 1.5em; margin-bottom: 20px;">Question 5 <span style="background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.7em; font-weight: 700; margin-left: 12px;">12 marks – Evaluate</span></h4>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 10px 0;">An e-commerce startup is deciding whether to invest heavily in resilient infrastructure from the beginning or to implement resilience measures gradually as the business grows. The startup has limited initial capital but expects rapid growth.</p>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 15px 0;">The two options being considered are:</p>
+                    <ul style="margin-left: 30px; margin-top: 15px;">
+                        <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 12px;"><strong style="color: #a78bfa;">Option A:</strong> Implement comprehensive resilience from launch (high upfront cost, maximum protection)</li>
+                        <li style="font-size: 1.1em; color: #e2e8f0; margin-bottom: 12px;"><strong style="color: #a78bfa;">Option B:</strong> Start with basic systems and add resilience incrementally (lower initial cost, increased risk)</li>
+                    </ul>
+                    <p style="font-size: 1.2em; line-height: 1.8; color: #e2e8f0; margin: 15px 0;">Evaluate which approach would be most appropriate for this startup. Consider the benefits of resilient environments, business risks, and resource constraints. Make a justified recommendation.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.08); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <p style="font-size: 1.2em; color: #3b82f6;"><strong>Command verb: Evaluate</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #e2e8f0;">Judge the importance or success of something using evidence. Present a balanced argument with a clear, justified conclusion.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 17 / 18</div>
+        </div>
+
+        <!-- Slide 18: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Module Summary</h2>
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Key Takeaways</h3>
+                    <ul style="margin-top: 30px;">
+                        <li>Resilient environments maintain operations and recover quickly from disruptions</li>
+                        <li><strong>Business continuity</strong> ensures critical functions continue during adverse events</li>
+                        <li><strong>Cost reduction</strong> through minimized downtime can save thousands per minute</li>
+                        <li><strong>Customer satisfaction</strong> improves with consistent, reliable service access</li>
+                        <li><strong>Competitive advantage</strong> comes from outperforming less reliable competitors</li>
+                        <li><strong>Regulatory compliance</strong> is achieved through appropriate technical measures</li>
+                        <li><strong>Brand protection</strong> prevents reputation-damaging incidents</li>
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="font-size: 1.8em; color: #a78bfa; font-weight: 700;">🎉 Module Complete!</p>
+                    <p style="font-size: 1.3em; color: #94a3b8; margin-top: 15px;">You now understand the key benefits of resilient digital environments</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 18 / 18</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 94.4444%;"></div>
+        </div>
+        <button id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progress = document.getElementById('progressFill');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Quiz functionality
+        function checkQuiz(quizNum, optionNum, isCorrect) {
+            const options = document.querySelectorAll(`#quiz${quizNum} .quiz-option`);
+            const feedback = document.getElementById(`feedback${quizNum}`);
+            
+            // Remove previous states
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Mark selected option
+            options[optionNum - 1].classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = isCorrect ? 
+                '✅ Correct! Well done.' : 
+                '❌ Incorrect. Try reviewing the content and try again.';
+        }
+
+        // Drag and Drop functionality
+        let draggedElement = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', (e) => {
+                    draggedElement = e.target;
+                    e.target.classList.add('dragging');
+                });
+
+                draggable.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    if (draggedElement) {
+                        const droppedItem = document.createElement('div');
+                        droppedItem.className = 'dropped-item';
+                        droppedItem.textContent = draggedElement.textContent;
+                        droppedItem.dataset.category = draggedElement.dataset.category;
+                        zone.appendChild(droppedItem);
+                        draggedElement.remove();
+                        draggedElement = null;
+                    }
+                });
+            });
+        });
+
+        function checkDragDrop() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const feedback = document.getElementById('dragDropFeedback');
+            let correct = 0;
+            let total = 0;
+
+            dropZones.forEach(zone => {
+                const zoneType = zone.dataset.zone;
+                const items = zone.querySelectorAll('.dropped-item');
+                
+                items.forEach(item => {
+                    total++;
+                    if (item.dataset.category === zoneType) {
+                        correct++;
+                        item.style.borderColor = '#10b981';
+                        item.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.15))';
+                    } else {
+                        item.style.borderColor = '#ef4444';
+                        item.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(239, 68, 68, 0.15))';
+                    }
+                });
+            });
+
+            feedback.style.display = 'block';
+            if (correct === total && total > 0) {
+                feedback.style.background = 'rgba(16, 185, 129, 0.15)';
+                feedback.style.border = '1px solid #10b981';
+                feedback.style.color = '#10b981';
+                feedback.innerHTML = `<strong>✅ Perfect! You got all ${correct} correct!</strong>`;
+            } else {
+                feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+                feedback.style.border = '1px solid #ef4444';
+                feedback.style.color = '#ef4444';
+                feedback.innerHTML = `<strong>You got ${correct} out of ${total} correct. Try again!</strong>`;
+            }
+        }
+
+        function resetDragDrop() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const benefitsList = document.getElementById('benefitsList');
+            const feedback = document.getElementById('dragDropFeedback');
+            
+            dropZones.forEach(zone => {
+                const items = zone.querySelectorAll('.dropped-item');
+                items.forEach(item => {
+                    const draggable = document.createElement('div');
+                    draggable.className = 'draggable';
+                    draggable.draggable = true;
+                    draggable.textContent = item.textContent;
+                    draggable.dataset.category = item.dataset.category;
+                    
+                    draggable.addEventListener('dragstart', (e) => {
+                        draggedElement = e.target;
+                        e.target.classList.add('dragging');
+                    });
+
+                    draggable.addEventListener('dragend', (e) => {
+                        e.target.classList.remove('dragging');
+                    });
+
+                    benefitsList.appendChild(draggable);
+                    item.remove();
+                });
+            });
+
+            feedback.style.display = 'none';
+        }
+
+        // Matching Activity
+        let matchingState = {
+            selectedBenefit: null,
+            selectedScenario: null,
+            matches: {
+                1: 3, // Business Continuity -> Operations continue during power outage
+                2: 1, // Customer Satisfaction -> Users always access services
+                3: 4, // Regulatory Compliance -> Meets ISO 27001
+                4: 2  // Brand Protection -> Avoids negative press
+            },
+            completed: []
+        };
+
+        function selectMatching(type, id) {
+            const item = document.querySelector(`[data-${type}="${id}"]`);
+            
+            if (item.classList.contains('matched')) return;
+
+            if (type === 'benefit') {
+                // Deselect previous benefit
+                if (matchingState.selectedBenefit) {
+                    const prevBenefit = document.querySelector(`[data-benefit="${matchingState.selectedBenefit}"]`);
+                    if (prevBenefit) prevBenefit.classList.remove('selected');
+                }
+                matchingState.selectedBenefit = id;
+                item.classList.add('selected');
+            } else {
+                // Deselect previous scenario
+                if (matchingState.selectedScenario) {
+                    const prevScenario = document.querySelector(`[data-scenario="${matchingState.selectedScenario}"]`);
+                    if (prevScenario) prevScenario.classList.remove('selected');
+                }
+                matchingState.selectedScenario = id;
+                item.classList.add('selected');
+            }
+
+            // Check if we have both selected
+            if (matchingState.selectedBenefit && matchingState.selectedScenario) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const benefit = matchingState.selectedBenefit;
+            const scenario = matchingState.selectedScenario;
+            const feedback = document.getElementById('matchingFeedback');
+            
+            if (matchingState.matches[benefit] === scenario) {
+                // Correct match
+                const benefitEl = document.querySelector(`[data-benefit="${benefit}"]`);
+                const scenarioEl = document.querySelector(`[data-scenario="${scenario}"]`);
+                
+                benefitEl.classList.remove('selected');
+                benefitEl.classList.add('matched');
+                scenarioEl.classList.remove('selected');
+                scenarioEl.classList.add('matched');
+                
+                matchingState.completed.push(benefit);
+                
+                if (matchingState.completed.length === 4) {
+                    feedback.style.display = 'block';
+                    feedback.style.background = 'rgba(16, 185, 129, 0.15)';
+                    feedback.style.border = '1px solid #10b981';
+                    feedback.style.color = '#10b981';
+                    feedback.innerHTML = '<strong>🎉 Excellent! All matches are correct!</strong>';
+                }
+            } else {
+                // Incorrect match
+                const benefitEl = document.querySelector(`[data-benefit="${benefit}"]`);
+                const scenarioEl = document.querySelector(`[data-scenario="${scenario}"]`);
+                
+                benefitEl.classList.remove('selected');
+                scenarioEl.classList.remove('selected');
+                
+                feedback.style.display = 'block';
+                feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+                feedback.style.border = '1px solid #ef4444';
+                feedback.style.color = '#ef4444';
+                feedback.innerHTML = '<strong>❌ Not quite right. Try another combination!</strong>';
+                
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 2000);
+            }
+            
+            matchingState.selectedBenefit = null;
+            matchingState.selectedScenario = null;
+        }
+
+        function resetMatching() {
+            const items = document.querySelectorAll('.matching-item');
+            const feedback = document.getElementById('matchingFeedback');
+            
+            items.forEach(item => {
+                item.classList.remove('selected', 'matched');
+            });
+            
+            matchingState = {
+                selectedBenefit: null,
+                selectedScenario: null,
+                matches: {
+                    1: 3,
+                    2: 1,
+                    3: 4,
+                    4: 2
+                },
+                completed: []
+            };
+            
+            feedback.style.display = 'none';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            updateNavigation();
+        });
+    </script>
+
+</body></html>

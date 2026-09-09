@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)file:///C:/Users/Adams/Downloads/7.4.2_Virtual_Environment_Features_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.4.2 Key Features of Virtual Environments</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1d2e 50%, #0f1419 100%);
+            background-attachment: fixed;
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(88, 166, 255, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(163, 113, 247, 0.03) 0%, transparent 50%);
+            animation: bgShift 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-5%, -5%); }
+        }
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        
+        .progress-container { margin-bottom: 20px; }
+        .progress-text { 
+            color: #58a6ff; 
+            text-align: right; 
+            font-size: 14px; 
+            margin-bottom: 5px; 
+            font-weight: 600;
+        }
+        .progress-bar-bg { 
+            background: linear-gradient(90deg, #161b22 0%, #21262d 100%);
+            height: 10px; 
+            border-radius: 20px; 
+            overflow: hidden;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(88, 166, 255, 0.1);
+        }
+        .progress-bar { 
+            background: linear-gradient(90deg, #58a6ff 0%, #a371f7 50%, #1f6feb 100%);
+            height: 100%; 
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.6), 0 0 40px rgba(163, 113, 247, 0.4);
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        .slide-container { 
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.95) 0%, rgba(13, 17, 23, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 60px;
+            min-height: 800px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 100px rgba(88, 166, 255, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.08) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(163, 113, 247, 0.06) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite 4s;
+            pointer-events: none;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        
+        .slide { display: none; position: relative; z-index: 1; }
+        .slide.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        h1 { 
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #79c0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: 700;
+            position: relative;
+            text-align: center;
+        }
+        
+        h2 { 
+            color: #58a6ff; 
+            font-size: 2.5em; 
+            margin: 30px 0 20px; 
+            font-weight: 600;
+        }
+        h3 { 
+            color: #79c0ff; 
+            font-size: 2em; 
+            margin: 20px 0 15px; 
+            font-weight: 600;
+        }
+        p { 
+            color: #c9d1d9; 
+            line-height: 1.8; 
+            margin-bottom: 15px; 
+            font-size: 1.3rem; 
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #8b949e;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+        
+        .info-box { 
+            border-radius: 15px;
+            padding: 30px; 
+            margin: 30px 0; 
+            transition: all 0.3s ease;
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        .info-box:hover {
+            transform: translateY(-2px);
+        }
+        
+        .blue-box { 
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.2) 0%, rgba(31, 111, 235, 0.1) 100%);
+            border-color: #1f6feb;
+            box-shadow: 0 8px 32px rgba(31, 111, 235, 0.15), inset 0 1px 0 rgba(88, 166, 255, 0.1);
+        }
+        .blue-box:hover {
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.3) 0%, rgba(31, 111, 235, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(31, 111, 235, 0.3), 0 0 60px rgba(88, 166, 255, 0.2);
+            border-color: #58a6ff;
+        }
+        
+        .green-box { 
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.2) 0%, rgba(35, 134, 54, 0.1) 100%);
+            border-color: #238636;
+            box-shadow: 0 8px 32px rgba(35, 134, 54, 0.15), inset 0 1px 0 rgba(63, 185, 80, 0.1);
+        }
+        .green-box:hover {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.3) 0%, rgba(35, 134, 54, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(35, 134, 54, 0.3), 0 0 60px rgba(63, 185, 80, 0.2);
+            border-color: #3fb950;
+        }
+        
+        .purple-box { 
+            background: linear-gradient(135deg, rgba(46, 17, 54, 0.2) 0%, rgba(137, 87, 229, 0.1) 100%);
+            border-color: #8957e5;
+            box-shadow: 0 8px 32px rgba(137, 87, 229, 0.15), inset 0 1px 0 rgba(163, 113, 247, 0.1);
+        }
+        .purple-box:hover {
+            background: linear-gradient(135deg, rgba(46, 17, 54, 0.3) 0%, rgba(137, 87, 229, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(137, 87, 229, 0.3), 0 0 60px rgba(163, 113, 247, 0.2);
+            border-color: #a371f7;
+        }
+        
+        .yellow-box { 
+            background: linear-gradient(135deg, rgba(61, 40, 3, 0.2) 0%, rgba(240, 136, 62, 0.1) 100%);
+            border-color: #f0883e;
+            box-shadow: 0 8px 32px rgba(240, 136, 62, 0.15), inset 0 1px 0 rgba(255, 211, 42, 0.1);
+        }
+        .yellow-box:hover {
+            background: linear-gradient(135deg, rgba(61, 40, 3, 0.3) 0%, rgba(240, 136, 62, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(240, 136, 62, 0.3), 0 0 60px rgba(255, 211, 42, 0.2);
+            border-color: #ffd32a;
+        }
+        
+        .red-box { 
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.2) 0%, rgba(218, 54, 51, 0.1) 100%);
+            border-color: #da3633;
+            box-shadow: 0 8px 32px rgba(218, 54, 51, 0.15), inset 0 1px 0 rgba(248, 81, 73, 0.1);
+        }
+        .red-box:hover {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.3) 0%, rgba(218, 54, 51, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(218, 54, 51, 0.3), 0 0 60px rgba(248, 81, 73, 0.2);
+            border-color: #f85149;
+        }
+        
+        .cyan-box {
+            background: linear-gradient(135deg, rgba(10, 58, 74, 0.2) 0%, rgba(86, 212, 221, 0.1) 100%);
+            border-color: #56d4dd;
+            box-shadow: 0 8px 32px rgba(86, 212, 221, 0.15), inset 0 1px 0 rgba(86, 212, 221, 0.1);
+        }
+        .cyan-box:hover {
+            background: linear-gradient(135deg, rgba(10, 58, 74, 0.3) 0%, rgba(86, 212, 221, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(86, 212, 221, 0.3), 0 0 60px rgba(86, 212, 221, 0.2);
+            border-color: #79e6f2;
+        }
+        
+        .blue-box h3 { color: #58a6ff; }
+        .green-box h3 { color: #3fb950; }
+        .purple-box h3 { color: #a371f7; }
+        .yellow-box h3 { color: #f0883e; }
+        .red-box h3 { color: #f85149; }
+        .cyan-box h3 { color: #56d4dd; }
+        
+        .grid { display: grid; gap: 25px; margin: 30px 0; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        
+        .card { 
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-blue {
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.25) 0%, rgba(31, 111, 235, 0.15) 100%);
+            border-color: #1f6feb;
+            box-shadow: 0 8px 32px rgba(31, 111, 235, 0.2);
+        }
+        .card-blue:hover {
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.35) 0%, rgba(31, 111, 235, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(31, 111, 235, 0.4), 0 0 80px rgba(88, 166, 255, 0.3);
+            border-color: #58a6ff;
+        }
+        
+        .card-green {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.25) 0%, rgba(35, 134, 54, 0.15) 100%);
+            border-color: #238636;
+            box-shadow: 0 8px 32px rgba(35, 134, 54, 0.2);
+        }
+        .card-green:hover {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.35) 0%, rgba(35, 134, 54, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(35, 134, 54, 0.4), 0 0 80px rgba(63, 185, 80, 0.3);
+            border-color: #3fb950;
+        }
+        
+        .card-purple {
+            background: linear-gradient(135deg, rgba(46, 17, 54, 0.25) 0%, rgba(137, 87, 229, 0.15) 100%);
+            border-color: #8957e5;
+            box-shadow: 0 8px 32px rgba(137, 87, 229, 0.2);
+        }
+        .card-purple:hover {
+            background: linear-gradient(135deg, rgba(46, 17, 54, 0.35) 0%, rgba(137, 87, 229, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(137, 87, 229, 0.4), 0 0 80px rgba(163, 113, 247, 0.3);
+            border-color: #a371f7;
+        }
+        
+        .card-yellow {
+            background: linear-gradient(135deg, rgba(61, 40, 3, 0.25) 0%, rgba(240, 136, 62, 0.15) 100%);
+            border-color: #f0883e;
+            box-shadow: 0 8px 32px rgba(240, 136, 62, 0.2);
+        }
+        .card-yellow:hover {
+            background: linear-gradient(135deg, rgba(61, 40, 3, 0.35) 0%, rgba(240, 136, 62, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(240, 136, 62, 0.4), 0 0 80px rgba(255, 211, 42, 0.3);
+            border-color: #ffd32a;
+        }
+        
+        .card-red {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.25) 0%, rgba(218, 54, 51, 0.15) 100%);
+            border-color: #da3633;
+            box-shadow: 0 8px 32px rgba(218, 54, 51, 0.2);
+        }
+        .card-red:hover {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.35) 0%, rgba(218, 54, 51, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(218, 54, 51, 0.4), 0 0 80px rgba(248, 81, 73, 0.3);
+            border-color: #f85149;
+        }
+        
+        .card-cyan {
+            background: linear-gradient(135deg, rgba(10, 58, 74, 0.25) 0%, rgba(86, 212, 221, 0.15) 100%);
+            border-color: #56d4dd;
+            box-shadow: 0 8px 32px rgba(86, 212, 221, 0.2);
+        }
+        .card-cyan:hover {
+            background: linear-gradient(135deg, rgba(10, 58, 74, 0.35) 0%, rgba(86, 212, 221, 0.25) 100%);
+            box-shadow: 0 15px 60px rgba(86, 212, 221, 0.4), 0 0 80px rgba(86, 212, 221, 0.3);
+            border-color: #79e6f2;
+        }
+        
+        .card-title { 
+            display: block; 
+            font-size: 2.2rem; 
+            margin-bottom: 15px; 
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .card-blue .card-title { color: #58a6ff; }
+        .card-green .card-title { color: #3fb950; }
+        .card-purple .card-title { color: #a371f7; }
+        .card-yellow .card-title { color: #f0883e; }
+        .card-red .card-title { color: #f85149; }
+        .card-cyan .card-title { color: #56d4dd; }
+        
+        .card-desc { 
+            font-size: 1.2rem; 
+            color: #8b949e; 
+            margin: 0; 
+            line-height: 1.6;
+        }
+        
+        ul { 
+            margin: 20px 0 20px 40px; 
+            color: #c9d1d9; 
+        }
+        li { 
+            margin-bottom: 15px; 
+            line-height: 1.8;
+            font-size: 1.3rem;
+        }
+        strong { 
+            color: #58a6ff;
+        }
+        
+        /* Interactive Matching Activity */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .features-column, .descriptions-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .feature-item, .description-item {
+            background: linear-gradient(135deg, rgba(33, 38, 45, 0.8), rgba(22, 27, 34, 0.9));
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-item {
+            font-weight: 700;
+            color: #58a6ff;
+        }
+        
+        .feature-item:hover, .description-item:hover {
+            background: linear-gradient(135deg, rgba(48, 54, 61, 0.8), rgba(33, 38, 45, 0.9));
+            border-color: #58a6ff;
+            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.3);
+        }
+        
+        .feature-item.selected {
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.4), rgba(31, 111, 235, 0.3));
+            border-color: #58a6ff;
+            border-width: 2px;
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.5);
+        }
+        
+        .description-item.selected {
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.4), rgba(31, 111, 235, 0.3));
+            border-color: #58a6ff;
+            border-width: 2px;
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.5);
+        }
+        
+        .description-item.correct {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.5), rgba(35, 134, 54, 0.4));
+            border-color: #238636;
+            color: #3fb950;
+            box-shadow: 0 8px 30px rgba(35, 134, 54, 0.5);
+        }
+        
+        .description-item.incorrect {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.5), rgba(218, 54, 51, 0.4));
+            border-color: #da3633;
+            color: #f85149;
+            box-shadow: 0 8px 30px rgba(218, 54, 51, 0.5);
+        }
+        
+        /* Quiz Styles */
+        .quiz-container { 
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.6) 0%, rgba(22, 27, 34, 0.8) 100%);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            padding: 30px; 
+            margin: 30px 0; 
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(88, 166, 255, 0.15), inset 0 1px 0 rgba(88, 166, 255, 0.05);
+        }
+        .quiz-question { 
+            font-weight: 700; 
+            font-size: 1.4rem; 
+            color: #58a6ff; 
+            margin-bottom: 20px;
+        }
+        .quiz-option { 
+            display: block; 
+            width: 100%; 
+            padding: 18px 25px; 
+            margin: 12px 0; 
+            border: 1px solid rgba(88, 166, 255, 0.3); 
+            border-radius: 12px; 
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.6), rgba(13, 17, 23, 0.8));
+            cursor: pointer; 
+            text-align: left;
+            font-size: 1.2rem;
+            color: #c9d1d9;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .quiz-option:hover { 
+            border-color: #58a6ff; 
+            background: linear-gradient(135deg, rgba(13, 65, 157, 0.3), rgba(31, 111, 235, 0.2));
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
+        }
+        .quiz-option:disabled { 
+            cursor: not-allowed; 
+            opacity: 0.6;
+        }
+        .quiz-option.correct { 
+            border-color: #238636; 
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.4), rgba(35, 134, 54, 0.3));
+            color: #3fb950;
+            font-weight: 600;
+            box-shadow: 0 5px 25px rgba(35, 134, 54, 0.4);
+        }
+        .quiz-option.incorrect { 
+            border-color: #da3633; 
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.4), rgba(218, 54, 51, 0.3));
+            color: #f85149;
+            box-shadow: 0 5px 25px rgba(218, 54, 51, 0.4);
+        }
+        .quiz-feedback { 
+            margin-top: 20px; 
+            padding: 20px 25px; 
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: none;
+            animation: slideIn 0.4s;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-feedback.correct { 
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.3), rgba(35, 134, 54, 0.2));
+            color: #3fb950;
+            border: 1px solid #238636;
+            box-shadow: 0 8px 32px rgba(35, 134, 54, 0.3);
+        }
+        .quiz-feedback.incorrect { 
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.3), rgba(218, 54, 51, 0.2));
+            color: #f85149;
+            border: 1px solid #da3633;
+            box-shadow: 0 8px 32px rgba(218, 54, 51, 0.3);
+        }
+        
+        /* Scenario Box */
+        .scenario-box {
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(22, 27, 34, 0.8) 100%);
+            border: 1px solid rgba(137, 87, 229, 0.4);
+            border-left: 4px solid #8957e5;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(137, 87, 229, 0.2), inset 0 1px 0 rgba(163, 113, 247, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .scenario-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #8957e5, #a371f7);
+            box-shadow: 0 0 20px rgba(137, 87, 229, 0.6);
+        }
+        
+        .scenario-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #a371f7;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.6), rgba(22, 27, 34, 0.8));
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.3), rgba(88, 166, 255, 0.2));
+            color: #58a6ff;
+            padding: 18px 15px;
+            text-align: left;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+            text-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+        
+        .comparison-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            color: #c9d1d9;
+            font-size: 1.1rem;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background: linear-gradient(90deg, rgba(88, 166, 255, 0.05), transparent);
+        }
+        
+        /* Navigation */
+        .navigation { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 40px;
+            gap: 20px;
+        }
+        .nav-btn { 
+            padding: 18px 40px; 
+            border: 1px solid rgba(88, 166, 255, 0.4);
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.2), rgba(88, 166, 255, 0.1));
+            color: #58a6ff;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.2);
+            position: relative;
+        }
+        .nav-btn:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+        .nav-btn:hover:not(:disabled) { 
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.3), rgba(88, 166, 255, 0.2));
+            border-color: #58a6ff;
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.4);
+        }
+        
+        .dots-container { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+        .dot { 
+            width: 14px; 
+            height: 14px; 
+            border-radius: 50%; 
+            background: rgba(33, 38, 45, 0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            box-shadow: 0 0 10px rgba(88, 166, 255, 0.1);
+        }
+        .dot:hover { 
+            background: rgba(88, 166, 255, 0.4);
+            transform: scale(1.15);
+            border-color: #58a6ff;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+        .dot.active { 
+            width: 40px; 
+            background: linear-gradient(90deg, #58a6ff 0%, #a371f7 100%);
+            border-radius: 7px;
+            border-color: #58a6ff;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.6), 0 0 40px rgba(163, 113, 247, 0.3);
+        }
+        .dot.completed { 
+            background: linear-gradient(135deg, #238636, #3fb950);
+            border-color: #238636;
+            box-shadow: 0 0 15px rgba(63, 185, 80, 0.4);
+        }
+        
+        .counter { 
+            text-align: center; 
+            margin-top: 25px; 
+            color: #8b949e; 
+            font-weight: 700; 
+            font-size: 1.3rem;
+        }
+        
+        .reset-btn, .check-btn {
+            border: 1px solid;
+            padding: 14px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.4), rgba(218, 54, 51, 0.3));
+            border-color: #da3633;
+            color: #f85149;
+            box-shadow: 0 4px 15px rgba(218, 54, 51, 0.3);
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(135deg, rgba(73, 1, 1, 0.6), rgba(218, 54, 51, 0.5));
+            border-color: #f85149;
+            box-shadow: 0 8px 25px rgba(218, 54, 51, 0.5);
+        }
+        
+        .check-btn {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.4), rgba(35, 134, 54, 0.3));
+            border-color: #238636;
+            color: #3fb950;
+            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.3);
+        }
+        
+        .check-btn:hover {
+            background: linear-gradient(135deg, rgba(4, 38, 15, 0.6), rgba(35, 134, 54, 0.5));
+            border-color: #3fb950;
+            box-shadow: 0 8px 25px rgba(35, 134, 54, 0.5);
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(33, 38, 45, 0.8) 0%, rgba(22, 27, 34, 0.9) 100%);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(88, 166, 255, 0.15), 
+                        0 0 100px rgba(163, 113, 247, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .icon-large {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        code {
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.8), rgba(22, 27, 34, 0.9));
+            border: 1px solid rgba(121, 192, 255, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            color: #79c0ff;
+            font-size: 0.95em;
+            box-shadow: 0 0 15px rgba(121, 192, 255, 0.2);
+        }
+        
+        .icon-large {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 30px rgba(88, 166, 255, 0.5));
+        }
+        
+        @media (max-width: 768px) { 
+            .slide-container { padding: 30px 20px; min-height: 600px; }
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 1.8em; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .navigation { flex-direction: column; }
+            .nav-btn { width: 100%; }
+            .matching-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-text" id="progressText">100% Complete</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progressBar" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slideContainer"><div class="slide"><h1>✨ 7.4.2 Key Features</h1>
+            <p class="subtitle">Understanding the Key Features of Virtual Environments</p>
+            <div class="highlight-box">
+                <h2 style="margin: 0; font-size: 2rem; color: #58a6ff;">T Level Digital Software Development</h2>
+                <p style="font-size: 1.3rem; margin-top: 15px; color: #8b949e;">Seven essential characteristics that make virtualization powerful</p>
+            </div>
+            <div class="grid grid-4" style="margin-top: 40px;">
+                <div class="card card-blue">
+                    <span class="card-title">🔒</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Increased Security</p>
+                </div>
+                <div class="card card-green">
+                    <span class="card-title">⚙️</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Managed Execution</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">🤝</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Sharing</p>
+                </div>
+                <div class="card card-yellow">
+                    <span class="card-title">📊</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Aggregation</p>
+                </div>
+            </div>
+            <div class="grid grid-3" style="margin-top: 25px;">
+                <div class="card card-cyan">
+                    <span class="card-title">🎭</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Emulation</p>
+                </div>
+                <div class="card card-red">
+                    <span class="card-title">🏝️</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Isolation</p>
+                </div>
+                <div class="card card-blue">
+                    <span class="card-title">🚀</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Portability</p>
+                </div>
+            </div></div><div class="slide"><h1>🎯 Why These Features Matter</h1>
+            <div class="info-box blue-box">
+                <h3>Virtual Environment Features</h3>
+                <p style="font-size: 1.3rem;">These seven key features are what make virtualization so valuable to modern computing. Each feature provides specific benefits that solve real-world problems in IT infrastructure, development, and security.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🏢 Enterprise Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cost Reduction:</strong> Fewer physical servers needed</li>
+                        <li><strong>Flexibility:</strong> Rapid deployment and scaling</li>
+                        <li><strong>Security:</strong> Enhanced protection and isolation</li>
+                        <li><strong>Efficiency:</strong> Better resource utilization</li>
+                        <li><strong>Resilience:</strong> Improved disaster recovery</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>💻 Development Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Testing:</strong> Safe isolated environments</li>
+                        <li><strong>Compatibility:</strong> Test across platforms</li>
+                        <li><strong>Speed:</strong> Quick environment provisioning</li>
+                        <li><strong>Consistency:</strong> Identical development setups</li>
+                        <li><strong>Rollback:</strong> Easy snapshots and recovery</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Real-World Impact</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Before virtualization, companies needed 100 physical servers for 100 applications, costing millions in hardware, space, cooling, and power. With virtualization's key features, the same workload runs on 10-15 servers, saving 85-90% on infrastructure costs while improving security, flexibility, and management.
+                </p>
+            </div></div><div class="slide"><h1>🔒 Increased Security</h1>
+            <div class="info-box blue-box">
+                <h3>What is Increased Security?</h3>
+                <p style="font-size: 1.3rem;"><strong>Increased security</strong> in virtual environments means enhanced protection through multiple layers of isolation, access controls, and security mechanisms that aren't possible (or are more difficult) with physical machines. Virtual environments can be secured more comprehensively than traditional infrastructure.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🛡️ Security Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>VM Isolation:</strong> Malware in one VM can't spread to others</li>
+                        <li><strong>Snapshots:</strong> Instant rollback to clean state if compromised</li>
+                        <li><strong>Sandboxing:</strong> Test suspicious files safely</li>
+                        <li><strong>Network Segmentation:</strong> Isolate sensitive systems</li>
+                        <li><strong>Centralized Control:</strong> Manage security policies centrally</li>
+                        <li><strong>Easier Patching:</strong> Update templates, redeploy VMs</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🔐 Security Techniques</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Virtual Firewalls:</strong> Filter traffic between VMs</li>
+                        <li><strong>Micro-segmentation:</strong> Isolate each workload</li>
+                        <li><strong>Encryption:</strong> VM files encrypted at rest</li>
+                        <li><strong>Access Controls:</strong> Granular permissions</li>
+                        <li><strong>Monitoring:</strong> Inspect VM traffic and behavior</li>
+                        <li><strong>Immutable Infrastructure:</strong> Replace rather than patch</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Malware Analysis</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A security team receives a suspicious email attachment. Instead of risking their production network, they create a VM snapshot, open the file in the isolated VM, and observe its behavior. When it proves to be ransomware, they simply delete the VM and restore from the clean snapshot—no damage to actual systems. This analysis took 10 minutes instead of days of cleanup.
+                </p>
+            </div></div><div class="slide"><h1>⚙️ Managed Execution</h1>
+            <div class="info-box green-box">
+                <h3>What is Managed Execution?</h3>
+                <p style="font-size: 1.3rem;"><strong>Managed execution</strong> means the hypervisor controls and monitors all VM operations, managing how VMs use resources and enforcing policies. The hypervisor acts as a supervisor, ensuring VMs behave correctly and don't exceed allocated resources or interfere with each other.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🎛️ Control Mechanisms</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Resource Limits:</strong> Enforce maximum CPU, RAM, disk usage per VM</li>
+                    <li><strong>Quality of Service (QoS):</strong> Prioritize critical VMs</li>
+                    <li><strong>Scheduling:</strong> Distribute CPU time fairly across VMs</li>
+                    <li><strong>Monitoring:</strong> Track VM performance and health metrics</li>
+                    <li><strong>Policy Enforcement:</strong> Apply security and compliance rules</li>
+                    <li><strong>Lifecycle Management:</strong> Control VM creation, running, suspension, deletion</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Prevents resource starvation</li>
+                        <li>Ensures fair resource distribution</li>
+                        <li>Maintains system stability</li>
+                        <li>Enables automated management</li>
+                        <li>Provides detailed monitoring</li>
+                    </ul>
+                </div>
+                <div class="info-box yellow-box">
+                    <h3>📊 Example: Resource Allocation</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        A host with 64GB RAM runs 10 VMs. The hypervisor allocates 6GB to each, but if VM1 (critical database) needs more, managed execution can dynamically adjust—taking unused memory from idle VMs and giving it to VM1, then reclaiming it when no longer needed.
+                    </p>
+                </div>
+            </div></div><div class="slide"><h1>🤝 Sharing</h1>
+            <div class="info-box purple-box">
+                <h3>What is Sharing?</h3>
+                <p style="font-size: 1.3rem;"><strong>Sharing</strong> allows multiple VMs to share the physical resources of a single host machine (CPU cores, RAM, storage, network bandwidth). This is the fundamental concept that makes virtualization economically viable—getting more work done with less hardware.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>📦 What Can Be Shared?</h3>
+                <table class="comparison-table">
+                    <tbody><tr>
+                        <th>Resource</th>
+                        <th>How It's Shared</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><strong>CPU</strong></td>
+                        <td>Time-sliced between VMs</td>
+                        <td>8-core CPU shared by 20 VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RAM</strong></td>
+                        <td>Divided and allocated to VMs</td>
+                        <td>128GB RAM split across 16 VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>Virtual disks on shared storage</td>
+                        <td>10TB SSD supporting 50 VM disks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network</strong></td>
+                        <td>Bandwidth divided via virtual NICs</td>
+                        <td>10Gbps NIC shared by all VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GPU</strong></td>
+                        <td>Shared or partitioned graphics</td>
+                        <td>One GPU serving multiple VMs</td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits of Sharing</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cost Efficiency:</strong> Fewer physical servers needed</li>
+                        <li><strong>Higher Utilization:</strong> 70-80% vs 10-15% physical</li>
+                        <li><strong>Energy Savings:</strong> Less power and cooling</li>
+                        <li><strong>Space Savings:</strong> Smaller data centre footprint</li>
+                        <li><strong>Flexibility:</strong> Easy resource reallocation</li>
+                    </ul>
+                </div>
+                <div class="scenario-box">
+                    <div class="scenario-title">💡 Example</div>
+                    <p style="font-size: 1.15rem; line-height: 1.7;">
+                        One physical server costs £5,000 with 32 cores and 256GB RAM. It can host 25 VMs, each using 1.3 cores and 10GB RAM on average. Cost per VM: £200. Without virtualization, 25 physical servers would cost £125,000. Savings: £120,000!
+                    </p>
+                </div>
+            </div></div><div class="slide"><h1>📊 Aggregation</h1>
+            <div class="info-box yellow-box">
+                <h3>What is Aggregation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Aggregation</strong> combines multiple physical resources from different hosts into a single pool that can be managed and allocated as one unified resource. This is the opposite of sharing—instead of dividing one machine's resources, you're combining many machines' resources.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🔗 How Aggregation Works</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">Multiple physical hosts are clustered together. The management system treats all their combined resources (CPU, RAM, storage) as a single large pool from which VMs can draw resources.</p>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 25px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    Server 1: 16 cores, 128GB RAM<br>
+                    Server 2: 16 cores, 128GB RAM<br>
+                    Server 3: 16 cores, 128GB RAM<br>
+                    ════════════════════════════════<br>
+                    <span style="color: #3fb950;">Aggregated Pool: 48 cores, 384GB RAM</span><br>
+                    <br>
+                    VMs can be placed anywhere in the pool<br>
+                    Resources dynamically allocated from available capacity
+                </div>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Load Balancing:</strong> Distribute VMs across hosts automatically</li>
+                        <li><strong>High Availability:</strong> If one host fails, VMs move to others</li>
+                        <li><strong>Resource Optimization:</strong> Use resources where available</li>
+                        <li><strong>Scalability:</strong> Add new hosts to expand pool</li>
+                        <li><strong>Simplified Management:</strong> Manage pool, not individual servers</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🏢 Enterprise Technologies</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>VMware vSphere:</strong> Resource pools and clusters</li>
+                        <li><strong>Microsoft Hyper-V:</strong> Failover clustering</li>
+                        <li><strong>KVM/OpenStack:</strong> Cloud resource pools</li>
+                        <li><strong>Storage:</strong> SAN/NAS aggregation</li>
+                        <li><strong>Network:</strong> Virtual network pools</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Data Centre Scale</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company has 100 physical servers aggregated into a single cluster. When deploying a new application requiring 50 VMs, the management system automatically distributes them across the 100 servers based on available resources—no manual planning of which VM goes where. If Server 47 fails at 3am, its VMs automatically restart on other servers within minutes.
+                </p>
+            </div></div><div class="slide"><h1>📝 Quick Check: Security, Management &amp; Sharing</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q1: How does virtualization increase security compared to physical machines?</p>
+                <button class="quiz-option" onclick="checkAnswer(1, 0, false)">A) VMs cannot be hacked</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 1, true)">B) VM isolation prevents malware from spreading between virtual machines</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 2, false)">C) Hypervisors automatically remove all viruses</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 3, false)">D) VMs don't need antivirus software</button>
+                <div id="feedback-1" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q2: What does 'managed execution' mean in a virtual environment?</p>
+                <button class="quiz-option" onclick="checkAnswer(2, 0, true)">A) The hypervisor controls and monitors VM operations and resource usage</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 1, false)">B) VMs can use unlimited resources</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 2, false)">C) All VMs run at the same speed</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 3, false)">D) Only administrators can start VMs</button>
+                <div id="feedback-2" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q3: What is the main benefit of resource sharing in virtualization?</p>
+                <button class="quiz-option" onclick="checkAnswer(3, 0, false)">A) VMs run faster than physical machines</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 1, true)">B) Multiple VMs can run on one physical server, reducing hardware costs</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 2, false)">C) All VMs get equal resources automatically</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 3, false)">D) Physical servers become obsolete</button>
+                <div id="feedback-3" class="quiz-feedback"></div>
+            </div></div><div class="slide"><h1>🎭 Emulation</h1>
+            <div class="info-box cyan-box">
+                <h3>What is Emulation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Emulation</strong> is the ability to mimic or simulate different hardware and system architectures within a virtual environment. VMs can pretend to be different types of computers, allowing software designed for one platform to run on completely different hardware.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box blue-box">
+                    <h3>🔄 What Can Be Emulated?</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Operating Systems:</strong> Run Windows on Mac hardware via VM</li>
+                        <li><strong>CPU Architecture:</strong> ARM code on x86 processors</li>
+                        <li><strong>Hardware Devices:</strong> Virtual network cards, USB devices</li>
+                        <li><strong>Legacy Systems:</strong> Old mainframes on modern servers</li>
+                        <li><strong>Game Consoles:</strong> PlayStation/Xbox on PC</li>
+                        <li><strong>Mobile Devices:</strong> Android phones on desktop</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Use Cases</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cross-Platform Development:</strong> Test on multiple OSes</li>
+                        <li><strong>Legacy Support:</strong> Run old software on new hardware</li>
+                        <li><strong>Gaming:</strong> Play console exclusives on PC</li>
+                        <li><strong>Mobile Testing:</strong> Test apps without physical devices</li>
+                        <li><strong>Architecture Migration:</strong> Move from old to new systems</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box green-box">
+                <h3>⚡ Emulation vs Virtualization</h3>
+                <table class="comparison-table">
+                    <tbody><tr>
+                        <th>Aspect</th>
+                        <th>Virtualization</th>
+                        <th>Emulation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware</strong></td>
+                        <td>Same architecture (x86 on x86)</td>
+                        <td>Different architecture (ARM on x86)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Near-native speed</td>
+                        <td>Slower (translation overhead)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Lower</td>
+                        <td>Higher</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Case</strong></td>
+                        <td>Production workloads</td>
+                        <td>Testing, legacy support, gaming</td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Mobile App Testing</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A developer building an Android app uses Android Studio's emulator on their Windows laptop. The emulator creates a virtual Android phone (ARM architecture) running on x86 hardware. They can test the app on multiple virtual devices (Pixel 5, Samsung Galaxy S21, tablet) without owning physical devices—saving thousands in hardware costs.
+                </p>
+            </div></div><div class="slide"><h1>🏝️ Isolation</h1>
+            <div class="info-box red-box">
+                <h3>What is Isolation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Isolation</strong> ensures that each VM operates completely independently, with no awareness of or interference with other VMs running on the same physical host. Each VM exists in its own protected bubble, as if it were the only system on the machine.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🛡️ Types of Isolation</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Process Isolation:</strong> VM processes can't access other VMs' processes</li>
+                    <li><strong>Memory Isolation:</strong> Each VM has dedicated RAM space, completely separate</li>
+                    <li><strong>Storage Isolation:</strong> VMs can't read each other's virtual disks</li>
+                    <li><strong>Network Isolation:</strong> VMs on separate virtual networks can't communicate</li>
+                    <li><strong>Resource Isolation:</strong> One VM can't monopolize resources from others</li>
+                    <li><strong>Fault Isolation:</strong> One VM crashing doesn't affect others</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits of Isolation</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Security:</strong> Breaches contained to single VM</li>
+                        <li><strong>Stability:</strong> Crashes don't cascade</li>
+                        <li><strong>Testing:</strong> Safe experimentation</li>
+                        <li><strong>Multi-Tenancy:</strong> Different customers on same hardware</li>
+                        <li><strong>Compliance:</strong> Separate regulated workloads</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🔒 How Isolation Works</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        The hypervisor creates virtual boundaries between VMs. It uses hardware virtualization features (Intel VT-x, AMD-V) to enforce separation at the CPU level. Memory is partitioned, storage is segmented, and network traffic is filtered—making it nearly impossible for VMs to interfere with each other.
+                    </p>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Development vs Production</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company runs development, testing, and production environments on the same physical servers using VMs. Developers can test risky code changes in the dev VM—even if they crash it or introduce security vulnerabilities, the production VM continues running unaffected. Network isolation ensures dev traffic can't reach production databases. This would be impossible with shared physical infrastructure.
+                </p>
+            </div></div><div class="slide"><h1>🚀 Portability</h1>
+            <div class="info-box blue-box">
+                <h3>What is Portability?</h3>
+                <p style="font-size: 1.3rem;"><strong>Portability</strong> means VMs can be easily moved between different physical hosts or even different environments (on-premises to cloud) with minimal effort. The entire VM—OS, applications, data, configuration—exists as files that can be copied, moved, or backed up like any other files.</p>
+            </div>
+            <div class="info-box green-box">
+                <h3>📦 What Makes VMs Portable?</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Encapsulation:</strong> Entire VM stored as files (VMDK, VHD, QCOW2)</li>
+                    <li><strong>Hardware Independence:</strong> VM doesn't care about specific physical hardware</li>
+                    <li><strong>Standardized Formats:</strong> OVF/OVA formats work across platforms</li>
+                    <li><strong>Virtual Hardware:</strong> Same virtual devices across different hosts</li>
+                    <li><strong>Configuration Included:</strong> Settings travel with the VM</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>🔄 Types of Portability</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Live Migration:</strong> Move running VM without downtime</li>
+                        <li><strong>Cold Migration:</strong> Shutdown, move, restart on new host</li>
+                        <li><strong>Cross-Platform:</strong> VMware to Hyper-V conversion</li>
+                        <li><strong>Cloud Migration:</strong> On-prem to AWS/Azure/GCP</li>
+                        <li><strong>Backup/Restore:</strong> Copy VM files for disaster recovery</li>
+                    </ul>
+                </div>
+                <div class="info-box yellow-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Flexibility:</strong> Deploy anywhere easily</li>
+                        <li><strong>Disaster Recovery:</strong> Quick restoration</li>
+                        <li><strong>Hardware Maintenance:</strong> Move VMs during upgrades</li>
+                        <li><strong>Load Balancing:</strong> Distribute across hosts</li>
+                        <li><strong>Cloud Bursting:</strong> Expand to cloud when needed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Hardware Maintenance</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A physical server needs RAM upgrades during business hours. Using live migration (vMotion/Live Migration), administrators move all 15 running VMs to another host in 10-15 minutes—with zero downtime. Users don't notice anything. The server is upgraded, and VMs are migrated back. Without portability, this would require weekend maintenance windows and hours of downtime.
+                </p>
+            </div></div><div class="slide"><h1>🎯 Interactive Activity: Match Features to Descriptions</h1>
+            <p style="font-size: 1.3rem; text-align: center; margin-bottom: 30px;">Click a feature on the left, then click the matching description on the right:</p>
+            
+            <div class="matching-container">
+                <div class="features-column">
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="security">🔒 Increased Security</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="managed">⚙️ Managed Execution</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="sharing">🤝 Sharing</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="aggregation">📊 Aggregation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="emulation">🎭 Emulation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="isolation">🏝️ Isolation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="portability">🚀 Portability</div>
+                </div>
+                <div class="descriptions-column">
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="security">VMs can be snapshotted and rolled back if compromised, and malware is contained</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="managed">Hypervisor controls VM resource usage and enforces policies</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="sharing">Multiple VMs use resources from a single physical server</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="aggregation">Multiple physical hosts combined into one resource pool</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="emulation">VMs can simulate different hardware architectures and platforms</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="isolation">Each VM operates independently without awareness of others</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="portability">VMs can be moved between hosts or cloud environments easily</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="check-btn" onclick="checkMatching()">✓ Check Matches</button>
+                <button class="reset-btn" onclick="resetMatching()">↻ Reset</button>
+                <div id="matchingFeedback" style="margin-top: 20px; font-size: 1.3rem; font-weight: 700;"></div>
+            </div></div><div class="slide"><h1>📊 Feature Comparison Overview</h1>
+            <div class="info-box blue-box">
+                <h3>How Features Work Together</h3>
+                <table class="comparison-table">
+                    <tbody><tr>
+                        <th>Feature</th>
+                        <th>Primary Benefit</th>
+                        <th>Key Technology</th>
+                        <th>Common Use Case</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>Protection &amp; containment</td>
+                        <td>VM isolation, snapshots</td>
+                        <td>Malware analysis, testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Managed Execution</strong></td>
+                        <td>Control &amp; monitoring</td>
+                        <td>Resource limits, QoS</td>
+                        <td>Fair resource distribution</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sharing</strong></td>
+                        <td>Cost efficiency</td>
+                        <td>Resource multiplexing</td>
+                        <td>Server consolidation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aggregation</strong></td>
+                        <td>Scalability</td>
+                        <td>Clustering, pools</td>
+                        <td>Data centre infrastructure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Emulation</strong></td>
+                        <td>Compatibility</td>
+                        <td>Hardware simulation</td>
+                        <td>Legacy apps, cross-platform</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolation</strong></td>
+                        <td>Independence</td>
+                        <td>Memory/process separation</td>
+                        <td>Multi-tenant hosting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Portability</strong></td>
+                        <td>Flexibility</td>
+                        <td>Encapsulation, migration</td>
+                        <td>Disaster recovery, cloud</td>
+                    </tr>
+                </tbody></table>
+            </div>
+            <div class="grid grid-2" style="margin-top: 30px;">
+                <div class="info-box green-box">
+                    <h3>🔗 Interconnected Benefits</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        These features don't work in isolation—they combine to create powerful solutions. For example: <strong>Isolation</strong> enables <strong>Security</strong>, while <strong>Sharing</strong> and <strong>Aggregation</strong> work together for efficient resource use. <strong>Portability</strong> relies on <strong>Emulation</strong> to work across different hardware.
+                    </p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Real-World Combination</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        Cloud providers use ALL seven features: VMs share physical servers (sharing), which are clustered (aggregation), with managed resource allocation (managed execution), complete isolation between customers (isolation), enhanced security measures (security), ability to emulate various platforms (emulation), and seamless migration (portability).
+                    </p>
+                </div>
+            </div></div><div class="slide"><h1>📝 Quick Check: Emulation, Isolation &amp; Portability</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q4: What is the primary purpose of emulation in virtual environments?</p>
+                <button class="quiz-option" onclick="checkAnswer(4, 0, false)">A) To make VMs run faster</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 1, true)">B) To simulate different hardware architectures and enable cross-platform compatibility</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 2, false)">C) To reduce electricity consumption</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 3, false)">D) To create backups automatically</button>
+                <div id="feedback-4" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q5: Why is isolation important in multi-tenant environments?</p>
+                <button class="quiz-option" onclick="checkAnswer(5, 0, false)">A) It makes all VMs run at the same speed</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 1, true)">B) It ensures one customer's VM cannot access or interfere with another customer's VM</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 2, false)">C) It automatically creates backups</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 3, false)">D) It reduces hardware costs</button>
+                <div id="feedback-5" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q6: What makes VMs portable between different hosts?</p>
+                <button class="quiz-option" onclick="checkAnswer(6, 0, false)">A) They are very small in file size</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 1, true)">B) They are encapsulated as files and hardware-independent</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 2, false)">C) They can only run on identical hardware</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 3, false)">D) They automatically replicate to all hosts</button>
+                <div id="feedback-6" class="quiz-feedback"></div>
+            </div></div><div class="slide"><h1>🌍 Real-World Application: AWS EC2</h1>
+            <div class="info-box blue-box">
+                <h3>All Seven Features in Action</h3>
+                <p style="font-size: 1.3rem;">Amazon Web Services' EC2 (Elastic Compute Cloud) is one of the world's largest virtual environments, demonstrating all seven key features at massive scale.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🔒 Security</h3>
+                    <p style="font-size: 1.15rem;">Security groups, isolated VPCs, encrypted snapshots</p>
+                    <h3 style="margin-top: 20px;">⚙️ Managed Execution</h3>
+                    <p style="font-size: 1.15rem;">Instance types control CPU/RAM limits, monitoring via CloudWatch</p>
+                    <h3 style="margin-top: 20px;">🤝 Sharing</h3>
+                    <p style="font-size: 1.15rem;">Thousands of customer VMs share physical servers</p>
+                    <h3 style="margin-top: 20px;">📊 Aggregation</h3>
+                    <p style="font-size: 1.15rem;">Massive server farms aggregated into regional resource pools</p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎭 Emulation</h3>
+                    <p style="font-size: 1.15rem;">ARM and x86 instances, various OS options (Windows, Linux, macOS)</p>
+                    <h3 style="margin-top: 20px;">🏝️ Isolation</h3>
+                    <p style="font-size: 1.15rem;">Complete customer isolation—no VM can access another customer's data</p>
+                    <h3 style="margin-top: 20px;">🚀 Portability</h3>
+                    <p style="font-size: 1.15rem;">AMIs (Amazon Machine Images) can launch in any region, migrate between availability zones</p>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Netflix on AWS</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Netflix runs entirely on AWS EC2. They use <strong>aggregation</strong> of thousands of instances, <strong>sharing</strong> physical infrastructure with other AWS customers (in isolated VMs), <strong>managed execution</strong> with auto-scaling, <strong>portability</strong> to move workloads between regions, <strong>security</strong> through encrypted storage and isolated networks, <strong>isolation</strong> between their different services, and <strong>emulation</strong> to run various OS configurations—all enabling them to stream to 200+ million subscribers globally.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 1</h1>
+            <div class="info-box blue-box">
+                <h3>Question (4 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Explain what is meant by 'isolation' in virtual environments and describe one benefit it provides.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Clear explanation of isolation (VMs operate independently/separately)</li>
+                    <li><strong>2 marks:</strong> Relevant benefit explained with context/justification</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (4 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Isolation means that each virtual machine operates completely independently from other VMs on the same physical host <strong>(1)</strong>, with separate memory, storage, and processes that cannot be accessed by other VMs <strong>(1)</strong>.
+                    <br><br>
+                    One benefit of isolation is enhanced security <strong>(1)</strong>. If malware infects one VM, it is contained within that VM and cannot spread to other VMs or the host system, preventing widespread damage across the infrastructure <strong>(1)</strong>.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 2</h1>
+            <div class="info-box blue-box">
+                <h3>Question (6 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Compare 'sharing' and 'aggregation' in virtual environments. Your answer should explain what each feature means and describe how they differ in their approach to resource management.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Explanation of sharing (multiple VMs use resources from one physical machine)</li>
+                    <li><strong>2 marks:</strong> Explanation of aggregation (multiple physical machines combined into one pool)</li>
+                    <li><strong>2 marks:</strong> Clear comparison showing they are opposite approaches</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (6 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    <strong>Sharing</strong> means multiple virtual machines run on a single physical server <strong>(1)</strong>, dividing and sharing that server's CPU, RAM, storage, and network resources among all the VMs <strong>(1)</strong>.
+                    <br><br>
+                    <strong>Aggregation</strong> means multiple physical servers are combined or clustered together <strong>(1)</strong>, creating a single large pool of resources from which VMs can draw, treating many physical machines as one unified resource <strong>(1)</strong>.
+                    <br><br>
+                    These are opposite approaches: sharing divides one machine's resources among many VMs (one-to-many) <strong>(1)</strong>, while aggregation combines many machines' resources into one pool (many-to-one) <strong>(1)</strong>.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 3</h1>
+            <div class="info-box blue-box">
+                <h3>Question (8 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A software development company uses virtual environments for development and testing. Discuss how THREE different key features of virtual environments would benefit this company's development workflow.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 3 (7-8 marks):</strong> Discusses three features with detailed explanation of specific benefits to development workflow. Shows clear understanding of how features solve development problems.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Explains two or three features with reasonable benefits. Some development context provided.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Lists features with basic or generic benefits. Limited development context.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 450px; overflow-y: auto;">
+                <h3>✅ Example Answer (8 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    <strong>Isolation</strong> would significantly benefit the development workflow by allowing developers to create completely separate test environments without risk of interference. Each developer could have their own isolated VM running the application stack, allowing them to test different features or experiment with major code changes without affecting other developers' work or the shared testing environment. If a developer's test causes system instability or crashes, it only affects their VM—other team members continue working uninterrupted. This isolation also enables safe testing of security features or potentially problematic code that might otherwise compromise shared systems.
+                    <br><br>
+                    <strong>Portability</strong> would streamline the development process by enabling consistent environments across the team and deployment pipeline. Development VMs can be created as templates and distributed to all developers, ensuring everyone works with identical configurations—eliminating "works on my machine" problems. When code is ready for testing, the same VM configuration can be easily moved to the QA environment, then to staging, and finally production, maintaining consistency throughout. If a developer encounters a complex bug, they can snapshot their VM and send it to a senior developer for troubleshooting, preserving the exact state where the problem occurs. This portability also facilitates remote work, as developers can access their development VMs from any location.
+                    <br><br>
+                    <strong>Emulation</strong> would enable cross-platform testing without requiring physical hardware for every target platform. The company could emulate different operating systems (Windows, various Linux distributions, macOS) and different system configurations within VMs, allowing comprehensive compatibility testing on a single physical infrastructure. For example, if developing a web application, they could test it across different browser-OS combinations by emulating various environments. If supporting mobile applications, they could use Android and iOS emulators without needing physical devices for every version and model. This dramatically reduces hardware costs while expanding testing coverage, ensuring software works correctly across all target platforms before release.
+                </p>
+            </div></div><div class="slide"><h1>📝 Exam-Style Question 4</h1>
+            <div class="info-box blue-box">
+                <h3>Question (12 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A large enterprise is planning to migrate from physical servers to a virtualized infrastructure. They currently run 80 physical servers, each dedicated to a single application.
+                    <br><br>
+                    Evaluate how the seven key features of virtual environments (security, managed execution, sharing, aggregation, emulation, isolation, and portability) would impact this migration. Consider both the benefits and potential challenges, and make a reasoned judgement about whether virtualization is appropriate for this organization.
+                </p>
+            </div>
+            <div class="info-box purple-box" style="max-height: 250px; overflow-y: auto;">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 4 (10-12 marks):</strong> Comprehensive evaluation covering most/all seven features with detailed analysis of benefits and challenges. Makes well-reasoned judgement with supporting evidence. Shows deep understanding of how features address enterprise needs. Considers technical, financial, and operational factors.</li>
+                    <li><strong>Level 3 (7-9 marks):</strong> Good evaluation of multiple features (4-6) with reasonable analysis. Some benefits and challenges identified. Makes judgement with some justification. Shows understanding of key concepts.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Explains several features (3-4) with basic benefits mentioned. Limited analysis of challenges. Basic judgement made. Some understanding shown.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Lists some features with minimal explanation. Few benefits, no real challenges discussed. No clear judgement or very basic statement.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 500px; overflow-y: auto;">
+                <h3>✅ Example Answer (12 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    The migration would benefit significantly from virtualization's key features, though implementation challenges exist.
+                    <br><br>
+                    <strong>Sharing and Aggregation</strong> provide the most immediate financial impact. Currently, 80 dedicated physical servers likely operate at 10-15% utilization—wasteful and expensive. Through sharing, multiple VMs could run on each physical host, potentially consolidating to 10-15 powerful servers hosting all 80 applications. This represents hardware cost savings of 80-85%, plus proportional reductions in electricity (powering and cooling), data centre space, and maintenance. Aggregation would enable these physical hosts to be clustered, creating a unified resource pool. Load balancing would distribute VMs across available capacity automatically, maximizing utilization to 60-80%. The combined effect—sharing dividing resources down, aggregation combining resources up—creates a highly efficient infrastructure.
+                    <br><br>
+                    <strong>Managed execution</strong> addresses a critical challenge: preventing resource conflicts when consolidating workloads. With 80 applications now sharing infrastructure, the hypervisor must enforce resource limits and QoS policies. Critical applications (e.g., customer-facing databases) can be guaranteed minimum resources and prioritized during contention, while less critical applications (e.g., reporting systems) accept lower priority. This prevents scenarios where a runaway process in one VM starves others of resources. The challenge is correctly sizing and prioritizing—requires detailed analysis of each application's resource profile and business importance. Mistakes could cause performance issues worse than the physical setup.
+                    <br><br>
+                    <strong>Isolation</strong> enables safe consolidation of previously separate systems. Applications that shouldn't interact (development vs production, customer A vs customer B, internet-facing vs internal) can coexist on shared hardware with security boundaries maintained. If one application is compromised, the breach is contained—unlike physical servers where compromise often means full server control. However, isolation isn't absolute; vulnerabilities in the hypervisor itself could expose all VMs. The organization must implement additional network segmentation and security controls, not relying solely on VM boundaries.
+                    <br><br>
+                    <strong>Security</strong> improves through centralized management and snapshot capabilities. All 80 VMs can be patched from central templates rather than individually updating physical servers. Suspicious activity can be investigated by cloning VMs for forensic analysis without disrupting production. Vulnerabilities can be tested against VM snapshots. However, the virtualization layer itself becomes a critical security point—if attackers compromise the hypervisor, they potentially access all VMs. The organization needs dedicated virtualization security expertise and must implement defense-in-depth strategies.
+                    <br><br>
+                    <strong>Portability</strong> revolutionizes disaster recovery and maintenance. Currently, recovering a failed physical server requires new hardware, OS reinstallation, application setup, and data restoration—potentially days of work. With VMs, disaster recovery becomes: restore VM files to any available host, power on. Recovery time: minutes to hours. Hardware maintenance no longer requires downtime; VMs are live-migrated to other hosts while hardware is serviced. The organization could implement affordable disaster recovery by replicating VMs to a secondary site or cloud, only paying for compute when disaster actually strikes. Challenge: initial backup infrastructure investment and regular testing of recovery procedures.
+                    <br><br>
+                    <strong>Emulation</strong> provides flexibility for legacy applications. If any of the 80 applications require older operating systems or specific hardware (perhaps specialized cards), VMs can emulate these requirements on modern hardware. This extends the life of legacy systems while avoiding maintaining old physical servers. Applications requiring different OS versions (various Windows Server versions, different Linux distributions) can coexist on the same infrastructure. However, emulation of specialized hardware may have performance limitations compared to native support.
+                    <br><br>
+                    <strong>Challenges and Risks:</strong>
+                    The migration creates new dependencies and risks. The organization must invest in hypervisor licensing (VMware vSphere could cost £50,000-100,000+), management tools, shared storage (SAN/NAS), and staff training. Migration itself is risky—moving 80 applications requires careful planning, testing, and execution over 6-12 months. Poor planning could cause extended outages. Performance of virtualized applications must be validated—some high-performance workloads may not virtualize well. The virtualization layer becomes a single point of failure; proper clustering and redundancy are essential but add complexity and cost.
+                    <br><br>
+                    <strong>Evaluation:</strong>
+                    Virtualization is highly appropriate for this organization. The current situation—80 underutilized physical servers—is precisely the problem virtualization solves. The seven key features address all major requirements: cost reduction (sharing/aggregation), improved security (isolation/security features), operational flexibility (portability), better resource management (managed execution), and platform compatibility (emulation). While implementation challenges exist and upfront investment is significant (potentially £200,000-500,000 including hardware, licenses, and services), the ROI is compelling: hardware reduction saves £500,000-1,000,000 over 3-5 years, operational costs decrease substantially, disaster recovery improves dramatically, and flexibility enables faster business response to changes. The organization must invest properly in planning, training, and redundancy, but virtualization is the industry-standard approach for good reason—the benefits far outweigh the challenges for this use case.
+                </p>
+            </div></div><div class="slide"><h1>📚 Summary &amp; Key Takeaways</h1>
+            <div class="grid grid-3">
+                <div class="info-box blue-box">
+                    <h3>🔒 Security</h3>
+                    <p style="font-size: 1.1rem;">Enhanced protection through VM isolation, snapshots, and sandboxing. Malware contained, easy recovery.</p>
+                </div>
+                <div class="info-box green-box">
+                    <h3>⚙️ Managed Execution</h3>
+                    <p style="font-size: 1.1rem;">Hypervisor controls resource usage, enforces limits, enables monitoring and policy enforcement.</p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🤝 Sharing</h3>
+                    <p style="font-size: 1.1rem;">Multiple VMs share one physical server's resources, dramatically reducing hardware costs.</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="info-box yellow-box">
+                    <h3>📊 Aggregation</h3>
+                    <p style="font-size: 1.1rem;">Combine multiple physical hosts into unified resource pool for scalability and high availability.</p>
+                </div>
+                <div class="info-box cyan-box">
+                    <h3>🎭 Emulation</h3>
+                    <p style="font-size: 1.1rem;">Simulate different hardware/platforms, enabling cross-platform testing and legacy support.</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="info-box red-box">
+                    <h3>🏝️ Isolation</h3>
+                    <p style="font-size: 1.1rem;">VMs operate completely independently, preventing interference and containing faults/breaches.</p>
+                </div>
+                <div class="info-box blue-box">
+                    <h3>🚀 Portability</h3>
+                    <p style="font-size: 1.1rem;">VMs easily moved between hosts/clouds, enabling disaster recovery and flexible deployment.</p>
+                </div>
+            </div>
+            <div class="info-box green-box" style="margin-top: 30px;">
+                <h3>🎯 Essential Understanding</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li>These seven features work together to create powerful, flexible, secure infrastructure</li>
+                    <li>Different features solve different problems—understand when each is most valuable</li>
+                    <li>Real-world virtualization (AWS, Azure, VMware) uses ALL these features simultaneously</li>
+                    <li>The combination of features enables modern cloud computing and digital transformation</li>
+                </ul>
+            </div></div><div class="slide active"><h1>🎉 Excellent Work!</h1>
+            <div class="highlight-box">
+                <div class="icon-large">🏆</div>
+                <h2 style="margin: 0; color: #58a6ff;">Course Complete!</h2>
+                <p style="font-size: 1.4rem; margin-top: 20px; color: #c9d1d9;">You now understand all seven key features of virtual environments!</p>
+            </div>
+            <div class="grid grid-2" style="margin-top: 40px;">
+                <div class="info-box blue-box">
+                    <h3>📖 What You've Learned</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>How increased security protects systems</li>
+                        <li>How managed execution controls resources</li>
+                        <li>How sharing reduces infrastructure costs</li>
+                        <li>How aggregation enables scalability</li>
+                        <li>How emulation provides compatibility</li>
+                        <li>How isolation prevents interference</li>
+                        <li>How portability enables flexibility</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🚀 Next Steps</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Practice exam questions on these features</li>
+                        <li>Explore virtual environments hands-on</li>
+                        <li>Install VirtualBox and create test VMs</li>
+                        <li>Research how companies use virtualization</li>
+                        <li>Understand cloud computing foundations</li>
+                        <li>Review both 7.4.1 and 7.4.2 together</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box" style="margin-top: 30px;">
+                <div class="scenario-title">💡 Final Thought</div>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    These seven key features are the foundation of modern computing infrastructure. Every major cloud provider (AWS, Azure, Google Cloud), every enterprise data centre, and most development environments rely on these principles. Understanding them gives you insight into how the digital world actually works at scale!
+                </p>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px;">
+                <p style="font-size: 1.5rem; font-weight: 700; color: #3fb950;">Great job completing this module! 🎓</p>
+            </div></div></div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Previous</button>
+            <div class="dots-container" id="dotsContainer"><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot completed"></div><div class="dot active"></div></div>
+            <button class="nav-btn" onclick="nextSlide()" id="nextBtn" disabled="">Next →</button>
+        </div>
+
+        <div class="counter" id="counter">Slide 20 of 20</div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 20;
+        const completed = new Set([0]);
+        const quizAnswers = {};
+
+        const slidesContent = [
+            // Slide 1 - Title
+            `<h1>✨ 7.4.2 Key Features</h1>
+            <p class="subtitle">Understanding the Key Features of Virtual Environments</p>
+            <div class="highlight-box">
+                <h2 style="margin: 0; font-size: 2rem; color: #58a6ff;">T Level Digital Software Development</h2>
+                <p style="font-size: 1.3rem; margin-top: 15px; color: #8b949e;">Seven essential characteristics that make virtualization powerful</p>
+            </div>
+            <div class="grid grid-4" style="margin-top: 40px;">
+                <div class="card card-blue">
+                    <span class="card-title">🔒</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Increased Security</p>
+                </div>
+                <div class="card card-green">
+                    <span class="card-title">⚙️</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Managed Execution</p>
+                </div>
+                <div class="card card-purple">
+                    <span class="card-title">🤝</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Sharing</p>
+                </div>
+                <div class="card card-yellow">
+                    <span class="card-title">📊</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Aggregation</p>
+                </div>
+            </div>
+            <div class="grid grid-3" style="margin-top: 25px;">
+                <div class="card card-cyan">
+                    <span class="card-title">🎭</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Emulation</p>
+                </div>
+                <div class="card card-red">
+                    <span class="card-title">🏝️</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Isolation</p>
+                </div>
+                <div class="card card-blue">
+                    <span class="card-title">🚀</span>
+                    <p class="card-desc" style="font-size: 1.2rem; color: #c9d1d9;">Portability</p>
+                </div>
+            </div>`,
+
+            // Slide 2 - Overview
+            `<h1>🎯 Why These Features Matter</h1>
+            <div class="info-box blue-box">
+                <h3>Virtual Environment Features</h3>
+                <p style="font-size: 1.3rem;">These seven key features are what make virtualization so valuable to modern computing. Each feature provides specific benefits that solve real-world problems in IT infrastructure, development, and security.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🏢 Enterprise Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cost Reduction:</strong> Fewer physical servers needed</li>
+                        <li><strong>Flexibility:</strong> Rapid deployment and scaling</li>
+                        <li><strong>Security:</strong> Enhanced protection and isolation</li>
+                        <li><strong>Efficiency:</strong> Better resource utilization</li>
+                        <li><strong>Resilience:</strong> Improved disaster recovery</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>💻 Development Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Testing:</strong> Safe isolated environments</li>
+                        <li><strong>Compatibility:</strong> Test across platforms</li>
+                        <li><strong>Speed:</strong> Quick environment provisioning</li>
+                        <li><strong>Consistency:</strong> Identical development setups</li>
+                        <li><strong>Rollback:</strong> Easy snapshots and recovery</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Real-World Impact</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Before virtualization, companies needed 100 physical servers for 100 applications, costing millions in hardware, space, cooling, and power. With virtualization's key features, the same workload runs on 10-15 servers, saving 85-90% on infrastructure costs while improving security, flexibility, and management.
+                </p>
+            </div>`,
+
+            // Slide 3 - Increased Security
+            `<h1>🔒 Increased Security</h1>
+            <div class="info-box blue-box">
+                <h3>What is Increased Security?</h3>
+                <p style="font-size: 1.3rem;"><strong>Increased security</strong> in virtual environments means enhanced protection through multiple layers of isolation, access controls, and security mechanisms that aren't possible (or are more difficult) with physical machines. Virtual environments can be secured more comprehensively than traditional infrastructure.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🛡️ Security Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>VM Isolation:</strong> Malware in one VM can't spread to others</li>
+                        <li><strong>Snapshots:</strong> Instant rollback to clean state if compromised</li>
+                        <li><strong>Sandboxing:</strong> Test suspicious files safely</li>
+                        <li><strong>Network Segmentation:</strong> Isolate sensitive systems</li>
+                        <li><strong>Centralized Control:</strong> Manage security policies centrally</li>
+                        <li><strong>Easier Patching:</strong> Update templates, redeploy VMs</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🔐 Security Techniques</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Virtual Firewalls:</strong> Filter traffic between VMs</li>
+                        <li><strong>Micro-segmentation:</strong> Isolate each workload</li>
+                        <li><strong>Encryption:</strong> VM files encrypted at rest</li>
+                        <li><strong>Access Controls:</strong> Granular permissions</li>
+                        <li><strong>Monitoring:</strong> Inspect VM traffic and behavior</li>
+                        <li><strong>Immutable Infrastructure:</strong> Replace rather than patch</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Malware Analysis</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A security team receives a suspicious email attachment. Instead of risking their production network, they create a VM snapshot, open the file in the isolated VM, and observe its behavior. When it proves to be ransomware, they simply delete the VM and restore from the clean snapshot—no damage to actual systems. This analysis took 10 minutes instead of days of cleanup.
+                </p>
+            </div>`,
+
+            // Slide 4 - Managed Execution
+            `<h1>⚙️ Managed Execution</h1>
+            <div class="info-box green-box">
+                <h3>What is Managed Execution?</h3>
+                <p style="font-size: 1.3rem;"><strong>Managed execution</strong> means the hypervisor controls and monitors all VM operations, managing how VMs use resources and enforcing policies. The hypervisor acts as a supervisor, ensuring VMs behave correctly and don't exceed allocated resources or interfere with each other.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🎛️ Control Mechanisms</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Resource Limits:</strong> Enforce maximum CPU, RAM, disk usage per VM</li>
+                    <li><strong>Quality of Service (QoS):</strong> Prioritize critical VMs</li>
+                    <li><strong>Scheduling:</strong> Distribute CPU time fairly across VMs</li>
+                    <li><strong>Monitoring:</strong> Track VM performance and health metrics</li>
+                    <li><strong>Policy Enforcement:</strong> Apply security and compliance rules</li>
+                    <li><strong>Lifecycle Management:</strong> Control VM creation, running, suspension, deletion</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Prevents resource starvation</li>
+                        <li>Ensures fair resource distribution</li>
+                        <li>Maintains system stability</li>
+                        <li>Enables automated management</li>
+                        <li>Provides detailed monitoring</li>
+                    </ul>
+                </div>
+                <div class="info-box yellow-box">
+                    <h3>📊 Example: Resource Allocation</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        A host with 64GB RAM runs 10 VMs. The hypervisor allocates 6GB to each, but if VM1 (critical database) needs more, managed execution can dynamically adjust—taking unused memory from idle VMs and giving it to VM1, then reclaiming it when no longer needed.
+                    </p>
+                </div>
+            </div>`,
+
+            // Slide 5 - Sharing
+            `<h1>🤝 Sharing</h1>
+            <div class="info-box purple-box">
+                <h3>What is Sharing?</h3>
+                <p style="font-size: 1.3rem;"><strong>Sharing</strong> allows multiple VMs to share the physical resources of a single host machine (CPU cores, RAM, storage, network bandwidth). This is the fundamental concept that makes virtualization economically viable—getting more work done with less hardware.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>📦 What Can Be Shared?</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Resource</th>
+                        <th>How It's Shared</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><strong>CPU</strong></td>
+                        <td>Time-sliced between VMs</td>
+                        <td>8-core CPU shared by 20 VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RAM</strong></td>
+                        <td>Divided and allocated to VMs</td>
+                        <td>128GB RAM split across 16 VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>Virtual disks on shared storage</td>
+                        <td>10TB SSD supporting 50 VM disks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network</strong></td>
+                        <td>Bandwidth divided via virtual NICs</td>
+                        <td>10Gbps NIC shared by all VMs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GPU</strong></td>
+                        <td>Shared or partitioned graphics</td>
+                        <td>One GPU serving multiple VMs</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits of Sharing</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cost Efficiency:</strong> Fewer physical servers needed</li>
+                        <li><strong>Higher Utilization:</strong> 70-80% vs 10-15% physical</li>
+                        <li><strong>Energy Savings:</strong> Less power and cooling</li>
+                        <li><strong>Space Savings:</strong> Smaller data centre footprint</li>
+                        <li><strong>Flexibility:</strong> Easy resource reallocation</li>
+                    </ul>
+                </div>
+                <div class="scenario-box">
+                    <div class="scenario-title">💡 Example</div>
+                    <p style="font-size: 1.15rem; line-height: 1.7;">
+                        One physical server costs £5,000 with 32 cores and 256GB RAM. It can host 25 VMs, each using 1.3 cores and 10GB RAM on average. Cost per VM: £200. Without virtualization, 25 physical servers would cost £125,000. Savings: £120,000!
+                    </p>
+                </div>
+            </div>`,
+
+            // Slide 6 - Aggregation
+            `<h1>📊 Aggregation</h1>
+            <div class="info-box yellow-box">
+                <h3>What is Aggregation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Aggregation</strong> combines multiple physical resources from different hosts into a single pool that can be managed and allocated as one unified resource. This is the opposite of sharing—instead of dividing one machine's resources, you're combining many machines' resources.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🔗 How Aggregation Works</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">Multiple physical hosts are clustered together. The management system treats all their combined resources (CPU, RAM, storage) as a single large pool from which VMs can draw resources.</p>
+                <div style="background: #0d1117; border: 1px solid #30363d; padding: 25px; border-radius: 6px; margin-top: 20px; font-family: monospace; font-size: 1.1rem;">
+                    Server 1: 16 cores, 128GB RAM<br>
+                    Server 2: 16 cores, 128GB RAM<br>
+                    Server 3: 16 cores, 128GB RAM<br>
+                    ════════════════════════════════<br>
+                    <span style="color: #3fb950;">Aggregated Pool: 48 cores, 384GB RAM</span><br>
+                    <br>
+                    VMs can be placed anywhere in the pool<br>
+                    Resources dynamically allocated from available capacity
+                </div>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Load Balancing:</strong> Distribute VMs across hosts automatically</li>
+                        <li><strong>High Availability:</strong> If one host fails, VMs move to others</li>
+                        <li><strong>Resource Optimization:</strong> Use resources where available</li>
+                        <li><strong>Scalability:</strong> Add new hosts to expand pool</li>
+                        <li><strong>Simplified Management:</strong> Manage pool, not individual servers</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🏢 Enterprise Technologies</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>VMware vSphere:</strong> Resource pools and clusters</li>
+                        <li><strong>Microsoft Hyper-V:</strong> Failover clustering</li>
+                        <li><strong>KVM/OpenStack:</strong> Cloud resource pools</li>
+                        <li><strong>Storage:</strong> SAN/NAS aggregation</li>
+                        <li><strong>Network:</strong> Virtual network pools</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Data Centre Scale</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company has 100 physical servers aggregated into a single cluster. When deploying a new application requiring 50 VMs, the management system automatically distributes them across the 100 servers based on available resources—no manual planning of which VM goes where. If Server 47 fails at 3am, its VMs automatically restart on other servers within minutes.
+                </p>
+            </div>`,
+
+            // Slide 7 - Quiz 1
+            `<h1>📝 Quick Check: Security, Management & Sharing</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q1: How does virtualization increase security compared to physical machines?</p>
+                <button class="quiz-option" onclick="checkAnswer(1, 0, false)">A) VMs cannot be hacked</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 1, true)">B) VM isolation prevents malware from spreading between virtual machines</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 2, false)">C) Hypervisors automatically remove all viruses</button>
+                <button class="quiz-option" onclick="checkAnswer(1, 3, false)">D) VMs don't need antivirus software</button>
+                <div id="feedback-1" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q2: What does 'managed execution' mean in a virtual environment?</p>
+                <button class="quiz-option" onclick="checkAnswer(2, 0, true)">A) The hypervisor controls and monitors VM operations and resource usage</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 1, false)">B) VMs can use unlimited resources</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 2, false)">C) All VMs run at the same speed</button>
+                <button class="quiz-option" onclick="checkAnswer(2, 3, false)">D) Only administrators can start VMs</button>
+                <div id="feedback-2" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q3: What is the main benefit of resource sharing in virtualization?</p>
+                <button class="quiz-option" onclick="checkAnswer(3, 0, false)">A) VMs run faster than physical machines</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 1, true)">B) Multiple VMs can run on one physical server, reducing hardware costs</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 2, false)">C) All VMs get equal resources automatically</button>
+                <button class="quiz-option" onclick="checkAnswer(3, 3, false)">D) Physical servers become obsolete</button>
+                <div id="feedback-3" class="quiz-feedback"></div>
+            </div>`,
+
+            // Slide 8 - Emulation
+            `<h1>🎭 Emulation</h1>
+            <div class="info-box cyan-box">
+                <h3>What is Emulation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Emulation</strong> is the ability to mimic or simulate different hardware and system architectures within a virtual environment. VMs can pretend to be different types of computers, allowing software designed for one platform to run on completely different hardware.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box blue-box">
+                    <h3>🔄 What Can Be Emulated?</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Operating Systems:</strong> Run Windows on Mac hardware via VM</li>
+                        <li><strong>CPU Architecture:</strong> ARM code on x86 processors</li>
+                        <li><strong>Hardware Devices:</strong> Virtual network cards, USB devices</li>
+                        <li><strong>Legacy Systems:</strong> Old mainframes on modern servers</li>
+                        <li><strong>Game Consoles:</strong> PlayStation/Xbox on PC</li>
+                        <li><strong>Mobile Devices:</strong> Android phones on desktop</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Use Cases</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Cross-Platform Development:</strong> Test on multiple OSes</li>
+                        <li><strong>Legacy Support:</strong> Run old software on new hardware</li>
+                        <li><strong>Gaming:</strong> Play console exclusives on PC</li>
+                        <li><strong>Mobile Testing:</strong> Test apps without physical devices</li>
+                        <li><strong>Architecture Migration:</strong> Move from old to new systems</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box green-box">
+                <h3>⚡ Emulation vs Virtualization</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Virtualization</th>
+                        <th>Emulation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware</strong></td>
+                        <td>Same architecture (x86 on x86)</td>
+                        <td>Different architecture (ARM on x86)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Near-native speed</td>
+                        <td>Slower (translation overhead)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Lower</td>
+                        <td>Higher</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Case</strong></td>
+                        <td>Production workloads</td>
+                        <td>Testing, legacy support, gaming</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Mobile App Testing</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A developer building an Android app uses Android Studio's emulator on their Windows laptop. The emulator creates a virtual Android phone (ARM architecture) running on x86 hardware. They can test the app on multiple virtual devices (Pixel 5, Samsung Galaxy S21, tablet) without owning physical devices—saving thousands in hardware costs.
+                </p>
+            </div>`,
+
+            // Slide 9 - Isolation
+            `<h1>🏝️ Isolation</h1>
+            <div class="info-box red-box">
+                <h3>What is Isolation?</h3>
+                <p style="font-size: 1.3rem;"><strong>Isolation</strong> ensures that each VM operates completely independently, with no awareness of or interference with other VMs running on the same physical host. Each VM exists in its own protected bubble, as if it were the only system on the machine.</p>
+            </div>
+            <div class="info-box blue-box">
+                <h3>🛡️ Types of Isolation</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Process Isolation:</strong> VM processes can't access other VMs' processes</li>
+                    <li><strong>Memory Isolation:</strong> Each VM has dedicated RAM space, completely separate</li>
+                    <li><strong>Storage Isolation:</strong> VMs can't read each other's virtual disks</li>
+                    <li><strong>Network Isolation:</strong> VMs on separate virtual networks can't communicate</li>
+                    <li><strong>Resource Isolation:</strong> One VM can't monopolize resources from others</li>
+                    <li><strong>Fault Isolation:</strong> One VM crashing doesn't affect others</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>✅ Benefits of Isolation</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Security:</strong> Breaches contained to single VM</li>
+                        <li><strong>Stability:</strong> Crashes don't cascade</li>
+                        <li><strong>Testing:</strong> Safe experimentation</li>
+                        <li><strong>Multi-Tenancy:</strong> Different customers on same hardware</li>
+                        <li><strong>Compliance:</strong> Separate regulated workloads</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🔒 How Isolation Works</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        The hypervisor creates virtual boundaries between VMs. It uses hardware virtualization features (Intel VT-x, AMD-V) to enforce separation at the CPU level. Memory is partitioned, storage is segmented, and network traffic is filtered—making it nearly impossible for VMs to interfere with each other.
+                    </p>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">🎯 Example: Development vs Production</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A company runs development, testing, and production environments on the same physical servers using VMs. Developers can test risky code changes in the dev VM—even if they crash it or introduce security vulnerabilities, the production VM continues running unaffected. Network isolation ensures dev traffic can't reach production databases. This would be impossible with shared physical infrastructure.
+                </p>
+            </div>`,
+
+            // Slide 10 - Portability
+            `<h1>🚀 Portability</h1>
+            <div class="info-box blue-box">
+                <h3>What is Portability?</h3>
+                <p style="font-size: 1.3rem;"><strong>Portability</strong> means VMs can be easily moved between different physical hosts or even different environments (on-premises to cloud) with minimal effort. The entire VM—OS, applications, data, configuration—exists as files that can be copied, moved, or backed up like any other files.</p>
+            </div>
+            <div class="info-box green-box">
+                <h3>📦 What Makes VMs Portable?</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>Encapsulation:</strong> Entire VM stored as files (VMDK, VHD, QCOW2)</li>
+                    <li><strong>Hardware Independence:</strong> VM doesn't care about specific physical hardware</li>
+                    <li><strong>Standardized Formats:</strong> OVF/OVA formats work across platforms</li>
+                    <li><strong>Virtual Hardware:</strong> Same virtual devices across different hosts</li>
+                    <li><strong>Configuration Included:</strong> Settings travel with the VM</li>
+                </ul>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box purple-box">
+                    <h3>🔄 Types of Portability</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Live Migration:</strong> Move running VM without downtime</li>
+                        <li><strong>Cold Migration:</strong> Shutdown, move, restart on new host</li>
+                        <li><strong>Cross-Platform:</strong> VMware to Hyper-V conversion</li>
+                        <li><strong>Cloud Migration:</strong> On-prem to AWS/Azure/GCP</li>
+                        <li><strong>Backup/Restore:</strong> Copy VM files for disaster recovery</li>
+                    </ul>
+                </div>
+                <div class="info-box yellow-box">
+                    <h3>✅ Benefits</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li><strong>Flexibility:</strong> Deploy anywhere easily</li>
+                        <li><strong>Disaster Recovery:</strong> Quick restoration</li>
+                        <li><strong>Hardware Maintenance:</strong> Move VMs during upgrades</li>
+                        <li><strong>Load Balancing:</strong> Distribute across hosts</li>
+                        <li><strong>Cloud Bursting:</strong> Expand to cloud when needed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Hardware Maintenance</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    A physical server needs RAM upgrades during business hours. Using live migration (vMotion/Live Migration), administrators move all 15 running VMs to another host in 10-15 minutes—with zero downtime. Users don't notice anything. The server is upgraded, and VMs are migrated back. Without portability, this would require weekend maintenance windows and hours of downtime.
+                </p>
+            </div>`,
+
+            // Slide 11 - Interactive Matching Activity
+            `<h1>🎯 Interactive Activity: Match Features to Descriptions</h1>
+            <p style="font-size: 1.3rem; text-align: center; margin-bottom: 30px;">Click a feature on the left, then click the matching description on the right:</p>
+            
+            <div class="matching-container">
+                <div class="features-column">
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="security">🔒 Increased Security</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="managed">⚙️ Managed Execution</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="sharing">🤝 Sharing</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="aggregation">📊 Aggregation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="emulation">🎭 Emulation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="isolation">🏝️ Isolation</div>
+                    <div class="feature-item" onclick="selectFeature(this)" data-feature="portability">🚀 Portability</div>
+                </div>
+                <div class="descriptions-column">
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="security">VMs can be snapshotted and rolled back if compromised, and malware is contained</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="managed">Hypervisor controls VM resource usage and enforces policies</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="sharing">Multiple VMs use resources from a single physical server</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="aggregation">Multiple physical hosts combined into one resource pool</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="emulation">VMs can simulate different hardware architectures and platforms</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="isolation">Each VM operates independently without awareness of others</div>
+                    <div class="description-item" onclick="selectDescription(this)" data-desc="portability">VMs can be moved between hosts or cloud environments easily</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="check-btn" onclick="checkMatching()">✓ Check Matches</button>
+                <button class="reset-btn" onclick="resetMatching()">↻ Reset</button>
+                <div id="matchingFeedback" style="margin-top: 20px; font-size: 1.3rem; font-weight: 700;"></div>
+            </div>`,
+
+            // Slide 12 - Feature Comparison
+            `<h1>📊 Feature Comparison Overview</h1>
+            <div class="info-box blue-box">
+                <h3>How Features Work Together</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Primary Benefit</th>
+                        <th>Key Technology</th>
+                        <th>Common Use Case</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>Protection & containment</td>
+                        <td>VM isolation, snapshots</td>
+                        <td>Malware analysis, testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Managed Execution</strong></td>
+                        <td>Control & monitoring</td>
+                        <td>Resource limits, QoS</td>
+                        <td>Fair resource distribution</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sharing</strong></td>
+                        <td>Cost efficiency</td>
+                        <td>Resource multiplexing</td>
+                        <td>Server consolidation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aggregation</strong></td>
+                        <td>Scalability</td>
+                        <td>Clustering, pools</td>
+                        <td>Data centre infrastructure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Emulation</strong></td>
+                        <td>Compatibility</td>
+                        <td>Hardware simulation</td>
+                        <td>Legacy apps, cross-platform</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolation</strong></td>
+                        <td>Independence</td>
+                        <td>Memory/process separation</td>
+                        <td>Multi-tenant hosting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Portability</strong></td>
+                        <td>Flexibility</td>
+                        <td>Encapsulation, migration</td>
+                        <td>Disaster recovery, cloud</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid grid-2" style="margin-top: 30px;">
+                <div class="info-box green-box">
+                    <h3>🔗 Interconnected Benefits</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        These features don't work in isolation—they combine to create powerful solutions. For example: <strong>Isolation</strong> enables <strong>Security</strong>, while <strong>Sharing</strong> and <strong>Aggregation</strong> work together for efficient resource use. <strong>Portability</strong> relies on <strong>Emulation</strong> to work across different hardware.
+                    </p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎯 Real-World Combination</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        Cloud providers use ALL seven features: VMs share physical servers (sharing), which are clustered (aggregation), with managed resource allocation (managed execution), complete isolation between customers (isolation), enhanced security measures (security), ability to emulate various platforms (emulation), and seamless migration (portability).
+                    </p>
+                </div>
+            </div>`,
+
+            // Slide 13 - Quiz 2
+            `<h1>📝 Quick Check: Emulation, Isolation & Portability</h1>
+            <div class="quiz-container">
+                <p class="quiz-question">Q4: What is the primary purpose of emulation in virtual environments?</p>
+                <button class="quiz-option" onclick="checkAnswer(4, 0, false)">A) To make VMs run faster</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 1, true)">B) To simulate different hardware architectures and enable cross-platform compatibility</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 2, false)">C) To reduce electricity consumption</button>
+                <button class="quiz-option" onclick="checkAnswer(4, 3, false)">D) To create backups automatically</button>
+                <div id="feedback-4" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q5: Why is isolation important in multi-tenant environments?</p>
+                <button class="quiz-option" onclick="checkAnswer(5, 0, false)">A) It makes all VMs run at the same speed</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 1, true)">B) It ensures one customer's VM cannot access or interfere with another customer's VM</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 2, false)">C) It automatically creates backups</button>
+                <button class="quiz-option" onclick="checkAnswer(5, 3, false)">D) It reduces hardware costs</button>
+                <div id="feedback-5" class="quiz-feedback"></div>
+            </div>
+            <div class="quiz-container">
+                <p class="quiz-question">Q6: What makes VMs portable between different hosts?</p>
+                <button class="quiz-option" onclick="checkAnswer(6, 0, false)">A) They are very small in file size</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 1, true)">B) They are encapsulated as files and hardware-independent</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 2, false)">C) They can only run on identical hardware</button>
+                <button class="quiz-option" onclick="checkAnswer(6, 3, false)">D) They automatically replicate to all hosts</button>
+                <div id="feedback-6" class="quiz-feedback"></div>
+            </div>`,
+
+            // Slide 14 - Real-World Application
+            `<h1>🌍 Real-World Application: AWS EC2</h1>
+            <div class="info-box blue-box">
+                <h3>All Seven Features in Action</h3>
+                <p style="font-size: 1.3rem;">Amazon Web Services' EC2 (Elastic Compute Cloud) is one of the world's largest virtual environments, demonstrating all seven key features at massive scale.</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="info-box green-box">
+                    <h3>🔒 Security</h3>
+                    <p style="font-size: 1.15rem;">Security groups, isolated VPCs, encrypted snapshots</p>
+                    <h3 style="margin-top: 20px;">⚙️ Managed Execution</h3>
+                    <p style="font-size: 1.15rem;">Instance types control CPU/RAM limits, monitoring via CloudWatch</p>
+                    <h3 style="margin-top: 20px;">🤝 Sharing</h3>
+                    <p style="font-size: 1.15rem;">Thousands of customer VMs share physical servers</p>
+                    <h3 style="margin-top: 20px;">📊 Aggregation</h3>
+                    <p style="font-size: 1.15rem;">Massive server farms aggregated into regional resource pools</p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🎭 Emulation</h3>
+                    <p style="font-size: 1.15rem;">ARM and x86 instances, various OS options (Windows, Linux, macOS)</p>
+                    <h3 style="margin-top: 20px;">🏝️ Isolation</h3>
+                    <p style="font-size: 1.15rem;">Complete customer isolation—no VM can access another customer's data</p>
+                    <h3 style="margin-top: 20px;">🚀 Portability</h3>
+                    <p style="font-size: 1.15rem;">AMIs (Amazon Machine Images) can launch in any region, migrate between availability zones</p>
+                </div>
+            </div>
+            <div class="scenario-box">
+                <div class="scenario-title">💡 Example: Netflix on AWS</div>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Netflix runs entirely on AWS EC2. They use <strong>aggregation</strong> of thousands of instances, <strong>sharing</strong> physical infrastructure with other AWS customers (in isolated VMs), <strong>managed execution</strong> with auto-scaling, <strong>portability</strong> to move workloads between regions, <strong>security</strong> through encrypted storage and isolated networks, <strong>isolation</strong> between their different services, and <strong>emulation</strong> to run various OS configurations—all enabling them to stream to 200+ million subscribers globally.
+                </p>
+            </div>`,
+
+            // Slide 15 - Exam Question 1
+            `<h1>📝 Exam-Style Question 1</h1>
+            <div class="info-box blue-box">
+                <h3>Question (4 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Explain what is meant by 'isolation' in virtual environments and describe one benefit it provides.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Clear explanation of isolation (VMs operate independently/separately)</li>
+                    <li><strong>2 marks:</strong> Relevant benefit explained with context/justification</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (4 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    Isolation means that each virtual machine operates completely independently from other VMs on the same physical host <strong>(1)</strong>, with separate memory, storage, and processes that cannot be accessed by other VMs <strong>(1)</strong>.
+                    <br><br>
+                    One benefit of isolation is enhanced security <strong>(1)</strong>. If malware infects one VM, it is contained within that VM and cannot spread to other VMs or the host system, preventing widespread damage across the infrastructure <strong>(1)</strong>.
+                </p>
+            </div>`,
+
+            // Slide 16 - Exam Question 2
+            `<h1>📝 Exam-Style Question 2</h1>
+            <div class="info-box blue-box">
+                <h3>Question (6 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Compare 'sharing' and 'aggregation' in virtual environments. Your answer should explain what each feature means and describe how they differ in their approach to resource management.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong>2 marks:</strong> Explanation of sharing (multiple VMs use resources from one physical machine)</li>
+                    <li><strong>2 marks:</strong> Explanation of aggregation (multiple physical machines combined into one pool)</li>
+                    <li><strong>2 marks:</strong> Clear comparison showing they are opposite approaches</li>
+                </ul>
+            </div>
+            <div class="info-box green-box">
+                <h3>✅ Example Answer (6 marks)</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8;">
+                    <strong>Sharing</strong> means multiple virtual machines run on a single physical server <strong>(1)</strong>, dividing and sharing that server's CPU, RAM, storage, and network resources among all the VMs <strong>(1)</strong>.
+                    <br><br>
+                    <strong>Aggregation</strong> means multiple physical servers are combined or clustered together <strong>(1)</strong>, creating a single large pool of resources from which VMs can draw, treating many physical machines as one unified resource <strong>(1)</strong>.
+                    <br><br>
+                    These are opposite approaches: sharing divides one machine's resources among many VMs (one-to-many) <strong>(1)</strong>, while aggregation combines many machines' resources into one pool (many-to-one) <strong>(1)</strong>.
+                </p>
+            </div>`,
+
+            // Slide 17 - Exam Question 3
+            `<h1>📝 Exam-Style Question 3</h1>
+            <div class="info-box blue-box">
+                <h3>Question (8 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A software development company uses virtual environments for development and testing. Discuss how THREE different key features of virtual environments would benefit this company's development workflow.
+                </p>
+            </div>
+            <div class="info-box purple-box">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 3 (7-8 marks):</strong> Discusses three features with detailed explanation of specific benefits to development workflow. Shows clear understanding of how features solve development problems.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Explains two or three features with reasonable benefits. Some development context provided.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Lists features with basic or generic benefits. Limited development context.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 450px; overflow-y: auto;">
+                <h3>✅ Example Answer (8 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    <strong>Isolation</strong> would significantly benefit the development workflow by allowing developers to create completely separate test environments without risk of interference. Each developer could have their own isolated VM running the application stack, allowing them to test different features or experiment with major code changes without affecting other developers' work or the shared testing environment. If a developer's test causes system instability or crashes, it only affects their VM—other team members continue working uninterrupted. This isolation also enables safe testing of security features or potentially problematic code that might otherwise compromise shared systems.
+                    <br><br>
+                    <strong>Portability</strong> would streamline the development process by enabling consistent environments across the team and deployment pipeline. Development VMs can be created as templates and distributed to all developers, ensuring everyone works with identical configurations—eliminating "works on my machine" problems. When code is ready for testing, the same VM configuration can be easily moved to the QA environment, then to staging, and finally production, maintaining consistency throughout. If a developer encounters a complex bug, they can snapshot their VM and send it to a senior developer for troubleshooting, preserving the exact state where the problem occurs. This portability also facilitates remote work, as developers can access their development VMs from any location.
+                    <br><br>
+                    <strong>Emulation</strong> would enable cross-platform testing without requiring physical hardware for every target platform. The company could emulate different operating systems (Windows, various Linux distributions, macOS) and different system configurations within VMs, allowing comprehensive compatibility testing on a single physical infrastructure. For example, if developing a web application, they could test it across different browser-OS combinations by emulating various environments. If supporting mobile applications, they could use Android and iOS emulators without needing physical devices for every version and model. This dramatically reduces hardware costs while expanding testing coverage, ensuring software works correctly across all target platforms before release.
+                </p>
+            </div>`,
+
+            // Slide 18 - Exam Question 4
+            `<h1>📝 Exam-Style Question 4</h1>
+            <div class="info-box blue-box">
+                <h3>Question (12 marks)</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    A large enterprise is planning to migrate from physical servers to a virtualized infrastructure. They currently run 80 physical servers, each dedicated to a single application.
+                    <br><br>
+                    Evaluate how the seven key features of virtual environments (security, managed execution, sharing, aggregation, emulation, isolation, and portability) would impact this migration. Consider both the benefits and potential challenges, and make a reasoned judgement about whether virtualization is appropriate for this organization.
+                </p>
+            </div>
+            <div class="info-box purple-box" style="max-height: 250px; overflow-y: auto;">
+                <h3>💡 Mark Scheme Guidance</h3>
+                <ul style="font-size: 1.15rem;">
+                    <li><strong>Level 4 (10-12 marks):</strong> Comprehensive evaluation covering most/all seven features with detailed analysis of benefits and challenges. Makes well-reasoned judgement with supporting evidence. Shows deep understanding of how features address enterprise needs. Considers technical, financial, and operational factors.</li>
+                    <li><strong>Level 3 (7-9 marks):</strong> Good evaluation of multiple features (4-6) with reasonable analysis. Some benefits and challenges identified. Makes judgement with some justification. Shows understanding of key concepts.</li>
+                    <li><strong>Level 2 (4-6 marks):</strong> Explains several features (3-4) with basic benefits mentioned. Limited analysis of challenges. Basic judgement made. Some understanding shown.</li>
+                    <li><strong>Level 1 (1-3 marks):</strong> Lists some features with minimal explanation. Few benefits, no real challenges discussed. No clear judgement or very basic statement.</li>
+                </ul>
+            </div>
+            <div class="info-box green-box" style="max-height: 500px; overflow-y: auto;">
+                <h3>✅ Example Answer (12 marks)</h3>
+                <p style="font-size: 1.15rem; line-height: 1.9;">
+                    The migration would benefit significantly from virtualization's key features, though implementation challenges exist.
+                    <br><br>
+                    <strong>Sharing and Aggregation</strong> provide the most immediate financial impact. Currently, 80 dedicated physical servers likely operate at 10-15% utilization—wasteful and expensive. Through sharing, multiple VMs could run on each physical host, potentially consolidating to 10-15 powerful servers hosting all 80 applications. This represents hardware cost savings of 80-85%, plus proportional reductions in electricity (powering and cooling), data centre space, and maintenance. Aggregation would enable these physical hosts to be clustered, creating a unified resource pool. Load balancing would distribute VMs across available capacity automatically, maximizing utilization to 60-80%. The combined effect—sharing dividing resources down, aggregation combining resources up—creates a highly efficient infrastructure.
+                    <br><br>
+                    <strong>Managed execution</strong> addresses a critical challenge: preventing resource conflicts when consolidating workloads. With 80 applications now sharing infrastructure, the hypervisor must enforce resource limits and QoS policies. Critical applications (e.g., customer-facing databases) can be guaranteed minimum resources and prioritized during contention, while less critical applications (e.g., reporting systems) accept lower priority. This prevents scenarios where a runaway process in one VM starves others of resources. The challenge is correctly sizing and prioritizing—requires detailed analysis of each application's resource profile and business importance. Mistakes could cause performance issues worse than the physical setup.
+                    <br><br>
+                    <strong>Isolation</strong> enables safe consolidation of previously separate systems. Applications that shouldn't interact (development vs production, customer A vs customer B, internet-facing vs internal) can coexist on shared hardware with security boundaries maintained. If one application is compromised, the breach is contained—unlike physical servers where compromise often means full server control. However, isolation isn't absolute; vulnerabilities in the hypervisor itself could expose all VMs. The organization must implement additional network segmentation and security controls, not relying solely on VM boundaries.
+                    <br><br>
+                    <strong>Security</strong> improves through centralized management and snapshot capabilities. All 80 VMs can be patched from central templates rather than individually updating physical servers. Suspicious activity can be investigated by cloning VMs for forensic analysis without disrupting production. Vulnerabilities can be tested against VM snapshots. However, the virtualization layer itself becomes a critical security point—if attackers compromise the hypervisor, they potentially access all VMs. The organization needs dedicated virtualization security expertise and must implement defense-in-depth strategies.
+                    <br><br>
+                    <strong>Portability</strong> revolutionizes disaster recovery and maintenance. Currently, recovering a failed physical server requires new hardware, OS reinstallation, application setup, and data restoration—potentially days of work. With VMs, disaster recovery becomes: restore VM files to any available host, power on. Recovery time: minutes to hours. Hardware maintenance no longer requires downtime; VMs are live-migrated to other hosts while hardware is serviced. The organization could implement affordable disaster recovery by replicating VMs to a secondary site or cloud, only paying for compute when disaster actually strikes. Challenge: initial backup infrastructure investment and regular testing of recovery procedures.
+                    <br><br>
+                    <strong>Emulation</strong> provides flexibility for legacy applications. If any of the 80 applications require older operating systems or specific hardware (perhaps specialized cards), VMs can emulate these requirements on modern hardware. This extends the life of legacy systems while avoiding maintaining old physical servers. Applications requiring different OS versions (various Windows Server versions, different Linux distributions) can coexist on the same infrastructure. However, emulation of specialized hardware may have performance limitations compared to native support.
+                    <br><br>
+                    <strong>Challenges and Risks:</strong>
+                    The migration creates new dependencies and risks. The organization must invest in hypervisor licensing (VMware vSphere could cost £50,000-100,000+), management tools, shared storage (SAN/NAS), and staff training. Migration itself is risky—moving 80 applications requires careful planning, testing, and execution over 6-12 months. Poor planning could cause extended outages. Performance of virtualized applications must be validated—some high-performance workloads may not virtualize well. The virtualization layer becomes a single point of failure; proper clustering and redundancy are essential but add complexity and cost.
+                    <br><br>
+                    <strong>Evaluation:</strong>
+                    Virtualization is highly appropriate for this organization. The current situation—80 underutilized physical servers—is precisely the problem virtualization solves. The seven key features address all major requirements: cost reduction (sharing/aggregation), improved security (isolation/security features), operational flexibility (portability), better resource management (managed execution), and platform compatibility (emulation). While implementation challenges exist and upfront investment is significant (potentially £200,000-500,000 including hardware, licenses, and services), the ROI is compelling: hardware reduction saves £500,000-1,000,000 over 3-5 years, operational costs decrease substantially, disaster recovery improves dramatically, and flexibility enables faster business response to changes. The organization must invest properly in planning, training, and redundancy, but virtualization is the industry-standard approach for good reason—the benefits far outweigh the challenges for this use case.
+                </p>
+            </div>`,
+
+            // Slide 19 - Summary
+            `<h1>📚 Summary & Key Takeaways</h1>
+            <div class="grid grid-3">
+                <div class="info-box blue-box">
+                    <h3>🔒 Security</h3>
+                    <p style="font-size: 1.1rem;">Enhanced protection through VM isolation, snapshots, and sandboxing. Malware contained, easy recovery.</p>
+                </div>
+                <div class="info-box green-box">
+                    <h3>⚙️ Managed Execution</h3>
+                    <p style="font-size: 1.1rem;">Hypervisor controls resource usage, enforces limits, enables monitoring and policy enforcement.</p>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🤝 Sharing</h3>
+                    <p style="font-size: 1.1rem;">Multiple VMs share one physical server's resources, dramatically reducing hardware costs.</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="info-box yellow-box">
+                    <h3>📊 Aggregation</h3>
+                    <p style="font-size: 1.1rem;">Combine multiple physical hosts into unified resource pool for scalability and high availability.</p>
+                </div>
+                <div class="info-box cyan-box">
+                    <h3>🎭 Emulation</h3>
+                    <p style="font-size: 1.1rem;">Simulate different hardware/platforms, enabling cross-platform testing and legacy support.</p>
+                </div>
+            </div>
+            <div class="grid grid-2" style="margin-top: 25px;">
+                <div class="info-box red-box">
+                    <h3>🏝️ Isolation</h3>
+                    <p style="font-size: 1.1rem;">VMs operate completely independently, preventing interference and containing faults/breaches.</p>
+                </div>
+                <div class="info-box blue-box">
+                    <h3>🚀 Portability</h3>
+                    <p style="font-size: 1.1rem;">VMs easily moved between hosts/clouds, enabling disaster recovery and flexible deployment.</p>
+                </div>
+            </div>
+            <div class="info-box green-box" style="margin-top: 30px;">
+                <h3>🎯 Essential Understanding</h3>
+                <ul style="font-size: 1.2rem;">
+                    <li>These seven features work together to create powerful, flexible, secure infrastructure</li>
+                    <li>Different features solve different problems—understand when each is most valuable</li>
+                    <li>Real-world virtualization (AWS, Azure, VMware) uses ALL these features simultaneously</li>
+                    <li>The combination of features enables modern cloud computing and digital transformation</li>
+                </ul>
+            </div>`,
+
+            // Slide 20 - Conclusion
+            `<h1>🎉 Excellent Work!</h1>
+            <div class="highlight-box">
+                <div class="icon-large">🏆</div>
+                <h2 style="margin: 0; color: #58a6ff;">Course Complete!</h2>
+                <p style="font-size: 1.4rem; margin-top: 20px; color: #c9d1d9;">You now understand all seven key features of virtual environments!</p>
+            </div>
+            <div class="grid grid-2" style="margin-top: 40px;">
+                <div class="info-box blue-box">
+                    <h3>📖 What You've Learned</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>How increased security protects systems</li>
+                        <li>How managed execution controls resources</li>
+                        <li>How sharing reduces infrastructure costs</li>
+                        <li>How aggregation enables scalability</li>
+                        <li>How emulation provides compatibility</li>
+                        <li>How isolation prevents interference</li>
+                        <li>How portability enables flexibility</li>
+                    </ul>
+                </div>
+                <div class="info-box purple-box">
+                    <h3>🚀 Next Steps</h3>
+                    <ul style="font-size: 1.2rem;">
+                        <li>Practice exam questions on these features</li>
+                        <li>Explore virtual environments hands-on</li>
+                        <li>Install VirtualBox and create test VMs</li>
+                        <li>Research how companies use virtualization</li>
+                        <li>Understand cloud computing foundations</li>
+                        <li>Review both 7.4.1 and 7.4.2 together</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="scenario-box" style="margin-top: 30px;">
+                <div class="scenario-title">💡 Final Thought</div>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    These seven key features are the foundation of modern computing infrastructure. Every major cloud provider (AWS, Azure, Google Cloud), every enterprise data centre, and most development environments rely on these principles. Understanding them gives you insight into how the digital world actually works at scale!
+                </p>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px;">
+                <p style="font-size: 1.5rem; font-weight: 700; color: #3fb950;">Great job completing this module! 🎓</p>
+            </div>`
+        ];
+
+        // Matching game state
+        let selectedFeature = null;
+        let selectedDescription = null;
+        let matches = {};
+
+        function initSlides() {
+            const container = document.getElementById('slideContainer');
+            slidesContent.forEach((content, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = content;
+                container.appendChild(slideDiv);
+            });
+            updateUI();
+            createDots();
+        }
+
+        function updateUI() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            const progress = Math.round(((currentSlide + 1) / totalSlides) * 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress + '% Complete';
+            
+            document.getElementById('counter').textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            
+            updateDots();
+            completed.add(currentSlide);
+        }
+
+        function createDots() {
+            const container = document.getElementById('dotsContainer');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.onclick = () => goToSlide(i);
+                container.appendChild(dot);
+            }
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else if (completed.has(index)) {
+                    dot.classList.add('completed');
+                }
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateUI();
+        }
+
+        function checkAnswer(questionId, optionIndex, isCorrect) {
+            if (quizAnswers[questionId]) return;
+            
+            quizAnswers[questionId] = true;
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            const allOptions = feedback.parentNode.querySelectorAll('.quiz-option');
+            
+            allOptions.forEach((opt, idx) => {
+                opt.disabled = true;
+                if (idx === optionIndex) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            feedback.style.display = 'block';
+            feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = isCorrect ? '✓ Correct! Well done!' : '✗ Incorrect. Review the material to understand why.';
+        }
+
+        // Matching Activity Functions
+        function selectFeature(element) {
+            // Deselect previous feature
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            selectedFeature = element.getAttribute('data-feature');
+            element.classList.add('selected');
+            
+            // If description was already selected, make the match
+            if (selectedDescription) {
+                makeMatch();
+            }
+        }
+
+        function selectDescription(element) {
+            // Deselect previous description
+            document.querySelectorAll('.description-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            selectedDescription = element.getAttribute('data-desc');
+            element.classList.add('selected');
+            
+            // If feature was already selected, make the match
+            if (selectedFeature) {
+                makeMatch();
+            }
+        }
+
+        function makeMatch() {
+            matches[selectedFeature] = selectedDescription;
+            
+            // Reset selections
+            document.querySelectorAll('.feature-item, .description-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            selectedFeature = null;
+            selectedDescription = null;
+        }
+
+        function checkMatching() {
+            const correctMatches = {
+                'security': 'security',
+                'managed': 'managed',
+                'sharing': 'sharing',
+                'aggregation': 'aggregation',
+                'emulation': 'emulation',
+                'isolation': 'isolation',
+                'portability': 'portability'
+            };
+            
+            let correct = 0;
+            let total = Object.keys(correctMatches).length;
+            
+            // Check each match
+            Object.keys(correctMatches).forEach(feature => {
+                const descElement = document.querySelector(`.description-item[data-desc="${matches[feature]}"]`);
+                if (descElement) {
+                    descElement.classList.remove('correct', 'incorrect');
+                    if (matches[feature] === correctMatches[feature]) {
+                        descElement.classList.add('correct');
+                        correct++;
+                    } else {
+                        descElement.classList.add('incorrect');
+                    }
+                }
+            });
+            
+            const feedback = document.getElementById('matchingFeedback');
+            if (correct === total) {
+                feedback.textContent = `🎉 Perfect! All ${total} features matched correctly!`;
+                feedback.style.color = '#3fb950';
+            } else {
+                feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                feedback.style.color = '#f85149';
+            }
+        }
+
+        function resetMatching() {
+            matches = {};
+            selectedFeature = null;
+            selectedDescription = null;
+            
+            document.querySelectorAll('.feature-item, .description-item').forEach(item => {
+                item.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            document.getElementById('matchingFeedback').textContent = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.addEventListener('DOMContentLoaded', initSlides);
+    </script>
+
+
+</body></html>

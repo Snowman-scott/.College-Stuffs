@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSI Model - Complete Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            color: #e4e4e7;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(18, 18, 27, 0.85);
+            border-radius: 32px;
+            padding: 80px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            min-height: 600px;
+            margin-bottom: 40px;
+        }
+
+        .slide.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px; right: 40px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 4em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            font-size: 3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            letter-spacing: -1.5px;
+        }
+
+        h3 {
+            color: #86efac;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            font-size: 1.4em;
+            color: #86efac;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #d4d4d8;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 18px;
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #d4d4d8;
+        }
+
+        li::marker {
+            color: #22c55e;
+        }
+
+        strong {
+            color: #86efac;
+            font-weight: 700;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(22, 163, 74, 0.05));
+            border-left: 4px solid #22c55e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .info-box h3 { margin-top: 0; }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 540px;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(234, 88, 12, 0.05));
+            border-left: 4px solid #f97316;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .question-box h4 {
+            color: #fdba74;
+        }
+
+        .marks {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-left: 12px;
+        }
+
+        em {
+            font-style: italic;
+            color: #86efac;
+        }
+
+        .navigation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            background: rgba(18, 18, 27, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 100px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+
+        button {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 14px 32px;
+            border-radius: 100px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            color: #86efac;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #86efac);
+            border-radius: 10px;
+            transition: width 0.4s;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #22c55e;
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15);
+        }
+
+        .draggable {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.15));
+            border: 2px solid rgba(34, 197, 94, 0.4);
+            padding: 15px 25px;
+            border-radius: 12px;
+            cursor: move;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #86efac;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .drop-zone {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(34, 197, 94, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .drop-zone.drag-over {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: #22c55e;
+            border-style: solid;
+        }
+
+        .drop-zone.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid #22c55e;
+        }
+
+        .drop-zone.incorrect {
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid #dc2626;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .layer-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 150px;
+            gap: 20px;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .layer-number {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.15));
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #93c5fd;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            border: 1px solid rgba(34, 197, 94, 0.1);
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            margin: 30px auto;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-message {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .result-message.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .result-message.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 2px solid #22c55e;
+        }
+
+        .result-message.partial {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fdba74;
+            border: 2px solid #f97316;
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 40px; }
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .two-col, .three-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide active">
+            <div class="center-content">
+                <h1>OSI MODEL</h1>
+                <p style="font-size: 1.5em; color: #a1a1aa;">Open Systems Interconnection</p>
+                <div class="info-box" style="margin-top: 60px; max-width: 700px;">
+                    <h3 style="text-align: center;">Network Communication Framework</h3>
+                    <p style="text-align: center;">A conceptual model to understand how networks operate and standardise communication across 7 layers</p>
+                </div>
+            </div>
+            <div class="slide-number">1 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>The 7 Layers Overview</h2>
+            <div class="info-box">
+                <h3>📚 OSI Model Structure</h3>
+                <p>Each layer has specific functions and communicates with layers above and below it.</p>
+            </div>
+            <ul>
+                <li><strong>Layer 7 - Application:</strong> User-facing applications (HTTP, FTP, SMTP)</li>
+                <li><strong>Layer 6 - Presentation:</strong> Data formatting, encryption, compression</li>
+                <li><strong>Layer 5 - Session:</strong> Connection management between devices</li>
+                <li><strong>Layer 4 - Transport:</strong> Reliable data transfer (TCP/UDP)</li>
+                <li><strong>Layer 3 - Network:</strong> Routing and logical addressing (IP)</li>
+                <li><strong>Layer 2 - Data Link:</strong> Physical addressing (MAC), frames</li>
+                <li><strong>Layer 1 - Physical:</strong> Raw bit transmission</li>
+            </ul>
+            <div class="info-box" style="margin-top: 30px;">
+                <p style="text-align: center; font-size: 1.1em;">💡 <strong>Mnemonic:</strong> "All People Seem To Need Data Processing"</p>
+            </div>
+            <div class="slide-number">2 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 7 - Application</h2>
+            <div class="info-box">
+                <h3>🌐 User-Facing Layer</h3>
+                <p>Facilitates communication between end-user applications and the network. Provides network services like web browsing, email, and file transfer.</p>
+            </div>
+            <h3>Common Protocols & Services:</h3>
+            <div class="three-col">
+                <div class="card">
+                    <h4>📧 Email</h4>
+                    <p>POP3, SMTP</p>
+                </div>
+                <div class="card">
+                    <h4>🌍 Web</h4>
+                    <p>HTTP/HTTPS, DNS</p>
+                </div>
+                <div class="card">
+                    <h4>📁 Files</h4>
+                    <p>FTP, P2P</p>
+                </div>
+            </div>
+            <div class="info-box">
+                <h3>Examples You Use Daily</h3>
+                <p>Web browsers • Email clients • Instagram • YouTube • Online games • Network drives</p>
+            </div>
+            <div class="slide-number">3 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 6 - Presentation</h2>
+            <div class="info-box">
+                <h3>🔧 Data Configuration</h3>
+                <p>This layer <strong>configures the data</strong> so the receiving device can understand it!</p>
+            </div>
+            <h3>Key Functions:</h3>
+            <ul>
+                <li><strong>Compression:</strong> Reduces data size for efficient transmission</li>
+                <li><strong>Encryption & Decryption:</strong> Secures data during transmission</li>
+                <li><strong>Translation:</strong> Converts data formats between different systems</li>
+            </ul>
+            <h3 style="margin-top: 40px;">Security Protocols:</h3>
+            <div class="two-col">
+                <div class="card">
+                    <h4>🔒 SSL</h4>
+                    <p>Secure Socket Layer (deprecated/legacy)</p>
+                </div>
+                <div class="card">
+                    <h4>🔐 TLS</h4>
+                    <p>Transport Layer Security (current standard)</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 5 - Session</h2>
+            <div class="info-box">
+                <h3>🔗 Connection Management</h3>
+                <p>Responsible for <strong>establishing and terminating connections</strong> between devices</p>
+            </div>
+            <h3>Key Responsibilities:</h3>
+            <ul>
+                <li><strong>Setting up:</strong> Establishes session connections</li>
+                <li><strong>Managing:</strong> Controls connections between computers/devices</li>
+                <li><strong>Dismantling:</strong> Terminates sessions when complete</li>
+                <li><strong>Authenticating:</strong> Verifies user identity</li>
+                <li><strong>Authorising:</strong> Grants appropriate permissions</li>
+            </ul>
+            <div class="info-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(147, 51, 234, 0.05)); border-color: #a855f7;">
+                <h3 style="color: #c084fc;">💡 Think of it like a phone call</h3>
+                <p>Dial and connect → Have conversation → Hang up and disconnect</p>
+            </div>
+            <div class="slide-number">5 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 4 - Transport</h2>
+            <div class="info-box">
+                <h3>🚚 Reliable Data Transfer</h3>
+                <p>Responsible for the <strong>reliable transfer of data</strong> between end systems</p>
+            </div>
+            <h3>Key Functions:</h3>
+            <ul>
+                <li><strong>End-to-End Communication:</strong> Between source and destination hosts</li>
+                <li><strong>Segmentation:</strong> Breaks data into smaller <strong>segments</strong></li>
+                <li><strong>Reassembly:</strong> Reconstructs original data at destination</li>
+            </ul>
+            <h3 style="margin-top: 30px;">Key Protocols:</h3>
+            <div class="two-col">
+                <div class="card" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.05)); border-color: #22c55e;">
+                    <h4 style="color: #86efac;">TCP</h4>
+                    <p><strong>✓ Reliable</strong> - Guarantees delivery</p>
+                    <p><strong>✓ Connection-oriented</strong></p>
+                    <p><strong>✓ Ordered delivery</strong></p>
+                    <p style="margin-top: 10px; font-size: 0.95em;">Use: Web, email, file transfer</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                    <h4 style="color: #93c5fd;">UDP</h4>
+                    <p><strong>⚡ Fast</strong> - No connection overhead</p>
+                    <p><strong>⚡ Connectionless</strong></p>
+                    <p><strong>⚡ No guarantee</strong></p>
+                    <p style="margin-top: 10px; font-size: 0.95em;">Use: Streaming, gaming, VoIP</p>
+                </div>
+            </div>
+            <div class="slide-number">6 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 3 - Network</h2>
+            <div class="info-box">
+                <h3>🗺️ Routing & Addressing</h3>
+                <p>Handles data routing, packet forwarding, and logical addressing. Divides data into <strong>packets</strong>.</p>
+            </div>
+            <h3>Key Functions:</h3>
+            <ul>
+                <li><strong>Routing:</strong> Determines optimal path across multiple networks</li>
+                <li><strong>Logical Addressing:</strong> Uses IP addresses to identify devices</li>
+                <li><strong>Packet Forwarding:</strong> Transfers packets between networks</li>
+                <li><strong>Fragmentation:</strong> Divides packets to fit network MTU</li>
+                <li><strong>Quality of Service (QoS):</strong> Prioritizes voice/video traffic</li>
+            </ul>
+            <div class="info-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(147, 51, 234, 0.05)); border-color: #a855f7;">
+                <h3 style="color: #c084fc;">📦 Data Unit: Packets</h3>
+                <p>Contains IP addresses for routing across networks</p>
+            </div>
+            <div class="slide-number">7 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 2 - Data Link</h2>
+            <div class="info-box">
+                <h3>🔗 Physical Addressing</h3>
+                <p>Provides node-to-node transfer and error detection. Uses <strong>frames</strong>.</p>
+            </div>
+            <h3>Key Functions:</h3>
+            <ul>
+                <li><strong>Framing:</strong> Divides data into manageable frames</li>
+                <li><strong>MAC Addressing:</strong> Uses physical addresses to identify devices</li>
+                <li><strong>Error Detection:</strong> Uses CRC, checksums for data integrity</li>
+                <li><strong>Flow Control:</strong> Prevents fast senders overwhelming slow receivers</li>
+                <li><strong>Switching:</strong> Forwards frames using MAC addresses</li>
+            </ul>
+            <div class="two-col" style="margin-top: 30px;">
+                <div class="info-box" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(185, 28, 28, 0.05)); border-color: #dc2626;">
+                    <h3 style="color: #fca5a5;">📦 Data Unit: Frames</h3>
+                    <p>MAC addresses + error checking + packets</p>
+                </div>
+                <div class="info-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                    <h3 style="color: #93c5fd;">🔧 Devices</h3>
+                    <p>Switches, Bridges, NICs</p>
+                </div>
+            </div>
+            <div class="slide-number">8 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Layer 1 - Physical</h2>
+            <div class="info-box">
+                <h3>⚡ Raw Transmission</h3>
+                <p>Physical components: transmission of <strong>raw bit streams</strong> over physical medium</p>
+            </div>
+            <h3>Key Elements:</h3>
+            <div class="three-col">
+                <div class="card">
+                    <h4>🔌 Media</h4>
+                    <ul style="font-size: 0.95em;">
+                        <li>Copper cables</li>
+                        <li>Fibre optic</li>
+                        <li>Wireless</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>📡 Signals</h4>
+                    <ul style="font-size: 0.95em;">
+                        <li>Electrical</li>
+                        <li>Light</li>
+                        <li>Radio waves</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🔧 Devices</h4>
+                    <ul style="font-size: 0.95em;">
+                        <li>Hubs</li>
+                        <li>Repeaters</li>
+                        <li>Cables</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(185, 28, 28, 0.05)); border-color: #dc2626;">
+                <h3 style="color: #fca5a5; text-align: center;">💾 Data Unit: Bits</h3>
+                <p style="text-align: center;">The most basic unit - 1s and 0s as electrical/light signals</p>
+            </div>
+            <div class="slide-number">9 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>🎯 Interactive Challenge: Match the Layers!</h2>
+            <div class="info-box">
+                <h3>Drag & Drop Activity</h3>
+                <p>Drag each layer name to its correct number. Click "Check Answers" when you're done!</p>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 7</div>
+                <div class="drop-zone" data-answer="Application"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-7">User-facing</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 6</div>
+                <div class="drop-zone" data-answer="Presentation"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-6">Encryption</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 5</div>
+                <div class="drop-zone" data-answer="Session"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-5">Connections</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 4</div>
+                <div class="drop-zone" data-answer="Transport"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-4">TCP/UDP</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 3</div>
+                <div class="drop-zone" data-answer="Network"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-3">Routing</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 2</div>
+                <div class="drop-zone" data-answer="Data Link"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-2">MAC address</div>
+            </div>
+
+            <div class="layer-row">
+                <div class="layer-number">Layer 1</div>
+                <div class="drop-zone" data-answer="Physical"></div>
+                <div style="color: #86efac; font-size: 0.9em; display: none;" class="hint-1">Cables</div>
+            </div>
+
+            <div class="answer-options" id="answerOptions">
+                <div class="draggable" draggable="true" data-layer="Application">Application</div>
+                <div class="draggable" draggable="true" data-layer="Presentation">Presentation</div>
+                <div class="draggable" draggable="true" data-layer="Session">Session</div>
+                <div class="draggable" draggable="true" data-layer="Transport">Transport</div>
+                <div class="draggable" draggable="true" data-layer="Network">Network</div>
+                <div class="draggable" draggable="true" data-layer="Data Link">Data Link</div>
+                <div class="draggable" draggable="true" data-layer="Physical">Physical</div>
+            </div>
+
+            <button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+            <div class="result-message" id="resultMessage"></div>
+
+            <div class="slide-number">10 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Data Encapsulation</h2>
+            <div class="info-box">
+                <h3>📦 How Data Moves Through Layers</h3>
+                <p>As data moves down the OSI model, each layer adds its own header information</p>
+            </div>
+            <div style="margin: 40px 0;">
+                <div class="card" style="margin-bottom: 15px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));">
+                    <p><strong style="color: #93c5fd;">Layers 7-5:</strong> <span style="color: #86efac;">Data</span> - Application data</p>
+                </div>
+                <div class="card" style="margin-bottom: 15px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.05));">
+                    <p><strong style="color: #86efac;">Layer 4:</strong> <span style="color: #86efac;">Segments</span> - TCP/UDP headers + data</p>
+                </div>
+                <div class="card" style="margin-bottom: 15px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(147, 51, 234, 0.05));">
+                    <p><strong style="color: #c084fc;">Layer 3:</strong> <span style="color: #86efac;">Packets</span> - IP headers + segments</p>
+                </div>
+                <div class="card" style="margin-bottom: 15px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));">
+                    <p><strong style="color: #fca5a5;">Layer 2:</strong> <span style="color: #86efac;">Frames</span> - MAC headers + packets</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05));">
+                    <p><strong style="color: #fca5a5;">Layer 1:</strong> <span style="color: #86efac;">Bits</span> - Raw binary (1s and 0s)</p>
+                </div>
+            </div>
+            <div class="slide-number">11 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Segments, Packets & Frames</h2>
+            <div class="card" style="margin-bottom: 20px;">
+                <h4>📦 Segment (Layer 4)</h4>
+                <p><strong>Content:</strong> TCP/UDP headers with port numbers + application data</p>
+                <p><strong>Purpose:</strong> Ensures reliable, ordered data transfer with flow control</p>
+            </div>
+            <div class="card" style="margin-bottom: 20px;">
+                <h4>📮 Packet (Layer 3)</h4>
+                <p><strong>Content:</strong> IP headers with addresses + segments</p>
+                <p><strong>Purpose:</strong> Routing across different networks</p>
+                <p><strong>Routing:</strong> Based on destination IP address</p>
+            </div>
+            <div class="card">
+                <h4>🖼️ Frame (Layer 2)</h4>
+                <p><strong>Content:</strong> MAC addresses + error checking (CRC) + packets</p>
+                <p><strong>Purpose:</strong> Prepares for transmission over physical medium (Ethernet, Wi-Fi)</p>
+                <p><strong>Error Checking:</strong> Detects and corrects transmission errors</p>
+            </div>
+            <div class="slide-number">12 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>OSI vs TCP/IP Models</h2>
+            <div class="info-box">
+                <h3>Two Conceptual Frameworks</h3>
+                <p>OSI is theoretical (7 layers), TCP/IP is practical implementation (4 layers)</p>
+            </div>
+            <div class="two-col" style="margin-top: 40px;">
+                <div>
+                    <h3 style="text-align: center; color: #86efac;">OSI Model</h3>
+                    <div class="card" style="margin: 10px 0;">7 - Application</div>
+                    <div class="card" style="margin: 10px 0;">6 - Presentation</div>
+                    <div class="card" style="margin: 10px 0;">5 - Session</div>
+                    <div class="card" style="margin: 10px 0;">4 - Transport</div>
+                    <div class="card" style="margin: 10px 0;">3 - Network</div>
+                    <div class="card" style="margin: 10px 0;">2 - Data Link</div>
+                    <div class="card" style="margin: 10px 0;">1 - Physical</div>
+                </div>
+                <div>
+                    <h3 style="text-align: center; color: #86efac;">TCP/IP Model</h3>
+                    <div class="card" style="margin: 10px 0; padding: 40px 30px;">4 - Application<br><span style="font-size: 0.8em; opacity: 0.7;">(OSI 7, 6, 5)</span></div>
+                    <div class="card" style="margin: 10px 0;">3 - Transport</div>
+                    <div class="card" style="margin: 10px 0;">2 - Internet</div>
+                    <div class="card" style="margin: 10px 0; padding: 40px 30px;">1 - Network Interface<br><span style="font-size: 0.8em; opacity: 0.7;">(OSI 2, 1)</span></div>
+                </div>
+            </div>
+            <div class="slide-number">13 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>TCP/IP Model Details</h2>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                <h3 style="color: #93c5fd;">Layer 4 - Application</h3>
+                <p>Applications, compression, encryption, protocols (SMTP, POP, HTTP, DNS, FTP)</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(22, 163, 74, 0.05)); border-color: #22c55e;">
+                <h3 style="color: #86efac;">Layer 3 - Transport</h3>
+                <p><strong>Reliable data transfer</strong> using TCP or UDP. Breaks data into packets.</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(147, 51, 234, 0.05)); border-color: #a855f7;">
+                <h3 style="color: #c084fc;">Layer 2 - Internet</h3>
+                <p>Finds <strong>shortest/quickest route</strong> to destination. IP protocol assigns origin and destination addresses.</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(185, 28, 28, 0.05)); border-color: #dc2626;">
+                <h3 style="color: #fca5a5;">Layer 1 - Network Interface</h3>
+                <p>Decides which <strong>device's turn to communicate</strong>. Locates physical device on network.</p>
+            </div>
+            <div class="slide-number">14 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section A – Shorter Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 1 <span class="marks">2 marks</span></h4>
+                <p>State which OSI layer is responsible for encryption and compression of data.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 2 <span class="marks">3 marks</span></h4>
+                <p>Explain the difference between <em>TCP</em> and <em>UDP</em> protocols at the Transport Layer.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 3 <span class="marks">4 marks</span></h4>
+                <p>Describe the role of MAC addresses at the Data Link Layer and explain how they differ from IP addresses.</p>
+            </div>
+            <div class="slide-number">15 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section A – Continued</h3>
+            
+            <div class="question-box">
+                <h4>Question 4 <span class="marks">4 marks</span></h4>
+                <p>Describe two functions of the Network Layer (Layer 3) in the OSI model.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 5 <span class="marks">5 marks</span></h4>
+                <p>Explain the process of data encapsulation as information travels down the OSI model from the Application Layer to the Physical Layer.</p>
+            </div>
+            <div class="slide-number">16 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response</h3>
+            
+            <div class="question-box">
+                <h4>Question 6 <span class="marks">9 marks – Analyse</span></h4>
+                <p>A company is experiencing slow network performance and data corruption issues. Analyse how understanding the OSI model could help network administrators identify and troubleshoot these problems.</p>
+                <p style="margin-top: 15px;">In your answer, consider:</p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li style="font-size: 1.05em;">Which layers might be responsible for each type of problem</li>
+                    <li style="font-size: 1.05em;">What diagnostic tools or checks could be used at each layer</li>
+                    <li style="font-size: 1.05em;">How the layered approach helps isolate issues</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Analyse</strong></p>
+                <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Break down information to examine its parts, identify relationships, and draw conclusions about how OSI layers interact.</p>
+            </div>
+            <div class="slide-number">17 / 19</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response</h3>
+            
+            <div class="question-box">
+                <h4>Question 7 <span class="marks">12 marks – Evaluate</span></h4>
+                <p>A network architect must choose between implementing security measures at different OSI layers:</p>
+                <ul style="margin-left: 30px; margin-top: 15px; margin-bottom: 15px;">
+                    <li style="font-size: 1.05em;"><strong>Option A:</strong> Focus on Application Layer (Layer 7) with application firewalls, content filtering, and protocol-specific monitoring</li>
+                    <li style="font-size: 1.05em;"><strong>Option B:</strong> Focus on Network and Data Link Layers (Layers 2-3) with packet filtering, MAC address control, and IP-based access lists</li>
+                </ul>
+                <p style="margin-top: 15px;">Evaluate which approach would provide better overall network security. Consider advantages, disadvantages, types of threats each can detect, and make a justified recommendation.</p>
+            </div>
+
+            <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Evaluate</strong></p>
+                <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Judge the importance or success using evidence. Present a balanced argument, then provide a clear, justified conclusion.</p>
+            </div>
+            <div class="slide-number">18 / 19</div>
+        </div>
+
+        <div class="slide">
+            <div class="center-content">
+                <h1 style="font-size: 3.5em; margin-bottom: 40px;">Congratulations! 🎉</h1>
+                <p style="font-size: 1.4em; color: #a1a1aa;">You've completed the OSI Model guide</p>
+                
+                <div class="info-box" style="margin-top: 60px; max-width: 800px;">
+                    <h3>✅ You Now Understand:</h3>
+                    <ul style="font-size: 1.15em; line-height: 2.2;">
+                        <li>The 7 layers of the OSI model and their functions</li>
+                        <li>How data is encapsulated at each layer</li>
+                        <li>The difference between segments, packets, and frames</li>
+                        <li>Key protocols at each layer (TCP/UDP, IP, HTTP)</li>
+                        <li>OSI model vs TCP/IP model</li>
+                        <li>Real-world network troubleshooting applications</li>
+                    </ul>
+                </div>
+
+                <div class="info-box" style="margin-top: 40px; max-width: 800px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                    <h3 style="color: #93c5fd;">📚 Next Steps</h3>
+                    <p style="font-size: 1.1em;">Practice identifying which layer different protocols operate at. Use the OSI model to troubleshoot network problems systematically.</p>
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <h2 style="color: #86efac; font-size: 2.5rem;">Good Luck! 🚀</h2>
+                </div>
+            </div>
+            <div class="slide-number">19 / 19</div>
+        </div>
+    </div>
+
+
+        <div class="slide">
+            <h2>Segments, Packets & Frames</h2>
+            <div class="card" style="margin-bottom: 20px;">
+                <h4>📦 Segment (Layer 4)</h4>
+                <p><strong>Content:</strong> TCP/UDP headers with port numbers + application data</p>
+                <p><strong>Purpose:</strong> Ensures reliable, ordered data transfer with flow control</p>
+            </div>
+            <div class="card" style="margin-bottom: 20px;">
+                <h4>📮 Packet (Layer 3)</h4>
+                <p><strong>Content:</strong> IP headers with addresses + segments</p>
+                <p><strong>Purpose:</strong> Routing across different networks</p>
+                <p><strong>Routing:</strong> Based on destination IP address</p>
+            </div>
+            <div class="card">
+                <h4>🖼️ Frame (Layer 2)</h4>
+                <p><strong>Content:</strong> MAC addresses + error checking (CRC) + packets</p>
+                <p><strong>Purpose:</strong> Prepares for transmission over physical medium (Ethernet, Wi-Fi)</p>
+                <p><strong>Error Checking:</strong> Detects and corrects transmission errors</p>
+            </div>
+            <div class="slide-number">11 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>OSI vs TCP/IP Models</h2>
+            <div class="info-box">
+                <h3>Two Conceptual Frameworks</h3>
+                <p>OSI is theoretical (7 layers), TCP/IP is practical implementation (4 layers)</p>
+            </div>
+            <div class="two-col" style="margin-top: 40px;">
+                <div>
+                    <h3 style="text-align: center; color: #86efac;">OSI Model</h3>
+                    <div class="card" style="margin: 10px 0;">7 - Application</div>
+                    <div class="card" style="margin: 10px 0;">6 - Presentation</div>
+                    <div class="card" style="margin: 10px 0;">5 - Session</div>
+                    <div class="card" style="margin: 10px 0;">4 - Transport</div>
+                    <div class="card" style="margin: 10px 0;">3 - Network</div>
+                    <div class="card" style="margin: 10px 0;">2 - Data Link</div>
+                    <div class="card" style="margin: 10px 0;">1 - Physical</div>
+                </div>
+                <div>
+                    <h3 style="text-align: center; color: #86efac;">TCP/IP Model</h3>
+                    <div class="card" style="margin: 10px 0; padding: 40px 30px;">4 - Application<br><span style="font-size: 0.8em; opacity: 0.7;">(OSI 7, 6, 5)</span></div>
+                    <div class="card" style="margin: 10px 0;">3 - Transport</div>
+                    <div class="card" style="margin: 10px 0;">2 - Internet</div>
+                    <div class="card" style="margin: 10px 0; padding: 40px 30px;">1 - Network Interface<br><span style="font-size: 0.8em; opacity: 0.7;">(OSI 2, 1)</span></div>
+                </div>
+            </div>
+            <div class="slide-number">12 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>TCP/IP Model Details</h2>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                <h3 style="color: #93c5fd;">Layer 4 - Application</h3>
+                <p>Applications, compression, encryption, protocols (SMTP, POP, HTTP, DNS, FTP)</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(22, 163, 74, 0.05)); border-color: #22c55e;">
+                <h3 style="color: #86efac;">Layer 3 - Transport</h3>
+                <p><strong>Reliable data transfer</strong> using TCP or UDP. Breaks data into packets.</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(147, 51, 234, 0.05)); border-color: #a855f7;">
+                <h3 style="color: #c084fc;">Layer 2 - Internet</h3>
+                <p>Finds <strong>shortest/quickest route</strong> to destination. IP protocol assigns origin and destination addresses.</p>
+            </div>
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(185, 28, 28, 0.05)); border-color: #dc2626;">
+                <h3 style="color: #fca5a5;">Layer 1 - Network Interface</h3>
+                <p>Decides which <strong>device's turn to communicate</strong>. Locates physical device on network.</p>
+            </div>
+            <div class="slide-number">13 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section A – Shorter Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 1 <span class="marks">2 marks</span></h4>
+                <p>State which OSI layer is responsible for encryption and compression of data.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 2 <span class="marks">3 marks</span></h4>
+                <p>Explain the difference between <em>TCP</em> and <em>UDP</em> protocols at the Transport Layer.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 3 <span class="marks">4 marks</span></h4>
+                <p>Describe the role of MAC addresses at the Data Link Layer and explain how they differ from IP addresses.</p>
+            </div>
+            <div class="slide-number">14 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section A – Continued</h3>
+            
+            <div class="question-box">
+                <h4>Question 4 <span class="marks">4 marks</span></h4>
+                <p>Describe two functions of the Network Layer (Layer 3) in the OSI model.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 5 <span class="marks">5 marks</span></h4>
+                <p>Explain the process of data encapsulation as information travels down the OSI model from the Application Layer to the Physical Layer.</p>
+            </div>
+            <div class="slide-number">15 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response</h3>
+            
+            <div class="question-box">
+                <h4>Question 6 <span class="marks">9 marks – Analyse</span></h4>
+                <p>A company is experiencing slow network performance and data corruption issues. Analyse how understanding the OSI model could help network administrators identify and troubleshoot these problems.</p>
+                <p style="margin-top: 15px;">In your answer, consider:</p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li style="font-size: 1.05em;">Which layers might be responsible for each type of problem</li>
+                    <li style="font-size: 1.05em;">What diagnostic tools or checks could be used at each layer</li>
+                    <li style="font-size: 1.05em;">How the layered approach helps isolate issues</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Analyse</strong></p>
+                <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Break down information to examine its parts, identify relationships, and draw conclusions about how OSI layers interact.</p>
+            </div>
+            <div class="slide-number">16 / 18</div>
+        </div>
+
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response</h3>
+            
+            <div class="question-box">
+                <h4>Question 7 <span class="marks">12 marks – Evaluate</span></h4>
+                <p>A network architect must choose between implementing security measures at different OSI layers:</p>
+                <ul style="margin-left: 30px; margin-top: 15px; margin-bottom: 15px;">
+                    <li style="font-size: 1.05em;"><strong>Option A:</strong> Focus on Application Layer (Layer 7) with application firewalls, content filtering, and protocol-specific monitoring</li>
+                    <li style="font-size: 1.05em;"><strong>Option B:</strong> Focus on Network and Data Link Layers (Layers 2-3) with packet filtering, MAC address control, and IP-based access lists</li>
+                </ul>
+                <p style="margin-top: 15px;">Evaluate which approach would provide better overall network security. Consider advantages, disadvantages, types of threats each can detect, and make a justified recommendation.</p>
+            </div>
+
+            <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Evaluate</strong></p>
+                <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Judge the importance or success using evidence. Present a balanced argument, then provide a clear, justified conclusion.</p>
+            </div>
+            <div class="slide-number">17 / 18</div>
+        </div>
+
+        <div class="slide">
+            <div class="center-content">
+                <h1 style="font-size: 3.5em; margin-bottom: 40px;">Congratulations! 🎉</h1>
+                <p style="font-size: 1.4em; color: #a1a1aa;">You've completed the OSI Model guide</p>
+                
+                <div class="info-box" style="margin-top: 60px; max-width: 800px;">
+                    <h3>✅ You Now Understand:</h3>
+                    <ul style="font-size: 1.15em; line-height: 2.2;">
+                        <li>The 7 layers of the OSI model and their functions</li>
+                        <li>How data is encapsulated at each layer</li>
+                        <li>The difference between segments, packets, and frames</li>
+                        <li>Key protocols at each layer (TCP/UDP, IP, HTTP)</li>
+                        <li>OSI model vs TCP/IP model</li>
+                        <li>Real-world network troubleshooting applications</li>
+                    </ul>
+                </div>
+
+                <div class="info-box" style="margin-top: 40px; max-width: 800px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.05)); border-color: #3b82f6;">
+                    <h3 style="color: #93c5fd;">📚 Next Steps</h3>
+                    <p style="font-size: 1.1em;">Practice identifying which layer different protocols operate at. Use the OSI model to troubleshoot network problems systematically.</p>
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <h2 style="color: #86efac; font-size: 2.5rem;">Good Luck! 🚀</h2>
+                </div>
+            </div>
+            <div class="slide-number">18 / 18</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            if (n < 0 || n >= slides.length) return;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < slides.length) {
+                showSlide(newSlide);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(slides.length - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

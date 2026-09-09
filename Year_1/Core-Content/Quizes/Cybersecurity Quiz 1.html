@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Knowledge Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0e1e 50%, #2a1030 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+            text-shadow: 0 0 40px rgba(239, 68, 68, 0.3);
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.3em;
+            font-weight: 300;
+        }
+
+        .quiz-card {
+            background: rgba(18, 18, 27, 0.85);
+            border-radius: 24px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(220, 38, 38, 0.08);
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-container {
+            margin-bottom: 40px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #94a3b8;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #ef4444);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .topic-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2));
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+        }
+
+        .question-text {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 35px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .option {
+            background: rgba(30, 20, 35, 0.6);
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 20px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            color: #cbd5e1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .option:hover {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+            transform: translateX(5px);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.15);
+            color: #fff;
+        }
+
+        .option.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            color: #fff;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            color: #fff;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .option-label {
+            font-weight: 600;
+            color: #ef4444;
+            margin-right: 12px;
+            font-size: 1.1em;
+        }
+
+        .feedback {
+            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2));
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            display: none;
+            text-align: center;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .score-display {
+            font-size: 6em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 30px 0;
+        }
+
+        .score-message {
+            font-size: 1.8em;
+            color: #cbd5e1;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(30, 20, 35, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen.hide {
+            display: none;
+        }
+
+        .start-icon {
+            font-size: 5em;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.3em;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+        }
+
+        .topic-list {
+            text-align: left;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(30, 20, 35, 0.4);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .topic-list h3 {
+            color: #ef4444;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .topic-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .topic-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+            color: #cbd5e1;
+            font-size: 1.05em;
+        }
+
+        .topic-list li:last-child {
+            border-bottom: none;
+        }
+
+        .topic-list li::before {
+            content: '🔒';
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .quiz-card {
+                padding: 30px 20px;
+            }
+
+            .question-text {
+                font-size: 1.3em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-display {
+                font-size: 4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="container">
+        <div class="quiz-header">
+            <h1>🛡️ Cybersecurity Quiz</h1>
+            <p class="subtitle">Test Your Security Knowledge</p>
+        </div>
+
+        <div class="quiz-card">
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <div class="start-icon">🔐</div>
+                <h2 style="color: #f1f5f9; font-size: 2em; margin-bottom: 20px;">Ready to Test Your Cybersecurity Skills?</h2>
+                <p style="color: #94a3b8; font-size: 1.2em; margin-bottom: 40px;">This quiz covers 25 essential cybersecurity topics</p>
+                
+                <div class="topic-list">
+                    <h3>Topics Covered:</h3>
+                    <ul>
+                        <li>Threat Types & Attack Vectors</li>
+                        <li>Malware & Viruses</li>
+                        <li>Encryption & Cryptography</li>
+                        <li>Network Security</li>
+                        <li>Authentication & Access Control</li>
+                        <li>Security Best Practices</li>
+                        <li>Incident Response</li>
+                        <li>Compliance & Regulations</li>
+                    </ul>
+                </div>
+
+                <button class="start-button" onclick="startQuiz()">Start Quiz</button>
+            </div>
+
+            <!-- Quiz Content -->
+            <div id="quizContent" style="display: none;">
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">25</span></span>
+                        <span>Score: <span id="currentScore">0</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div id="questionsContainer"></div>
+
+                <div class="button-container">
+                    <button id="checkBtn" onclick="checkAnswer()">Check Answer</button>
+                    <button id="nextBtn" onclick="nextQuestion()" style="display: none;">Next Question →</button>
+                    <button id="finishBtn" onclick="finishQuiz()" style="display: none;">Finish Quiz 🎯</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="results-container" id="resultsContainer">
+                <div class="start-icon">🏆</div>
+                <h2 style="color: #f1f5f9; font-size: 2.5em; margin-bottom: 20px;">Quiz Complete!</h2>
+                <div class="score-display" id="finalScore">0%</div>
+                <p class="score-message" id="scoreMessage"></p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="correctCount">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="incorrectCount">0</div>
+                        <div class="stat-label">Incorrect</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="percentageScore">0%</div>
+                        <div class="stat-label">Percentage</div>
+                    </div>
+                </div>
+
+                <button class="start-button" onclick="restartQuiz()">Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                topic: "Threats & Attacks",
+                question: "What type of attack involves overwhelming a system with traffic to make it unavailable?",
+                options: [
+                    "Phishing attack",
+                    "Denial of Service (DoS) attack",
+                    "Man-in-the-middle attack",
+                    "SQL injection"
+                ],
+                correct: 1,
+                explanation: "A Denial of Service (DoS) attack floods a system with traffic to exhaust resources and make it unavailable to legitimate users. DDoS (Distributed DoS) uses multiple sources."
+            },
+            {
+                topic: "Threats & Attacks",
+                question: "What is phishing?",
+                options: [
+                    "A type of firewall configuration",
+                    "A social engineering attack that tricks users into revealing sensitive information",
+                    "A method of encrypting data",
+                    "A network scanning technique"
+                ],
+                correct: 1,
+                explanation: "Phishing is a social engineering attack where attackers impersonate legitimate entities (via email, text, or websites) to trick victims into revealing passwords, credit card numbers, or other sensitive data."
+            },
+            {
+                topic: "Threats & Attacks",
+                question: "What is a zero-day vulnerability?",
+                options: [
+                    "A vulnerability that takes zero days to exploit",
+                    "A security flaw that is known but has no patch available yet",
+                    "A vulnerability discovered on day zero of a product launch",
+                    "A flaw that causes system crashes"
+                ],
+                correct: 1,
+                explanation: "A zero-day vulnerability is a security flaw that is unknown to the software vendor or has no available patch. Attackers can exploit it before developers can fix it."
+            },
+            {
+                topic: "Threats & Attacks",
+                question: "What does SQL injection attack target?",
+                options: [
+                    "User passwords",
+                    "Database queries",
+                    "Network routers",
+                    "Email servers"
+                ],
+                correct: 1,
+                explanation: "SQL injection attacks insert malicious SQL code into database queries through vulnerable input fields, potentially allowing attackers to view, modify, or delete database contents."
+            },
+            {
+                topic: "Malware",
+                question: "What is ransomware?",
+                options: [
+                    "Software that demands payment to decrypt or restore access to files",
+                    "Free security software",
+                    "A type of antivirus program",
+                    "Software that speeds up computers"
+                ],
+                correct: 0,
+                explanation: "Ransomware is malicious software that encrypts a victim's files or locks their system, demanding payment (ransom) to restore access. It's a major cybersecurity threat."
+            },
+            {
+                topic: "Malware",
+                question: "What is a trojan horse in cybersecurity?",
+                options: [
+                    "A type of firewall",
+                    "Malware disguised as legitimate software",
+                    "A secure communication protocol",
+                    "An encryption algorithm"
+                ],
+                correct: 1,
+                explanation: "A trojan horse is malware that appears to be legitimate software but contains malicious code. Unlike viruses, trojans don't self-replicate but trick users into installing them."
+            },
+            {
+                topic: "Malware",
+                question: "What distinguishes a worm from a virus?",
+                options: [
+                    "Worms are slower than viruses",
+                    "Worms can self-replicate and spread without human action",
+                    "Worms only affect mobile devices",
+                    "Worms are easier to detect"
+                ],
+                correct: 1,
+                explanation: "Worms can self-replicate and spread automatically across networks without requiring human action (like opening a file), while viruses need a host file and user action to spread."
+            },
+            {
+                topic: "Malware",
+                question: "What is spyware designed to do?",
+                options: [
+                    "Delete files from your computer",
+                    "Secretly monitor and collect information about users",
+                    "Block internet access",
+                    "Improve system performance"
+                ],
+                correct: 1,
+                explanation: "Spyware secretly monitors user activity, collecting information like browsing habits, keystrokes, passwords, and personal data without the user's knowledge or consent."
+            },
+            {
+                topic: "Encryption & Cryptography",
+                question: "What does HTTPS indicate about a website?",
+                options: [
+                    "The website is government-owned",
+                    "Communication between browser and server is encrypted",
+                    "The website loads faster",
+                    "The website is virus-free"
+                ],
+                correct: 1,
+                explanation: "HTTPS (HTTP Secure) indicates that communication between your browser and the website is encrypted using SSL/TLS, protecting data from interception during transmission."
+            },
+            {
+                topic: "Encryption & Cryptography",
+                question: "What is the main difference between symmetric and asymmetric encryption?",
+                options: [
+                    "Symmetric uses one key, asymmetric uses a public-private key pair",
+                    "Symmetric is slower than asymmetric",
+                    "Asymmetric is less secure",
+                    "Symmetric only works on text files"
+                ],
+                correct: 0,
+                explanation: "Symmetric encryption uses the same key for encryption and decryption, while asymmetric encryption uses a public key for encryption and a private key for decryption."
+            },
+            {
+                topic: "Encryption & Cryptography",
+                question: "What is a digital signature used for?",
+                options: [
+                    "Encrypting emails",
+                    "Verifying the authenticity and integrity of digital messages",
+                    "Speeding up internet connections",
+                    "Blocking spam"
+                ],
+                correct: 1,
+                explanation: "A digital signature verifies that a message or document came from a specific sender (authenticity) and hasn't been altered (integrity), using cryptographic techniques."
+            },
+            {
+                topic: "Encryption & Cryptography",
+                question: "What does a VPN (Virtual Private Network) do?",
+                options: [
+                    "Increases internet speed",
+                    "Creates an encrypted tunnel for secure communication over public networks",
+                    "Blocks all malware",
+                    "Provides free internet access"
+                ],
+                correct: 1,
+                explanation: "A VPN creates an encrypted tunnel between your device and a VPN server, protecting your internet traffic from interception and masking your IP address."
+            },
+            {
+                topic: "Network Security",
+                question: "What is the primary function of a firewall?",
+                options: [
+                    "To encrypt data",
+                    "To monitor and control incoming and outgoing network traffic",
+                    "To backup files automatically",
+                    "To speed up network connections"
+                ],
+                correct: 1,
+                explanation: "A firewall monitors and controls network traffic based on predetermined security rules, blocking or allowing traffic to protect networks from unauthorized access."
+            },
+            {
+                topic: "Network Security",
+                question: "What does IDS stand for in cybersecurity?",
+                options: [
+                    "Internet Data Security",
+                    "Intrusion Detection System",
+                    "Internal Defense System",
+                    "Integrated Digital Security"
+                ],
+                correct: 1,
+                explanation: "IDS (Intrusion Detection System) monitors network traffic for suspicious activity and potential threats, alerting administrators to possible security breaches."
+            },
+            {
+                topic: "Network Security",
+                question: "What is the difference between IDS and IPS?",
+                options: [
+                    "IDS only detects threats, IPS can block them automatically",
+                    "IDS is newer technology",
+                    "IPS is only for wireless networks",
+                    "They are the same thing"
+                ],
+                correct: 0,
+                explanation: "IDS (Intrusion Detection System) detects and alerts about threats, while IPS (Intrusion Prevention System) can automatically take action to block or prevent detected threats."
+            },
+            {
+                topic: "Network Security",
+                question: "What is a DMZ (Demilitarized Zone) in network security?",
+                options: [
+                    "A secure internal network",
+                    "An isolated network segment that sits between internal and external networks",
+                    "A type of encryption",
+                    "A firewall brand"
+                ],
+                correct: 1,
+                explanation: "A DMZ is a network segment that sits between an internal private network and external public networks, typically hosting public-facing servers while protecting the internal network."
+            },
+            {
+                topic: "Authentication & Access Control",
+                question: "What is multi-factor authentication (MFA)?",
+                options: [
+                    "Using multiple passwords",
+                    "Using two or more different types of authentication factors",
+                    "Logging in from multiple devices",
+                    "Having multiple user accounts"
+                ],
+                correct: 1,
+                explanation: "MFA requires two or more different authentication factors (something you know, have, or are) to verify identity, significantly improving security over single-factor authentication."
+            },
+            {
+                topic: "Authentication & Access Control",
+                question: "What are the three main factors of authentication?",
+                options: [
+                    "Username, password, email",
+                    "Something you know, something you have, something you are",
+                    "Hardware, software, network",
+                    "Public, private, hybrid"
+                ],
+                correct: 1,
+                explanation: "The three authentication factors are: something you know (password), something you have (phone/token), and something you are (biometric like fingerprint)."
+            },
+            {
+                topic: "Authentication & Access Control",
+                question: "What is the principle of least privilege?",
+                options: [
+                    "Giving users the maximum possible access",
+                    "Giving users only the minimum access required to perform their job",
+                    "Allowing guest access to all systems",
+                    "Removing all security restrictions"
+                ],
+                correct: 1,
+                explanation: "The principle of least privilege means giving users only the minimum level of access rights they need to perform their job functions, reducing security risks."
+            },
+            {
+                topic: "Authentication & Access Control",
+                question: "What is Role-Based Access Control (RBAC)?",
+                options: [
+                    "Access based on physical location",
+                    "Access permissions assigned based on user roles within an organization",
+                    "Access controlled by time of day",
+                    "Random access assignment"
+                ],
+                correct: 1,
+                explanation: "RBAC assigns permissions based on user roles (like 'manager' or 'accountant') rather than individual users, simplifying access management in organizations."
+            },
+            {
+                topic: "Security Best Practices",
+                question: "What makes a strong password?",
+                options: [
+                    "Using only lowercase letters",
+                    "Long length, mix of characters, no dictionary words or personal info",
+                    "Your birthday repeated three times",
+                    "The word 'password' with a number"
+                ],
+                correct: 1,
+                explanation: "Strong passwords are long (12+ characters), use a mix of uppercase, lowercase, numbers, and symbols, avoid dictionary words and personal information, and are unique for each account."
+            },
+            {
+                topic: "Security Best Practices",
+                question: "How often should you update software and operating systems?",
+                options: [
+                    "Only when you buy a new computer",
+                    "Once a year",
+                    "As soon as updates are available, especially security patches",
+                    "Never, updates cause problems"
+                ],
+                correct: 2,
+                explanation: "Software should be updated as soon as updates are available, especially security patches. Updates fix vulnerabilities that attackers could exploit."
+            },
+            {
+                topic: "Security Best Practices",
+                question: "What should you do if you receive a suspicious email claiming to be from your bank?",
+                options: [
+                    "Click all links to verify they work",
+                    "Reply with your account details to confirm",
+                    "Delete it and contact your bank directly through official channels",
+                    "Forward it to all your contacts"
+                ],
+                correct: 2,
+                explanation: "Never click links or provide information in suspicious emails. Delete the email and contact your bank directly using official contact information to verify any requests."
+            },
+            {
+                topic: "Incident Response",
+                question: "What is the first step in incident response?",
+                options: [
+                    "Delete all evidence",
+                    "Identification and detection of the incident",
+                    "Restart all systems",
+                    "Call the police immediately"
+                ],
+                correct: 1,
+                explanation: "The first step in incident response is identification and detection - recognizing that a security incident has occurred. This allows you to begin the proper response process."
+            },
+            {
+                topic: "Compliance & Regulations",
+                question: "What does GDPR stand for?",
+                options: [
+                    "Global Data Protection Rules",
+                    "General Data Protection Regulation",
+                    "Government Data Privacy Rights",
+                    "General Digital Protection Requirements"
+                ],
+                correct: 1,
+                explanation: "GDPR (General Data Protection Regulation) is EU legislation that governs data protection and privacy, requiring organizations to protect personal data and privacy of EU citizens."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let answered = false;
+        let questionLocked = [];
+        let quizStartTime = null;
+        let questionStartTime = null;
+
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Prevent common keyboard shortcuts for cheating
+        document.addEventListener('keydown', function(e) {
+            // Prevent F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Detect if user leaves the page
+        let tabSwitchCount = 0;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && quizStartTime !== null) {
+                tabSwitchCount++;
+                if (tabSwitchCount === 1) {
+                    alert('⚠️ Warning: Tab switching detected. Your activity is being monitored.');
+                } else if (tabSwitchCount >= 3) {
+                    alert('⚠️ Multiple tab switches detected. This will be reported.');
+                }
+            }
+        });
+
+        function startQuiz() {
+            document.getElementById('startScreen').classList.add('hide');
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('totalQuestions').textContent = questions.length;
+            quizStartTime = new Date();
+            questionStartTime = new Date();
+            questionLocked = new Array(questions.length).fill(false);
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            const container = document.getElementById('questionsContainer');
+            
+            // Check if question was already answered and locked
+            const isLocked = questionLocked[currentQuestionIndex];
+            
+            container.innerHTML = `
+                <div class="question-container active">
+                    <div class="topic-badge">${question.topic}</div>
+                    <div class="question-text">${question.question}</div>
+                    ${isLocked ? '<div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.95em;">🔒 <strong>This question has been locked.</strong> You cannot change your answer.</div>' : ''}
+                    <div class="options-container">
+                        ${question.options.map((option, index) => `
+                            <div class="option ${isLocked && index === userAnswers[currentQuestionIndex] ? 'selected' : ''}" 
+                                 onclick="${isLocked ? '' : 'selectOption(' + index + ')'}">
+                                <span class="option-label">${String.fromCharCode(65 + index)})</span>
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            `;
+
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            updateProgress();
+            answered = questionLocked[currentQuestionIndex];
+            
+            // Show/hide buttons based on lock status
+            if (questionLocked[currentQuestionIndex]) {
+                document.getElementById('checkBtn').style.display = 'none';
+                if (currentQuestionIndex < questions.length - 1) {
+                    document.getElementById('nextBtn').style.display = 'block';
+                } else {
+                    document.getElementById('finishBtn').style.display = 'block';
+                }
+                // Show the previous feedback if locked
+                showLockedFeedback();
+            } else {
+                document.getElementById('checkBtn').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('finishBtn').style.display = 'none';
+            }
+            
+            // Previous button is now ALWAYS disabled
+            document.getElementById('prevBtn').style.display = 'none';
+        }
+
+        function showLockedFeedback() {
+            const question = questions[currentQuestionIndex];
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+
+            // Mark correct and incorrect options
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedAnswer) {
+                    opt.classList.add('incorrect');
+                }
+                opt.style.pointerEvents = 'none';
+            });
+
+            // Show feedback
+            if (selectedAnswer === question.correct) {
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `<strong>✓ Correct!</strong><br>${question.explanation}`;
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `<strong>✗ Incorrect.</strong><br>${question.explanation}`;
+            }
+        }
+
+        function selectOption(index) {
+            if (answered || questionLocked[currentQuestionIndex]) {
+                alert('🔒 This question is locked. You cannot change your answer.');
+                return;
+            }
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[index].classList.add('selected');
+            userAnswers[currentQuestionIndex] = index;
+        }
+
+        function checkAnswer() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert('⚠️ Please select an answer before checking!');
+                return;
+            }
+
+            if (questionLocked[currentQuestionIndex]) {
+                alert('🔒 This question is already locked. You cannot change your answer.');
+                return;
+            }
+
+            answered = true;
+            questionLocked[currentQuestionIndex] = true; // Lock the question permanently
+            
+            const question = questions[currentQuestionIndex];
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+
+            // Mark correct and incorrect options
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedAnswer) {
+                    opt.classList.add('incorrect');
+                }
+                opt.style.pointerEvents = 'none';
+            });
+
+            // Show feedback
+            if (selectedAnswer === question.correct) {
+                score++;
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `<strong>✓ Correct!</strong><br>${question.explanation}<br><br><em style="color: #94a3b8; font-size: 0.9em;">🔒 This answer has been locked and cannot be changed.</em>`;
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `<strong>✗ Incorrect.</strong><br>${question.explanation}<br><br><em style="color: #94a3b8; font-size: 0.9em;">🔒 This answer has been locked and cannot be changed.</em>`;
+            }
+
+            // Update score display
+            document.getElementById('currentScore').textContent = score;
+
+            // Show appropriate button
+            document.getElementById('checkBtn').style.display = 'none';
+            if (currentQuestionIndex < questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'block';
+            } else {
+                document.getElementById('finishBtn').style.display = 'block';
+            }
+
+            // Record time spent on question
+            const timeSpent = (new Date() - questionStartTime) / 1000;
+            console.log(`Question ${currentQuestionIndex + 1} answered in ${timeSpent.toFixed(1)} seconds`);
+        }
+
+        function nextQuestion() {
+            if (!questionLocked[currentQuestionIndex]) {
+                alert('⚠️ Please check your answer before moving to the next question.');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                questionStartTime = new Date();
+                loadQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            // Disabled - students cannot go back
+            alert('⚠️ You cannot go back to previous questions. This quiz only allows forward progression.');
+            return;
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function finishQuiz() {
+            // Check if all questions have been answered
+            const unansweredQuestions = questionLocked.filter(locked => !locked).length;
+            if (unansweredQuestions > 0) {
+                alert(`⚠️ You must answer all questions before finishing. ${unansweredQuestions} question(s) remaining.`);
+                return;
+            }
+
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('resultsContainer').classList.add('show');
+
+            const percentage = Math.round((score / questions.length) * 100);
+            const quizDuration = Math.round((new Date() - quizStartTime) / 1000 / 60);
+            
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = questions.length - score;
+            document.getElementById('percentageScore').textContent = percentage + '%';
+
+            let message = '';
+            if (percentage >= 90) {
+                message = '🌟 Outstanding! You\'re a cybersecurity expert!';
+            } else if (percentage >= 75) {
+                message = '🎯 Excellent work! You have strong security knowledge.';
+            } else if (percentage >= 60) {
+                message = '👍 Good job! Keep learning about cybersecurity.';
+            } else if (percentage >= 50) {
+                message = '📚 Not bad, but there\'s room for improvement.';
+            } else {
+                message = '💪 Keep studying! Cybersecurity takes practice.';
+            }
+
+            message += `<br><br><small style="color: #94a3b8;">Time taken: ${quizDuration} minutes</small>`;
+            if (tabSwitchCount > 0) {
+                message += `<br><small style="color: #fca5a5;">⚠️ Tab switches detected: ${tabSwitchCount}</small>`;
+            }
+
+            document.getElementById('scoreMessage').innerHTML = message;
+
+            // Log quiz completion
+            console.log('Quiz completed:', {
+                score: score,
+                total: questions.length,
+                percentage: percentage,
+                duration: quizDuration,
+                tabSwitches: tabSwitchCount,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function restartQuiz() {
+            if (!confirm('⚠️ Are you sure you want to restart? All progress will be lost.')) {
+                return;
+            }
+
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            answered = false;
+            questionLocked = [];
+            quizStartTime = null;
+            questionStartTime = null;
+            tabSwitchCount = 0;
+            
+            document.getElementById('resultsContainer').classList.remove('show');
+            document.getElementById('startScreen').classList.remove('hide');
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('currentScore').textContent = '0';
+        }
+
+        // Warn before closing/refreshing page
+        window.addEventListener('beforeunload', function(e) {
+            if (quizStartTime !== null && currentQuestionIndex < questions.length) {
+                e.preventDefault();
+                e.returnValue = 'You have an active quiz. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+    </script>
+</body>
+</html>

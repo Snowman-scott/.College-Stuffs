@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Computers & Hardware Devices (7.1) | T Level Digital</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0c1e47 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(30, 58, 138, 0.7);
+            border-radius: 32px;
+            padding: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(59, 130, 246, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            min-height: 700px;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.15));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 3.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, transparent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #60a5fa;
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.6em;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .content > p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 25px;
+        }
+
+        li {
+            margin-bottom: 22px;
+            font-size: 1.25em;
+            line-height: 1.8;
+            color: #e2e8f0;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::marker {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        strong {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 5px solid #3b82f6;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight-box p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.8em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box ul {
+            margin-top: 20px;
+        }
+
+        .highlight-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: rgba(34, 211, 238, 0.08);
+            border-left: 5px solid #22d3ee;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .info-box h3 {
+            font-size: 1.8em;
+            color: #22d3ee;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            font-size: 1.4em;
+            color: #22d3ee;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            margin-top: 20px;
+        }
+
+        .info-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .grid-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+        }
+
+        .grid-item h4 {
+            color: #60a5fa;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .grid-item p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+        }
+
+        .comparison-table th {
+            padding: 25px;
+            text-align: left;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1.15em;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .comparison-table td {
+            padding: 25px;
+            color: #e2e8f0;
+            font-size: 1.1em;
+            line-height: 1.7;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .comparison-table tbody tr {
+            background: rgba(59, 130, 246, 0.03);
+            transition: background 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .quiz-container {
+            background: rgba(59, 130, 246, 0.05);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2em;
+            color: #e2e8f0;
+            margin-bottom: 35px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .quiz-question h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .quiz-question p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul {
+            font-size: 1em;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul li {
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .quiz-option {
+            background: rgba(59, 130, 246, 0.08);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 25px 30px;
+            font-size: 1.2em;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .quiz-option:hover::before {
+            left: 100%;
+        }
+
+        .quiz-option:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateX(10px);
+        }
+
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #6ee7b7;
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .quiz-feedback {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22c55e;
+            color: #6ee7b7;
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid #ef4444;
+            color: #ef4444;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 100px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        .navigation button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navigation button:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .navigation button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 700px;
+        }
+
+        .title-slide h1 {
+            font-size: 5em;
+            margin-bottom: 25px;
+        }
+
+        .title-badge {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 64, 175, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 12px 35px;
+            border-radius: 100px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            display: inline-block;
+        }
+
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#60a5fa"/>
+                    <path d="M2 17L12 22L22 17" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>T Level Digital</span>
+            </div>
+            <div>
+                <div class="title-badge">Content Area 7 - Sections 7.1.1 & 7.1.2</div>
+                <h1>Physical Computers<br>& Hardware Devices</h1>
+                <p class="subtitle">Understanding computer types and hardware components</p>
+            </div>
+            <div class="slide-number">Slide 1 / 24</div>
+        </div>
+
+        <!-- Slide 2: Learning Objectives -->
+        <div class="slide">
+            <div class="content">
+                <h2>Learning Objectives</h2>
+                <p style="font-size: 1.4em; color: #94a3b8; margin-bottom: 40px;">By the end of this module, you will be able to:</p>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Physical Computers (7.1.1)</h3>
+                    <ul>
+                        <li><strong>Identify computer types:</strong> Distinguish between desktops, laptops, servers, workstations, and embedded systems</li>
+                        <li><strong>Understand use cases:</strong> Explain appropriate applications for different computer types</li>
+                        <li><strong>Compare features:</strong> Analyze advantages and limitations of each type</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Hardware Devices (7.1.2)</h3>
+                    <ul>
+                        <li><strong>Categorize hardware:</strong> Classify devices as input, output, storage, or processing</li>
+                        <li><strong>Explain components:</strong> Describe the function of key hardware components</li>
+                        <li><strong>Understand integration:</strong> Explain how hardware components work together</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 2 / 24</div>
+        </div>
+
+        <!-- Slide 3: Types of Physical Computers -->
+        <div class="slide">
+            <div class="content">
+                <h2>Types of Physical Computers</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">🖥️</div>
+                        <h4>Desktop Computers</h4>
+                        <p><strong>Purpose:</strong> Stationary workstations for home and office use</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> Performance, upgradability, cost-effectiveness</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">💻</div>
+                        <h4>Laptop Computers</h4>
+                        <p><strong>Purpose:</strong> Portable computing with built-in display and battery</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> Mobility, space efficiency, versatility</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🗄️</div>
+                        <h4>Servers</h4>
+                        <p><strong>Purpose:</strong> Provide services and resources to other computers on a network</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> Reliability, scalability, centralized management</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🎨</div>
+                        <h4>Workstations</h4>
+                        <p><strong>Purpose:</strong> High-performance computers for specialized professional tasks</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> CAD, 3D rendering, scientific computing, video editing</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🔌</div>
+                        <h4>Embedded Systems</h4>
+                        <p><strong>Purpose:</strong> Specialized computers built into other devices</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> Dedicated functions, IoT, automation, appliances</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">📱</div>
+                        <h4>Mobile Devices</h4>
+                        <p><strong>Purpose:</strong> Pocket-sized computing devices (smartphones, tablets)</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Best for:</strong> Communication, apps, portability</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 3 / 24</div>
+        </div>
+
+        <!-- Slide 4: Desktop vs Laptop Comparison -->
+        <div class="slide">
+            <div class="content">
+                <h2>Desktop vs Laptop Computers</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Desktop</th>
+                            <th>Laptop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Portability</strong></td>
+                            <td>❌ Stationary, requires separate components</td>
+                            <td>✅ Portable, all-in-one design</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>✅ Higher performance, better cooling</td>
+                            <td>⚠️ Good but limited by size and heat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Upgradability</strong></td>
+                            <td>✅ Easy to upgrade components</td>
+                            <td>❌ Limited upgrade options (RAM, storage only)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost</strong></td>
+                            <td>✅ Better price-to-performance ratio</td>
+                            <td>⚠️ More expensive for same performance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Power</strong></td>
+                            <td>⚠️ Requires constant power supply</td>
+                            <td>✅ Built-in battery, works during outages</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Screen Size</strong></td>
+                            <td>✅ Can use large monitors (up to 49"+)</td>
+                            <td>⚠️ Limited to built-in display (13-17")</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Peripherals</strong></td>
+                            <td>⚠️ Requires separate keyboard, mouse, monitor</td>
+                            <td>✅ Everything built-in</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <p style="font-size: 1.2em; line-height: 1.8;"><strong>💡 Choosing Between Them:</strong> Desktops excel at raw performance and value for stationary workstations. Laptops prioritize portability and convenience for users who need computing on the go.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 4 / 24</div>
+        </div>
+
+        <!-- Slide 5: Servers and Workstations -->
+        <div class="slide">
+            <div class="content">
+                <h2>Servers and Workstations</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">🗄️ Servers</h3>
+                    <p style="font-size: 1.2em; color: #cbd5e1; line-height: 1.8; margin-bottom: 25px;">Powerful computers designed to provide services, resources, and data to other computers (clients) over a network.</p>
+                    
+                    <h4 style="color: #60a5fa; font-size: 1.4em; margin-top: 30px;">Key Features:</h4>
+                    <ul>
+                        <li><strong>High reliability:</strong> Built for 24/7 operation with redundant components</li>
+                        <li><strong>Multiple processors:</strong> Can handle many simultaneous requests</li>
+                        <li><strong>Large RAM capacity:</strong> 64GB to 1TB+ for handling multiple users</li>
+                        <li><strong>Rack-mountable:</strong> Designed to fit in server racks for data centers</li>
+                        <li><strong>Remote management:</strong> Can be managed without physical access</li>
+                    </ul>
+
+                    <h4 style="color: #60a5fa; font-size: 1.4em; margin-top: 30px;">Common Types:</h4>
+                    <ul>
+                        <li><strong>Web servers:</strong> Host websites and web applications</li>
+                        <li><strong>File servers:</strong> Store and share files across a network</li>
+                        <li><strong>Database servers:</strong> Manage and serve database queries</li>
+                        <li><strong>Email servers:</strong> Handle sending, receiving, and storing emails</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">🎨 Workstations</h3>
+                    <p style="font-size: 1.2em; color: #cbd5e1; line-height: 1.8; margin-bottom: 25px;">High-end computers optimized for professional, technical, or scientific applications requiring significant computational power.</p>
+                    
+                    <h4 style="color: #22d3ee; font-size: 1.4em; margin-top: 30px;">Key Features:</h4>
+                    <ul>
+                        <li><strong>Professional-grade GPUs:</strong> NVIDIA Quadro/RTX, AMD Radeon Pro for rendering</li>
+                        <li><strong>ECC memory:</strong> Error-correcting RAM for mission-critical accuracy</li>
+                        <li><strong>Multi-core processors:</strong> Intel Xeon or AMD Threadripper</li>
+                        <li><strong>Large storage:</strong> Fast NVMe SSDs for handling large files</li>
+                    </ul>
+
+                    <h4 style="color: #22d3ee; font-size: 1.4em; margin-top: 30px;">Common Uses:</h4>
+                    <ul>
+                        <li><strong>CAD/CAM:</strong> Engineering design, architecture, product development</li>
+                        <li><strong>3D modeling:</strong> Animation, visual effects, game development</li>
+                        <li><strong>Video editing:</strong> 4K/8K video production and color grading</li>
+                        <li><strong>Scientific computing:</strong> Data analysis, simulations, research</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 5 / 24</div>
+        </div>
+
+        <!-- Slide 6: Embedded Systems -->
+        <div class="slide">
+            <div class="content">
+                <h2>Embedded Systems</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">What Are Embedded Systems?</h3>
+                    <p style="font-size: 1.4em; color: #cbd5e1; line-height: 1.8;">Specialized computer systems designed to perform dedicated functions within larger mechanical or electrical systems. Unlike general-purpose computers, they are optimized for <strong>specific tasks</strong>.</p>
+                </div>
+
+                <h3>Characteristics</h3>
+                <ul>
+                    <li><strong>Task-specific:</strong> Designed for a single purpose or limited set of functions</li>
+                    <li><strong>Real-time operation:</strong> Must respond to inputs within strict time constraints</li>
+                    <li><strong>Resource-constrained:</strong> Limited processing power, memory, and storage</li>
+                    <li><strong>Low power consumption:</strong> Often battery-powered or energy-efficient</li>
+                    <li><strong>Reliability:</strong> Must operate continuously without failure</li>
+                    <li><strong>Cost-effective:</strong> Optimized for mass production at low cost</li>
+                </ul>
+
+                <h3>Common Examples</h3>
+                <div class="grid-container" style="margin-top: 30px;">
+                    <div class="grid-item">
+                        <h4>🚗 Automotive</h4>
+                        <p>Engine control units, ABS systems, entertainment systems, parking sensors</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>🏠 Home Appliances</h4>
+                        <p>Washing machines, microwaves, thermostats, smart TVs, security systems</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>📱 Consumer Electronics</h4>
+                        <p>Digital cameras, fitness trackers, smartwatches, gaming consoles</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>🏭 Industrial</h4>
+                        <p>Manufacturing robots, PLCs, sensors, control systems</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>🏥 Medical</h4>
+                        <p>Pacemakers, MRI machines, patient monitors, infusion pumps</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>🛩️ Aerospace</h4>
+                        <p>Flight control systems, navigation, autopilot</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 6 / 24</div>
+        </div>
+
+        <!-- Slide 7: T Level Exam Questions 1-3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Content Area 7 - Physical Computers & Hardware</h2>
+                <p style="font-size: 1.2em; color: #f59e0b; font-weight: 700; margin-bottom: 40px;">Important!</p>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 1 – 2 marks</h4>
+                        <p>Define the term <strong>embedded system</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 2 – 3 marks</h4>
+                        <p>State three advantages of using a desktop computer over a laptop computer.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 3 – 4 marks</h4>
+                        <p>Explain two reasons why RAM is considered volatile memory and why this characteristic is important for system performance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 7 / 24</div>
+        </div>
+
+        <!-- Slide 8: Model Answers 1-3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answers: Questions 1-3</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Question 1 – Model Answer (2 marks)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">An embedded system is a <strong>specialized computer system</strong> (1 mark) that is <strong>designed to perform a dedicated function</strong> within a larger mechanical or electrical system (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Question 2 – Model Answer (3 marks)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">Any three of:</p>
+                    <ul style="margin-top: 15px; font-size: 1.1em;">
+                        <li><strong>Better performance</strong> - More powerful components with better cooling (1 mark)</li>
+                        <li><strong>Easier to upgrade</strong> - Individual components can be replaced or upgraded (1 mark)</li>
+                        <li><strong>More cost-effective</strong> - Better price-to-performance ratio (1 mark)</li>
+                        <li><strong>Larger screen options</strong> - Can use multiple or larger monitors (1 mark)</li>
+                        <li><strong>Better ergonomics</strong> - Separate keyboard, mouse, and monitor positioning (1 mark)</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Question 3 – Model Answer (4 marks)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Reason 1:</strong> RAM is volatile because it <strong>requires continuous electrical power to maintain stored data</strong> (1 mark). When power is lost, all data in RAM is immediately erased (1 mark).</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;"><strong>Reason 2:</strong> This characteristic is important because RAM provides <strong>extremely fast read/write speeds</strong> compared to permanent storage (1 mark), allowing the CPU to access data quickly for processing, which significantly improves system performance (1 mark).</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 8 / 24</div>
+        </div>
+
+        <!-- Slide 9: Question 4 - Discuss (6 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 4</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 4 – 6 marks – Discuss</h4>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">A small architectural firm with 10 employees needs new computers for their staff. Five architects work exclusively in the office on complex 3D building models and rendering. The other five architects frequently visit client sites to present designs and gather requirements.</p>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">Discuss the advantages and disadvantages of providing all employees with high-end laptops versus providing workstations for office-based staff and laptops for mobile staff.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Discuss</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Present key points about different ideas or strengths and weaknesses of an idea. You should give a balanced answer showing multiple perspectives.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 9 / 24</div>
+        </div>
+
+        <!-- Slide 10: Model Answer Q4 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 4 (6 marks)</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">All High-End Laptops</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Advantages:</strong> Provides <strong>flexibility for all staff</strong> to work from any location (1 mark). Simplifies IT management with <strong>standardized hardware</strong> across the organization (1 mark).</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 15px;"><strong>Disadvantages:</strong> High-end laptops are <strong>more expensive</strong> than equivalent desktop workstations for the same performance (1 mark). Laptops have <strong>limited upgradeability</strong> and may struggle with intensive 3D rendering tasks over time (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Mixed Approach (Workstations + Laptops)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Advantages:</strong> Workstations provide <strong>maximum performance</strong> for office-based rendering work at lower cost per unit (1 mark). The mixed approach is <strong>more cost-effective overall</strong> as mobile staff don't need the most powerful specifications (1 mark).</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 15px;"><strong>Disadvantages:</strong> Office staff <strong>cannot work remotely</strong> with the same performance (1 mark). Requires managing <strong>two different types of systems</strong>, increasing IT complexity (1 mark).</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(34, 197, 94, 0.1); border-left: 4px solid #22c55e; border-radius: 12px;">
+                    <p style="color: #6ee7b7; font-size: 1.1em; line-height: 1.7;"><strong>Note:</strong> Full marks require presenting both advantages and disadvantages for both options in a balanced manner.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 10 / 24</div>
+        </div>
+
+        <!-- Slide 8: Hardware Device Categories -->
+        <div class="slide">
+            <div class="content">
+                <h2>Hardware Device Categories</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">⌨️</div>
+                        <h4>Input Devices</h4>
+                        <p>Hardware that allows users to enter data and commands into a computer</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Examples:</strong> Keyboard, mouse, scanner, microphone, webcam, touchscreen</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🖥️</div>
+                        <h4>Output Devices</h4>
+                        <p>Hardware that presents data from the computer to the user</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Examples:</strong> Monitor, printer, speakers, headphones, projector</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">💾</div>
+                        <h4>Storage Devices</h4>
+                        <p>Hardware that stores data permanently or temporarily</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Examples:</strong> HDD, SSD, USB drive, SD card, optical disc</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🔧</div>
+                        <h4>Processing Components</h4>
+                        <p>Hardware that processes data and executes instructions</p>
+                        <p style="margin-top: 15px; color: #60a5fa;"><strong>Examples:</strong> CPU, GPU, RAM, motherboard</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Understanding I/O Devices</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">Some devices can be both input AND output (I/O devices). Examples include:</p>
+                    <ul style="margin-top: 20px;">
+                        <li><strong>Touchscreens:</strong> Display information (output) and receive touch input</li>
+                        <li><strong>Network cards:</strong> Send and receive data over networks</li>
+                        <li><strong>Storage devices:</strong> Read (input) and write (output) data</li>
+                        <li><strong>USB drives:</strong> Transfer data in both directions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 11 / 24</div>
+        </div>
+
+        <!-- Slide 9: Processing Components -->
+        <div class="slide">
+            <div class="content">
+                <h2>Key Processing Components</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">🧠 CPU (Central Processing Unit)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-bottom: 20px;">The "brain" of the computer that executes instructions and performs calculations.</p>
+                    <ul>
+                        <li><strong>Cores:</strong> Independent processing units (dual-core, quad-core, etc.)</li>
+                        <li><strong>Clock speed:</strong> Measured in GHz - how fast it processes instructions</li>
+                        <li><strong>Cache:</strong> Small, fast memory for frequently accessed data</li>
+                        <li><strong>Examples:</strong> Intel Core i5/i7/i9, AMD Ryzen 5/7/9</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">🎮 GPU (Graphics Processing Unit)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-bottom: 20px;">Specialized processor designed for rendering graphics and parallel processing tasks.</p>
+                    <ul>
+                        <li><strong>Integrated:</strong> Built into CPU, shares system RAM (Intel UHD, AMD Radeon)</li>
+                        <li><strong>Dedicated:</strong> Separate card with own memory (NVIDIA GeForce, AMD Radeon)</li>
+                        <li><strong>Professional:</strong> For workstations (NVIDIA Quadro/RTX, AMD Pro)</li>
+                        <li><strong>Uses:</strong> Gaming, video editing, 3D rendering, AI/machine learning</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">💾 RAM (Random Access Memory)</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-bottom: 20px;">Temporary, fast storage that holds data and programs currently in use.</p>
+                    <ul>
+                        <li><strong>Volatile:</strong> Data is lost when power is turned off</li>
+                        <li><strong>Capacity:</strong> Typically 8GB-64GB for consumer systems</li>
+                        <li><strong>Speed:</strong> DDR4 (2400-3200MHz), DDR5 (4800-6400MHz)</li>
+                        <li><strong>More RAM:</strong> Allows running more programs simultaneously</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">🔌 Motherboard</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-bottom: 20px;">Main circuit board that connects all components together.</p>
+                    <ul>
+                        <li><strong>Chipset:</strong> Controls communication between components</li>
+                        <li><strong>Expansion slots:</strong> PCIe for GPUs, sound cards, network cards</li>
+                        <li><strong>Ports:</strong> USB, audio, video, network connections</li>
+                        <li><strong>Form factors:</strong> ATX, Micro-ATX, Mini-ITX (different sizes)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 12 / 24</div>
+        </div>
+
+        <!-- Slide 10: Storage Devices -->
+        <div class="slide">
+            <div class="content">
+                <h2>Storage Devices</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Storage Type</th>
+                            <th>Speed</th>
+                            <th>Capacity</th>
+                            <th>Cost</th>
+                            <th>Best Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>HDD (Hard Disk Drive)</strong></td>
+                            <td>Slow (80-160 MB/s)</td>
+                            <td>1TB - 20TB</td>
+                            <td>$$$</td>
+                            <td>Mass storage, archives, backups</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SATA SSD</strong></td>
+                            <td>Fast (500-550 MB/s)</td>
+                            <td>250GB - 4TB</td>
+                            <td>$$$$</td>
+                            <td>OS drive, applications, general use</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NVMe SSD</strong></td>
+                            <td>Very fast (3000-7000 MB/s)</td>
+                            <td>250GB - 4TB</td>
+                            <td>$$$$$</td>
+                            <td>High-performance, gaming, workstations</td>
+                        </tr>
+                        <tr>
+                            <td><strong>USB Flash Drive</strong></td>
+                            <td>Medium (20-200 MB/s)</td>
+                            <td>4GB - 1TB</td>
+                            <td>$$</td>
+                            <td>Portable files, file transfer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SD Card</strong></td>
+                            <td>Medium (10-300 MB/s)</td>
+                            <td>4GB - 1TB</td>
+                            <td>$$</td>
+                            <td>Cameras, phones, portable devices</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Optical Disc (DVD/Blu-ray)</strong></td>
+                            <td>Very slow (5-54 MB/s)</td>
+                            <td>4.7GB - 128GB</td>
+                            <td>$</td>
+                            <td>Media distribution, long-term archive</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">💡 Key Differences</h3>
+                    <ul>
+                        <li><strong>HDD:</strong> Uses spinning magnetic platters - mechanical, slower, cheaper per GB, good for bulk storage</li>
+                        <li><strong>SSD:</strong> Uses flash memory chips - no moving parts, much faster, more expensive, better for performance</li>
+                        <li><strong>NVMe:</strong> Connects directly to PCIe - fastest storage available, essential for high-end systems</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 13 / 24</div>
+        </div>
+
+        <!-- Slide 11: Input Devices -->
+        <div class="slide">
+            <div class="content">
+                <h2>Input Devices</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">⌨️</div>
+                        <h4>Keyboard</h4>
+                        <p><strong>Function:</strong> Text and command input</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Membrane, mechanical, wireless, ergonomic</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Interface:</strong> USB, Bluetooth, PS/2</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🖱️</div>
+                        <h4>Mouse</h4>
+                        <p><strong>Function:</strong> Point-and-click navigation</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Optical, laser, wireless, gaming, trackball</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Features:</strong> DPI settings, programmable buttons</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">👆</div>
+                        <h4>Touchscreen</h4>
+                        <p><strong>Function:</strong> Direct touch interaction with display</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Capacitive (multi-touch), resistive (pressure)</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Tablets, phones, kiosks, POS systems</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">📷</div>
+                        <h4>Webcam</h4>
+                        <p><strong>Function:</strong> Video input and capturing</p>
+                        <p style="margin-top: 10px;"><strong>Specs:</strong> 720p, 1080p, 4K resolution</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Video calls, streaming, security</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🎤</div>
+                        <h4>Microphone</h4>
+                        <p><strong>Function:</strong> Audio input and voice recording</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Dynamic, condenser, USB, headset</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Calls, podcasting, voice commands</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🖨️</div>
+                        <h4>Scanner</h4>
+                        <p><strong>Function:</strong> Convert physical documents to digital</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Flatbed, sheet-fed, portable, 3D</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Document digitization, image capture</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 14 / 24</div>
+        </div>
+
+        <!-- Slide 12: Output Devices -->
+        <div class="slide">
+            <div class="content">
+                <h2>Output Devices</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="icon-large">🖥️</div>
+                        <h4>Monitor</h4>
+                        <p><strong>Function:</strong> Visual display of computer output</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> LCD, LED, OLED, 4K, curved, ultrawide</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Specs:</strong> Resolution, refresh rate (60Hz-240Hz), response time</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🖨️</div>
+                        <h4>Printer</h4>
+                        <p><strong>Function:</strong> Produce physical copies of digital documents</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Inkjet (color, photo), Laser (fast, text), 3D (objects)</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Features:</strong> Print speed (PPM), resolution (DPI)</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🔊</div>
+                        <h4>Speakers</h4>
+                        <p><strong>Function:</strong> Audio output for music, videos, alerts</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> 2.0 stereo, 2.1 (with subwoofer), 5.1 surround</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Connections:</strong> 3.5mm jack, USB, Bluetooth</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🎧</div>
+                        <h4>Headphones</h4>
+                        <p><strong>Function:</strong> Private audio output</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Over-ear, on-ear, in-ear, wireless, noise-canceling</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Gaming, music, calls, privacy</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">📽️</div>
+                        <h4>Projector</h4>
+                        <p><strong>Function:</strong> Display images on large screens or walls</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> DLP, LCD, LED, laser, portable</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Presentations, home theater, education</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">🎮</div>
+                        <h4>VR Headset</h4>
+                        <p><strong>Function:</strong> Immersive 3D visual and audio output</p>
+                        <p style="margin-top: 10px;"><strong>Types:</strong> Tethered (PC), standalone (Quest), mobile</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Uses:</strong> Gaming, training, visualization</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 15 / 24</div>
+        </div>
+
+        <!-- Slide 13: Question 5 - Analyse (9 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 5</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 5 – 9 marks – Analyse</h4>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">A video editing company is experiencing slow performance when editing 4K video footage. Their current computers have Intel Core i5 processors (4 cores), 8GB RAM, integrated graphics, and 1TB HDDs. Editors report that:</p>
+                        <ul style="margin-top: 15px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Loading project files takes 2-3 minutes</li>
+                            <li>Playback stutters when previewing edits</li>
+                            <li>Rendering final videos takes over 8 hours for a 10-minute clip</li>
+                            <li>The software frequently shows "out of memory" warnings</li>
+                        </ul>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">Analyse how each hardware component (CPU, RAM, GPU, and storage) contributes to these performance issues. In your answer, explain how upgrading each component would address specific problems and how these components interact to affect overall performance.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Analyse</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 16 / 24</div>
+        </div>
+
+        <!-- Slide 14: Model Answer Q5 Part 1 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 5 (9 marks) - Part 1</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Storage (HDD) Analysis</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">The <strong>HDD is causing slow file loading times</strong> (2-3 minutes) because traditional hard drives have read speeds of only 80-160 MB/s (1 mark). 4K video files are extremely large (often 100GB+), so loading them from slow storage creates a bottleneck (1 mark). <strong>Upgrading to an NVMe SSD</strong> (3000-7000 MB/s) would reduce loading times by 20-40x, bringing load times down to seconds rather than minutes (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">RAM Analysis</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">The <strong>"out of memory" warnings indicate insufficient RAM</strong> (1 mark). 8GB is inadequate for 4K video editing, as active footage, preview renders, and the editing software itself must all fit in RAM simultaneously (1 mark). When RAM fills up, the system uses <strong>virtual memory on the slow HDD</strong>, causing severe performance degradation and stuttering playback (1 mark). Upgrading to 32GB or 64GB RAM would allow the entire working project to stay in fast memory, eliminating virtual memory usage and enabling smooth playback (1 mark).</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 17 / 24</div>
+        </div>
+
+        <!-- Slide 15: Model Answer Q5 Part 2 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 5 (9 marks) - Part 2</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">GPU Analysis</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Integrated graphics lack dedicated video memory</strong> and processing power for 4K video effects (1 mark). This causes stuttering during playback preview as the GPU cannot decode and display 4K footage in real-time (1 mark). A <strong>dedicated professional GPU</strong> (e.g., NVIDIA RTX) would provide hardware-accelerated video encoding/decoding, dramatically improving preview performance and reducing render times through GPU-accelerated effects processing (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">CPU Analysis & Component Interaction</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">The <strong>4-core i5 processor is the bottleneck for 8-hour render times</strong> (1 mark). Video rendering is heavily CPU-dependent, and more cores allow parallel processing of multiple video frames simultaneously (1 mark). Upgrading to a multi-core processor (8-16 cores) would reduce render times proportionally.</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;"><strong>Component Interaction:</strong> All four components work together in the video editing pipeline - <strong>storage provides data to RAM, RAM feeds the CPU/GPU</strong> for processing, and results are written back (1 mark). The slowest component creates a bottleneck that limits overall performance, which is why all four upgrades would be beneficial for optimal performance (1 mark).</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(34, 197, 94, 0.1); border-left: 4px solid #22c55e; border-radius: 12px;">
+                    <p style="color: #6ee7b7; font-size: 1.1em; line-height: 1.7;"><strong>Note:</strong> Full marks require explaining each component's contribution, the interaction between components, and how upgrades address specific problems.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 18 / 24</div>
+        </div>
+
+        <!-- Slide 14: Question 6 - Evaluate (12 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 6</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 6 – 12 marks – Evaluate</h4>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">A growing e-commerce company with 50 employees needs to upgrade their IT infrastructure. Currently, they use a mix of aging desktop computers and personal laptops. The company faces the following requirements:</p>
+                        <ul style="margin-top: 15px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Customer service team (20 staff) - need reliable systems for order processing, email, and web browsing</li>
+                            <li>Web development team (10 staff) - need powerful systems for coding, testing, and running multiple virtual machines</li>
+                            <li>Management team (5 staff) - frequently travel to meetings and need mobile access to company systems</li>
+                            <li>Warehouse staff (15 staff) - need basic systems for inventory management on handheld devices</li>
+                        </ul>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">The company must also implement a centralized file storage and database system to replace their current solution of files stored on individual computers.</p>
+                        <p style="margin-top: 20px; font-size: 1.2em; line-height: 1.8;">Evaluate the most appropriate combination of computer types (desktops, laptops, workstations, servers, mobile devices) for this company. Justify your recommendations with evidence, considering factors such as cost-effectiveness, performance requirements, scalability, and business continuity.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Evaluate</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Make a reasoned judgement after considering the advantages and disadvantages of different options, supported by evidence or examples.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 19 / 24</div>
+        </div>
+
+        <!-- Slide 15: Model Answer Q6 Part 1 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 6 (12 marks) - Part 1</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Recommended Infrastructure</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Customer Service Team (20 staff) - Desktop Computers:</strong> Standard desktop computers provide sufficient performance for order processing and web applications at the <strong>lowest cost per unit</strong> (approximately £600-800 each compared to £1000+ for equivalent laptops) (1 mark). Since these staff work exclusively in the office, mobility is not required, and desktops offer <strong>better ergonomics</strong> with larger monitors and separate keyboards, improving productivity for data-entry tasks (1 mark). Desktops are also <strong>easier and cheaper to repair/upgrade</strong>, reducing long-term IT costs (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Web Development Team</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Web Development Team (10 staff) - Professional Workstations:</strong> Running multiple virtual machines and development environments requires <strong>high-performance CPUs (8+ cores) and 32-64GB RAM</strong>, which workstations provide cost-effectively (1 mark). Workstations offer <strong>superior performance and upgradeability</strong> compared to laptops, allowing the company to extend hardware lifespan by upgrading components as needs grow (1 mark). The ability to add multiple monitors and high-speed storage makes workstations ideal for <strong>developer productivity</strong> (1 mark).</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Management Team</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Management Team (5 staff) - Business Laptops:</strong> Frequent travel necessitates portable systems (1 mark). Business-class laptops (£1000-1500) provide <strong>adequate performance for management tasks while offering mobility</strong> and longer battery life than consumer models (1 mark). While more expensive per unit, the <strong>small quantity (5 units) minimizes overall cost impact</strong> (1 mark).</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 20 / 24</div>
+        </div>
+
+        <!-- Slide 16: Model Answer Q6 Part 2 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 6 (12 marks) - Part 2</h2>
+                
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Warehouse Staff & Server Infrastructure</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Warehouse Staff (15 staff) - Mobile Devices/Tablets:</strong> Handheld devices or tablets with barcode scanners provide <strong>mobility within the warehouse</strong> for real-time inventory updates (1 mark). These are <strong>cost-effective (£300-500 per unit)</strong> and purpose-built for warehouse management applications (1 mark).</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;"><strong>Centralized Server Infrastructure - Dedicated Server:</strong> A server is <strong>essential for centralized file storage and database management</strong>, replacing the current insecure practice of storing files on individual computers (1 mark). Server benefits include: <strong>automated backup capabilities</strong> ensuring business continuity, <strong>simultaneous access for all 50 employees</strong>, and <strong>24/7 reliability with redundant components</strong> (RAID storage, redundant power supplies) minimizing downtime risk (1 mark).</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Cost-Benefit Analysis & Scalability</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Total Estimated Investment:</strong></p>
+                    <ul style="margin-top: 15px; font-size: 1.1em; line-height: 1.8;">
+                        <li>20 × Desktops @ £700 = £14,000</li>
+                        <li>10 × Workstations @ £2000 = £20,000</li>
+                        <li>5 × Laptops @ £1200 = £6,000</li>
+                        <li>15 × Tablets @ £400 = £6,000</li>
+                        <li>1 × Server @ £5,000 = £5,000</li>
+                        <li><strong>Total: £51,000</strong></li>
+                    </ul>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;">This <strong>tiered approach optimizes budget allocation</strong> by matching system cost to performance requirements rather than buying uniform high-spec systems for all staff (1 mark). The infrastructure is <strong>scalable</strong> - as the company grows, they can add more desktops for customer service, upgrade server storage capacity, or add workstations for developers without replacing the entire system (1 mark).</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 21 / 24</div>
+        </div>
+
+        <!-- Slide 17: Model Answer Q6 Part 3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Model Answer: Question 6 (12 marks) - Part 3</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Business Continuity & Long-term Considerations</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;"><strong>Business Continuity:</strong> The centralized server architecture with automated backups <strong>protects against data loss</strong> from individual computer failures (1 mark). If a desktop fails, the employee can use another workstation to access their files from the server, minimizing disruption. The server's redundant components (RAID, dual power supplies) ensure <strong>high availability for critical business operations</strong> (1 mark).</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;"><strong>Alternative Consideration:</strong> Providing laptops to all staff would offer maximum flexibility but would cost approximately £60,000-75,000 (50 × £1200-1500), representing a <strong>40-50% cost increase</strong> while providing unnecessary mobility for 35 office-bound staff (1 mark). The recommended mixed approach delivers better value by <strong>precisely matching hardware capabilities to job requirements</strong> (1 mark).</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Final Recommendation</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1;">The recommended tiered infrastructure approach is <strong>most appropriate</strong> because it:</p>
+                    <ul style="margin-top: 15px; font-size: 1.1em; line-height: 1.8;">
+                        <li>Balances performance requirements with budget constraints</li>
+                        <li>Provides mobility only where needed (management and warehouse)</li>
+                        <li>Ensures business continuity through centralized data management</li>
+                        <li>Offers scalability for future growth</li>
+                        <li>Optimizes total cost of ownership through strategic hardware selection</li>
+                    </ul>
+                    <p style="font-size: 1.15em; line-height: 1.8; color: #cbd5e1; margin-top: 20px;">This solution delivers <strong>professional-grade IT infrastructure at approximately £1,020 per employee</strong>, significantly below the cost of uniform laptop deployment while meeting all business requirements effectively (1 mark).</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 22 / 24</div>
+        </div>
+
+        <!-- Slide 18: How Components Work Together -->
+        <div class="slide">
+            <div class="content">
+                <h2>How Hardware Components Work Together</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">The Computer System Flow</h3>
+                    <p style="font-size: 1.4em; line-height: 1.8; color: #cbd5e1; margin-bottom: 30px;">All hardware components work together in a coordinated system to process data and produce results.</p>
+                    
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 40px; border-radius: 16px; margin: 30px 0;">
+                        <h4 style="color: #60a5fa; font-size: 1.5em; text-align: center; margin-bottom: 30px;">Input → Process → Output → Storage</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="font-size: 2.5em; margin-bottom: 10px;">⌨️</div>
+                                <div style="color: #60a5fa; font-weight: 700; font-size: 1.2em; margin-bottom: 10px;">INPUT</div>
+                                <div style="color: #cbd5e1;">Data enters via keyboard, mouse, webcam, etc.</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="font-size: 2.5em; margin-bottom: 10px;">🧠</div>
+                                <div style="color: #60a5fa; font-weight: 700; font-size: 1.2em; margin-bottom: 10px;">PROCESS</div>
+                                <div style="color: #cbd5e1;">CPU and RAM process the data</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="font-size: 2.5em; margin-bottom: 10px;">🖥️</div>
+                                <div style="color: #60a5fa; font-weight: 700; font-size: 1.2em; margin-bottom: 10px;">OUTPUT</div>
+                                <div style="color: #cbd5e1;">Results shown on monitor, speakers, printer</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="font-size: 2.5em; margin-bottom: 10px;">💾</div>
+                                <div style="color: #60a5fa; font-weight: 700; font-size: 1.2em; margin-bottom: 10px;">STORAGE</div>
+                                <div style="color: #cbd5e1;">Data saved to SSD/HDD for later use</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Example: Writing a Document</h3>
+                    <ul style="margin-top: 25px;">
+                        <li><strong>Input:</strong> You type text using the keyboard</li>
+                        <li><strong>Process:</strong> CPU processes keystrokes, RAM holds document in memory</li>
+                        <li><strong>Output:</strong> Monitor displays the text as you type</li>
+                        <li><strong>Storage:</strong> Document saved to SSD when you click "Save"</li>
+                    </ul>
+
+                    <h3>Example: Playing a Video Game</h3>
+                    <ul>
+                        <li><strong>Input:</strong> Mouse/controller sends player commands</li>
+                        <li><strong>Process:</strong> CPU calculates game logic, GPU renders graphics, RAM holds game data</li>
+                        <li><strong>Output:</strong> Monitor displays graphics, speakers play audio</li>
+                        <li><strong>Storage:</strong> Game progress saved to SSD, game files loaded from storage</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 23 / 24</div>
+        </div>
+
+        <!-- Slide 19: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Module Summary</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Physical Computers (7.1.1)</h3>
+                    <ul>
+                        <li><strong>Desktop:</strong> Stationary, powerful, upgradable, cost-effective</li>
+                        <li><strong>Laptop:</strong> Portable, all-in-one, battery-powered, convenient</li>
+                        <li><strong>Server:</strong> 24/7 operation, serves multiple clients, high reliability</li>
+                        <li><strong>Workstation:</strong> Professional-grade for CAD, rendering, video editing</li>
+                        <li><strong>Embedded:</strong> Specialized, task-specific, integrated into other systems</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Hardware Devices (7.1.2)</h3>
+                    <ul>
+                        <li><strong>Input devices:</strong> Keyboard, mouse, webcam, microphone, scanner - get data INTO computer</li>
+                        <li><strong>Output devices:</strong> Monitor, printer, speakers, headphones - present data TO user</li>
+                        <li><strong>Storage devices:</strong> HDD (slow, cheap), SSD (fast, expensive), NVMe (fastest) - permanent data storage</li>
+                        <li><strong>Processing components:</strong> CPU (brain), GPU (graphics), RAM (temporary memory), Motherboard (connects all)</li>
+                        <li><strong>I/O devices:</strong> Touchscreen, network card, USB drive - both input AND output</li>
+                        <li><strong>System flow:</strong> Input → Process (CPU/RAM) → Output → Storage</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05)); border-color: #22c55e;">
+                    <h3 style="margin-top: 0; color: #6ee7b7;">Key Takeaway</h3>
+                    <p style="font-size: 1.4em; line-height: 1.8; color: #cbd5e1;">Understanding different computer types and hardware components helps you choose the right system for specific tasks and understand how all parts work together to process data effectively.</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="font-size: 1.8em; color: #60a5fa; font-weight: 700;">🎉 Module Complete!</p>
+                    <p style="font-size: 1.4em; color: #94a3b8; margin-top: 15px;">You now understand physical computers and hardware devices</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 24 / 24</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progress = document.getElementById('progressFill');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Quiz functionality
+        function checkQuiz(quizNum, optionNum, isCorrect) {
+            const options = document.querySelectorAll(`#quiz${quizNum} .quiz-option`);
+            const feedback = document.getElementById(`feedback${quizNum}`);
+            
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                opt.style.pointerEvents = 'none';
+            });
+            
+            options[optionNum - 1].classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            feedback.textContent = isCorrect ? 
+                '✅ Correct! Well done.' : 
+                '❌ Incorrect. Review the content and try again.';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            updateNavigation();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,3268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate T-Level Software Development Revision Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overscroll-behavior: none;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            overscroll-behavior: none;
+            overflow-x: hidden;
+        }
+
+        .main-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .navigation-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            background: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #1e3c72;
+            border-bottom-color: #ff6b6b;
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .paper-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .paper-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-area-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-area-card h2 {
+            color: #1e3c72;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-left: 6px solid #ff6b6b;
+            padding-left: 20px;
+        }
+
+        .content-area-card h3 {
+            color: #2a5298;
+            font-size: 1.8em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-area-card h4 {
+            color: #555;
+            font-size: 1.4em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content-area-card p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .content-area-card ul,
+        .content-area-card ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .content-area-card li {
+            margin-bottom: 10px;
+        }
+
+        /* Interactive Elements */
+        .interactive-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.selected {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: white;
+        }
+
+        .quiz-option.correct {
+            background: #4CAF50;
+            border-color: #2e7d32;
+        }
+
+        .quiz-option.incorrect {
+            background: #f44336;
+            border-color: #c62828;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .check-answer-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .check-answer-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .flashcard-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flashcard-container.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            backface-visibility: hidden;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-container h4 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .flashcard-container p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: white;
+        }
+
+        .flip-hint {
+            margin-top: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            color: white;
+        }
+
+        .accordion {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .accordion.active .accordion-content {
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-example::before {
+            content: 'CODE EXAMPLE';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7em;
+            color: #888;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #ff6b6b;
+        }
+
+        .key-point-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #f44336;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #2196F3;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table thead tr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: left;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #e3f2fd;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .progress-tracker {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 99;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+        strong {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 2em;
+            }
+
+            .nav-tab {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+
+            .content-area-card h2 {
+                font-size: 2em;
+            }
+
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <h1>🎓 Ultimate T-Level Software Development Revision Guide</h1>
+        <p>Comprehensive Interactive Revision for All Papers</p>
+        <div class="navigation-tabs">
+            <button class="nav-tab active" onclick="showPaper('paper1')">📄 Core Paper 1</button>
+            <button class="nav-tab" onclick="showPaper('paper2')">📄 Core Paper 2</button>
+            <button class="nav-tab" onclick="showPaper('esp')">🔧 ESP Guide</button>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- PAPER 1 SECTION -->
+        <div id="paper1" class="paper-section active">
+            <div class="progress-tracker">
+                <h3>📊 Paper 1 Progress Tracker</h3>
+                <p>Track your revision progress through Content Areas 1-4</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="paper1Progress" style="width: 0%">0%</div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label><input type="checkbox" onchange="updateProgress('paper1')"> Content Area 1: Problem Solving</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper1')"> Content Area 2: Programming</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper1')"> Content Area 3: Emerging Issues</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper1')"> Content Area 4: Legislation</label>
+                </div>
+            </div>
+
+            <!-- Content Area 1 -->
+            <div class="content-area-card">
+                <h2>📐 Content Area 1: Problem Solving</h2>
+
+                <h3><span class="emoji">🧩</span> 1.1 Computational Thinking</h3>
+                <p>Computational thinking is a problem-solving approach that involves breaking down complex problems into manageable parts.</p>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <h4>Decomposition</h4>
+                        <p>Breaking down a complex problem into smaller, more manageable sub-problems</p>
+                        <p><strong>Example:</strong> Creating a login system → username validation, password checking, session management</p>
+                    </div>
+                    <div class="card">
+                        <h4>Pattern Recognition</h4>
+                        <p>Identifying similarities or patterns within problems</p>
+                        <p><strong>Example:</strong> Recognizing that sorting algorithms can be applied to various data types</p>
+                    </div>
+                    <div class="card">
+                        <h4>Abstraction</h4>
+                        <p>Focusing on important information only, ignoring irrelevant detail</p>
+                        <p><strong>Example:</strong> Using a car - you don't need to know how the engine works, just how to drive</p>
+                    </div>
+                    <div class="card">
+                        <h4>Algorithm Design</h4>
+                        <p>Creating step-by-step solutions to problems</p>
+                        <p><strong>Example:</strong> Recipe for making tea - specific ordered steps</p>
+                    </div>
+                </div>
+
+                <div class="flashcard-container" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <h4>🎴 Flashcard: Test Your Knowledge</h4>
+                        <p>What are the four pillars of computational thinking?</p>
+                        <p class="flip-hint">👆 Click to reveal answer</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4>✅ Answer</h4>
+                        <p>1. Decomposition<br>2. Pattern Recognition<br>3. Abstraction<br>4. Algorithm Design</p>
+                        <p class="flip-hint">👆 Click to flip back</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📊</span> 1.2 Algorithms</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Searching Algorithms</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Linear Search</h4>
+                        <p>Checks each element one by one from start to finish</p>
+                        <ul>
+                            <li><strong>Time Complexity:</strong> O(n)</li>
+                            <li><strong>Best Case:</strong> O(1) - item is first</li>
+                            <li><strong>Worst Case:</strong> O(n) - item is last or not present</li>
+                            <li><strong>Use When:</strong> Small datasets or unsorted data</li>
+                        </ul>
+
+                        <div class="code-example">
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i  # Return index if found
+    return -1  # Not found
+                        </div>
+
+                        <h4>Binary Search</h4>
+                        <p>Divides sorted list in half repeatedly to find target</p>
+                        <ul>
+                            <li><strong>Time Complexity:</strong> O(log n)</li>
+                            <li><strong>Requirement:</strong> List MUST be sorted</li>
+                            <li><strong>Use When:</strong> Large sorted datasets</li>
+                        </ul>
+
+                        <div class="code-example">
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1  # Not found
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Sorting Algorithms</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Bubble Sort</h4>
+                        <p>Repeatedly swaps adjacent elements if they're in wrong order</p>
+                        <ul>
+                            <li><strong>Time Complexity:</strong> O(n²)</li>
+                            <li><strong>Space Complexity:</strong> O(1)</li>
+                            <li><strong>Stable:</strong> Yes</li>
+                            <li><strong>Use When:</strong> Small datasets, educational purposes</li>
+                        </ul>
+
+                        <div class="code-example">
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+                        </div>
+
+                        <h4>Merge Sort</h4>
+                        <p>Divide and conquer - splits array, sorts, then merges</p>
+                        <ul>
+                            <li><strong>Time Complexity:</strong> O(n log n)</li>
+                            <li><strong>Space Complexity:</strong> O(n)</li>
+                            <li><strong>Stable:</strong> Yes</li>
+                            <li><strong>Use When:</strong> Need guaranteed O(n log n), external sorting</li>
+                        </ul>
+
+                        <h4>Quick Sort</h4>
+                        <p>Picks a pivot, partitions array around it</p>
+                        <ul>
+                            <li><strong>Average Time:</strong> O(n log n)</li>
+                            <li><strong>Worst Case:</strong> O(n²)</li>
+                            <li><strong>Space Complexity:</strong> O(log n)</li>
+                            <li><strong>Use When:</strong> General purpose, in-memory sorting</li>
+                        </ul>
+
+                        <div class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Algorithm</th>
+                                    <th>Time (Best)</th>
+                                    <th>Time (Average)</th>
+                                    <th>Time (Worst)</th>
+                                    <th>Space</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Bubble Sort</strong></td>
+                                    <td>O(n)</td>
+                                    <td>O(n²)</td>
+                                    <td>O(n²)</td>
+                                    <td>O(1)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Merge Sort</strong></td>
+                                    <td>O(n log n)</td>
+                                    <td>O(n log n)</td>
+                                    <td>O(n log n)</td>
+                                    <td>O(n)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quick Sort</strong></td>
+                                    <td>O(n log n)</td>
+                                    <td>O(n log n)</td>
+                                    <td>O(n²)</td>
+                                    <td>O(log n)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">🎯 Quick Quiz: Which algorithm would you choose?</div>
+                    <p>You need to search for a student's record in a database of 10,000 students sorted by student ID. Which algorithm is most efficient?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">A) Linear Search - check each student one by one</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, true)">B) Binary Search - divide and conquer the sorted list</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">C) Bubble Sort - sort then search</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">D) Just guess randomly</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <strong>Explanation:</strong> Binary Search is O(log n) which is much faster than Linear Search's O(n) for large datasets. Since the list is already sorted, Binary Search can find the record in about 13 comparisons (log₂ 10000 ≈ 13) vs. potentially 10,000 with Linear Search!
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📈</span> 1.3 Data Structures</h3>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Arrays</h4>
+                        <p>Fixed-size collection of elements of same type</p>
+                        <p><strong>Access:</strong> O(1) - Direct index access</p>
+                        <p><strong>Insert/Delete:</strong> O(n) - May need to shift elements</p>
+                        <p><strong>Use When:</strong> Size known, frequent access by index</p>
+                        <div class="code-example">
+# Python list (dynamic array)
+students = ["Alice", "Bob", "Charlie"]
+print(students[1])  # Bob - O(1)
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Linked Lists</h4>
+                        <p>Elements linked via pointers, dynamic size</p>
+                        <p><strong>Access:</strong> O(n) - Must traverse from head</p>
+                        <p><strong>Insert/Delete:</strong> O(1) - If you have the reference</p>
+                        <p><strong>Use When:</strong> Frequent insertions/deletions</p>
+                        <div class="code-example">
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Stacks (LIFO)</h4>
+                        <p>Last In, First Out - like a stack of plates</p>
+                        <p><strong>Operations:</strong> push(), pop(), peek()</p>
+                        <p><strong>Use When:</strong> Undo functions, recursion, backtracking</p>
+                        <div class="code-example">
+stack = []
+stack.append(1)  # push
+stack.append(2)  # push
+stack.pop()      # returns 2
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Queues (FIFO)</h4>
+                        <p>First In, First Out - like a line/queue</p>
+                        <p><strong>Operations:</strong> enqueue(), dequeue(), peek()</p>
+                        <p><strong>Use When:</strong> Task scheduling, breadth-first search</p>
+                        <div class="code-example">
+from collections import deque
+queue = deque()
+queue.append(1)      # enqueue
+queue.popleft()      # dequeue
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Hash Tables</h4>
+                        <p>Key-value pairs with hash function for fast lookup</p>
+                        <p><strong>Access/Insert/Delete:</strong> O(1) average</p>
+                        <p><strong>Use When:</strong> Need fast lookups, dictionaries</p>
+                        <div class="code-example">
+# Python dictionary
+student_grades = {
+    "Alice": 95,
+    "Bob": 87
+}
+print(student_grades["Alice"])
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Trees</h4>
+                        <p>Hierarchical structure with nodes and edges</p>
+                        <p><strong>Binary Tree:</strong> Each node has max 2 children</p>
+                        <p><strong>BST:</strong> Left < Parent < Right</p>
+                        <p><strong>Use When:</strong> Hierarchical data, fast search</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🌐</span> 1.4 Flowcharts & Pseudocode</h3>
+
+                <div class="info-box">
+                    <h4>Flowchart Symbols</h4>
+                    <ul>
+                        <li><strong>Oval:</strong> Start/End</li>
+                        <li><strong>Rectangle:</strong> Process/Action</li>
+                        <li><strong>Diamond:</strong> Decision (if/else)</li>
+                        <li><strong>Parallelogram:</strong> Input/Output</li>
+                        <li><strong>Arrows:</strong> Flow direction</li>
+                    </ul>
+                </div>
+
+                <div class="key-point-box">
+                    <h4>Pseudocode Best Practices</h4>
+                    <ul>
+                        <li>Use clear, descriptive variable names</li>
+                        <li>Indent to show structure (loops, conditions)</li>
+                        <li>Use keywords: IF, THEN, ELSE, WHILE, FOR, REPEAT</li>
+                        <li>Focus on logic, not specific syntax</li>
+                        <li>Add comments to explain complex sections</li>
+                    </ul>
+                    <div class="code-example">
+BEGIN
+    SET total TO 0
+    SET count TO 0
+
+    WHILE count < 10 DO
+        OUTPUT "Enter a number:"
+        INPUT number
+        total = total + number
+        count = count + 1
+    END WHILE
+
+    average = total / count
+    OUTPUT "Average is: " + average
+END
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area 2 -->
+            <div class="content-area-card">
+                <h2>💻 Content Area 2: Introduction to Programming</h2>
+
+                <h3><span class="emoji">🔤</span> 2.1 Programming Fundamentals</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Variables & Data Types</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Variables</h4>
+                        <p>Named storage locations for data</p>
+                        <div class="code-example">
+# Python examples
+name = "Alice"           # String
+age = 21                 # Integer
+height = 1.65            # Float
+is_student = True        # Boolean
+grades = [85, 90, 78]    # List
+                        </div>
+
+                        <h4>Data Types</h4>
+                        <div class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                    <th>Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Integer</strong></td>
+                                    <td>Whole numbers</td>
+                                    <td>42, -10, 0</td>
+                                    <td>Counting, indexing</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Float</strong></td>
+                                    <td>Decimal numbers</td>
+                                    <td>3.14, -0.5</td>
+                                    <td>Measurements, calculations</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>String</strong></td>
+                                    <td>Text</td>
+                                    <td>"Hello", 'World'</td>
+                                    <td>Names, messages</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Boolean</strong></td>
+                                    <td>True/False</td>
+                                    <td>True, False</td>
+                                    <td>Conditions, flags</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>List/Array</strong></td>
+                                    <td>Ordered collection</td>
+                                    <td>[1, 2, 3]</td>
+                                    <td>Multiple values</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dictionary</strong></td>
+                                    <td>Key-value pairs</td>
+                                    <td>{"name": "Bob"}</td>
+                                    <td>Related data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="key-point-box">
+                            <h4>Type Conversion</h4>
+                            <div class="code-example">
+# Converting between types
+age_str = "25"
+age_int = int(age_str)        # String to int
+
+price = 19.99
+price_str = str(price)        # Float to string
+
+number = "3.14"
+decimal = float(number)       # String to float
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Operators</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="grid-2">
+                            <div>
+                                <h4>Arithmetic Operators</h4>
+                                <ul>
+                                    <li><code>+</code> Addition</li>
+                                    <li><code>-</code> Subtraction</li>
+                                    <li><code>*</code> Multiplication</li>
+                                    <li><code>/</code> Division</li>
+                                    <li><code>//</code> Floor Division</li>
+                                    <li><code>%</code> Modulus (remainder)</li>
+                                    <li><code>**</code> Exponentiation</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Comparison Operators</h4>
+                                <ul>
+                                    <li><code>==</code> Equal to</li>
+                                    <li><code>!=</code> Not equal to</li>
+                                    <li><code>&gt;</code> Greater than</li>
+                                    <li><code>&lt;</code> Less than</li>
+                                    <li><code>&gt;=</code> Greater or equal</li>
+                                    <li><code>&lt;=</code> Less or equal</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Logical Operators</h4>
+                                <ul>
+                                    <li><code>and</code> Both conditions true</li>
+                                    <li><code>or</code> At least one true</li>
+                                    <li><code>not</code> Reverses boolean</li>
+                                </ul>
+                                <div class="code-example">
+age = 20
+if age >= 18 and age < 65:
+    print("Working age")
+                                </div>
+                            </div>
+                            <div>
+                                <h4>Assignment Operators</h4>
+                                <ul>
+                                    <li><code>=</code> Assign</li>
+                                    <li><code>+=</code> Add and assign</li>
+                                    <li><code>-=</code> Subtract and assign</li>
+                                    <li><code>*=</code> Multiply and assign</li>
+                                    <li><code>/=</code> Divide and assign</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Control Structures</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Selection (if statements)</h4>
+                        <div class="code-example">
+# Simple if
+if temperature > 30:
+    print("It's hot!")
+
+# if-else
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+
+# if-elif-else
+grade = 85
+if grade >= 90:
+    print("A")
+elif grade >= 80:
+    print("B")
+elif grade >= 70:
+    print("C")
+else:
+    print("F")
+                        </div>
+
+                        <h4>Iteration (Loops)</h4>
+                        <div class="code-example">
+# For loop - definite iteration
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
+
+# For loop with list
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+# While loop - indefinite iteration
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+
+# While with condition
+password = ""
+while password != "secret":
+    password = input("Enter password: ")
+                        </div>
+
+                        <div class="warning-box">
+                            <h4>⚠️ Watch Out for Infinite Loops!</h4>
+                            <div class="code-example">
+# BAD - Infinite loop!
+# while True:
+#     print("This never stops!")
+
+# GOOD - Has exit condition
+attempts = 0
+while attempts < 3:
+    password = input("Password: ")
+    if password == "correct":
+        break  # Exit loop
+    attempts += 1
+                            </div>
+                        </div>
+
+                        <h4>Loop Control</h4>
+                        <ul>
+                            <li><code>break</code> - Exit loop immediately</li>
+                            <li><code>continue</code> - Skip to next iteration</li>
+                            <li><code>pass</code> - Do nothing (placeholder)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">⚙️</span> 2.2 Functions</h3>
+
+                <div class="info-box">
+                    <h4>Why Use Functions?</h4>
+                    <ul>
+                        <li><strong>Reusability:</strong> Write once, use many times</li>
+                        <li><strong>Organization:</strong> Break code into logical chunks</li>
+                        <li><strong>Maintainability:</strong> Easier to update and fix</li>
+                        <li><strong>Testing:</strong> Test individual functions</li>
+                        <li><strong>Abstraction:</strong> Hide complex implementation</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+# Basic function
+def greet():
+    print("Hello!")
+
+greet()  # Call the function
+
+# Function with parameters
+def greet_person(name):
+    print(f"Hello, {name}!")
+
+greet_person("Alice")
+
+# Function with return value
+def add(a, b):
+    return a + b
+
+result = add(5, 3)  # result = 8
+
+# Function with default parameters
+def power(base, exponent=2):
+    return base ** exponent
+
+print(power(5))      # 25 (5^2)
+print(power(5, 3))   # 125 (5^3)
+
+# Function with multiple returns
+def calculate(a, b):
+    sum = a + b
+    diff = a - b
+    prod = a * b
+    return sum, diff, prod
+
+s, d, p = calculate(10, 5)
+                </div>
+
+                <div class="flashcard-container" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <h4>🎴 Flashcard: Spot the Error</h4>
+                        <p>What's wrong with this function?</p>
+                        <div class="code-example">
+def double(number)
+    result = number * 2
+    return result
+                        </div>
+                        <p class="flip-hint">👆 Click to reveal answer</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4>✅ Answer</h4>
+                        <p>Missing colon (:) after the function definition!</p>
+                        <p>Should be: <code>def double(number):</code></p>
+                        <p class="flip-hint">👆 Click to flip back</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🎯</span> 2.3 Error Handling</h3>
+
+                <div class="code-example">
+# Try-Except block
+try:
+    age = int(input("Enter your age: "))
+    print(f"You are {age} years old")
+except ValueError:
+    print("That's not a valid number!")
+
+# Multiple exceptions
+try:
+    numerator = int(input("Enter numerator: "))
+    denominator = int(input("Enter denominator: "))
+    result = numerator / denominator
+    print(f"Result: {result}")
+except ValueError:
+    print("Please enter valid numbers!")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+# Try-Except-Else-Finally
+try:
+    file = open("data.txt", "r")
+    data = file.read()
+except FileNotFoundError:
+    print("File not found!")
+else:
+    print("File read successfully!")
+finally:
+    print("This always runs!")
+    # file.close()  # Cleanup
+                </div>
+
+                <div class="key-point-box">
+                    <h4>Common Exception Types</h4>
+                    <ul>
+                        <li><strong>ValueError:</strong> Invalid value (e.g., int("abc"))</li>
+                        <li><strong>ZeroDivisionError:</strong> Division by zero</li>
+                        <li><strong>FileNotFoundError:</strong> File doesn't exist</li>
+                        <li><strong>IndexError:</strong> List index out of range</li>
+                        <li><strong>KeyError:</strong> Dictionary key doesn't exist</li>
+                        <li><strong>TypeError:</strong> Operation on wrong type</li>
+                    </ul>
+                </div>
+
+                <h3><span class="emoji">📦</span> 2.4 Object-Oriented Programming</h3>
+
+                <div class="highlight-box">
+                    <h4>Four Pillars of OOP</h4>
+                    <div class="grid-2">
+                        <div>
+                            <h4>1. Encapsulation</h4>
+                            <p>Bundling data and methods together, hiding internal details</p>
+                        </div>
+                        <div>
+                            <h4>2. Inheritance</h4>
+                            <p>Creating new classes based on existing ones</p>
+                        </div>
+                        <div>
+                            <h4>3. Polymorphism</h4>
+                            <p>Same interface, different implementations</p>
+                        </div>
+                        <div>
+                            <h4>4. Abstraction</h4>
+                            <p>Hiding complex implementation details</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+# Basic Class
+class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.grades = []
+
+    def add_grade(self, grade):
+        self.grades.append(grade)
+
+    def get_average(self):
+        if len(self.grades) == 0:
+            return 0
+        return sum(self.grades) / len(self.grades)
+
+    def display_info(self):
+        print(f"{self.name} ({self.age})")
+        print(f"Average: {self.get_average():.2f}")
+
+# Create objects
+student1 = Student("Alice", 20)
+student1.add_grade(85)
+student1.add_grade(90)
+student1.display_info()
+
+# Inheritance
+class GraduateStudent(Student):
+    def __init__(self, name, age, thesis_topic):
+        super().__init__(name, age)  # Call parent constructor
+        self.thesis_topic = thesis_topic
+
+    def display_info(self):
+        super().display_info()  # Call parent method
+        print(f"Thesis: {self.thesis_topic}")
+
+grad = GraduateStudent("Bob", 25, "AI Research")
+grad.display_info()
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">🎯 OOP Quiz</div>
+                    <p>Which OOP principle allows a GraduateStudent class to use methods from the Student class?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">A) Encapsulation</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, true)">B) Inheritance</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">C) Polymorphism</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">D) Abstraction</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <strong>Correct!</strong> Inheritance allows child classes to inherit attributes and methods from parent classes. GraduateStudent inherits from Student using <code>class GraduateStudent(Student):</code>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📁</span> 2.5 File Handling</h3>
+
+                <div class="code-example">
+# Writing to a file
+file = open("output.txt", "w")  # "w" = write mode
+file.write("Hello, World!\n")
+file.write("This is a new line.")
+file.close()
+
+# Reading from a file
+file = open("output.txt", "r")  # "r" = read mode
+content = file.read()
+print(content)
+file.close()
+
+# Better way - using 'with' (auto-closes)
+with open("output.txt", "w") as file:
+    file.write("Using with statement")
+# File automatically closed here
+
+# Reading line by line
+with open("data.txt", "r") as file:
+    for line in file:
+        print(line.strip())  # strip() removes newline
+
+# Append mode
+with open("log.txt", "a") as file:  # "a" = append
+    file.write("New log entry\n")
+                </div>
+
+                <div class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Description</th>
+                            <th>Creates if Missing?</th>
+                            <th>Overwrites?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>"r"</code></td>
+                            <td>Read only</td>
+                            <td>❌ Error</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td><code>"w"</code></td>
+                            <td>Write only</td>
+                            <td>✅ Yes</td>
+                            <td>✅ Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>"a"</code></td>
+                            <td>Append only</td>
+                            <td>✅ Yes</td>
+                            <td>❌ No</td>
+                        </tr>
+                        <tr>
+                            <td><code>"r+"</code></td>
+                            <td>Read and write</td>
+                            <td>❌ Error</td>
+                            <td>❌ No</td>
+                        </tr>
+                        <tr>
+                            <td><code>"w+"</code></td>
+                            <td>Write and read</td>
+                            <td>✅ Yes</td>
+                            <td>✅ Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Content Area 3 -->
+            <div class="content-area-card">
+                <h2>🌍 Content Area 3: Emerging Issues & Impact of Digital</h2>
+
+                <h3><span class="emoji">🔮</span> 3.1 Emerging Technologies</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Artificial Intelligence (AI)</h4>
+                        <p>Machines performing tasks requiring human intelligence</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul>
+                            <li>ChatGPT, virtual assistants</li>
+                            <li>Facial recognition</li>
+                            <li>Self-driving cars</li>
+                            <li>Medical diagnosis</li>
+                        </ul>
+                        <p><strong>Impact:</strong> Job automation, efficiency, ethical concerns</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Machine Learning (ML)</h4>
+                        <p>Systems that learn from data without explicit programming</p>
+                        <p><strong>Types:</strong></p>
+                        <ul>
+                            <li>Supervised Learning</li>
+                            <li>Unsupervised Learning</li>
+                            <li>Reinforcement Learning</li>
+                        </ul>
+                        <p><strong>Uses:</strong> Recommendations, spam filters, predictions</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Internet of Things (IoT)</h4>
+                        <p>Network of physical devices connected to the internet</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul>
+                            <li>Smart home devices</li>
+                            <li>Wearable fitness trackers</li>
+                            <li>Connected cars</li>
+                            <li>Industrial sensors</li>
+                        </ul>
+                        <p><strong>Concerns:</strong> Privacy, security vulnerabilities</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Blockchain</h4>
+                        <p>Distributed ledger technology for secure transactions</p>
+                        <p><strong>Features:</strong></p>
+                        <ul>
+                            <li>Decentralized</li>
+                            <li>Immutable records</li>
+                            <li>Transparent</li>
+                            <li>Secure</li>
+                        </ul>
+                        <p><strong>Uses:</strong> Cryptocurrency, supply chain, smart contracts</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Virtual/Augmented Reality</h4>
+                        <p><strong>VR:</strong> Fully immersive digital environment<br>
+                        <strong>AR:</strong> Digital overlay on real world</p>
+                        <p><strong>Uses:</strong></p>
+                        <ul>
+                            <li>Gaming and entertainment</li>
+                            <li>Training simulations</li>
+                            <li>Virtual meetings</li>
+                            <li>Medical procedures</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Quantum Computing</h4>
+                        <p>Uses quantum mechanics for massive parallel processing</p>
+                        <p><strong>Potential:</strong></p>
+                        <ul>
+                            <li>Drug discovery</li>
+                            <li>Cryptography</li>
+                            <li>Complex simulations</li>
+                            <li>Optimization problems</li>
+                        </ul>
+                        <p><strong>Challenge:</strong> Still experimental, very expensive</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">💼</span> 3.2 Professional Development in IT</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Career Paths in IT</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="grid-2">
+                            <div>
+                                <h4>Software Developer</h4>
+                                <ul>
+                                    <li>Design and build applications</li>
+                                    <li>Skills: Programming, problem-solving, version control</li>
+                                    <li>Progression: Junior → Mid → Senior → Lead/Architect</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Network Engineer</h4>
+                                <ul>
+                                    <li>Design and maintain network infrastructure</li>
+                                    <li>Skills: Networking protocols, security, troubleshooting</li>
+                                    <li>Certifications: CCNA, CompTIA Network+</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Cybersecurity Analyst</h4>
+                                <ul>
+                                    <li>Protect systems from threats</li>
+                                    <li>Skills: Security tools, risk assessment, incident response</li>
+                                    <li>Growing demand, high salaries</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Data Scientist</h4>
+                                <ul>
+                                    <li>Analyze data for insights</li>
+                                    <li>Skills: Statistics, ML, Python/R</li>
+                                    <li>High demand across industries</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Continuing Professional Development (CPD)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Why CPD Matters in IT</h4>
+                        <ul>
+                            <li><strong>Rapid Change:</strong> Technology evolves quickly</li>
+                            <li><strong>Stay Competitive:</strong> Keep skills relevant</li>
+                            <li><strong>Career Progression:</strong> Unlock new opportunities</li>
+                            <li><strong>Professional Standards:</strong> Meet industry requirements</li>
+                        </ul>
+
+                        <h4>CPD Activities</h4>
+                        <ul>
+                            <li>Online courses (Udemy, Coursera, Pluralsight)</li>
+                            <li>Industry certifications (AWS, Azure, CISSP)</li>
+                            <li>Conferences and workshops</li>
+                            <li>Reading technical blogs and books</li>
+                            <li>Contributing to open source</li>
+                            <li>Peer learning and mentoring</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📋</span> 3.3 Acceptable Use Policies (AUP)</h3>
+
+                <div class="info-box">
+                    <h4>What is an AUP?</h4>
+                    <p>A document defining acceptable behavior when using an organization's IT systems and resources</p>
+                </div>
+
+                <div class="key-point-box">
+                    <h4>Common AUP Rules</h4>
+                    <ul>
+                        <li><strong>Password Security:</strong> Strong passwords, no sharing</li>
+                        <li><strong>Data Protection:</strong> Handle confidential data carefully</li>
+                        <li><strong>Appropriate Content:</strong> No illegal, offensive, or inappropriate material</li>
+                        <li><strong>Personal Use:</strong> Limited personal use of work devices</li>
+                        <li><strong>Software Installation:</strong> Only authorized software</li>
+                        <li><strong>Email:</strong> Professional communication, no spam</li>
+                        <li><strong>Social Media:</strong> Don't disclose company secrets</li>
+                        <li><strong>Security:</strong> Report suspicious activity</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Consequences of AUP Violations</h4>
+                    <ul>
+                        <li>Verbal/written warning</li>
+                        <li>Suspension of IT access</li>
+                        <li>Disciplinary action</li>
+                        <li>Termination of employment</li>
+                        <li>Legal action (for serious violations)</li>
+                    </ul>
+                </div>
+
+                <h3><span class="emoji">🌐</span> 3.4 Impact of Digital Technology on Society</h3>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>✅ Positive Impacts</h4>
+                        <ul>
+                            <li><strong>Communication:</strong> Instant global connectivity</li>
+                            <li><strong>Access to Information:</strong> Knowledge at fingertips</li>
+                            <li><strong>Education:</strong> Online learning, remote education</li>
+                            <li><strong>Healthcare:</strong> Telemedicine, better diagnosis</li>
+                            <li><strong>Economy:</strong> E-commerce, digital jobs</li>
+                            <li><strong>Efficiency:</strong> Automation saves time</li>
+                            <li><strong>Entertainment:</strong> Streaming, gaming, social media</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>❌ Negative Impacts</h4>
+                        <ul>
+                            <li><strong>Digital Divide:</strong> Inequality in access</li>
+                            <li><strong>Privacy Concerns:</strong> Data collection, surveillance</li>
+                            <li><strong>Cyberbullying:</strong> Online harassment</li>
+                            <li><strong>Addiction:</strong> Excessive screen time</li>
+                            <li><strong>Job Displacement:</strong> Automation replacing workers</li>
+                            <li><strong>Misinformation:</strong> Fake news spreads quickly</li>
+                            <li><strong>Mental Health:</strong> Social media comparison, FOMO</li>
+                            <li><strong>Security Risks:</strong> Cyberattacks, identity theft</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">🎯 Emerging Tech Quiz</div>
+                    <p>A hospital wants to train surgeons using realistic simulations without risk to real patients. Which technology would be most appropriate?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">A) Blockchain - for secure patient records</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, true)">B) Virtual Reality - for immersive training simulations</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">C) IoT - for connecting medical devices</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">D) AI - for diagnosis assistance</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <strong>Correct!</strong> Virtual Reality (VR) is ideal for training simulations as it provides an immersive, risk-free environment where surgeons can practice complex procedures without endangering patients. VR training has been shown to improve surgical skills and confidence.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area 4 -->
+            <div class="content-area-card">
+                <h2>⚖️ Content Area 4: Legislation & Regulatory Requirements</h2>
+
+                <h3><span class="emoji">🔒</span> 4.1 Data Protection Act 2018 (DPA) & UK GDPR</h3>
+
+                <div class="highlight-box">
+                    <h4>What is GDPR?</h4>
+                    <p>General Data Protection Regulation - EU law protecting personal data and privacy, implemented in UK law via the Data Protection Act 2018</p>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>The 7 Key Principles of GDPR</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <ol>
+                            <li><strong>Lawfulness, Fairness, Transparency:</strong> Process data legally, fairly, and openly</li>
+                            <li><strong>Purpose Limitation:</strong> Collect data for specific, stated purposes only</li>
+                            <li><strong>Data Minimization:</strong> Only collect what's necessary</li>
+                            <li><strong>Accuracy:</strong> Keep data accurate and up to date</li>
+                            <li><strong>Storage Limitation:</strong> Don't keep data longer than needed</li>
+                            <li><strong>Integrity & Confidentiality:</strong> Keep data secure</li>
+                            <li><strong>Accountability:</strong> Demonstrate compliance</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Individual Rights Under GDPR</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><strong>Right to be Informed:</strong> Know how data is used</li>
+                            <li><strong>Right of Access:</strong> Request copy of your data (Subject Access Request)</li>
+                            <li><strong>Right to Rectification:</strong> Correct inaccurate data</li>
+                            <li><strong>Right to Erasure:</strong> "Right to be forgotten" - delete data</li>
+                            <li><strong>Right to Restrict Processing:</strong> Limit how data is used</li>
+                            <li><strong>Right to Data Portability:</strong> Transfer data to another service</li>
+                            <li><strong>Right to Object:</strong> Stop certain processing</li>
+                            <li><strong>Rights re Automated Decisions:</strong> Not subject to automated decisions alone</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>GDPR Penalties</h4>
+                    <p><strong>Serious breaches:</strong> Up to €20 million or 4% of global annual turnover (whichever is higher)</p>
+                    <p><strong>Less serious:</strong> Up to €10 million or 2% of global annual turnover</p>
+                    <p><strong>Example:</strong> British Airways fined £20 million for 2018 data breach</p>
+                </div>
+
+                <h3><span class="emoji">💻</span> 4.2 Computer Misuse Act 1990</h3>
+
+                <div class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Offense</th>
+                            <th>Example</th>
+                            <th>Penalty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Section 1</strong></td>
+                            <td>Unauthorized access to computer material</td>
+                            <td>Guessing someone's password and logging into their account</td>
+                            <td>Up to 2 years prison and/or fine</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Section 2</strong></td>
+                            <td>Unauthorized access with intent to commit further offenses</td>
+                            <td>Hacking into a system to steal data or commit fraud</td>
+                            <td>Up to 5 years prison and/or fine</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Section 3</strong></td>
+                            <td>Unauthorized modification of computer material</td>
+                            <td>Creating or spreading malware, DDoS attacks, deleting files</td>
+                            <td>Up to 10 years prison and/or fine</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><span class="emoji">©</span> 4.3 Copyright, Designs & Patents Act 1988</h3>
+
+                <div class="info-box">
+                    <h4>What Does Copyright Protect?</h4>
+                    <ul>
+                        <li>Literary works (books, code, articles)</li>
+                        <li>Dramatic works (plays, scripts)</li>
+                        <li>Musical works (compositions)</li>
+                        <li>Artistic works (images, graphics)</li>
+                        <li>Films and recordings</li>
+                        <li>Software and databases</li>
+                    </ul>
+                    <p><strong>Protection:</strong> Automatic upon creation, lasts 70 years after creator's death</p>
+                </div>
+
+                <div class="key-point-box">
+                    <h4>Software Licensing</h4>
+                    <div class="grid-2">
+                        <div>
+                            <h4>Proprietary Software</h4>
+                            <ul>
+                                <li>Owned by company/individual</li>
+                                <li>Source code is secret</li>
+                                <li>Must purchase license</li>
+                                <li>Examples: Windows, Adobe Photoshop</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Open Source Software</h4>
+                            <ul>
+                                <li>Source code is public</li>
+                                <li>Can modify and redistribute</li>
+                                <li>Free or low cost</li>
+                                <li>Examples: Linux, Firefox, VS Code</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Software Piracy is Illegal</h4>
+                    <ul>
+                        <li>Copying software without license</li>
+                        <li>Using cracked/keygen versions</li>
+                        <li>Sharing paid software illegally</li>
+                        <li><strong>Penalties:</strong> Fines up to £50,000 and/or prison</li>
+                    </ul>
+                </div>
+
+                <h3><span class="emoji">🌍</span> 4.4 Other Important Legislation</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Freedom of Information Act 2000</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Gives public right to access information held by public authorities</p>
+                        <ul>
+                            <li>Promotes transparency and accountability</li>
+                            <li>Request must be responded to within 20 working days</li>
+                            <li>Some exemptions apply (national security, personal data)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Equality Act 2010</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Protects against discrimination based on protected characteristics</p>
+                        <ul>
+                            <li>Age, disability, race, religion, sex, sexual orientation, etc.</li>
+                            <li><strong>IT Context:</strong> Websites must be accessible (WCAG guidelines)</li>
+                            <li>Screen readers, keyboard navigation, color contrast</li>
+                            <li>Alt text for images, captions for videos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Investigatory Powers Act 2016</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Regulates surveillance and investigation powers</p>
+                        <ul>
+                            <li>ISPs must keep records of users' internet activity for 12 months</li>
+                            <li>Law enforcement can request access with warrant</li>
+                            <li>Controversial "Snooper's Charter"</li>
+                            <li>Balance between security and privacy</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flashcard-container" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <h4>🎴 Flashcard: Legislation Scenario</h4>
+                        <p>A hacker gains unauthorized access to a company's database and steals customer credit card information to sell on the dark web.</p>
+                        <p>Which laws have been broken?</p>
+                        <p class="flip-hint">👆 Click to reveal answer</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4>✅ Answer</h4>
+                        <p><strong>1. Computer Misuse Act 1990:</strong><br>
+                        Section 1 (unauthorized access) and Section 2 (with intent to commit further offenses)</p>
+                        <p><strong>2. Data Protection Act 2018 (GDPR):</strong><br>
+                        Failed to protect personal data (credit card info)</p>
+                        <p><strong>Penalties:</strong> Criminal charges + massive fines for company</p>
+                        <p class="flip-hint">👆 Click to flip back</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Paper 1 -->
+
+        <!-- PAPER 2 SECTION -->
+        <div id="paper2" class="paper-section">
+            <div class="progress-tracker">
+                <h3>📊 Paper 2 Progress Tracker</h3>
+                <p>Track your revision progress through Content Areas 5-8</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="paper2Progress" style="width: 0%">0%</div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label><input type="checkbox" onchange="updateProgress('paper2')"> Content Area 5: Business Context</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper2')"> Content Area 6: Data</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper2')"> Content Area 7: Digital Environments</label><br>
+                    <label><input type="checkbox" onchange="updateProgress('paper2')"> Content Area 8: Security</label>
+                </div>
+            </div>
+
+            <!-- Content Area 5: Business Context -->
+            <div class="content-area-card">
+                <h2>💼 Content Area 5: Business Context</h2>
+
+                <h3><span class="emoji">🏢</span> 5.1 Business Types & Models</h3>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <h4>Sole Trader</h4>
+                        <p><strong>What:</strong> One person owns and runs the business</p>
+                        <p><strong>✅ Advantages:</strong></p>
+                        <ul>
+                            <li>Easy to set up</li>
+                            <li>Full control over decisions</li>
+                            <li>Keep all profits</li>
+                            <li>Minimal paperwork</li>
+                        </ul>
+                        <p><strong>❌ Disadvantages:</strong></p>
+                        <ul>
+                            <li>Unlimited liability (personal assets at risk)</li>
+                            <li>Limited capital</li>
+                            <li>Responsible for all work</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Partnership</h4>
+                        <p><strong>What:</strong> 2-20 people share ownership</p>
+                        <p><strong>✅ Advantages:</strong></p>
+                        <ul>
+                            <li>Shared responsibility</li>
+                            <li>More capital than sole trader</li>
+                            <li>Different skills/expertise</li>
+                            <li>Shared workload</li>
+                        </ul>
+                        <p><strong>❌ Disadvantages:</strong></p>
+                        <ul>
+                            <li>Shared profits</li>
+                            <li>Joint liability</li>
+                            <li>Potential disagreements</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Private Limited (Ltd)</h4>
+                        <p><strong>What:</strong> Owned by shareholders, separate legal entity</p>
+                        <p><strong>✅ Advantages:</strong></p>
+                        <ul>
+                            <li>Limited liability</li>
+                            <li>Raise capital from shareholders</li>
+                            <li>More professional image</li>
+                            <li>Continuity if owner leaves</li>
+                        </ul>
+                        <p><strong>❌ Disadvantages:</strong></p>
+                        <ul>
+                            <li>More regulations</li>
+                            <li>Shares not publicly traded</li>
+                            <li>Expensive to set up</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Public Limited (PLC)</h4>
+                        <p><strong>What:</strong> Shares traded on stock exchange</p>
+                        <p><strong>✅ Advantages:</strong></p>
+                        <ul>
+                            <li>Raise large amounts of capital</li>
+                            <li>Limited liability</li>
+                            <li>Enhanced status/prestige</li>
+                        </ul>
+                        <p><strong>❌ Disadvantages:</strong></p>
+                        <li>Complex regulations</li>
+                            <li>Risk of hostile takeover</li>
+                            <li>Pressure from shareholders</li>
+                            <li>Must publish accounts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🔄</span> 5.3 Changeover Methods</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Direct Changeover</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Description:</strong> Old system stops, new system starts immediately on a specific date</p>
+
+                        <div class="grid-2">
+                            <div class="key-point-box">
+                                <h4>✅ Advantages</h4>
+                                <ul>
+                                    <li><strong>Fast implementation:</strong> Instant switch</li>
+                                    <li><strong>Low cost:</strong> No overlap period</li>
+                                    <li><strong>Immediate benefits:</strong> Start using new features right away</li>
+                                    <li><strong>Forces commitment:</strong> No turning back</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h4>❌ Disadvantages</h4>
+                                <ul>
+                                    <li><strong>High risk:</strong> If new system fails, big problems</li>
+                                    <li><strong>No fallback:</strong> Can't revert to old system easily</li>
+                                    <li><strong>Staff pressure:</strong> Must learn quickly</li>
+                                    <li><strong>Potential disruption:</strong> Business may stop</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p><strong>🎯 Best for:</strong> Simple systems, moving from paper to digital, non-critical systems</p>
+                        <p><strong>Example:</strong> Dental practice moving from paper appointment book to digital system</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Parallel Changeover</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Description:</strong> Both old and new systems run simultaneously for a period</p>
+
+                        <div class="grid-2">
+                            <div class="key-point-box">
+                                <h4>✅ Advantages</h4>
+                                <ul>
+                                    <li><strong>Very safe:</strong> Can compare outputs</li>
+                                    <li><strong>Easy fallback:</strong> Old system still working</li>
+                                    <li><strong>Verify accuracy:</strong> Check new system is correct</li>
+                                    <li><strong>Gradual transition:</strong> Staff have time to learn</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h4>❌ Disadvantages</h4>
+                                <ul>
+                                    <li><strong>Very expensive:</strong> Running two systems</li>
+                                    <li><strong>Double workload:</strong> Enter data twice</li>
+                                    <li><strong>Slow transition:</strong> Takes longer</li>
+                                    <li><strong>Staff fatigue:</strong> Doing everything twice</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p><strong>🎯 Best for:</strong> Critical systems (payroll, banking), high-risk changes</p>
+                        <p><strong>Example:</strong> Bank implementing new payment processing system</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Pilot Changeover</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Description:</strong> Trial with small group/department before full rollout</p>
+
+                        <div class="grid-2">
+                            <div class="key-point-box">
+                                <h4>✅ Advantages</h4>
+                                <ul>
+                                    <li><strong>Test before full deployment:</strong> Find issues early</li>
+                                    <li><strong>Limited impact:</strong> Only affects pilot group</li>
+                                    <li><strong>Gather feedback:</strong> Real user experiences</li>
+                                    <li><strong>Train champions:</strong> Pilot users help others later</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h4>❌ Disadvantages</h4>
+                                <ul>
+                                    <li><strong>Time consuming:</strong> Pilot then full rollout</li>
+                                    <li><strong>Pilot may not represent all:</strong> Different user needs</li>
+                                    <li><strong>No full load testing:</strong> Can't test with all users</li>
+                                    <li><strong>Two-stage process:</strong> Longer overall timeline</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p><strong>🎯 Best for:</strong> Large organizations, multi-site deployments, complex systems</p>
+                        <p><strong>Example:</strong> University testing new enrollment system with one department</p>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phased Changeover</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Description:</strong> System introduced in stages/modules over time</p>
+
+                        <div class="grid-2">
+                            <div class="key-point-box">
+                                <h4>✅ Advantages</h4>
+                                <ul>
+                                    <li><strong>Manageable chunks:</strong> One module at a time</li>
+                                    <li><strong>Fix issues per phase:</strong> Before moving on</li>
+                                    <li><strong>Gradual learning:</strong> Staff not overwhelmed</li>
+                                    <li><strong>Spread costs:</strong> Pay as you implement</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h4>❌ Disadvantages</h4>
+                                <ul>
+                                    <li><strong>Longest implementation:</strong> Takes most time</li>
+                                    <li><strong>Integration issues:</strong> Modules may not work together well initially</li>
+                                    <li><strong>Complex planning:</strong> Must decide order carefully</li>
+                                    <li><strong>Prolonged change period:</strong> Disruptive for longer</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p><strong>🎯 Best for:</strong> Complex systems with distinct modules, modular software</p>
+                        <p><strong>Example:</strong> ERP system - implement HR module, then Finance, then Inventory</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">🎯 Changeover Methods Quiz</div>
+                    <p>A hospital is implementing a new patient records system. Lives depend on accurate data. Which changeover method should they use?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">A) Direct - switch immediately for instant benefits</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, true)">B) Parallel - run both systems to ensure accuracy and safety</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">C) Pilot - test with one ward first</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">D) Phased - implement module by module</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <strong>Correct!</strong> Parallel changeover is best for critical systems where accuracy is vital. The hospital can compare outputs between old and new systems to ensure patient data is correct before fully switching. The double workload and cost are worth it when lives are at stake.
+                    </div>
+                </div>
+
+                <h3><span class="emoji">⚠️</span> 5.4 Risk Management</h3>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <h4>Strategic Risks</h4>
+                        <p>Business decisions, market changes, competition</p>
+                        <p><strong>Example:</strong> Choosing wrong technology stack for project</p>
+                    </div>
+                    <div class="card">
+                        <h4>Operational Risks</h4>
+                        <p>Day-to-day failures, system downtime</p>
+                        <p><strong>Example:</strong> Server crashes during peak hours</p>
+                    </div>
+                    <div class="card">
+                        <h4>Financial Risks</h4>
+                        <p>Budget overruns, cash flow issues</p>
+                        <p><strong>Example:</strong> Project costs exceed budget by 50%</p>
+                    </div>
+                    <div class="card">
+                        <h4>Compliance Risks</h4>
+                        <p>Legal violations, regulatory failures</p>
+                        <p><strong>Example:</strong> GDPR breach, data loss</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Risk Management Process</h4>
+                    <ol>
+                        <li><strong>Identify:</strong> What could go wrong?</li>
+                        <li><strong>Assess:</strong> How likely? How severe? (Risk matrix: Likelihood × Impact)</li>
+                        <li><strong>Mitigate:</strong>
+                            <ul>
+                                <li><strong>Avoid:</strong> Don't do the risky activity</li>
+                                <li><strong>Reduce:</strong> Take steps to minimize impact</li>
+                                <li><strong>Transfer:</strong> Insurance, outsourcing</li>
+                                <li><strong>Accept:</strong> Accept risk and plan for consequences</li>
+                            </ul>
+                        </li>
+                        <li><strong>Monitor:</strong> Track risks continuously</li>
+                        <li><strong>Review:</strong> Update assessments regularly</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Content Area 6: Data -->
+            <div class="content-area-card">
+                <h2>📊 Content Area 6: Data</h2>
+
+                <h3><span class="emoji">💾</span> 6.1 Data, Information, Knowledge</h3>
+
+                <div class="flashcard-container" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <h4>🎴 Key Concept: Data Hierarchy</h4>
+                        <p style="font-size: 1.5em;">Data → Information → Knowledge</p>
+                        <p>Click to see examples and explanations</p>
+                        <p class="flip-hint">👆 Click to flip</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4>📚 Explained</h4>
+                        <p><strong>Data:</strong> Raw facts - 23, "John", 150</p>
+                        <p><strong>Information:</strong> Data with context - John is 23 years old and scored 150 points</p>
+                        <p><strong>Knowledge:</strong> Applied understanding - John's score of 150 is above average for his age group, suggesting strong performance</p>
+                        <p class="flip-hint">👆 Click to flip back</p>
+                    </div>
+                </div>
+
+                <h4>6.1.4 How Organizations Use Data</h4>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>System Performance Analysis</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Scenario:</strong> Streaming service has buffering during 7-10 PM</p>
+
+                        <h4>Data to Analyze:</h4>
+                        <ul>
+                            <li><strong>CPU Usage:</strong> Is processing maxed out?</li>
+                            <li><strong>Memory Utilization:</strong> Is RAM exhausted?</li>
+                            <li><strong>Network Bandwidth:</strong> Is capacity sufficient?</li>
+                            <li><strong>Throughput:</strong> Data processed per second</li>
+                            <li><strong>Concurrent Users:</strong> How many at peak?</li>
+                        </ul>
+
+                        <h4>Solutions:</h4>
+                        <ul>
+                            <li><strong>Auto-scaling:</strong> Add servers during peak hours, remove when quiet</li>
+                            <li><strong>Load Balancing:</strong> Distribute traffic across multiple servers</li>
+                            <li><strong>CDN:</strong> Cache content closer to users</li>
+                            <li><strong>Compression:</strong> Reduce file sizes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Pattern Analysis & Targeted Marketing</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Scenario:</strong> Supermarket finds 60% of nappy buyers also buy baby food, but only 15% of baby food buyers purchase nappies</p>
+
+                        <h4>Marketing Strategies:</h4>
+                        <div class="grid-2">
+                            <div class="card">
+                                <h4>Cross-Selling</h4>
+                                <p>Offer baby food discount when nappies are scanned at till</p>
+                                <p><strong>Why:</strong> Strong link between products</p>
+                            </div>
+                            <div class="card">
+                                <h4>Customer Segmentation</h4>
+                                <p>Target the 15% who buy baby food but not nappies with nappy offers</p>
+                                <p><strong>Why:</strong> Win business from competitors</p>
+                            </div>
+                        </div>
+
+                        <h4>Benefits of Targeted Marketing:</h4>
+                        <ul>
+                            <li><strong>Cost Effective:</strong> No wasted marketing on irrelevant customers</li>
+                            <li><strong>Higher Conversion:</strong> Relevant offers more likely to be used</li>
+                            <li><strong>Better Experience:</strong> Customers get useful offers</li>
+                            <li><strong>Data-Driven:</strong> Based on actual behavior, not guesses</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Security Monitoring (Impossible Travel)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Scenario:</strong> Account logs in from London at 9:00 AM, then New York at 9:30 AM</p>
+
+                        <div class="warning-box">
+                            <h4>⚠️ Security Threat Detected</h4>
+                            <p><strong>Why this is a threat:</strong> Physically impossible to travel London → New York in 30 minutes. Credentials have been compromised!</p>
+                        </div>
+
+                        <h4>Immediate Actions:</h4>
+                        <ol>
+                            <li><strong>Lock Account:</strong> Stop attacker accessing more data</li>
+                            <li><strong>Force Password Reset:</strong> Invalidate stolen credentials</li>
+                            <li><strong>Enable MFA:</strong> Require second factor for future logins</li>
+                            <li><strong>Investigate:</strong> What data was accessed? Notify affected users</li>
+                            <li><strong>Review Logs:</strong> Check for other suspicious activity</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📝</span> 6.2 Data Formats</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>CSV</h4>
+                        <p><strong>Comma Separated Values</strong></p>
+                        <p>Simple text format for tabular data</p>
+                        <div class="code-example">
+name,age,grade
+Alice,20,A
+Bob,21,B
+Charlie,19,A
+                        </div>
+                        <p><strong>Use:</strong> Data transfer, spreadsheets, simple databases</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>JSON</h4>
+                        <p><strong>JavaScript Object Notation</strong></p>
+                        <p>Lightweight data interchange format</p>
+                        <div class="code-example">
+{
+  "name": "Alice",
+  "age": 20,
+  "grades": [85, 90, 78]
+}
+                        </div>
+                        <p><strong>Use:</strong> APIs, web applications, configuration</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>XML</h4>
+                        <p><strong>Extensible Markup Language</strong></p>
+                        <p>Structured document format</p>
+                        <div class="code-example">
+&lt;student&gt;
+  &lt;name&gt;Alice&lt;/name&gt;
+  &lt;age&gt;20&lt;/age&gt;
+&lt;/student&gt;
+                        </div>
+                        <p><strong>Use:</strong> Config files, data exchange, documents</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🗄️</span> 6.3 Database Types</h3>
+
+                <div class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Structure</th>
+                            <th>Best For</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Relational (SQL)</strong></td>
+                            <td>Tables with relationships, fixed schema</td>
+                            <td>Structured data, transactions, complex queries</td>
+                            <td>MySQL, PostgreSQL, SQL Server</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NoSQL Document</strong></td>
+                            <td>Flexible JSON-like documents</td>
+                            <td>Unstructured data, rapid development</td>
+                            <td>MongoDB, CouchDB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NoSQL Key-Value</strong></td>
+                            <td>Simple key-value pairs</td>
+                            <td>Caching, session storage</td>
+                            <td>Redis, DynamoDB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Graph</strong></td>
+                            <td>Nodes and relationships</td>
+                            <td>Social networks, recommendations</td>
+                            <td>Neo4j, Amazon Neptune</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Content Area 7: Digital Environments -->
+            <div class="content-area-card">
+                <h2>🌐 Content Area 7: Digital Environments</h2>
+
+                <h3><span class="emoji">💻</span> 7.1 Hardware & Physical Devices</h3>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <h4>CPU (Processor)</h4>
+                        <p>Executes instructions, processes data</p>
+                        <p><strong>Key metrics:</strong></p>
+                        <ul>
+                            <li>Clock speed (GHz)</li>
+                            <li>Number of cores</li>
+                            <li>Cache size</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>RAM (Memory)</h4>
+                        <p>Temporary storage for active programs</p>
+                        <p><strong>Key metrics:</strong></p>
+                        <ul>
+                            <li>Capacity (GB)</li>
+                            <li>Speed (MHz)</li>
+                            <li>Type (DDR4, DDR5)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Storage</h4>
+                        <p>Permanent data storage</p>
+                        <p><strong>HDD:</strong> Slow, cheap, large capacity</p>
+                        <p><strong>SSD:</strong> Fast, expensive, reliable</p>
+                    </div>
+                    <div class="card">
+                        <h4>GPU</h4>
+                        <p>Graphics processing unit</p>
+                        <p><strong>Use:</strong></p>
+                        <ul>
+                            <li>Gaming, rendering</li>
+                            <li>AI/ML workloads</li>
+                            <li>Video editing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">📡</span> 7.3 Network Performance</h3>
+
+                <div class="flashcard-container" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <h4>🎴 Network Performance Quiz</h4>
+                        <p>What's the difference between Bandwidth, Latency, and Throughput?</p>
+                        <p class="flip-hint">👆 Click to reveal</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4>✅ Answer</h4>
+                        <p><strong>Bandwidth:</strong> Maximum capacity (highway width) - measured in bps</p>
+                        <p><strong>Latency:</strong> Delay before transfer starts (journey start time) - measured in ms</p>
+                        <p><strong>Throughput:</strong> Actual data transferred (≤ bandwidth) - affected by real-world conditions</p>
+                        <p class="flip-hint">👆 Click to flip back</p>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Bandwidth</h4>
+                        <p>The <strong>maximum</strong> amount of data that can be transmitted</p>
+                        <p><strong>Analogy:</strong> Width of highway - more lanes = more capacity</p>
+                        <p><strong>Measured in:</strong> bps, Mbps, Gbps</p>
+                    </div>
+                    <div class="card">
+                        <h4>Latency</h4>
+                        <p>The <strong>delay</strong> before data transfer begins</p>
+                        <p><strong>Analogy:</strong> Time to start journey</p>
+                        <p><strong>Measured in:</strong> milliseconds (ms)</p>
+                    </div>
+                    <div class="card">
+                        <h4>Throughput</h4>
+                        <p>The <strong>actual</strong> data transmitted successfully</p>
+                        <p><strong>Analogy:</strong> Cars that complete journey</p>
+                        <p><strong>Note:</strong> Always ≤ Bandwidth</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Factors Affecting Throughput</h4>
+                    <ul>
+                        <li><strong>Connection Quality:</strong> Latency, packet loss, jitter</li>
+                        <li><strong>Network Congestion:</strong> More users = slower speeds</li>
+                        <li><strong>Network Type:</strong> Fiber vs copper vs wireless</li>
+                        <li><strong>Access Point Config:</strong> Device limits, range, coverage</li>
+                        <li><strong>Interference:</strong> Physical obstacles, electromagnetic interference</li>
+                    </ul>
+                </div>
+
+                <h3><span class="emoji">🔌</span> 7.3 OSI & TCP/IP Models</h3>
+
+                <div class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>OSI Layer</th>
+                            <th>Name</th>
+                            <th>Function</th>
+                            <th>Examples</th>
+                            <th>TCP/IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Application</strong></td>
+                            <td>User interfaces, network services</td>
+                            <td>HTTP, FTP, SMTP, DNS</td>
+                            <td rowspan="3"><strong>Application</strong></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>Presentation</strong></td>
+                            <td>Data formatting, encryption</td>
+                            <td>SSL/TLS, JPEG, MPEG</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Session</strong></td>
+                            <td>Manages connections</td>
+                            <td>NetBIOS, RPC</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Transport</strong></td>
+                            <td>Reliable data transfer</td>
+                            <td>TCP, UDP</td>
+                            <td><strong>Transport</strong></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Network</strong></td>
+                            <td>Routing, IP addressing</td>
+                            <td>IP, ICMP, routers</td>
+                            <td><strong>Internet</strong></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Data Link</strong></td>
+                            <td>MAC addressing, error detection</td>
+                            <td>Ethernet, switches</td>
+                            <td rowspan="2"><strong>Network Access</strong></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Physical</strong></td>
+                            <td>Physical transmission</td>
+                            <td>Cables, hubs, signals</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="key-point-box">
+                    <h4>Key Network Protocols</h4>
+                    <div class="grid-2">
+                        <div>
+                            <ul>
+                                <li><strong>HTTP/HTTPS:</strong> Web browsing (ports 80/443)</li>
+                                <li><strong>FTP:</strong> File transfer (port 21)</li>
+                                <li><strong>SMTP:</strong> Sending email (port 25)</li>
+                                <li><strong>POP3/IMAP:</strong> Receiving email (ports 110/143)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul>
+                                <li><strong>DNS:</strong> Domain name resolution (port 53)</li>
+                                <li><strong>DHCP:</strong> Automatic IP assignment</li>
+                                <li><strong>TCP:</strong> Reliable, connection-oriented</li>
+                                <li><strong>UDP:</strong> Fast, connectionless</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">☁️</span> 7.4 Cloud Computing</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>IaaS</h4>
+                        <p><strong>Infrastructure as a Service</strong></p>
+                        <p>Virtual servers, storage, networks</p>
+                        <p><strong>Examples:</strong> AWS EC2, Azure VMs, Google Compute Engine</p>
+                        <p><strong>Control:</strong> Most control, you manage OS and apps</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>PaaS</h4>
+                        <p><strong>Platform as a Service</strong></p>
+                        <p>Development platforms, databases</p>
+                        <p><strong>Examples:</strong> Heroku, Google App Engine, Azure App Service</p>
+                        <p><strong>Control:</strong> Medium control, you manage apps</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>SaaS</h4>
+                        <p><strong>Software as a Service</strong></p>
+                        <p>Complete applications</p>
+                        <p><strong>Examples:</strong> Gmail, Office 365, Salesforce, Dropbox</p>
+                        <p><strong>Control:</strong> Least control, just use the app</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Cloud Deployment Models</h4>
+                    <ul>
+                        <li><strong>Public Cloud:</strong> Shared infrastructure (AWS, Azure, GCP) - Cheapest, least control</li>
+                        <li><strong>Private Cloud:</strong> Dedicated to one organization - Most secure, most expensive</li>
+                        <li><strong>Hybrid Cloud:</strong> Mix of public and private - Balance of both</li>
+                    </ul>
+                </div>
+
+                <h3><span class="emoji">🛡️</span> 7.6 Resilient Environments</h3>
+
+                <div class="key-point-box">
+                    <h4>3-2-1 Backup Rule</h4>
+                    <ul>
+                        <li><strong>3 Copies:</strong> Original + 2 backups</li>
+                        <li><strong>2 Different Media:</strong> Hard drive + cloud/external drive</li>
+                        <li><strong>1 Offsite:</strong> Cloud storage or physical offsite location</li>
+                    </ul>
+                    <p><strong>Protects against:</strong> Hardware failure, theft, fire, natural disasters</p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Redundancy</h4>
+                        <p>Duplicate critical components</p>
+                        <ul>
+                            <li>Dual power supplies</li>
+                            <li>Multiple NICs</li>
+                            <li>RAID arrays</li>
+                            <li>Backup servers</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Load Balancing</h4>
+                        <p>Distribute traffic across servers</p>
+                        <ul>
+                            <li>Prevents overload</li>
+                            <li>Improves performance</li>
+                            <li>Provides redundancy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area 8: Security -->
+            <div class="content-area-card">
+                <h2>🔒 Content Area 8: Security</h2>
+
+                <h3><span class="emoji">🛡️</span> 8.1 CIA Triad</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Confidentiality</h4>
+                        <p>Information accessible only to authorized users</p>
+                        <p><strong>Protect with:</strong></p>
+                        <ul>
+                            <li>Encryption</li>
+                            <li>Access controls</li>
+                            <li>Data classification</li>
+                            <li>Physical security</li>
+                        </ul>
+                        <p><strong>Threats:</strong> Data breaches, eavesdropping</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Integrity</h4>
+                        <p>Information remains accurate and unaltered</p>
+                        <p><strong>Protect with:</strong></p>
+                        <ul>
+                            <li>Checksums/Hashes</li>
+                            <li>Version control</li>
+                            <li>Audit trails</li>
+                            <li>Data validation</li>
+                            <li>Backups (3-2-1)</li>
+                        </ul>
+                        <p><strong>Threats:</strong> Data corruption, unauthorized modifications</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Availability</h4>
+                        <p>Information accessible when needed</p>
+                        <p><strong>Protect with:</strong></p>
+                        <ul>
+                            <li>Hardware maintenance</li>
+                            <li>Network management</li>
+                            <li>Disaster recovery</li>
+                            <li>Redundant systems</li>
+                            <li>Load balancing</li>
+                        </ul>
+                        <p><strong>Threats:</strong> DDoS attacks, hardware failures</p>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🔐</span> 8.4.2 IAAA Security Model</h3>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <h4>Identification</h4>
+                        <p><strong>Who are you?</strong></p>
+                        <p>Claim an identity</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul>
+                            <li>Username</li>
+                            <li>Email address</li>
+                            <li>Employee ID</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Authentication</h4>
+                        <p><strong>Prove who you are</strong></p>
+                        <p>Verify the claimed identity</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul>
+                            <li>Password</li>
+                            <li>Fingerprint</li>
+                            <li>Security token</li>
+                            <li>MFA</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Authorization</h4>
+                        <p><strong>What can you access?</strong></p>
+                        <p>Grant appropriate permissions</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul>
+                            <li>RBAC</li>
+                            <li>File permissions</li>
+                            <li>Access levels</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Auditing</h4>
+                        <p><strong>What did you do?</strong></p>
+                        <p>Track actions</p>
+                        <p><strong>Log:</strong></p>
+                        <ul>
+                            <li>Who</li>
+                            <li>What</li>
+                            <li>When</li>
+                            <li>Where</li>
+                            <li>Result</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-point-box">
+                    <h4>Multi-Factor Authentication (MFA)</h4>
+                    <p>Require multiple forms of verification:</p>
+                    <ul>
+                        <li><strong>Something you know:</strong> Password, PIN</li>
+                        <li><strong>Something you have:</strong> Phone, security token, smart card</li>
+                        <li><strong>Something you are:</strong> Fingerprint, face ID, iris scan</li>
+                    </ul>
+                    <p><strong>Why MFA?</strong> Even if password is stolen, attacker needs the other factor(s). Prevents 99.9% of account compromises!</p>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Role-Based Access Control (RBAC)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Concept:</strong> Assign permissions based on job roles, not individuals</p>
+
+                        <p><strong>Example:</strong></p>
+                        <ul>
+                            <li><strong>Receptionist:</strong> Book appointments, view patient contact info</li>
+                            <li><strong>Nurse:</strong> View medical records, update vitals</li>
+                            <li><strong>Doctor:</strong> Full access to medical records, prescribe medication</li>
+                            <li><strong>IT Admin:</strong> System configuration, user management</li>
+                        </ul>
+
+                        <p><strong>Benefits:</strong></p>
+                        <ul>
+                            <li><strong>Principle of Least Privilege:</strong> Only what's needed</li>
+                            <li><strong>Easier Management:</strong> Change role, not individual permissions</li>
+                            <li><strong>Reduces Insider Threats:</strong> Limited access</li>
+                            <li><strong>Compliance:</strong> Meets regulatory requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🚨</span> 8.3.1 Threat Mitigation</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Physical Access Controls</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="grid-2">
+                            <div>
+                                <h4>Entry Controls</h4>
+                                <ul>
+                                    <li>Access levels to doors</li>
+                                    <li>Key cards, biometric scanners</li>
+                                    <li>Turnstiles, mantraps</li>
+                                    <li>Security guards</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Surveillance</h4>
+                                <ul>
+                                    <li>CCTV cameras</li>
+                                    <li>Motion detectors</li>
+                                    <li>Visitor logs</li>
+                                    <li>Badge systems</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Password Policies</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Strong Password Requirements</h4>
+                        <ul>
+                            <li><strong>Length:</strong> Minimum 12-16 characters</li>
+                            <li><strong>Complexity:</strong> Mix of uppercase, lowercase, numbers, symbols</li>
+                            <li><strong>Avoid:</strong> Dictionary words, personal info, common patterns</li>
+                            <li><strong>Best Practice:</strong> Use passphrases or password managers</li>
+                            <li><strong>Regular Changes:</strong> Update periodically</li>
+                            <li><strong>No Reuse:</strong> Different passwords for different accounts</li>
+                        </ul>
+
+                        <p><strong>Why?</strong> Longer passwords take much longer to crack. 8 characters = minutes, 16 characters = centuries!</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">🎯 Security Quiz</div>
+                    <p>A company database is accessible to all staff. An IT admin accidentally deletes critical customer records. Which CIA principle was violated?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">A) Confidentiality - data was exposed</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, true)">B) Integrity - data was altered/deleted incorrectly</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">C) Availability - data is unavailable</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, false)">D) All of the above</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        <strong>Primary violation: Integrity!</strong> The data was altered (deleted) incorrectly. While it also affects Availability (can't access deleted data), the root issue is Integrity - data should remain accurate and unaltered. This could have been prevented with proper access controls (RBAC) and backups!
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Implications of Poor Backup & Recovery</h4>
+                    <ul>
+                        <li><strong>Data Loss:</strong> Ransomware, hardware failure → all data gone permanently</li>
+                        <li><strong>Business Disruption:</strong> Cannot operate without data</li>
+                        <li><strong>Financial Loss:</strong> Ransom payments, lost productivity, customer loss</li>
+                        <li><strong>Legal Issues:</strong> GDPR violations if personal data is lost</li>
+                        <li><strong>Reputation Damage:</strong> Loss of customer trust</li>
+                        <li><strong>Competitive Disadvantage:</strong> Rivals gain advantage</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Paper 2 -->
+
+        <!-- ESP SECTION -->
+        <div id="esp" class="paper-section">
+            <div class="content-area-card">
+                <h2>🔧 Employer Set Project (ESP) Guide</h2>
+
+                <div class="highlight-box">
+                    <h3>What is the ESP?</h3>
+                    <p>The Employer Set Project (ESP) is a substantial real-world project where you demonstrate your software development skills by creating a software solution for an actual employer/client.</p>
+                    <p><strong>Duration:</strong> Typically 8-10 weeks</p>
+                    <p><strong>Assessment:</strong> Externally assessed by Pearson (60% of Occupational Specialism grade)</p>
+                    <p><strong>Real Client:</strong> You work with a real employer who sets the brief and provides feedback throughout</p>
+                </div>
+
+                <h3><span class="emoji">📋</span> ESP Project Phases</h3>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phase 1: Planning (10%)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>What You Need to Do:</h4>
+                        <ul>
+                            <li><strong>Understand the Brief:</strong> Read and analyze client requirements</li>
+                            <li><strong>Research:</strong> Investigate similar solutions, technologies, approaches</li>
+                            <li><strong>Requirements Analysis:</strong> Functional and non-functional requirements</li>
+                            <li><strong>Project Plan:</strong> Timeline, milestones, resources needed</li>
+                            <li><strong>Risk Assessment:</strong> Identify potential risks and mitigation strategies</li>
+                            <li><strong>Design Ideas:</strong> Initial sketches, wireframes, system architecture</li>
+                        </ul>
+
+                        <div class="key-point-box">
+                            <h4>Tips for Success:</h4>
+                            <ul>
+                                <li>Document everything - keep detailed notes of research</li>
+                                <li>Create a realistic project plan with buffer time</li>
+                                <li>Consider both technical and user requirements</li>
+                                <li>Think about testing strategy from the start</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phase 2: Design (15%)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Design Documentation:</h4>
+                        <ul>
+                            <li><strong>System Architecture:</strong> Overall structure (frontend, backend, database)</li>
+                            <li><strong>Database Design:</strong> ER diagrams, table structures, relationships</li>
+                            <li><strong>UI/UX Design:</strong> Wireframes, mockups, user flow diagrams</li>
+                            <li><strong>Algorithms:</strong> Flowcharts or pseudocode for complex logic</li>
+                            <li><strong>Data Structures:</strong> How data will be organized and stored</li>
+                            <li><strong>Testing Plan:</strong> Test cases, acceptance criteria</li>
+                            <li><strong>Security Considerations:</strong> How will you protect data?</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <h4>Design Tools:</h4>
+                            <ul>
+                                <li><strong>Wireframing:</strong> Figma, Adobe XD, Balsamiq</li>
+                                <li><strong>Database:</strong> Draw.io, Lucidchart for ER diagrams</li>
+                                <li><strong>Flowcharts:</strong> Draw.io, Lucidchart</li>
+                                <li><strong>Version Control:</strong> Git/GitHub for code and documentation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phase 3: Development (50%)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Implementation:</h4>
+                        <ul>
+                            <li><strong>Code Quality:</strong> Clean, well-structured, commented code</li>
+                            <li><strong>Version Control:</strong> Regular commits with meaningful messages</li>
+                            <li><strong>Follow Standards:</strong> Coding conventions, naming conventions</li>
+                            <li><strong>Iterative Development:</strong> Build features incrementally</li>
+                            <li><strong>Testing as You Go:</strong> Unit tests, integration tests</li>
+                            <li><strong>Client Feedback:</strong> Show progress, get feedback, iterate</li>
+                            <li><strong>Documentation:</strong> Code comments, README files</li>
+                        </ul>
+
+                        <div class="warning-box">
+                            <h4>Common Pitfalls to Avoid:</h4>
+                            <ul>
+                                <li>❌ Leaving everything to the last minute</li>
+                                <li>❌ Not testing until the end</li>
+                                <li>❌ Ignoring security best practices</li>
+                                <li>❌ Poor code organization</li>
+                                <li>❌ No error handling</li>
+                                <li>❌ Hardcoded values instead of configuration</li>
+                            </ul>
+                        </div>
+
+                        <div class="key-point-box">
+                            <h4>Best Practices:</h4>
+                            <div class="code-example">
+# Good code practices
+# 1. Meaningful variable names
+user_age = 25  # Good
+x = 25        # Bad
+
+# 2. Functions for reusability
+def calculate_discount(price, percentage):
+    return price * (1 - percentage / 100)
+
+# 3. Error handling
+try:
+    result = divide(a, b)
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+
+# 4. Comments for complex logic
+# Binary search requires sorted array
+# Time complexity: O(log n)
+def binary_search(arr, target):
+    # Implementation here
+    pass
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phase 4: Testing & Evaluation (15%)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Testing Strategy:</h4>
+                        <div class="grid-2">
+                            <div>
+                                <h4>Types of Testing:</h4>
+                                <ul>
+                                    <li><strong>Unit Testing:</strong> Test individual functions/methods</li>
+                                    <li><strong>Integration Testing:</strong> Test components together</li>
+                                    <li><strong>System Testing:</strong> Test entire system</li>
+                                    <li><strong>User Acceptance Testing:</strong> Client tests solution</li>
+                                    <li><strong>Usability Testing:</strong> Real users test interface</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Test Documentation:</h4>
+                                <ul>
+                                    <li>Test cases with expected vs actual results</li>
+                                    <li>Screenshots of tests being performed</li>
+                                    <li>Bug reports and fixes</li>
+                                    <li>Client feedback and responses</li>
+                                    <li>Performance testing results</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Test ID</th>
+                                    <th>Test Description</th>
+                                    <th>Expected Result</th>
+                                    <th>Actual Result</th>
+                                    <th>Pass/Fail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>T001</td>
+                                    <td>User login with correct credentials</td>
+                                    <td>Successfully logged in, redirected to dashboard</td>
+                                    <td>As expected</td>
+                                    <td>✅ Pass</td>
+                                </tr>
+                                <tr>
+                                    <td>T002</td>
+                                    <td>User login with incorrect password</td>
+                                    <td>Error message displayed, login denied</td>
+                                    <td>As expected</td>
+                                    <td>✅ Pass</td>
+                                </tr>
+                                <tr>
+                                    <td>T003</td>
+                                    <td>Submit form with empty fields</td>
+                                    <td>Validation errors shown</td>
+                                    <td>As expected</td>
+                                    <td>✅ Pass</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Evaluation:</h4>
+                        <ul>
+                            <li><strong>Successes:</strong> What worked well? Why?</li>
+                            <li><strong>Challenges:</strong> What was difficult? How did you overcome it?</li>
+                            <li><strong>Meeting Requirements:</strong> Did you fulfill client needs?</li>
+                            <li><strong>User Feedback:</strong> What did testers/client say?</li>
+                            <li><strong>Improvements:</strong> What would you do differently?</li>
+                            <li><strong>Future Enhancements:</strong> What features could be added?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Phase 5: Documentation (10%)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Required Documentation:</h4>
+                        <ul>
+                            <li><strong>User Manual:</strong> How to install, configure, and use the system</li>
+                            <li><strong>Technical Documentation:</strong> System architecture, code structure</li>
+                            <li><strong>Installation Guide:</strong> Step-by-step setup instructions</li>
+                            <li><strong>Maintenance Guide:</strong> How to update, troubleshoot</li>
+                            <li><strong>API Documentation:</strong> If applicable</li>
+                            <li><strong>Code Comments:</strong> Inline documentation</li>
+                        </ul>
+
+                        <div class="key-point-box">
+                            <h4>Good Documentation Checklist:</h4>
+                            <ul>
+                                <li>✅ Clear, concise language (avoid jargon)</li>
+                                <li>✅ Screenshots and diagrams where helpful</li>
+                                <li>✅ Step-by-step instructions</li>
+                                <li>✅ Troubleshooting section</li>
+                                <li>✅ Contact information for support</li>
+                                <li>✅ Version control (document version, date)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">⭐</span> Tips for High Marks</h3>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>✅ Do These:</h4>
+                        <ul>
+                            <li>Start early - don't procrastinate</li>
+                            <li>Regular communication with client</li>
+                            <li>Keep detailed project log/diary</li>
+                            <li>Version control from day one</li>
+                            <li>Write tests as you develop</li>
+                            <li>Get regular feedback and iterate</li>
+                            <li>Document decisions and justifications</li>
+                            <li>Consider accessibility and usability</li>
+                            <li>Implement proper security measures</li>
+                            <li>Create professional documentation</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>❌ Avoid These:</h4>
+                        <ul>
+                            <li>Scope creep - stick to requirements</li>
+                            <li>Over-ambitious features</li>
+                            <li>Ignoring project plan</li>
+                            <li>Poor time management</li>
+                            <li>No backups (use GitHub!)</li>
+                            <li>Messy, uncommented code</li>
+                            <li>Testing only at the end</li>
+                            <li>No client involvement</li>
+                            <li>Plagiarism or copied code without attribution</li>
+                            <li>Last-minute rush</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><span class="emoji">🛠️</span> Recommended Technologies</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Frontend</h4>
+                        <ul>
+                            <li>HTML/CSS/JavaScript</li>
+                            <li>React, Vue, or Angular</li>
+                            <li>Bootstrap or Tailwind CSS</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Backend</h4>
+                        <ul>
+                            <li>Python (Flask/Django)</li>
+                            <li>Node.js (Express)</li>
+                            <li>PHP (Laravel)</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Database</h4>
+                        <ul>
+                            <li>SQLite (simple projects)</li>
+                            <li>MySQL/PostgreSQL</li>
+                            <li>MongoDB (NoSQL)</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Version Control</h4>
+                        <ul>
+                            <li>Git</li>
+                            <li>GitHub/GitLab</li>
+                            <li>Commit regularly!</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Testing</h4>
+                        <ul>
+                            <li>pytest (Python)</li>
+                            <li>Jest (JavaScript)</li>
+                            <li>Selenium (UI testing)</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Tools</h4>
+                        <ul>
+                            <li>VS Code</li>
+                            <li>Postman (API testing)</li>
+                            <li>Figma (design)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Final ESP Checklist</h3>
+                    <ul>
+                        <li>☑ Planning documents complete and detailed</li>
+                        <li>☑ Design documents with diagrams</li>
+                        <li>☑ Code is clean, commented, and on GitHub</li>
+                        <li>☑ All features working as per requirements</li>
+                        <li>☑ Comprehensive testing documented</li>
+                        <li>☑ User and technical documentation complete</li>
+                        <li>☑ Client approval obtained</li>
+                        <li>☑ Evaluation written with honest reflection</li>
+                        <li>☑ All evidence organized and submitted</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End of OSP -->
+
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        ↑
+    </div>
+
+    <script>
+        // Navigation between papers
+        function showPaper(paperId) {
+            // Hide all sections
+            document.querySelectorAll('.paper-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(paperId).classList.add('active');
+
+            // Highlight active tab
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Accordion functionality
+        function toggleAccordion(header) {
+            const accordion = header.parentElement;
+            accordion.classList.toggle('active');
+        }
+
+        // Flashcard flip
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Quiz functionality
+        function selectQuizOption(option, isCorrect) {
+            const quizContainer = option.closest('.quiz-container');
+            const allOptions = quizContainer.querySelectorAll('.quiz-option');
+            const feedback = quizContainer.querySelector('.quiz-feedback');
+
+            // Remove previous selections
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            // Mark selected option
+            option.classList.add('selected');
+
+            // Show correct/incorrect
+            if (isCorrect) {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+                // Also highlight the correct answer
+                allOptions.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Show feedback
+            feedback.classList.add('show');
+        }
+
+        // Progress tracking
+        function updateProgress(paper) {
+            const checkboxes = document.querySelectorAll(`#${paper} input[type="checkbox"]`);
+            const checked = document.querySelectorAll(`#${paper} input[type="checkbox"]:checked`).length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+
+            const progressBar = document.getElementById(`${paper}Progress`);
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            // Save progress to localStorage
+            localStorage.setItem(`${paper}Progress`, JSON.stringify({
+                percentage: percentage,
+                checked: Array.from(checkboxes).map(cb => cb.checked)
+            }));
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            ['paper1', 'paper2'].forEach(paper => {
+                const saved = localStorage.getItem(`${paper}Progress`);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const checkboxes = document.querySelectorAll(`#${paper} input[type="checkbox"]`);
+                    checkboxes.forEach((cb, index) => {
+                        if (data.checked && data.checked[index]) {
+                            cb.checked = true;
+                        }
+                    });
+                    updateProgress(paper);
+                }
+            });
+        }
+
+        // Back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + 1 = Paper 1
+            if (e.altKey && e.key === '1') {
+                document.querySelector('[onclick*="paper1"]').click();
+            }
+            // Alt + 2 = Paper 2
+            if (e.altKey && e.key === '2') {
+                document.querySelector('[onclick*="paper2"]').click();
+            }
+            // Alt + 3 = ESP
+            if (e.altKey && e.key === '3') {
+                document.querySelector('[onclick*="esp"]').click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Law & Digital Systems</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            padding: 70px;
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 600px;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #667eea 0%, #764ba2 100%) 1;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.9em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.8em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #2c3e50;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 700;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+            border-left: 6px solid #667eea;
+            border: 1px solid #c7d2fe;
+            border-left: 6px solid #667eea;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateX(5px);
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+        }
+
+        .detail {
+            margin: 15px 0;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .grid-item {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #fcd34d;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .grid-item h4 {
+            color: #f59e0b;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .grid-item p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #1f2937;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 700;
+            color: #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button:disabled:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 6px solid #f97316;
+            border: 1px solid #fed7aa;
+            border-left: 6px solid #f97316;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .question-box h4 {
+            color: #f97316;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: #f97316;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .best-practices {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .practice-card {
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .practice-card h4 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .practice-card p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        em {
+            font-style: italic;
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+                min-height: 500px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .grid-container, .best-practices {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="content center-content">
+                <h1>4.1.7 International Law and Its Relevance to Digital Systems</h1>
+                <p class="subtitle">Understanding Global Legal Frameworks</p>
+            </div>
+            <div class="slide-number">1 / 18</div>
+        </div>
+
+        <!-- Slide 2: What is International Law -->
+        <div class="slide">
+            <div class="content">
+                <h2>What is International Law?</h2>
+                <div class="info-box">
+                    <h3>Definition</h3>
+                    <p class="detail">International law refers to <strong>legal frameworks and agreements that govern activities across national borders</strong>. In the context of digital systems, international law plays a crucial role in regulating cross-border data flows, cybersecurity, digital trade, and the protection of individual rights.</p>
+                </div>
+                <p style="font-size: 1.3em; line-height: 1.8; color: #2c3e50; margin-top: 30px;">As digital systems transcend national boundaries, compliance with international legal standards ensures ethical, secure, and lawful operations for organisations and individuals globally.</p>
+            </div>
+            <div class="slide-number">2 / 18</div>
+        </div>
+
+        <!-- Slide 3: Data Protection & Privacy -->
+        <div class="slide">
+            <div class="content">
+                <h2>Data Protection and Privacy Regulations</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To regulate how organisations collect, store, and process personal data across borders, ensuring user privacy and preventing data misuse.</p>
+                </div>
+                <h3>Examples of International Data Protection Laws:</h3>
+                <ul>
+                    <li><strong>General Data Protection Regulation (GDPR) (EU):</strong> Governs data protection and privacy within the European Union and for companies processing data of EU citizens</li>
+                    <li><strong>California Consumer Privacy Act (CCPA) (US):</strong> Provides data privacy rights to California residents and affects companies dealing with their data</li>
+                    <li><strong>Asia-Pacific Economic Cooperation (APEC) Privacy Framework:</strong> Establishes privacy guidelines for member economies</li>
+                </ul>
+            </div>
+            <div class="slide-number">3 / 18</div>
+        </div>
+
+        <!-- Slide 4: Data Protection Relevance -->
+        <div class="slide">
+            <div class="content center-content">
+                <h2>Data Protection Regulations</h2>
+                <div class="info-box" style="max-width: 900px;">
+                    <h3>Relevance</h3>
+                    <p style="font-size: 1.4em; line-height: 1.9;">Organisations operating internationally must comply with different data protection regulations, which may vary in terms of <strong>consent requirements</strong>, <strong>data transfer rules</strong>, and <strong>penalties for non-compliance</strong>.</p>
+                </div>
+                <div style="margin-top: 50px; font-size: 8em; color: rgba(102, 126, 234, 0.2);">🔒</div>
+            </div>
+            <div class="slide-number">4 / 18</div>
+        </div>
+
+        <!-- Slide 5: Cybersecurity Laws -->
+        <div class="slide">
+            <div class="content">
+                <h2>Cybersecurity Laws and Regulations</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To ensure the protection of critical infrastructure, digital assets, and personal data from cyber threats such as hacking, data breaches, and ransomware attacks.</p>
+                </div>
+                <h3>Examples of International Cybersecurity Frameworks:</h3>
+                <ul>
+                    <li><strong>NIS Directive (EU):</strong> Mandates cybersecurity requirements for operators of essential services</li>
+                    <li><strong>Budapest Convention on Cybercrime:</strong> The first international treaty addressing cybercrime, providing guidelines for cooperation between countries</li>
+                    <li><strong>US Cybersecurity Information Sharing Act (CISA):</strong> Encourages the sharing of cybersecurity threat intelligence between public and private sectors</li>
+                </ul>
+            </div>
+            <div class="slide-number">5 / 18</div>
+        </div>
+
+        <!-- Slide 6: Cybersecurity Relevance -->
+        <div class="slide">
+            <div class="content center-content">
+                <h2>Cybersecurity Regulations</h2>
+                <div class="info-box" style="max-width: 900px;">
+                    <h3>Relevance</h3>
+                    <p style="font-size: 1.4em; line-height: 1.9;">Companies operating globally must implement <strong>security measures</strong> to comply with international cybersecurity laws, reducing the risk of data breaches and legal liabilities.</p>
+                </div>
+                <div style="margin-top: 50px; font-size: 8em; color: rgba(118, 75, 162, 0.2);">🛡️</div>
+            </div>
+            <div class="slide-number">6 / 18</div>
+        </div>
+
+        <!-- Slide 7: Intellectual Property -->
+        <div class="slide">
+            <div class="content">
+                <h2>Intellectual Property (IP) Protection</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To protect the intellectual property rights of individuals and businesses, preventing unauthorised use, duplication, or theft of digital content and technology.</p>
+                </div>
+                <h3>Examples of International IP Laws:</h3>
+                <ul>
+                    <li><strong>World Intellectual Property Organization (WIPO) Treaties:</strong> Protects digital works and technology under copyright, patents, and trademarks</li>
+                    <li><strong>Trade-Related Aspects of Intellectual Property Rights (TRIPS):</strong> A WTO agreement that establishes global IP protection standards</li>
+                </ul>
+                <div class="info-box" style="margin-top: 30px;">
+                    <p class="detail"><strong>Relevance:</strong> Companies must ensure compliance with international IP laws to avoid legal disputes and protect their digital assets across different jurisdictions.</p>
+                </div>
+            </div>
+            <div class="slide-number">7 / 18</div>
+        </div>
+
+        <!-- Slide 8: Cross-Border Data Transfers -->
+        <div class="slide">
+            <div class="content">
+                <h2>Cross-Border Data Transfers and Compliance Challenges</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To regulate how personal and business data can be transferred between countries while ensuring compliance with data protection laws.</p>
+                </div>
+                <h3>Key Challenges:</h3>
+                <ul>
+                    <li>Some countries enforce <strong>strict data localisation laws</strong>, requiring companies to store data within their national borders (e.g., China's Cybersecurity Law)</li>
+                    <li>The <strong>EU-US Privacy Shield</strong>, previously used for data transfers between the EU and the US, has been invalidated, leading to challenges in international business operations</li>
+                    <li>Different jurisdictions have <strong>conflicting requirements</strong> for data sovereignty and access</li>
+                </ul>
+            </div>
+            <div class="slide-number">8 / 18</div>
+        </div>
+
+        <!-- Slide 9: Digital Trade -->
+        <div class="slide">
+            <div class="content">
+                <h2>Digital Trade and E-Commerce Regulations</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To regulate the global exchange of goods and services over digital platforms, ensuring fairness, consumer protection, and taxation compliance.</p>
+                </div>
+                <h3>Examples of International Trade Agreements:</h3>
+                <ul>
+                    <li><strong>World Trade Organization (WTO) Agreements:</strong> Set rules for digital trade and e-commerce taxation</li>
+                    <li><strong>Regional Trade Agreements (RTAs):</strong> Such as the USMCA (United States-Mexico-Canada Agreement), which includes provisions for digital services and e-commerce</li>
+                </ul>
+                <div class="info-box" style="margin-top: 30px;">
+                    <p class="detail"><strong>Relevance:</strong> Businesses engaging in digital trade must comply with international trade regulations to ensure the legal distribution of their products and services.</p>
+                </div>
+            </div>
+            <div class="slide-number">9 / 18</div>
+        </div>
+
+        <!-- Slide 10: Ethical Considerations -->
+        <div class="slide">
+            <div class="content">
+                <h2>Ethical Considerations in International Digital Law</h2>
+                <div class="info-box">
+                    <h3>Purpose</h3>
+                    <p class="detail">To address ethical concerns surrounding data privacy, freedom of expression, and digital sovereignty.</p>
+                </div>
+                <h3>Key Ethical Issues:</h3>
+                <ul>
+                    <li>Countries have different views on <strong>internet censorship and surveillance</strong>, affecting cross-border operations</li>
+                    <li>Ethical dilemmas arise when laws conflict, such as <strong>GDPR's right to privacy versus surveillance requirements</strong> under national security laws</li>
+                    <li>Balancing <strong>innovation with protection</strong> of human rights</li>
+                    <li>Addressing <strong>digital divides</strong> between developed and developing nations</li>
+                </ul>
+                <div class="info-box" style="margin-top: 30px;">
+                    <p class="detail"><strong>Relevance:</strong> Organisations must develop ethical digital policies that respect user rights while complying with varying international legal requirements.</p>
+                </div>
+            </div>
+            <div class="slide-number">10 / 18</div>
+        </div>
+
+        <!-- Slide 11: Challenges Part 1 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Challenges of International Law in Digital Systems</h2>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>⚖️ Jurisdictional Conflicts</h4>
+                        <p>Different countries have conflicting laws regarding digital content, data privacy, and cybersecurity enforcement.</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>🚨 Enforcement Issues</h4>
+                        <p>Difficulty in enforcing international laws across borders due to differences in legal systems and cooperation levels.</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>⚡ Rapid Technological Changes</h4>
+                        <p>Laws often struggle to keep up with rapid advancements in digital technologies such as AI, blockchain, and IoT.</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>💰 Compliance Costs</h4>
+                        <p>Companies operating internationally face significant costs related to ensuring compliance with multiple legal frameworks.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">11 / 18</div>
+        </div>
+
+        <!-- Slide 12: Best Practices -->
+        <div class="slide">
+            <div class="content">
+                <h2>Best Practices for Compliance</h2>
+                <div class="best-practices">
+                    <div class="practice-card">
+                        <h4>📋 Conducting Audits</h4>
+                        <p>Regularly review international regulatory requirements and implement necessary controls.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h4>🌍 Global Framework</h4>
+                        <p>Implement policies that align with the strictest applicable laws to avoid potential violations.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h4>👥 Employee Training</h4>
+                        <p>Educate employees on international legal obligations related to data privacy, security, and IP.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h4>⚖️ Legal Expertise</h4>
+                        <p>Engage with legal professionals who specialise in international digital law.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">12 / 18</div>
+        </div>
+
+        <!-- Slide 13: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>International law</strong> governs cross-border digital activities including data protection, cybersecurity, and e-commerce</li>
+                    <li><strong>GDPR, CCPA, and APEC</strong> are key data protection regulations affecting global organisations</li>
+                    <li><strong>Cybersecurity frameworks</strong> like the NIS Directive and Budapest Convention help protect critical infrastructure</li>
+                    <li><strong>IP protection</strong> through WIPO and TRIPS safeguards digital content and technology</li>
+                    <li><strong>Cross-border data transfers</strong> face challenges due to data localisation laws and conflicting regulations</li>
+                    <li><strong>Ethical considerations</strong> include balancing privacy, surveillance, and freedom of expression</li>
+                    <li><strong>Compliance requires</strong> regular audits, global frameworks, training, and legal expertise</li>
+                </ul>
+            </div>
+            <div class="slide-number">13 / 18</div>
+        </div>
+
+        <!-- Slide 14: Assessment Questions Section A -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 1 <span class="marks">2 marks</span></h4>
+                    <p><strong>State</strong> two examples of international data protection regulations.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 2 <span class="marks">3 marks</span></h4>
+                    <p><strong>Explain</strong> what is meant by <em>data localisation laws</em> and give one example of a country that enforces them.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 3 <span class="marks">4 marks</span></h4>
+                    <p><strong>Describe</strong> two challenges organisations face when complying with international cybersecurity laws.</p>
+                </div>
+            </div>
+            <div class="slide-number">14 / 18</div>
+        </div>
+
+        <!-- Slide 15: Assessment Question 4 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">6 marks – Discuss</span></h4>
+                    <p>The EU-US Privacy Shield framework has been invalidated, creating challenges for international data transfers.</p>
+                    <p style="margin-top: 15px;"><strong>Discuss</strong> the implications of this for businesses operating between the EU and US.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe;">
+                    <p style="font-size: 1.2em; color: #667eea;"><strong>Command word: Discuss</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Present key points about different ideas or strengths and weaknesses of an idea. Show multiple perspectives and consider various viewpoints.</p>
+                </div>
+            </div>
+            <div class="slide-number">15 / 18</div>
+        </div>
+
+        <!-- Slide 16: Assessment Question 5 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 5 <span class="marks">9 marks – Analyse</span></h4>
+                    <p>A multinational technology company operates in the EU, US, and China. Each region has different requirements for data storage, cybersecurity, and user privacy.</p>
+                    <p style="margin-top: 15px;"><strong>Analyse</strong> the challenges the company faces in maintaining compliance across these three jurisdictions. Consider data localisation, conflicting regulations, and enforcement difficulties.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe;">
+                    <p style="font-size: 1.2em; color: #667eea;"><strong>Command word: Analyse</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact.</p>
+                </div>
+            </div>
+            <div class="slide-number">16 / 18</div>
+        </div>
+
+        <!-- Slide 17: Assessment Question 6 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 6 <span class="marks">12 marks – Evaluate</span></h4>
+                    <p>An international e-commerce company is deciding whether to implement a <strong>global compliance framework</strong> that meets the strictest international standards (such as GDPR) for all markets, or to implement <strong>region-specific policies</strong> tailored to each jurisdiction's requirements.</p>
+                    <p style="margin-top: 15px;"><strong>Evaluate</strong> both approaches in terms of cost, complexity, data protection, and legal risk. Make a justified recommendation on which approach the company should adopt.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe;">
+                    <p style="font-size: 1.2em; color: #667eea;"><strong>Command word: Evaluate</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #374151;">Judge the importance or success of something using evidence. Present a balanced argument with a clear, justified conclusion and recommendation.</p>
+                </div>
+            </div>
+            <div class="slide-number">17 / 18</div>
+        </div>
+
+        <!-- Slide 18: Command Word Guidance -->
+        <div class="slide">
+            <div class="content">
+                <h2>T Level Command Words Guidance</h2>
+                <div style="margin-top: 20px; padding: 25px; background: #e0e7ff; border-radius: 12px; border: 1px solid #c7d2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <p style="font-size: 1.3em; color: #667eea; margin-bottom: 15px;"><strong>State (2 marks)</strong></p>
+                    <p style="font-size: 1.15em; color: #374151;">Express in clear terms. Give brief, factual answers without explanation.</p>
+                </div>
+                <div style="margin-top: 20px; padding: 25px; background: #e0e7ff; border-radius: 12px; border: 1px solid #c7d2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <p style="font-size: 1.3em; color: #667eea; margin-bottom: 15px;"><strong>Explain (3-4 marks)</strong></p>
+                    <p style="font-size: 1.15em; color: #374151;">Set out purposes or reasons. Show understanding by providing detail and examples.</p>
+                </div>
+                <div style="margin-top: 20px; padding: 25px; background: #e0e7ff; border-radius: 12px; border: 1px solid #c7d2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <p style="font-size: 1.3em; color: #667eea; margin-bottom: 15px;"><strong>Discuss (6 marks)</strong></p>
+                    <p style="font-size: 1.15em; color: #374151;">Present key points showing different perspectives. Give a balanced answer with multiple viewpoints.</p>
+                </div>
+                <div style="margin-top: 20px; padding: 25px; background: #e0e7ff; border-radius: 12px; border: 1px solid #c7d2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <p style="font-size: 1.3em; color: #667eea; margin-bottom: 15px;"><strong>Analyse (9 marks)</strong></p>
+                    <p style="font-size: 1.15em; color: #374151;">Break down information, identify relationships, and draw conclusions with detailed understanding.</p>
+                </div>
+                <div style="margin-top: 20px; padding: 25px; background: #e0e7ff; border-radius: 12px; border: 1px solid #c7d2fe; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size: 1.3em; color: #667eea; margin-bottom: 15px;"><strong>Evaluate (12 marks)</strong></p>
+                    <p style="font-size: 1.15em; color: #374151;">Judge the importance or effectiveness using evidence. Present a balanced argument with a clear, justified conclusion.</p>
+                </div>
+            </div>
+            <div class="slide-number">18 / 18</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+            if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

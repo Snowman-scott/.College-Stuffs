@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact of Privacy & Confidentiality Failures</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            color: #e4e4e7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(185, 28, 28, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(18, 18, 27, 0.85);
+            border-radius: 32px;
+            padding: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(220, 38, 38, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            min-height: 700px;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fca5a5 0%, #dc2626 50%, #991b1b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(220, 38, 38, 0.5)); }
+        }
+
+        h2 {
+            font-size: 3.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fca5a5 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #dc2626, transparent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #fca5a5;
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        h4 {
+            font-size: 1.5em;
+            color: #fca5a5;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #a1a1aa;
+            font-size: 1.6em;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 25px;
+        }
+
+        li {
+            margin-bottom: 22px;
+            font-size: 1.25em;
+            line-height: 1.8;
+            color: #d4d4d8;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::marker {
+            color: #dc2626;
+            font-size: 1.3em;
+        }
+
+        strong {
+            color: #fca5a5;
+            font-weight: 700;
+        }
+
+        .impact-box {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(153, 27, 27, 0.05));
+            border-left: 4px solid #dc2626;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .impact-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .impact-box:hover::before {
+            opacity: 1;
+        }
+
+        .impact-box:hover {
+            transform: translateX(8px);
+            border-color: #dc2626;
+            box-shadow: 0 20px 60px rgba(220, 38, 38, 0.15);
+        }
+
+        .impact-box h3 {
+            margin-top: 0;
+            color: #fca5a5;
+        }
+
+        .detail {
+            margin: 15px 0;
+            font-size: 1.2em;
+            line-height: 1.9;
+            color: #d4d4d8;
+        }
+
+        .case-study {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(2, 132, 199, 0.05));
+            border-left: 4px solid #0ea5e9;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study::before {
+            content: '💡';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5em;
+            opacity: 0.2;
+        }
+
+        .case-study h4 {
+            color: #67e8f9;
+            margin-bottom: 15px;
+        }
+
+        .case-study p {
+            font-size: 1.15em;
+            line-height: 1.9;
+            color: #d4d4d8;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(234, 88, 12, 0.08), rgba(194, 65, 12, 0.05));
+            border-left: 4px solid #ea580c;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(234, 88, 12, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .warning-box h4 {
+            color: #fdba74;
+            margin-bottom: 15px;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .impact-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #dc2626, #991b1b);
+            transform: scaleY(0);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .impact-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-8px);
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
+            box-shadow: 0 30px 60px rgba(220, 38, 38, 0.15);
+        }
+
+        .impact-card h4 {
+            color: #fca5a5;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+
+        .impact-card p, .impact-card ul li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #d4d4d8;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(220, 38, 38, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .icon-item:hover {
+            background: rgba(220, 38, 38, 0.05);
+            border-color: #dc2626;
+            transform: translateY(-5px);
+        }
+
+        .icon-item svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        .icon-item p {
+            color: #d4d4d8;
+            font-size: 1.15em;
+            font-weight: 600;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(18, 18, 27, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 100px;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        button {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2));
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            padding: 14px 32px;
+            border-radius: 100px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            color: #fca5a5;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #fca5a5);
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(234, 88, 12, 0.05));
+            border-left: 4px solid #f97316;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 25px 0;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .question-box h4 {
+            color: #fdba74;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #d4d4d8;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        em {
+            font-style: italic;
+            color: #fca5a5;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.15), transparent);
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .floating-element:nth-child(1) {
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            bottom: -200px;
+            left: -200px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+                min-height: 500px;
+            }
+
+            h1 {
+                font-size: 2.8em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            li {
+                font-size: 1.1em;
+            }
+
+            .impact-grid, .icon-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                bottom: 20px;
+                padding: 15px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="content center-content">
+                <h1>Privacy & Confidentiality Failures</h1>
+                <p class="subtitle">Understanding Organisational Consequences</p>
+                <p class="subtitle" style="margin-top: 60px; font-size: 1.2em;">Content Area 8.1.3</p>
+                
+                <div class="icon-grid">
+                    <div class="icon-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <p>Security Breaches</p>
+                    </div>
+                    <div class="icon-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <p>Financial Loss</p>
+                    </div>
+                    <div class="icon-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        <p>Legal Action</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 1 / 14</div>
+        </div>
+
+        <!-- Slide 2: Overview -->
+        <div class="slide">
+            <div class="content">
+                <h2>Why Privacy & Confidentiality Matter</h2>
+                <div class="impact-box">
+                    <h3>The Stakes Are High</h3>
+                    <p class="detail">Failing to maintain privacy and confidentiality can have devastating consequences for organisations, affecting their operations, finances, reputation, and legal standing.</p>
+                </div>
+                <h3>Key Impact Areas:</h3>
+                <ul>
+                    <li><strong>Non-compliance with regulations</strong> – Including loss of licence to practise</li>
+                    <li><strong>Loss of trust</strong> – From customers, partners, and stakeholders</li>
+                    <li><strong>Damage to organisation's image</strong> – Long-term reputational harm</li>
+                    <li><strong>Financial loss</strong> – Fines, refunds, and lost earnings</li>
+                    <li><strong>Legal action</strong> – Lawsuits and prosecutions</li>
+                    <li><strong>Reduced security</strong> – Vulnerability to further breaches</li>
+                </ul>
+            </div>
+            <div class="slide-number">Slide 2 / 14</div>
+        </div>
+
+        <!-- Slide 3: Non-Compliance -->
+        <div class="slide">
+            <div class="content">
+                <h2>Non-Compliance with Regulations</h2>
+                <div class="impact-box">
+                    <h3>Regulatory Requirements</h3>
+                    <p class="detail">Organisations must comply with data protection laws like UK GDPR, Data Protection Act 2018, and industry-specific regulations. Failure results in serious consequences.</p>
+                </div>
+                <h3>Key Regulations:</h3>
+                <ul>
+                    <li><strong>UK GDPR & Data Protection Act 2018:</strong> Governs personal data collection, storage, and processing</li>
+                    <li><strong>Computer Misuse Act 1990:</strong> Covers unauthorised system access</li>
+                    <li><strong>Industry-specific regulations:</strong> FCA for finance, CQC for healthcare, Ofsted for education</li>
+                </ul>
+                <div class="warning-box">
+                    <h4>⚠️ Critical Point</h4>
+                    <p style="font-size: 1.15em; line-height: 1.9; color: #d4d4d8;">Non-compliance demonstrates poor governance and puts people's personal information at risk.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 3 / 14</div>
+        </div>
+
+        <!-- Slide 4: Loss of Licence -->
+        <div class="slide">
+            <div class="content">
+                <h2>Loss of Licence to Practise</h2>
+                <div class="impact-box">
+                    <h3>The Ultimate Regulatory Penalty</h3>
+                    <p class="detail">Some organisations require licences or authorisations to operate. Serious privacy breaches can result in these being revoked, effectively shutting down the business.</p>
+                </div>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h4>Healthcare</h4>
+                        <p>Hospitals, GP surgeries, care homes must be registered with CQC. Serious data breaches can lead to deregistration.</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Financial Services</h4>
+                        <p>Banks and insurance companies need FCA authorisation. Breaches can result in licence withdrawal.</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Education</h4>
+                        <p>Schools and colleges inspected by Ofsted. Poor data handling affects ratings and can lead to closure.</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Legal Services</h4>
+                        <p>Solicitors regulated by SRA. Confidentiality breaches can result in being struck off.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 4 / 14</div>
+        </div>
+
+        <!-- Slide 5: Loss of Trust -->
+        <div class="slide">
+            <div class="content">
+                <h2>Loss of Trust</h2>
+                <div class="impact-box">
+                    <h3>Trust: Earned Slowly, Lost Instantly</h3>
+                    <p class="detail">When organisations fail to protect privacy, stakeholders lose confidence in their ability to handle sensitive information.</p>
+                </div>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h4>Customers</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Stop using services</li>
+                            <li>Switch to competitors</li>
+                            <li>Share negative experiences</li>
+                            <li>Reluctant to provide data</li>
+                        </ul>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Business Partners</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Terminate contracts</li>
+                            <li>Refuse future collaborations</li>
+                            <li>Remove supplier status</li>
+                            <li>Increase scrutiny</li>
+                        </ul>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Employees</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Low morale</li>
+                            <li>Recruitment difficulties</li>
+                            <li>Increased turnover</li>
+                            <li>Job security concerns</li>
+                        </ul>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Investors</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Share price decline</li>
+                            <li>Reduced investment</li>
+                            <li>Lost confidence</li>
+                            <li>Credit downgrades</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 5 / 14</div>
+        </div>
+
+        <!-- Slide 6: Image Damage -->
+        <div class="slide">
+            <div class="content">
+                <h2>Damage to Organisation's Image</h2>
+                <div class="impact-box">
+                    <h3>Reputational Harm</h3>
+                    <p class="detail">An organisation's reputation is one of its most valuable assets. Privacy failures generate negative publicity that can persist for years.</p>
+                </div>
+                <h3>How Reputation Suffers:</h3>
+                <ul>
+                    <li><strong>Media coverage:</strong> Negative headlines in newspapers, TV, and online news</li>
+                    <li><strong>Social media backlash:</strong> Viral criticism, hashtags, and campaigns</li>
+                    <li><strong>Brand damage:</strong> Association with negligence and untrustworthiness</li>
+                    <li><strong>Competitive disadvantage:</strong> Competitors capitalise on the incident</li>
+                    <li><strong>Industry perception:</strong> Viewed as unprofessional by peers</li>
+                </ul>
+                <div class="case-study">
+                    <h4>Case Study: TalkTalk (2015)</h4>
+                    <p>After a major data breach, TalkTalk's brand reputation was severely damaged. The company lost 95,000 customers directly following the breach, with customer acquisition costs rising significantly.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 6 / 14</div>
+        </div>
+
+        <!-- Slide 7: Financial Overview -->
+        <div class="slide">
+            <div class="content">
+                <h2>Financial Loss: Overview</h2>
+                <div class="impact-box">
+                    <h3>The High Cost of Privacy Failures</h3>
+                    <p class="detail">Privacy breaches create immediate and long-term financial consequences that can cripple organisations, particularly smaller businesses.</p>
+                </div>
+                <h3>Types of Financial Loss:</h3>
+                <ul>
+                    <li><strong>Regulatory fines:</strong> Penalties from ICO and other regulators</li>
+                    <li><strong>Refunds and compensation:</strong> Payments to affected customers</li>
+                    <li><strong>Loss of earnings:</strong> Reduced sales and customer base</li>
+                    <li><strong>Contract terminations:</strong> Business relationships ended</li>
+                    <li><strong>Remediation costs:</strong> Fixing systems, security improvements</li>
+                    <li><strong>Legal fees:</strong> Defence costs and settlements</li>
+                    <li><strong>Insurance premiums:</strong> Increased cyber insurance costs</li>
+                </ul>
+            </div>
+            <div class="slide-number">Slide 7 / 14</div>
+        </div>
+
+        <!-- Slide 8: Fines -->
+        <div class="slide">
+            <div class="content">
+                <h2>Financial Loss: Fines</h2>
+                <div class="impact-box">
+                    <h3>Regulatory Penalties</h3>
+                    <p class="detail">The Information Commissioner's Office (ICO) has the power to impose substantial fines for data protection violations under UK GDPR.</p>
+                </div>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h4>Tier 1 (Most Serious)</h4>
+                        <p style="font-size: 1.3em; margin-top: 15px; color: #fca5a5;">Up to £17.5 million or 4% of annual global turnover</p>
+                        <p style="margin-top: 10px;">(whichever is higher)</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Tier 2 (Less Serious)</h4>
+                        <p style="font-size: 1.3em; margin-top: 15px; color: #fca5a5;">Up to £8.7 million or 2% of annual global turnover</p>
+                        <p style="margin-top: 10px;">(whichever is higher)</p>
+                    </div>
+                </div>
+                <div class="case-study" style="margin-top: 30px;">
+                    <h4>Real Examples of ICO Fines:</h4>
+                    <p><strong>British Airways (2020):</strong> £20 million fine for a data breach affecting 400,000 customers</p>
+                    <p style="margin-top: 15px;"><strong>Marriott International (2020):</strong> £18.4 million fine for failing to keep customer personal data secure</p>
+                    <p style="margin-top: 15px;"><strong>Ticketmaster (2020):</strong> £1.25 million fine for failing to put appropriate security measures in place</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 8 / 14</div>
+        </div>
+
+        <!-- Slide 9: Refunds & Lost Earnings -->
+        <div class="slide">
+            <div class="content">
+                <h2>Financial Loss: Refunds & Lost Earnings</h2>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h4>Refunds & Compensation</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Refunds to dissatisfied customers</li>
+                            <li>Compensation for identity theft victims</li>
+                            <li>Credit monitoring services</li>
+                            <li>Goodwill payments</li>
+                            <li>Cost of notification letters</li>
+                        </ul>
+                    </div>
+                    <div class="impact-card">
+                        <h4>Loss of Earnings</h4>
+                        <ul style="margin-left: 20px; margin-top: 15px;">
+                            <li>Customer churn (customers leaving)</li>
+                            <li>Reduced new customer acquisition</li>
+                            <li>Lower sales and revenue</li>
+                            <li>Share price decline</li>
+                            <li>Operational downtime</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="warning-box" style="margin-top: 30px;">
+                    <h4>Long-Term Impact</h4>
+                    <p style="font-size: 1.15em; line-height: 1.9; color: #d4d4d8;">Studies show that companies experience an average <strong>3.5% decline in sales</strong> in the year following a major data breach, with recovery taking 2-3 years.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 9 / 14</div>
+        </div>
+
+        <!-- Slide 10: Contract Terminations -->
+        <div class="slide">
+            <div class="content">
+                <h2>Financial Loss: Termination of Contracts</h2>
+                <div class="impact-box">
+                    <h3>Business Relationships Severed</h3>
+                    <p class="detail">Privacy failures often trigger contractual breach clauses, resulting in immediate loss of business relationships and revenue streams.</p>
+                </div>
+                <h3>Types of Contract Terminations:</h3>
+                <ul>
+                    <li><strong>B2B contracts:</strong> Suppliers and partners terminate relationships due to liability concerns</li>
+                    <li><strong>Public sector contracts:</strong> Government and NHS contracts often have strict data protection requirements with automatic termination clauses</li>
+                    <li><strong>Franchise agreements:</strong> Franchisors may revoke licences to protect brand reputation</li>
+                    <li><strong>Service level agreements (SLAs):</strong> Failure to meet security standards triggers penalties and cancellations</li>
+                </ul>
+                <div class="case-study">
+                    <h4>Consequence</h4>
+                    <p>Losing major contracts not only means immediate revenue loss but also makes it harder to win future contracts, as organisations must disclose previous breaches in tender processes.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 10 / 14</div>
+        </div>
+
+        <!-- Slide 11: Legal Action -->
+        <div class="slide">
+            <div class="content">
+                <h2>Legal Action</h2>
+                <div class="impact-box">
+                    <h3>Court Proceedings & Litigation</h3>
+                    <p class="detail">Privacy failures can result in criminal prosecutions, civil lawsuits, and class action claims from affected individuals.</p>
+                </div>
+                <h3>Types of Legal Action:</h3>
+                <ul>
+                    <li><strong>Criminal prosecution:</strong> Under Computer Misuse Act for failing to prevent unauthorised access</li>
+                    <li><strong>Civil lawsuits:</strong> Individuals suing for damages caused by data breaches</li>
+                    <li><strong>Class action claims:</strong> Groups of affected customers filing collective lawsuits</li>
+                    <li><strong>Regulatory enforcement:</strong> ICO taking formal enforcement action</li>
+                    <li><strong>Employment tribunals:</strong> Staff suing for failure to protect their personal data</li>
+                </ul>
+                <div class="case-study">
+                    <h4>Example: British Airways Class Action</h4>
+                    <p>Following the 2018 data breach, British Airways faced a class action lawsuit from 16,000 customers seeking compensation for distress and misuse of their personal data, with potential damages in the millions.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 11 / 14</div>
+        </div>
+
+        <!-- Slide 12: Reduced Security -->
+        <div class="slide">
+            <div class="content">
+                <h2>Reduced Security</h2>
+                <div class="impact-box">
+                    <h3>Vulnerability to Further Attacks</h3>
+                    <p class="detail">An initial privacy failure exposes weaknesses in security systems, making organisations more vulnerable to subsequent attacks and breaches.</p>
+                </div>
+                <h3>How Security Is Reduced:</h3>
+                <ul>
+                    <li><strong>Exposed vulnerabilities:</strong> Hackers know where the weaknesses are and exploit them repeatedly</li>
+                    <li><strong>Compromised credentials:</strong> Stolen passwords and access codes remain in circulation</li>
+                    <li><strong>Targeted attacks:</strong> Organisations become prime targets after demonstrating poor security</li>
+                    <li><strong>Insider threats:</strong> Disgruntled employees may exploit known security gaps</li>
+                    <li><strong>Supply chain risks:</strong> Partners lose confidence and implement barriers, slowing operations</li>
+                </ul>
+                <div class="warning-box">
+                    <h4>⚠️ Critical Point</h4>
+                    <p style="font-size: 1.15em; line-height: 1.9; color: #d4d4d8;">Organisations that experience one breach are <strong>three times more likely</strong> to experience another within the following year if proper remediation isn't implemented.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 12 / 14</div>
+        </div>
+
+        <!-- Slide 13: Assessment Questions A -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section A – Shorter Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 1 <span class="marks">2 marks</span></h4>
+                    <p>State two potential financial losses an organisation might face after failing to maintain privacy and confidentiality.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 2 <span class="marks">3 marks</span></h4>
+                    <p>Explain what is meant by <em>loss of licence to practise</em> and give one example of an industry where this could occur.</p>
+                </div>
+
+                <div class="question-box">
+                    <h4>Question 3 <span class="marks">4 marks</span></h4>
+                    <p>Describe two ways in which an organisation's image could be damaged following a privacy breach.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 13 / 14</div>
+        </div>
+
+        <!-- Slide 14: Assessment Questions B -->
+        <div class="slide">
+            <div class="content">
+                <h2>Assessment Questions</h2>
+                <h3>Section B – Extended Response Questions</h3>
+                
+                <div class="question-box">
+                    <h4>Question 4 <span class="marks">9 marks – Analyse</span></h4>
+                    <p>A healthcare organisation has experienced a data breach where patient records were accessed by unauthorised individuals. Analyse the potential impacts this could have on the organisation, considering regulatory, financial, and reputational consequences.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                    <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Analyse</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                </div>
+
+                <div class="question-box" style="margin-top: 30px;">
+                    <h4>Question 5 <span class="marks">12 marks – Evaluate</span></h4>
+                    <p>An online retail company is deciding whether to invest £500,000 in upgrading its data security systems. Evaluate the importance of maintaining privacy and confidentiality by considering the potential consequences of failing to do so. Make a justified recommendation on whether the investment should be made.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(14, 165, 233, 0.08); border-radius: 16px; border: 1px solid rgba(14, 165, 233, 0.2);">
+                    <p style="font-size: 1.2em; color: #67e8f9;"><strong>Command verb: Evaluate</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 10px; color: #d4d4d8;">Judge the importance or success of something using evidence. Present a balanced argument with a clear, justified conclusion.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 14 / 14</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        function showSlide(n) {
+            if (n < 0 || n >= slides.length) return;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
+            progressFill.style.width = progress + '%';
+            
+            const content = slides[currentSlide].querySelector('.content');
+            if (content) content.scrollTop = 0;
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < slides.length) {
+                showSlide(newSlide);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(slides.length - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

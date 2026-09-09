@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7.2.3 Code Development Tools - T Level DPDD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0e27;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 50px 100px;
+    display: none;
+    opacity: 0;
+    background: linear-gradient(135deg, #0f1729 0%, #1a1f3a 100%);
+    overflow-y: auto;
+}
+
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: #1E293B;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: #8B5CF6;
+    border-radius: 4px;
+}
+
+.slide.active {
+    display: block;
+    animation: slideIn 0.6s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    z-index: 10;
+}
+
+h1 {
+    font-size: clamp(2.2em, 3.5vw, 4em);
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(1.6em, 2.5vw, 2.8em);
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-weight: 800;
+}
+
+h3 {
+    font-size: clamp(1.2em, 1.6vw, 1.9em);
+    margin-bottom: 15px;
+    color: #8B5CF6;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: clamp(1em, 1.3vw, 1.5em);
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+p, li {
+    font-size: clamp(0.9em, 1.05vw, 1.2em);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #E2E8F0;
+}
+
+ul, ol {
+    margin-left: 25px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border-left: 4px solid #8B5CF6;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.navigation {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 14px 30px;
+    border-radius: 60px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    z-index: 1000;
+}
+
+button {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    padding: 11px 26px;
+    font-size: 0.95em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.progress-bar {
+    width: 220px;
+    height: 7px;
+    background: rgba(51, 65, 85, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6 0%, #7C3AED 100%);
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.slide-number {
+    font-size: 0.95em;
+    color: rgba(226, 232, 240, 0.8);
+    font-weight: 600;
+    min-width: 65px;
+    text-align: center;
+}
+
+.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+    text-align: center;
+}
+
+.hero-title {
+    font-size: clamp(3em, 6vw, 7em);
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #8B5CF6 50%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 25px;
+    line-height: 1;
+}
+
+.divider {
+    height: 4px;
+    width: 200px;
+    background: linear-gradient(90deg, transparent, #8B5CF6, transparent);
+    margin: 30px auto;
+    border-radius: 2px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 5px;
+}
+
+.badge-purple {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+}
+
+.badge-blue {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+}
+
+.badge-pink {
+    background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+    color: white;
+}
+
+.tool-box {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 22px;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.tool-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+.tool-ide { border-color: #8B5CF6; }
+.tool-code { border-color: #3B82F6; }
+.tool-debug { border-color: #10B981; }
+.tool-screen { border-color: #F59E0B; }
+.tool-compiler { border-color: #EC4899; }
+.tool-interpreter { border-color: #06B6D4; }
+
+.example-box {
+    background: rgba(139, 92, 246, 0.1);
+    border-left: 4px solid #8B5CF6;
+    padding: 18px 22px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+th {
+    background: rgba(139, 92, 246, 0.2);
+    padding: 14px;
+    text-align: left;
+    font-weight: 700;
+    color: #8B5CF6;
+    font-size: 1.05em;
+}
+
+td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    font-size: 1em;
+}
+
+tr:hover {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.question-number {
+    font-size: 1.6em;
+    font-weight: 800;
+    color: #8B5CF6;
+}
+
+.marks {
+    background: rgba(139, 92, 246, 0.2);
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 700;
+    color: #8B5CF6;
+    font-size: 1.2em;
+}
+
+.command-verb {
+    color: #8B5CF6;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.context-box {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid #3B82F6;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.code-box {
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+.vs-box {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+}
+
+@media (max-width: 1024px) {
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .slide {
+        padding: 35px 50px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 1: Title -->
+<div class="slide active">
+    <div class="center-content">
+        <h1 class="hero-title">CODE DEVELOPMENT TOOLS</h1>
+        <div class="divider"></div>
+        <p style="font-size: clamp(1.5em, 2.5vw, 3em); color: #8B5CF6; font-weight: 700; margin-bottom: 18px;">Content Area 7.2.3</p>
+        <p style="font-size: clamp(1.1em, 1.8vw, 2.2em); color: #94A3B8; margin-bottom: 30px;">Features and Use of Common Code Development Tools</p>
+        
+        <div style="background: rgba(30, 41, 59, 0.6); padding: 35px 50px; border-radius: 20px; backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.3); max-width: 900px;">
+            <div class="grid-2" style="gap: 30px; text-align: left;">
+                <div>
+                    <p style="font-size: 1.2em; margin-bottom: 12px;">💻 <strong>Integrated Development Environments</strong></p>
+                    <p style="font-size: 1.1em; margin-left: 30px; margin-bottom: 8px; color: #94A3B8;">• Code Editing Tools</p>
+                    <p style="font-size: 1.1em; margin-left: 30px; margin-bottom: 8px; color: #94A3B8;">• Debugging Tools</p>
+                    <p style="font-size: 1.1em; margin-left: 30px; color: #94A3B8;">• Screen Design Tools</p>
+                </div>
+                <div>
+                    <p style="font-size: 1.2em; margin-bottom: 12px;">🔧 <strong>Compilers</strong></p>
+                    <p style="font-size: 1.2em;">⚡ <strong>Interpreters</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <span class="status-badge badge-purple">T Level DPDD</span>
+            <span class="status-badge badge-blue">Content Area 7.2.3</span>
+            <span class="status-badge badge-pink">14 Slides</span>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Overview of Code Development Tools -->
+<div class="slide">
+    <h1>What are Code Development Tools?</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Code development tools</strong> are software programs that help programmers write, test, debug, and deploy code more efficiently. They automate repetitive tasks, catch errors, and improve productivity.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 25px;">
+            <div class="card" style="border-left: 4px solid #8B5CF6;">
+                <h4 style="color: #8B5CF6; margin-bottom: 15px;">Why We Need Development Tools</h4>
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Writing Code in Notepad (No Tools):</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✗ No syntax highlighting - hard to read</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✗ No auto-completion - slow typing</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✗ No error detection - find bugs at runtime</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✗ No debugging - add print statements everywhere</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✗ Manual compilation - remember complex commands</p>
+                    <p style="font-size: 0.95em;">⏱️ <strong>Result:</strong> Writing 100 lines of code takes 3 hours, debugging takes 5 hours</p>
+                </div>
+
+                <div class="example-box">
+                    <p style="font-size: 1.05em; margin-bottom: 8px;"><strong>Using Professional IDE (VS Code, PyCharm):</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✓ Syntax highlighting - instantly readable</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✓ IntelliSense auto-completion - 3x faster</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✓ Real-time error detection - fix as you type</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✓ Built-in debugger - step through code, inspect variables</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">✓ One-click run/compile - no commands to remember</p>
+                    <p style="font-size: 0.95em;">⏱️ <strong>Result:</strong> Same 100 lines takes 1 hour, debugging takes 1 hour</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 15px;">Three Main Categories</h4>
+                
+                <div class="tool-box tool-ide" style="margin-bottom: 15px;">
+                    <h4 style="color: #8B5CF6; font-size: 1.2em; margin-bottom: 10px;">1. Integrated Development Environments (IDEs)</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 8px;">All-in-one software combining multiple development tools</p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Contains: Code editor + debugger + compiler/interpreter + screen designer</p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-top: 5px;"><strong>Examples:</strong> Visual Studio, VS Code, PyCharm, IntelliJ, Xcode</p>
+                </div>
+
+                <div class="tool-box tool-compiler" style="margin-bottom: 15px;">
+                    <h4 style="color: #EC4899; font-size: 1.2em; margin-bottom: 10px;">2. Compilers</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 8px;">Translate entire source code into machine code before execution</p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Process: Source code → Compiler → Executable file → Run program</p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-top: 5px;"><strong>Languages:</strong> C, C++, Java (to bytecode), Swift, Rust</p>
+                </div>
+
+                <div class="tool-box tool-interpreter">
+                    <h4 style="color: #06B6D4; font-size: 1.2em; margin-bottom: 10px;">3. Interpreters</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 8px;">Translate and execute source code line-by-line at runtime</p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Process: Source code → Interpreter reads line 1 → executes → line 2 → executes...</p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-top: 5px;"><strong>Languages:</strong> Python, JavaScript, Ruby, PHP, R</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: IDEs - Code Editing Tools -->
+<div class="slide">
+    <h1>IDEs: Code Editing Tools</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Code editing tools</strong> within IDEs provide advanced text editing capabilities designed specifically for writing and managing source code. Far more powerful than basic text editors.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 15px;">Key Features</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>1. Syntax Highlighting</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Colours code elements differently (keywords blue, strings green, comments grey) making code structure instantly visible</p>
+
+                <div class="code-box" style="font-size: 0.85em; margin-bottom: 15px;">
+<pre style="color: #E2E8F0; line-height: 1.6;"><span style="color: #C792EA;">def</span> <span style="color: #82AAFF;">calculate_total</span>(<span style="color: #FFCB6B;">price</span>, <span style="color: #FFCB6B;">quantity</span>):
+    <span style="color: #546E7A;"># Calculate total with discount</span>
+    <span style="color: #FFCB6B;">total</span> = <span style="color: #FFCB6B;">price</span> * <span style="color: #FFCB6B;">quantity</span>
+    <span style="color: #C792EA;">if</span> <span style="color: #FFCB6B;">total</span> > <span style="color: #F78C6C;">100</span>:
+        <span style="color: #FFCB6B;">total</span> *= <span style="color: #F78C6C;">0.9</span>  <span style="color: #546E7A;"># 10% discount</span>
+    <span style="color: #C792EA;">return</span> <span style="color: #FFCB6B;">total</span></pre>
+                </div>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>2. Auto-Completion (IntelliSense)</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Suggests code completions as you type - function names, variables, methods. Speeds up coding 2-3x and reduces typos</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>3. Code Folding</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Collapse/expand sections of code (functions, loops, classes) to focus on relevant parts. Essential for large files (1000+ lines)</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>4. Line Numbers & Navigation</strong></p>
+                <p style="font-size: 0.95em;">Line numbers for error messages ("Error on line 47"), jump to definition (Ctrl+click function name → see its code)</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Advanced Features</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>5. Error Detection (Linting)</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Red squiggly underlines show errors <em>as you type</em> before running code</p>
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Example:</strong> Type <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">pritn("Hello")</code></p>
+                    <p style="font-size: 0.9em; color: #EF4444;">IDE immediately shows: "pritn is not defined. Did you mean print?"</p>
+                </div>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>6. Refactoring Tools</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Safely rename variables across entire project, extract code into functions, move code between files—automatically updates all references</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>7. Multiple Cursors</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Edit multiple lines simultaneously. Example: rename variable in 10 places at once</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>8. Search & Replace</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Find all occurrences across entire project, regex support, case-sensitive options</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>9. Code Snippets</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Type short abbreviation → expands to full code template. Example: type "for" → inserts complete for loop structure</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>10. Version Control Integration</strong></p>
+                <p style="font-size: 0.95em;">Visual Git integration—see which lines changed, commit/push/pull without leaving IDE</p>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Impact:</strong> Professional developers spend 60% of their time editing code. Advanced code editing tools can improve productivity by 200-300% compared to basic text editors.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: IDEs - Debugging Tools -->
+<div class="slide">
+    <h1>IDEs: Debugging Tools</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Debugging tools</strong> help programmers identify and fix errors (bugs) in code by allowing them to pause execution, inspect variables, and step through code line-by-line.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Core Debugging Features</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>1. Breakpoints</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;">Click line number to set breakpoint—program pauses execution at that line</p>
+                <div class="example-box" style="margin-bottom: 15px;">
+                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Scenario:</strong> Function calculates wrong total</p>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;">• Set breakpoint at line calculating total</p>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;">• Run program → pauses at breakpoint</p>
+                    <p style="font-size: 0.9em;">• Inspect variable values to find error</p>
+                </div>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>2. Step Through Code</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Step Over (F10):</strong> Execute current line, move to next line</li>
+                    <li style="margin-bottom: 8px;"><strong>Step Into (F11):</strong> If line calls function, enter that function</li>
+                    <li style="margin-bottom: 8px;"><strong>Step Out (Shift+F11):</strong> Finish current function, return to caller</li>
+                    <li><strong>Continue (F5):</strong> Resume execution until next breakpoint</li>
+                </ul>
+
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>3. Watch Variables</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;">View current values of all variables while paused</p>
+                <div class="code-box" style="font-size: 0.85em;">
+<pre style="color: #E2E8F0; line-height: 1.6;"><strong style="color: #10B981;">VARIABLES WINDOW (while paused):</strong>
+price = 25.99
+quantity = 3
+total = 77.97
+discount = 0.1
+final_price = <strong style="color: #EF4444;">7.797</strong>  ← Bug found! Should be 70.17</pre>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <h4 style="color: #3B82F6; margin-bottom: 15px;">Advanced Debugging</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>4. Call Stack</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Shows sequence of function calls that led to current point. Essential for understanding program flow</p>
+                <div class="code-box" style="font-size: 0.85em; margin-bottom: 15px;">
+<pre style="color: #E2E8F0; line-height: 1.6;"><strong style="color: #3B82F6;">CALL STACK:</strong>
+→ calculate_discount() [line 15] ← Currently paused here
+  calculate_total() [line 8]
+  process_order() [line 3]
+  main() [line 1]</pre>
+                </div>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>5. Conditional Breakpoints</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Only pause when specific condition true. Example: "Break when customer_id == 1234" (useful when looping through 10,000 records)</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>6. Exception Handling</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 12px;">Automatically pause when error occurs (division by zero, file not found). Shows exact line causing crash</p>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>7. Console/Immediate Window</strong></p>
+                <p style="font-size: 0.95em;">While paused, type expressions to evaluate. Test fixes before changing code</p>
+            </div>
+        </div>
+
+        <div class="vs-box" style="margin-top: 20px;">
+            <h4 style="color: #8B5CF6; margin-bottom: 15px;">Debugging Without Tools vs. With Debugger</h4>
+            <div class="grid-2">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #EF4444;">Without Debugger:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Add print() statements everywhere</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Run program, read console output</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Guess where bug might be</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Add more print statements</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Repeat 10-20 times</p>
+                    <p style="font-size: 0.95em;">⏱️ Finding one bug: 2-4 hours</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #10B981;">With Debugger:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Set breakpoint near suspected bug</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Run in debug mode</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Inspect all variables instantly</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Step through code watching values change</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">• Identify exact line with wrong logic</p>
+                    <p style="font-size: 0.95em;">⏱️ Finding one bug: 15-30 minutes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: IDEs - Screen Design Tools -->
+<div class="slide">
+    <h1>IDEs: Screen Design Tools</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Screen design tools</strong> (GUI designers / visual designers) allow developers to create graphical user interfaces by dragging and dropping components, without writing UI code manually.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #F59E0B;">
+                <h4 style="color: #F59E0B; margin-bottom: 15px;">What are Screen Design Tools?</h4>
+                <p style="font-size: 1.05em; margin-bottom: 15px;">Visual editors for building user interfaces through drag-and-drop rather than manual coding</p>
+
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Key Features:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Component Palette:</strong> Drag buttons, text boxes, labels, images, menus onto canvas</li>
+                    <li style="margin-bottom: 8px;"><strong>WYSIWYG Editor:</strong> "What You See Is What You Get"—design looks exactly like final application</li>
+                    <li style="margin-bottom: 8px;"><strong>Property Inspector:</strong> Set properties (text, colour, size, position) in visual panel</li>
+                    <li style="margin-bottom: 8px;"><strong>Layout Tools:</strong> Alignment guides, snap-to-grid, automatic spacing</li>
+                    <li style="margin-bottom: 8px;"><strong>Preview Mode:</strong> Test interface interactions without running full application</li>
+                    <li><strong>Auto-Generated Code:</strong> IDE generates UI code automatically behind the scenes</li>
+                </ul>
+
+                <div class="example-box" style="margin-top: 15px;">
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong>Process:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">1. Drag "Button" from palette onto form</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">2. Double-click button to create click event</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">3. Write code for what happens on click</p>
+                    <p style="font-size: 0.95em;">4. Run—button appears exactly as designed</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Examples & Use Cases</h4>
+                
+                <div class="tool-box" style="border-color: #8B5CF6; margin-bottom: 12px;">
+                    <p style="font-size: 1.05em; margin-bottom: 5px;"><strong>Windows Forms Designer (Visual Studio)</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Build Windows desktop applications (C#, VB.NET). Drag buttons, text boxes, menus. Properties panel for all settings.</p>
+                </div>
+
+                <div class="tool-box" style="border-color: #3B82F6; margin-bottom: 12px;">
+                    <p style="font-size: 1.05em; margin-bottom: 5px;"><strong>Xcode Interface Builder (Apple)</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Design iOS/macOS apps visually. Storyboards show screen flow. Auto Layout for responsive design across iPhone/iPad sizes.</p>
+                </div>
+
+                <div class="tool-box" style="border-color: #10B981; margin-bottom: 12px;">
+                    <p style="font-size: 1.05em; margin-bottom: 5px;"><strong>Android Studio Layout Editor</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Design Android app screens. Drag UI components, set constraints. Preview on different device sizes/orientations simultaneously.</p>
+                </div>
+
+                <div class="tool-box" style="border-color: #F59E0B; margin-bottom: 12px;">
+                    <p style="font-size: 1.05em; margin-bottom: 5px;"><strong>Qt Designer</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Cross-platform GUI design (Windows/Mac/Linux). Used with Python (PyQt) or C++. Widget-based interface design.</p>
+                </div>
+
+                <div class="tool-box" style="border-color: #EC4899;">
+                    <p style="font-size: 1.05em; margin-bottom: 5px;"><strong>Scene Builder (JavaFX)</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8;">Visual design for Java desktop applications. Generates FXML (XML-based UI definition). Separates UI design from business logic.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="vs-box" style="margin-top: 20px;">
+            <h4 style="color: #8B5CF6; margin-bottom: 15px;">Manual Coding vs. Screen Design Tools</h4>
+            <div class="grid-2">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #EF4444;">Manual UI Code:</strong></p>
+                    <div class="code-box" style="font-size: 0.75em;">
+<pre style="color: #E2E8F0; line-height: 1.5;">button = Button()
+button.text = "Click Me"
+button.width = 100
+button.height = 30
+button.x = 150
+button.y = 200
+button.background = "blue"
+button.onclick = handle_click
+panel.add(button)</pre>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;">⏱️ Time: 5-10 minutes per button</p>
+                    <p style="font-size: 0.9em;">👁️ Can't visualize until run</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 8px;"><strong style="color: #10B981;">Screen Design Tool:</strong></p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">1. Drag button from palette</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">2. Resize visually with mouse</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">3. Type "Click Me" directly on button</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">4. Choose blue from colour picker</p>
+                    <p style="font-size: 0.95em; margin-bottom: 5px;">5. Double-click → write event code</p>
+                    <p style="font-size: 0.95em; margin-top: 10px;">⏱️ Time: 30 seconds per button</p>
+                    <p style="font-size: 0.95em;">👁️ See final result immediately</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Benefits:</strong> 10x faster UI development, easier for designers (no coding required), fewer positioning errors, rapid prototyping for client feedback. <strong>Limitation:</strong> Complex/custom UIs may still require manual code.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Compilers -->
+<div class="slide">
+    <h1>Compilers</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Compilers</strong> translate high-level source code (human-readable) into machine code (binary executable) in a single process before the program runs. The resulting executable can run independently without the compiler.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #EC4899;">
+                <h4 style="color: #EC4899; margin-bottom: 15px;">How Compilers Work</h4>
+                
+                <div class="code-box" style="font-size: 0.85em; margin-bottom: 15px;">
+<pre style="color: #E2E8F0; line-height: 1.6;"><strong style="color: #EC4899;">COMPILATION PROCESS:</strong>
+
+1. SOURCE CODE (main.cpp):
+   <span style="color: #C792EA;">int</span> main() {
+       std::cout << <span style="color: #C3E88D;">"Hello World"</span>;
+   }
+   
+2. COMPILATION:
+   g++ main.cpp -o program.exe
+   
+3. MACHINE CODE (program.exe):
+   01001000 01100101 01101100 01101100...
+   [Binary executable file]
+   
+4. RUN:
+   ./program.exe
+   → Output: Hello World</pre>
+                </div>
+
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Compilation Stages:</strong></p>
+                <ol style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Lexical Analysis:</strong> Break code into tokens (keywords, operators, identifiers)</li>
+                    <li style="margin-bottom: 8px;"><strong>Syntax Analysis:</strong> Check code follows language grammar rules</li>
+                    <li style="margin-bottom: 8px;"><strong>Semantic Analysis:</strong> Check types match, variables declared, logic valid</li>
+                    <li style="margin-bottom: 8px;"><strong>Optimization:</strong> Improve code efficiency (remove redundant operations)</li>
+                    <li><strong>Code Generation:</strong> Produce machine code executable</li>
+                </ol>
+
+                <p style="font-size: 1em; margin-top: 15px; margin-bottom: 8px;"><strong>Compilation Time:</strong></p>
+                <p style="font-size: 0.95em;">Small program (100 lines): <1 second</p>
+                <p style="font-size: 0.95em;">Large project (100,000 lines): 5-30 minutes</p>
+                <p style="font-size: 0.95em;">Massive application (millions of lines): 1-4 hours</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Advantages & Disadvantages</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">✓ Advantages:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em; margin-bottom: 20px;">
+                    <li style="margin-bottom: 8px;"><strong>Fast Execution:</strong> Machine code runs at full CPU speed. Example: C++ game runs 60 FPS smoothly</li>
+                    <li style="margin-bottom: 8px;"><strong>Optimized Performance:</strong> Compiler optimizes code for target CPU architecture</li>
+                    <li style="margin-bottom: 8px;"><strong>Error Detection Before Runtime:</strong> All syntax/type errors found at compile-time, not during execution</li>
+                    <li style="margin-bottom: 8px;"><strong>No Runtime Dependencies:</strong> .exe file runs standalone—don't need compiler installed on user's computer</li>
+                    <li style="margin-bottom: 8px;"><strong>Source Code Protection:</strong> Distribute binary executable, not readable source code</li>
+                    <li><strong>Better for Large Applications:</strong> Complex software (games, operating systems) benefit from compiled performance</li>
+                </ul>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #EF4444;">✗ Disadvantages:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Slower Development Cycle:</strong> Edit code → compile → test → repeat. Compilation adds wait time</li>
+                    <li style="margin-bottom: 8px;"><strong>Platform-Specific:</strong> Windows .exe won't run on Mac/Linux. Need separate compilation for each OS</li>
+                    <li style="margin-bottom: 8px;"><strong>Debugging More Difficult:</strong> Errors in compiled code harder to trace back to source</li>
+                    <li><strong>No Runtime Flexibility:</strong> Can't modify program behaviour without recompiling</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(236, 72, 153, 0.1); margin-top: 20px;">
+            <h4 style="color: #EC4899; margin-bottom: 15px;">Common Compiled Languages & Compilers</h4>
+            <div class="grid-3">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>C/C++:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">GCC (Linux/Mac), MSVC (Windows)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Games, OS, embedded systems</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Java:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">javac (to bytecode, then JVM)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Enterprise apps, Android</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>C#:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">Roslyn compiler (.NET)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Windows apps, Unity games</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Swift:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">Swift compiler (LLVM-based)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: iOS/macOS applications</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Rust:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">rustc compiler</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Systems programming, web servers</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Go:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">go build</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Backend services, cloud apps</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Interpreters -->
+<div class="slide">
+    <h1>Interpreters</h1>
+    <div class="card">
+        <div class="highlight-box" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);">
+            <p style="font-size: 1.25em; font-weight: 600; line-height: 1.8;"><strong>Interpreters</strong> translate and execute source code line-by-line at runtime. No separate compilation step—code runs directly through the interpreter.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 4px solid #06B6D4;">
+                <h4 style="color: #06B6D4; margin-bottom: 15px;">How Interpreters Work</h4>
+                
+                <div class="code-box" style="font-size: 0.85em; margin-bottom: 15px;">
+<pre style="color: #E2E8F0; line-height: 1.6;"><strong style="color: #06B6D4;">INTERPRETATION PROCESS:</strong>
+
+1. SOURCE CODE (script.py):
+   <span style="color: #C792EA;">print</span>(<span style="color: #C3E88D;">"Hello"</span>)
+   x = 10
+   <span style="color: #C792EA;">print</span>(x * 2)
+   
+2. RUN WITH INTERPRETER:
+   python script.py
+   
+3. EXECUTION (line-by-line):
+   Line 1: Read "print('Hello')" → Execute → Output: Hello
+   Line 2: Read "x = 10" → Execute → Store x=10
+   Line 3: Read "print(x*2)" → Execute → Output: 20
+   
+<strong style="color: #10B981;">No separate compilation step!</strong>
+Code interpreted and executed immediately.</pre>
+                </div>
+
+                <p style="font-size: 1em; margin-bottom: 10px;"><strong>Key Characteristics:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Line-by-Line Execution:</strong> Interpreter reads line 1 → executes → line 2 → executes...</li>
+                    <li style="margin-bottom: 8px;"><strong>Immediate Execution:</strong> No "build" step. Run code instantly after saving</li>
+                    <li style="margin-bottom: 8px;"><strong>Runtime Error Detection:</strong> Errors only discovered when that line executes</li>
+                    <li><strong>Interpreter Required:</strong> Users need Python/JavaScript interpreter installed to run code</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10B981;">
+                <h4 style="color: #10B981; margin-bottom: 15px;">Advantages & Disadvantages</h4>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #10B981;">✓ Advantages:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em; margin-bottom: 20px;">
+                    <li style="margin-bottom: 8px;"><strong>Faster Development:</strong> Edit code → save → run immediately. No compilation wait. Ideal for rapid prototyping</li>
+                    <li style="margin-bottom: 8px;"><strong>Platform Independent:</strong> Same Python code runs on Windows/Mac/Linux without changes (as long as interpreter available)</li>
+                    <li style="margin-bottom: 8px;"><strong>Easier Debugging:</strong> See exact line causing error with full context</li>
+                    <li style="margin-bottom: 8px;"><strong>Dynamic Features:</strong> Modify code behaviour at runtime, eval() functions, hot-reloading</li>
+                    <li style="margin-bottom: 8px;"><strong>Lower Barrier to Entry:</strong> Beginners can see results immediately without understanding compilation</li>
+                    <li><strong>Interactive Mode:</strong> REPL (Read-Eval-Print Loop) for testing code snippets</li>
+                </ul>
+
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #EF4444;">✗ Disadvantages:</strong></p>
+                <ul style="margin-left: 20px; font-size: 0.95em;">
+                    <li style="margin-bottom: 8px;"><strong>Slower Execution:</strong> 10-100x slower than compiled code. Interpreter overhead each line</li>
+                    <li style="margin-bottom: 8px;"><strong>Runtime Errors:</strong> Errors hidden until that code path executes. Bug on line 500 won't show until line 500 runs</li>
+                    <li style="margin-bottom: 8px;"><strong>Distribution Challenges:</strong> Users need interpreter installed. Can't give simple .exe file</li>
+                    <li><strong>Source Code Exposed:</strong> Must distribute readable source code (intellectual property concerns)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="background: rgba(6, 182, 212, 0.1); margin-top: 20px;">
+            <h4 style="color: #06B6D4; margin-bottom: 15px;">Common Interpreted Languages & Interpreters</h4>
+            <div class="grid-3">
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Python:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">CPython, PyPy</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Data science, AI, web, scripting</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>JavaScript:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">V8 (Chrome), SpiderMonkey (Firefox)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Web development, Node.js backend</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Ruby:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">MRI (Matz's Ruby Interpreter)</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Web apps (Ruby on Rails)</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>PHP:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">Zend Engine</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Server-side web development</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>R:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">R interpreter</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: Statistical analysis, data viz</p>
+                </div>
+                <div>
+                    <p style="font-size: 1em; margin-bottom: 5px;"><strong>Perl:</strong></p>
+                    <p style="font-size: 0.9em; color: #94A3B8; margin-bottom: 3px;">perl interpreter</p>
+                    <p style="font-size: 0.85em; color: #94A3B8;">Used for: System admin, text processing</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 20px;">
+            <p style="font-size: 1.05em;"><strong>Note:</strong> Some modern languages use hybrid approaches—Python/Java compile to bytecode (intermediate form), then interpret/JIT-compile bytecode for better performance than pure interpretation.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Compiler vs Interpreter Comparison -->
+<div class="slide">
+    <h1>Compilers vs Interpreters</h1>
+    <div class="card">
+        <table style="font-size: 0.88em;">
+            <thead>
+                <tr>
+                    <th style="width: 18%;">Aspect</th>
+                    <th style="width: 41%;">Compiler</th>
+                    <th style="width: 41%;">Interpreter</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Translation Process</strong></td>
+                    <td>Translates <strong>entire program</strong> to machine code before execution</td>
+                    <td>Translates and executes <strong>line-by-line</strong> at runtime</td>
+                </tr>
+                <tr>
+                    <td><strong>Output</strong></td>
+                    <td>Creates standalone executable file (.exe, binary)</td>
+                    <td>No separate file—executes source code directly</td>
+                </tr>
+                <tr>
+                    <td><strong>Execution Speed</strong></td>
+                    <td><strong style="color: #10B981;">Fast</strong> (machine code runs at full CPU speed)</td>
+                    <td><strong style="color: #EF4444;">Slower</strong> (10-100x slower, interpreter overhead per line)</td>
+                </tr>
+                <tr>
+                    <td><strong>Development Speed</strong></td>
+                    <td><strong style="color: #EF4444;">Slower</strong> (edit → compile → test cycle, compilation takes time)</td>
+                    <td><strong style="color: #10B981;">Faster</strong> (edit → run immediately, no compilation wait)</td>
+                </tr>
+                <tr>
+                    <td><strong>Error Detection</strong></td>
+                    <td>All syntax/type errors found <strong>at compile-time</strong> before running</td>
+                    <td>Errors only found <strong>at runtime</strong> when that line executes</td>
+                </tr>
+                <tr>
+                    <td><strong>Platform Portability</strong></td>
+                    <td><strong style="color: #EF4444;">Platform-specific</strong> (.exe for Windows only, need separate compilation for Mac/Linux)</td>
+                    <td><strong style="color: #10B981;">Platform-independent</strong> (same code runs anywhere with interpreter installed)</td>
+                </tr>
+                <tr>
+                    <td><strong>Memory Usage</strong></td>
+                    <td>Lower (optimized machine code)</td>
+                    <td>Higher (interpreter + source code in memory)</td>
+                </tr>
+                <tr>
+                    <td><strong>Distribution</strong></td>
+                    <td>Distribute single executable file (users don't need compiler)</td>
+                    <td>Distribute source code (users need interpreter installed)</td>
+                </tr>
+                <tr>
+                    <td><strong>Debugging</strong></td>
+                    <td>More difficult (debug compiled binary, harder to trace to source)</td>
+                    <td>Easier (exact error line, full source context, interactive debugging)</td>
+                </tr>
+                <tr>
+                    <td><strong>Code Security</strong></td>
+                    <td>Better (distribute binary, source code not readable)</td>
+                    <td>Lower (must distribute readable source code)</td>
+                </tr>
+                <tr>
+                    <td><strong>Optimization</strong></td>
+                    <td>Extensive compile-time optimization for target CPU</td>
+                    <td>Limited optimization (must translate at runtime)</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Performance-critical apps (games, OS, embedded systems, large enterprise software)</td>
+                    <td>Rapid development (scripts, prototypes, web development, data analysis)</td>
+                </tr>
+                <tr>
+                    <td><strong>Example Languages</strong></td>
+                    <td>C, C++, Rust, Go, Swift</td>
+                    <td>Python, JavaScript, Ruby, PHP, R</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 20px;">
+        <p style="font-size: 1.05em;"><strong>Which to Choose?</strong> Depends on requirements: Need maximum performance (game engine)? → Compiler. Need rapid development (data analysis script)? → Interpreter. Many modern projects use both (C++ core + Python scripting layer).</p>
+    </div>
+</div>
+
+<!-- EXAM QUESTIONS START HERE -->
+
+<!-- Slide 9: Exam Question 1 (2 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 1</span>
+            <span class="marks">(2 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.3em;"><span class="command-verb">State</span> two features of code editing tools found in integrated development environments.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Exam Question 2 (4 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 2</span>
+            <span class="marks">(4 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">A programmer is developing a complex application with over 5,000 lines of code. The application calculates student grades but is producing incorrect results for some students.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Explain</span> how debugging tools in an IDE could help the programmer identify and fix the error.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your answer should refer to specific debugging features such as breakpoints and variable inspection.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Exam Question 3 (6 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 3</span>
+            <span class="marks">(6 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">A student is learning to program and has been asked to create a desktop application with a graphical user interface (GUI) that includes:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list">
+                    <li>A login form with username and password text boxes</li>
+                    <li>A "Submit" button</li>
+                    <li>Labels showing "Username:" and "Password:"</li>
+                    <li>An error message label that appears when login fails</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The student is deciding whether to create the GUI by:</p>
+            <ul class="bullet-list" style="font-size: 1.1em; margin-top: 15px;">
+                <li><strong>Option A:</strong> Writing all the UI code manually</li>
+                <li><strong>Option B:</strong> Using screen design tools in an IDE</li>
+            </ul>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Describe</span> three benefits of using screen design tools (Option B) for this task.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Exam Question 4 (9 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 4</span>
+            <span class="marks">(9 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A software development company is creating two different projects:</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Project A: High-Performance 3D Game Engine</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Needs to render 60 frames per second consistently</li>
+                    <li>Complex physics calculations every frame</li>
+                    <li>Distributed to users who install and run the game</li>
+                    <li>Must run on Windows, but separate Mac version acceptable</li>
+                    <li>Performance is critical—any slowdown ruins user experience</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Project B: Data Analysis Automation Script</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Processes spreadsheets and generates reports</li>
+                    <li>Runs overnight—execution time not critical (30 min vs 5 min doesn't matter)</li>
+                    <li>Needs to run on Windows, Mac, and Linux without changes</li>
+                    <li>Frequently updated with new analysis features (weekly changes)</li>
+                    <li>Used internally by data team who can install interpreters</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The development team is deciding whether to use a <strong>compiled language</strong> or an <strong>interpreted language</strong> for each project.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> whether each project should use a compiler or an interpreter, justifying your recommendations.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">Consider execution speed, development speed, platform portability, and distribution requirements.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Exam Question 5 (12 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 5</span>
+            <span class="marks">(12 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A college is teaching programming to students with different experience levels across three courses:</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Course 1: Introduction to Programming (Beginners)</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Students have never programmed before</li>
+                    <li>Learning basic concepts (variables, loops, functions)</li>
+                    <li>Need to see immediate results to stay motivated</li>
+                    <li>Create simple text-based programs and small GUI applications</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Course 2: Mobile App Development (Intermediate)</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Students creating Android apps with user interfaces</li>
+                    <li>Need to design screens with buttons, forms, images</li>
+                    <li>Spend 40% of time on UI design, 60% on functionality code</li>
+                    <li>Frequently test apps on different screen sizes</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Course 3: Game Development (Advanced)</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Students building 2D/3D games in C++</li>
+                    <li>Complex projects (5,000-10,000 lines of code)</li>
+                    <li>Performance critical—games must run smoothly at 60 FPS</li>
+                    <li>Bugs cause crashes or unexpected behaviour during gameplay</li>
+                    <li>Need to optimize code for release to end-users</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The college IT department is deciding which development tools and features to emphasize in teaching materials for each course.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> which code development tools (IDE features, compilers, interpreters) would be most beneficial for each course.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Recommend</span> a specific IDE or development environment for each course, justifying your choices based on the requirements.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Consider: ease of use, code editing features, debugging capabilities, screen design tools, compilation vs interpretation, and student skill levels.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Summary -->
+<div class="slide">
+    <h1>Summary & Exam Tips</h1>
+    <div class="card">
+        <h3 style="margin-bottom: 25px;">Key Points - Content Area 7.2.3</h3>
+        
+        <div class="tool-box tool-ide" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #8B5CF6;">IDEs (Integrated Development Environments):</strong> All-in-one tools combining code editor + debugger + compiler/interpreter + screen designer. Examples: Visual Studio, VS Code, PyCharm</p>
+        </div>
+
+        <div class="tool-box tool-code" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #3B82F6;">Code Editing Tools:</strong> Syntax highlighting, IntelliSense auto-completion, error detection (linting), refactoring, code folding. Speed up development 2-3x</p>
+        </div>
+
+        <div class="tool-box tool-debug" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #10B981;">Debugging Tools:</strong> Breakpoints (pause execution), step through code (F10/F11), watch variables, call stack. Essential for finding bugs efficiently</p>
+        </div>
+
+        <div class="tool-box tool-screen" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #F59E0B;">Screen Design Tools:</strong> Drag-and-drop GUI builders (WYSIWYG). 10x faster UI development than manual coding. Examples: Windows Forms Designer, Xcode Interface Builder</p>
+        </div>
+
+        <div class="tool-box tool-compiler" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #EC4899;">Compilers:</strong> Translate entire program to machine code before execution. Fast execution, platform-specific, slower development. C++, Java, C#, Rust</p>
+        </div>
+
+        <div class="tool-box tool-interpreter" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #06B6D4;">Interpreters:</strong> Execute code line-by-line at runtime. Slower execution (10-100x), faster development, platform-independent. Python, JavaScript, Ruby</p>
+        </div>
+    </div>
+
+    <div class="card" style="background: rgba(139, 92, 246, 0.1); margin-top: 25px;">
+        <h3 style="margin-bottom: 20px;">Exam Success Tips</h3>
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">1. Understand Trade-offs</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Compiler vs interpreter isn't "better/worse"—depends on context. Performance-critical? Compiler. Rapid development? Interpreter.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">2. Use Specific Examples</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Don't just say "debugging tools help find bugs"—explain HOW: "Set breakpoint at line 47 → inspect variables → discover total = 7.797 instead of 70.17"</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">3. Link Features to Benefits</strong></p>
+                <p style="font-size: 0.95em;">Syntax highlighting → makes code structure visible → faster comprehension → write code 2-3x faster</p>
+            </div>
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">4. Consider User Context</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Beginner programmer needs interpreter (immediate feedback). Game developer needs compiler (performance). Match tool to user needs.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">5. Justify Recommendations</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Always explain "why" with reasoning: "Python interpreter suitable because script changes weekly—recompiling C++ every update would waste time"</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">6. Quantify Impact</strong></p>
+                <p style="font-size: 0.95em;">Use numbers when possible: "Debugger reduces bug-finding from 2 hours to 30 minutes" (not just "debugger is faster")</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 25px; background: rgba(139, 92, 246, 0.2); border-radius: 15px;">
+        <h2 style="font-size: 2em; color: #8B5CF6; font-weight: 800;">Total: 33 marks</h2>
+        <p style="font-size: 1.1em; margin-top: 10px; color: #94A3B8;">Questions: 2 + 4 + 6 + 9 + 12</p>
+    </div>
+</div>
+
+</div><!-- End slide-container -->
+
+<!-- Navigation -->
+<div class="navigation">
+    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-number" id="slideCounter">1 / 14</span>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    if (n >= totalSlides) currentSlide = 0;
+    if (n < 0) currentSlide = totalSlides - 1;
+    
+    slides[currentSlide].classList.add('active');
+    
+    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+    document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    
+    slides[currentSlide].scrollTop = 0;
+}
+
+function changeSlide(direction) {
+    currentSlide += direction;
+    showSlide(currentSlide);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+});
+
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>

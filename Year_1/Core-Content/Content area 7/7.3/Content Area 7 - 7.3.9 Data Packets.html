@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Packets (7.3.9) | T Level Digital</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0c1e47 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            background: rgba(30, 58, 138, 0.7);
+            border-radius: 32px;
+            padding: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(59, 130, 246, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            min-height: 700px;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.15));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1em;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 3.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, transparent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #60a5fa;
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.6em;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .content > p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+        }
+
+        ul {
+            margin-left: 35px;
+            margin-top: 25px;
+        }
+
+        li {
+            margin-bottom: 22px;
+            font-size: 1.25em;
+            line-height: 1.8;
+            color: #e2e8f0;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::marker {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        strong {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 5px solid #3b82f6;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.8em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box ul {
+            margin-top: 20px;
+        }
+
+        .highlight-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: rgba(34, 211, 238, 0.08);
+            border-left: 5px solid #22d3ee;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .info-box h3 {
+            font-size: 1.8em;
+            color: #22d3ee;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            font-size: 1.4em;
+            color: #22d3ee;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            margin-top: 20px;
+        }
+
+        .info-box ul li {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.08);
+            border-left: 5px solid #fbbf24;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 35px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .warning-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .warning-box h3 {
+            font-size: 1.8em;
+            color: #fbbf24;
+            margin-bottom: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .grid-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+        }
+
+        .grid-item h4 {
+            color: #60a5fa;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .grid-item p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+        }
+
+        .comparison-table th {
+            padding: 25px;
+            text-align: left;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1.15em;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .comparison-table td {
+            padding: 25px;
+            color: #e2e8f0;
+            font-size: 1.1em;
+            line-height: 1.7;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .comparison-table tbody tr {
+            background: rgba(59, 130, 246, 0.03);
+            transition: background 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .quiz-container {
+            background: rgba(59, 130, 246, 0.05);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2em;
+            color: #e2e8f0;
+            margin-bottom: 35px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .quiz-question h4 {
+            font-size: 1.4em;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .quiz-question p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul {
+            font-size: 1em;
+            margin-top: 15px;
+        }
+
+        .quiz-question ul li {
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 100px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        .navigation button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navigation button:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .navigation button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 700px;
+        }
+
+        .title-slide h1 {
+            font-size: 5em;
+            margin-bottom: 25px;
+        }
+
+        .title-badge {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 64, 175, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 12px 35px;
+            border-radius: 100px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            display: inline-block;
+        }
+
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: rgba(59, 130, 246, 0.05);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .packet-structure {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            align-items: stretch;
+        }
+
+        .packet-part {
+            flex: 1;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .packet-header {
+            background: rgba(59, 130, 246, 0.2);
+            border: 2px solid #3b82f6;
+        }
+
+        .packet-payload {
+            flex: 3;
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid #22c55e;
+        }
+
+        .packet-trailer {
+            background: rgba(251, 191, 36, 0.2);
+            border: 2px solid #fbbf24;
+        }
+
+        .packet-part h4 {
+            color: #60a5fa;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .packet-part p {
+            font-size: 1.05em;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        code {
+            background: rgba(59, 130, 246, 0.15);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #93c5fd;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#60a5fa"/>
+                    <path d="M2 17L12 22L22 17" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>T Level Digital</span>
+            </div>
+            <div>
+                <div class="title-badge">Content Area 7 - Section 7.3.9</div>
+                <h1>Data Packets</h1>
+                <p class="subtitle">Understanding how data travels across networks</p>
+            </div>
+            <div class="slide-number">Slide 1 / 18</div>
+        </div>
+
+        <!-- Slide 2: Learning Objectives -->
+        <div class="slide">
+            <div class="content">
+                <h2>Learning Objectives</h2>
+                <p style="font-size: 1.2em; color: #94a3b8; margin-bottom: 40px;">By the end of this module, you will be able to:</p>
+                
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>Define data packets:</strong> Explain what packets are and why they're used</li>
+                        <li><strong>Describe packet structure:</strong> Identify the components of a data packet (header, payload, trailer)</li>
+                        <li><strong>Explain packet switching:</strong> Understand how packets are routed across networks</li>
+                        <li><strong>Compare protocols:</strong> Differentiate between TCP and UDP packet handling</li>
+                        <li><strong>Understand encapsulation:</strong> Explain how data is wrapped in protocol layers</li>
+                        <li><strong>Analyse packet issues:</strong> Identify causes of packet loss, latency, and jitter</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <p style="font-size: 1.2em; line-height: 1.8;"><strong>💡 Key Context:</strong> Data packets are the fundamental units of data transmission across networks. Understanding packets is essential for comprehending how the internet and modern networks function.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 2 / 18</div>
+        </div>
+
+        <!-- Slide 3: What Are Data Packets? -->
+        <div class="slide">
+            <div class="content">
+                <h2>What Are Data Packets?</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Definition</h3>
+                    <p>A <strong>data packet</strong> is a small unit of data that is transmitted across a network. Large amounts of data are broken down into smaller packets for transmission, then reassembled at the destination.</p>
+                </div>
+
+                <h3>Why Use Packets?</h3>
+                <ul>
+                    <li><strong>Efficient use of bandwidth:</strong> Multiple users can share the same network connection by interleaving packets</li>
+                    <li><strong>Error handling:</strong> If one packet is corrupted, only that packet needs to be retransmitted (not the entire file)</li>
+                    <li><strong>Multiple paths:</strong> Packets can take different routes to the destination, avoiding congestion</li>
+                    <li><strong>Fair sharing:</strong> No single transmission monopolizes the network - packets from different sources alternate</li>
+                    <li><strong>Reliability:</strong> Packets can be checked for errors and acknowledged individually</li>
+                </ul>
+
+                <h3>Analogy</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">Think of sending a book through the mail. Instead of sending the entire book as one heavy package (which could get lost), you send each page in a separate envelope with:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Sender's address</strong> (source IP)</li>
+                        <li><strong>Recipient's address</strong> (destination IP)</li>
+                        <li><strong>Page number</strong> (sequence number)</li>
+                        <li><strong>The actual page content</strong> (payload/data)</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 1.15em; line-height: 1.8;">The recipient receives the pages, checks they're all there, sorts them by page number, and reconstructs the book. If a page is missing, they can request just that page be resent.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 3 / 18</div>
+        </div>
+
+        <!-- Slide 4: Packet Structure -->
+        <div class="slide">
+            <div class="content">
+                <h2>Packet Structure</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">Every packet consists of three main parts:</p>
+
+                <div class="packet-structure">
+                    <div class="packet-part packet-header">
+                        <h4>Header</h4>
+                        <p><strong>Contains:</strong></p>
+                        <p style="margin-top: 10px;">• Source IP address<br>• Destination IP address<br>• Protocol type<br>• Sequence number<br>• Packet length<br>• Time to Live (TTL)</p>
+                    </div>
+                    <div class="packet-part packet-payload">
+                        <h4>Payload (Data)</h4>
+                        <p><strong>Contains:</strong></p>
+                        <p style="margin-top: 10px;">The actual data being transmitted</p>
+                        <p style="margin-top: 15px;">• Could be part of a web page, email, file, video stream, etc.</p>
+                        <p style="margin-top: 10px;">• Typically 500-1500 bytes</p>
+                    </div>
+                    <div class="packet-part packet-trailer">
+                        <h4>Trailer (Footer)</h4>
+                        <p><strong>Contains:</strong></p>
+                        <p style="margin-top: 10px;">• Checksum/CRC for error detection<br>• End-of-packet marker<br>• Error checking data</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Header Fields Explained</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Source & Destination IP</h4>
+                        <p>Identifies where the packet came from and where it's going</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Example:</strong> 192.168.1.100 → 93.184.216.34</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Sequence Number</h4>
+                        <p>Orders packets so they can be reassembled correctly at destination</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Example:</strong> Packet 1 of 150</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Time to Live (TTL)</h4>
+                        <p>Maximum number of hops (routers) the packet can pass through before being discarded</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Purpose:</strong> Prevents packets from circulating forever</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Protocol Type</h4>
+                        <p>Indicates which protocol is being used (TCP, UDP, ICMP, etc.)</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Example:</strong> Protocol 6 = TCP</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 4 / 18</div>
+        </div>
+
+        <!-- Slide 5: Packet Switching vs Circuit Switching -->
+        <div class="slide">
+            <div class="content">
+                <h2>Packet Switching vs Circuit Switching</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Circuit Switching</th>
+                            <th>Packet Switching</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Connection Type</strong></td>
+                            <td>Dedicated physical path established</td>
+                            <td>No dedicated path - packets route independently</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Setup</strong></td>
+                            <td>Connection must be established before transmission</td>
+                            <td>No setup required - packets sent immediately</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resource Usage</strong></td>
+                            <td>Resources reserved for entire duration (even if idle)</td>
+                            <td>Resources shared - only used when packets are transmitted</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bandwidth Efficiency</strong></td>
+                            <td>Inefficient - wasted during silence/idle periods</td>
+                            <td>Efficient - bandwidth shared among multiple users</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Packet Order</strong></td>
+                            <td>Data arrives in order (same path)</td>
+                            <td>Packets may arrive out of order (different paths)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reliability</strong></td>
+                            <td>Very reliable - dedicated connection</td>
+                            <td>Less reliable - packets can be lost or delayed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Latency</strong></td>
+                            <td>Low, consistent latency once connected</td>
+                            <td>Variable latency depending on congestion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example Use</strong></td>
+                            <td>Traditional telephone networks</td>
+                            <td>Internet, email, web browsing, VoIP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost</strong></td>
+                            <td>Expensive - dedicated resources</td>
+                            <td>Cost-effective - shared infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fault Tolerance</strong></td>
+                            <td>If connection fails, call drops completely</td>
+                            <td>Packets can reroute around failures automatically</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <p style="font-size: 1.2em; line-height: 1.8;"><strong>💡 Modern Networks:</strong> The internet uses packet switching because it's more efficient for bursty, unpredictable data traffic. Circuit switching is better for continuous, real-time communications but wastes bandwidth during idle periods.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 5 / 18</div>
+        </div>
+
+        <!-- Slide 6: How Packets Are Routed -->
+        <div class="slide">
+            <div class="content">
+                <h2>How Packets Are Routed</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">The Routing Process</h3>
+                    <p>When you send data across the internet, it doesn't travel directly to the destination. Instead, packets "hop" through multiple routers, each making independent decisions about the best next hop.</p>
+                </div>
+
+                <h3>Step-by-Step Journey</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="grid-item">
+                        <div class="icon-large">1️⃣</div>
+                        <h4>Packetization</h4>
+                        <p>Data is broken into packets with headers containing source and destination IP addresses</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">2️⃣</div>
+                        <h4>First Hop</h4>
+                        <p>Packet sent to default gateway (home router), which examines destination IP</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">3️⃣</div>
+                        <h4>Router Decision</h4>
+                        <p>Each router checks routing table to determine best next hop toward destination</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">4️⃣</div>
+                        <h4>Multiple Hops</h4>
+                        <p>Packet passes through 10-20 routers (hops), each decreasing TTL by 1</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">5️⃣</div>
+                        <h4>Arrival</h4>
+                        <p>Packet reaches destination network and is delivered to target device</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">6️⃣</div>
+                        <h4>Reassembly</h4>
+                        <p>All packets are collected, reordered by sequence number, and reassembled into original data</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Routing Decisions</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">Routers make decisions based on:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Routing tables:</strong> Lists of network destinations and which interface to forward packets to</li>
+                        <li><strong>Metrics:</strong> Cost, hop count, bandwidth, congestion levels</li>
+                        <li><strong>Dynamic updates:</strong> Routing protocols (BGP, OSPF, RIP) share network topology information</li>
+                        <li><strong>Load balancing:</strong> Distributing traffic across multiple paths for efficiency</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 6 / 18</div>
+        </div>
+
+        <!-- Slide 7: TCP vs UDP -->
+        <div class="slide">
+            <div class="content">
+                <h2>TCP vs UDP Protocols</h2>
+                
+                <p style="font-size: 1.2em; color: #cbd5e1; margin-bottom: 30px;">Two main transport layer protocols handle packets differently:</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>TCP (Transmission Control Protocol)</th>
+                            <th>UDP (User Datagram Protocol)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Connection Type</strong></td>
+                            <td>Connection-oriented (3-way handshake)</td>
+                            <td>Connectionless (no handshake)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reliability</strong></td>
+                            <td>Guaranteed delivery - retransmits lost packets</td>
+                            <td>No guarantee - packets may be lost</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ordering</strong></td>
+                            <td>Packets delivered in correct order</td>
+                            <td>No ordering - may arrive out of sequence</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Error Checking</strong></td>
+                            <td>Extensive error checking and acknowledgments</td>
+                            <td>Basic checksum only</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Slower due to acknowledgments and retransmissions</td>
+                            <td>Faster - no overhead for reliability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Header Size</strong></td>
+                            <td>20-60 bytes (larger)</td>
+                            <td>8 bytes (smaller)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flow Control</strong></td>
+                            <td>Yes - prevents overwhelming receiver</td>
+                            <td>No flow control</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Congestion Control</strong></td>
+                            <td>Yes - slows down when network congested</td>
+                            <td>No congestion control</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Use Cases</strong></td>
+                            <td>Web browsing (HTTP/HTTPS), email (SMTP), file transfer (FTP), SSH</td>
+                            <td>Video streaming, online gaming, VoIP, DNS queries, live broadcasts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>When to Use</strong></td>
+                            <td>When data integrity is critical and latency is acceptable</td>
+                            <td>When speed matters more than reliability or occasional data loss is acceptable</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Real-World Examples</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>TCP:</strong> Downloading a file - you need every byte to be correct and in order. A corrupted file is useless.</p>
+                    <p style="font-size: 1.15em; line-height: 1.8; margin-top: 15px;"><strong>UDP:</strong> Video call - if a few packets are lost, you might see brief pixelation, but the conversation continues. Waiting for retransmission would cause worse disruption than losing the data.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 7 / 18</div>
+        </div>
+
+        <!-- Slide 8: TCP Three-Way Handshake -->
+        <div class="slide">
+            <div class="content">
+                <h2>TCP Three-Way Handshake</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">What is the Three-Way Handshake?</h3>
+                    <p>Before TCP can transmit data, it establishes a connection using a three-step process. This ensures both parties are ready to communicate and agree on initial parameters.</p>
+                </div>
+
+                <h3>The Three Steps</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="grid-item">
+                        <div class="icon-large">1️⃣</div>
+                        <h4>SYN (Synchronize)</h4>
+                        <p><strong>Client → Server</strong></p>
+                        <p style="margin-top: 10px;">"Hello, I want to establish a connection. My initial sequence number is X."</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Client sends SYN packet with initial sequence number</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">2️⃣</div>
+                        <h4>SYN-ACK</h4>
+                        <p><strong>Server → Client</strong></p>
+                        <p style="margin-top: 10px;">"I acknowledge your request. My sequence number is Y. I'm ready!"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Server responds with SYN-ACK packet</p>
+                    </div>
+                    <div class="grid-item">
+                        <div class="icon-large">3️⃣</div>
+                        <h4>ACK (Acknowledge)</h4>
+                        <p><strong>Client → Server</strong></p>
+                        <p style="margin-top: 10px;">"I acknowledge your acknowledgment. Connection established!"</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">Client sends final ACK, connection is now open</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">After the Handshake</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Data transmission begins:</strong> Both parties can now send and receive data</li>
+                        <li><strong>Acknowledgments continue:</strong> Each data packet is acknowledged to confirm receipt</li>
+                        <li><strong>Sequence numbers track data:</strong> Ensures packets are reassembled in correct order</li>
+                        <li><strong>Connection termination:</strong> Uses FIN-ACK process to close connection gracefully</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box" style="margin-top: 30px;">
+                    <h3 style="margin-top: 0;">⚠️ Overhead Trade-off</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">The three-way handshake adds latency (round-trip delay) before any data is transmitted. This is why TCP is slower to start than UDP, but provides guaranteed reliability once established.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 8 / 18</div>
+        </div>
+
+        <!-- Slide 9: Encapsulation and De-encapsulation -->
+        <div class="slide">
+            <div class="content">
+                <h2>Encapsulation & De-encapsulation</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">What is Encapsulation?</h3>
+                    <p><strong>Encapsulation</strong> is the process of adding headers (and trailers) to data as it passes down through the OSI model layers. Each layer adds its own header containing protocol-specific information.</p>
+                </div>
+
+                <h3>The Encapsulation Process (Sending Data)</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Layer 7-5: Application Data</h4>
+                        <p><strong>Data:</strong> HTTP request, email, file content</p>
+                        <p style="margin-top: 10px; color: #60a5fa;">User data is created by application</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Layer 4: Transport</h4>
+                        <p><strong>Adds:</strong> TCP/UDP header with port numbers</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Result:</strong> Segment (TCP) or Datagram (UDP)</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Layer 3: Network</h4>
+                        <p><strong>Adds:</strong> IP header with source/destination IP addresses</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Result:</strong> Packet</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Layer 2: Data Link</h4>
+                        <p><strong>Adds:</strong> Ethernet header/trailer with MAC addresses</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Result:</strong> Frame</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Layer 1: Physical</h4>
+                        <p><strong>Converts to:</strong> Electrical signals, light pulses, or radio waves</p>
+                        <p style="margin-top: 10px; color: #60a5fa;"><strong>Result:</strong> Bits transmitted over cable/fiber/air</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">De-encapsulation (Receiving Data)</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">The receiving device performs the <strong>reverse process</strong>:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Layer 1:</strong> Receives bits and converts to frame</li>
+                        <li><strong>Layer 2:</strong> Removes Ethernet header/trailer, checks destination MAC address</li>
+                        <li><strong>Layer 3:</strong> Removes IP header, checks destination IP address</li>
+                        <li><strong>Layer 4:</strong> Removes TCP/UDP header, checks port number, reassembles segments</li>
+                        <li><strong>Layer 7-5:</strong> Delivers data to correct application</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 30px;">
+                    <h3 style="margin-top: 0;">Analogy</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">Think of encapsulation like preparing a package for shipping:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Your letter</strong> = Application data</li>
+                        <li><strong>Put in envelope with addresses</strong> = IP header added</li>
+                        <li><strong>Place in shipping box with tracking</strong> = TCP header added</li>
+                        <li><strong>Shipping company labels</strong> = Ethernet frame added</li>
+                        <li><strong>Physical transport</strong> = Bits transmitted</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">Slide 9 / 18</div>
+        </div>
+
+        <!-- Slide 10: MTU and Fragmentation -->
+        <div class="slide">
+            <div class="content">
+                <h2>MTU and Packet Fragmentation</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Maximum Transmission Unit (MTU)</h3>
+                    <p>The <strong>MTU</strong> is the largest packet size (in bytes) that can be transmitted over a network link. If a packet exceeds the MTU, it must be fragmented into smaller packets.</p>
+                </div>
+
+                <h3>Common MTU Values</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Ethernet</h4>
+                        <p><strong>MTU:</strong> 1500 bytes</p>
+                        <p style="margin-top: 10px;">Most common for wired LANs and the internet</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Wi-Fi</h4>
+                        <p><strong>MTU:</strong> 1500 bytes (typically)</p>
+                        <p style="margin-top: 10px;">Can be lower depending on configuration</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>PPPoE (DSL)</h4>
+                        <p><strong>MTU:</strong> 1492 bytes</p>
+                        <p style="margin-top: 10px;">8 bytes smaller due to PPPoE header overhead</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Jumbo Frames</h4>
+                        <p><strong>MTU:</strong> 9000 bytes</p>
+                        <p style="margin-top: 10px;">Used in data centers for high-performance networks</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Packet Fragmentation</h3>
+                <div class="info-box">
+                    <h4 style="margin-top: 0; color: #22d3ee;">When Does Fragmentation Occur?</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;">When a packet is larger than the MTU of the next network segment, the router fragments it into smaller pieces that fit within the MTU.</p>
+                    
+                    <h4 style="margin-top: 25px; color: #22d3ee;">Fragmentation Process</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Original packet:</strong> 3000 bytes (exceeds 1500 byte MTU)</li>
+                        <li><strong>Fragment 1:</strong> 1500 bytes with header flag "More Fragments" = Yes</li>
+                        <li><strong>Fragment 2:</strong> 1500 bytes with "More Fragments" = Yes</li>
+                        <li><strong>Fragment 3:</strong> Remaining bytes with "More Fragments" = No (last fragment)</li>
+                        <li><strong>Each fragment:</strong> Contains offset information to indicate its position in original packet</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">Problems with Fragmentation</h3>
+                <div class="warning-box">
+                    <ul>
+                        <li><strong>Performance overhead:</strong> Fragmenting and reassembling packets requires CPU processing</li>
+                        <li><strong>Increased packet loss risk:</strong> If any fragment is lost, the entire original packet must be retransmitted</li>
+                        <li><strong>Router burden:</strong> Routers must perform fragmentation, slowing down packet forwarding</li>
+                        <li><strong>Reassembly timeout:</strong> If fragments arrive too slowly, the receiving device may discard incomplete packets</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 1.15em; line-height: 1.8;"><strong>💡 Solution:</strong> Modern networks use <strong>Path MTU Discovery (PMTUD)</strong> to determine the smallest MTU along the entire path and send packets that size from the start, avoiding fragmentation.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 10 / 18</div>
+        </div>
+
+        <!-- Slide 11: Packet Loss, Latency, and Jitter -->
+        <div class="slide">
+            <div class="content">
+                <h2>Packet Loss, Latency, and Jitter</h2>
+                
+                <h3>Packet Loss</h3>
+                <div class="highlight-box">
+                    <h4 style="margin-top: 0; color: #60a5fa;">What is Packet Loss?</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;">Packet loss occurs when one or more packets fail to reach their destination. This can happen for various reasons and impacts application performance differently depending on the protocol.</p>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">Causes of Packet Loss</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Network congestion:</strong> Routers/switches drop packets when buffers overflow</li>
+                        <li><strong>Hardware failures:</strong> Faulty cables, NICs, or switches causing transmission errors</li>
+                        <li><strong>Wireless interference:</strong> Signal degradation in Wi-Fi causing dropped packets</li>
+                        <li><strong>Routing errors:</strong> Packets sent to wrong destination or looping endlessly (TTL expires)</li>
+                        <li><strong>Firewall filtering:</strong> Security devices blocking certain packets intentionally</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #60a5fa;">Impact</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>TCP:</strong> Automatically retransmits lost packets, but causes delays. <strong>UDP:</strong> Lost packets are gone forever - causes glitches in video/audio streams or gaming.</p>
+                </div>
+
+                <h3 style="margin-top: 40px;">Latency</h3>
+                <div class="info-box">
+                    <h4 style="margin-top: 0; color: #22d3ee;">What is Latency?</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Latency</strong> (or ping) is the time it takes for a packet to travel from source to destination. Measured in milliseconds (ms).</p>
+                    
+                    <h4 style="margin-top: 25px; color: #22d3ee;">Sources of Latency</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Propagation delay:</strong> Time for signal to physically travel through cables (speed of light limitation)</li>
+                        <li><strong>Transmission delay:</strong> Time to push all packet bits onto the wire (depends on bandwidth)</li>
+                        <li><strong>Processing delay:</strong> Time for routers to examine headers and make forwarding decisions</li>
+                        <li><strong>Queuing delay:</strong> Time spent waiting in router buffers during congestion</li>
+                        <li><strong>Distance:</strong> Longer physical distance = higher latency (e.g., UK to Australia = ~300ms)</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #22d3ee;">Acceptable Latency</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Web browsing:</strong> 100-200ms acceptable</li>
+                        <li><strong>Video streaming:</strong> Can tolerate 200-500ms with buffering</li>
+                        <li><strong>VoIP/Video calls:</strong> <150ms ideal, >300ms causes noticeable delays</li>
+                        <li><strong>Online gaming:</strong> <50ms ideal, >100ms causes "lag"</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">Jitter</h3>
+                <div class="warning-box">
+                    <h4 style="margin-top: 0; color: #fbbf24;">What is Jitter?</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;"><strong>Jitter</strong> is the variation in packet arrival times. Packets taking different routes or experiencing variable congestion arrive at inconsistent intervals.</p>
+                    
+                    <h4 style="margin-top: 25px; color: #fbbf24;">Impact</h4>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Voice/video calls:</strong> Audio stutters, video freezes, or choppy playback</li>
+                        <li><strong>Real-time applications:</strong> Unpredictable performance, difficult to synchronize</li>
+                        <li><strong>Gaming:</strong> Inconsistent responsiveness, "rubber-banding" movement</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 25px; color: #fbbf24;">Solution: Jitter Buffers</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8; margin-top: 15px;">Real-time applications use <strong>jitter buffers</strong> to temporarily store incoming packets and release them at consistent intervals, smoothing out timing variations. This adds slight latency but improves quality.</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 11 / 18</div>
+        </div>
+
+        <!-- Slide 12: Quality of Service (QoS) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Quality of Service (QoS)</h2>
+                
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">What is QoS?</h3>
+                    <p><strong>Quality of Service (QoS)</strong> is a set of techniques used to manage network traffic and prioritize certain types of packets over others. This ensures critical applications get the bandwidth and low latency they need.</p>
+                </div>
+
+                <h3>Why QoS is Needed</h3>
+                <div class="info-box">
+                    <p style="font-size: 1.15em; line-height: 1.8;">Without QoS, all traffic is treated equally. This causes problems when:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Bandwidth is limited:</strong> Heavy downloads can starve video calls of bandwidth</li>
+                        <li><strong>Latency-sensitive apps:</strong> VoIP packets delayed behind large file transfers</li>
+                        <li><strong>Business priorities:</strong> Critical business apps compete with recreational traffic</li>
+                        <li><strong>Congestion:</strong> Network becomes saturated, all traffic suffers equally</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">QoS Techniques</h3>
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Traffic Classification</h4>
+                        <p>Identify and mark packets based on:</p>
+                        <p style="margin-top: 10px;">• Application type (VoIP, video, web)<br>• Port numbers<br>• IP addresses<br>• DSCP (DiffServ) markings</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Priority Queuing</h4>
+                        <p>Separate traffic into different queues with priority levels:</p>
+                        <p style="margin-top: 10px;">• High: VoIP, real-time video<br>• Medium: Business applications<br>• Low: Downloads, bulk transfers</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Bandwidth Allocation</h4>
+                        <p>Reserve guaranteed bandwidth for important traffic:</p>
+                        <p style="margin-top: 10px;">• VoIP: 20% minimum<br>• Video conferencing: 30%<br>• Remaining: Shared fairly</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Traffic Shaping</h4>
+                        <p>Control rate of traffic transmission:</p>
+                        <p style="margin-top: 10px;">• Smooth bursty traffic<br>• Prevent congestion<br>• Enforce bandwidth limits</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">QoS Priority Example</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Priority Level</th>
+                            <th>Traffic Type</th>
+                            <th>Characteristics</th>
+                            <th>Treatment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Highest</strong></td>
+                            <td>VoIP, Video Conferencing</td>
+                            <td>Low latency requirement, constant bandwidth</td>
+                            <td>Process immediately, reserved bandwidth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>High</strong></td>
+                            <td>Business-critical apps, Database transactions</td>
+                            <td>Important to business operations</td>
+                            <td>High priority, guaranteed bandwidth</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Medium</strong></td>
+                            <td>Email, Web browsing, Standard applications</td>
+                            <td>Normal user traffic, some delay acceptable</td>
+                            <td>Fair sharing, best effort</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Low</strong></td>
+                            <td>File downloads, Software updates, Backups</td>
+                            <td>Bulk transfers, delay tolerant</td>
+                            <td>Use remaining bandwidth, can be throttled</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-number">Slide 12 / 18</div>
+        </div>
+
+        <!-- Slide 13: T Level Exam Questions 1-3 -->
+        <div class="slide">
+            <div class="content">
+                <h2>Content Area 7 - Data Packets</h2>
+                <p style="font-size: 1.2em; color: #f59e0b; font-weight: 700; margin-bottom: 40px;">Important!</p>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 1 – 2 marks</h4>
+                        <p>Define the term <strong>data packet</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 2 – 3 marks</h4>
+                        <p>State three advantages of packet switching over circuit switching.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 3 – 4 marks</h4>
+                        <p>Explain why packet fragmentation occurs and describe one problem it can cause.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 13 / 18</div>
+        </div>
+
+        <!-- Slide 14: Question 4 - Discuss (6 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 4</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 4 – 6 marks – Discuss</h4>
+                        <p style="margin-top: 20px;">A company is implementing a new network application that will stream live video from security cameras to a central monitoring station. The IT team must decide whether to use TCP or UDP as the transport protocol for video transmission.</p>
+                        <p style="margin-top: 20px;">Discuss the advantages and disadvantages of using TCP versus UDP for this live video streaming application.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Discuss</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Present key points about different ideas or strengths and weaknesses of an idea. You should give a balanced answer showing multiple perspectives.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 14 / 18</div>
+        </div>
+
+        <!-- Slide 15: Question 5 - Analyse (9 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 5</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 5 – 9 marks – Analyse</h4>
+                        <p style="margin-top: 20px;">A university's IT department is experiencing complaints about poor network performance. They have gathered the following data:</p>
+                        <ul style="margin-top: 15px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Video conference calls frequently freeze and have choppy audio</li>
+                            <li>Large file downloads complete successfully but take longer than expected</li>
+                            <li>Web browsing is generally acceptable but occasionally very slow</li>
+                            <li>Network monitoring shows 8% packet loss during peak hours (9am-5pm)</li>
+                            <li>Latency varies between 15ms and 450ms during peak times</li>
+                            <li>Network utilization reaches 95% of available bandwidth during peak hours</li>
+                        </ul>
+                        <p style="margin-top: 20px;">Analyse how packet loss, latency, and jitter are contributing to the described performance issues. In your answer, explain which applications are most affected by each problem and why.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Analyse</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 15 / 18</div>
+        </div>
+
+        <!-- Slide 16: Question 6 - Evaluate (12 marks) -->
+        <div class="slide">
+            <div class="content">
+                <h2>Exam Question 6</h2>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        <h4>Question 6 – 12 marks – Evaluate</h4>
+                        <p style="margin-top: 20px;">A hospital network supports multiple critical systems including:</p>
+                        <ul style="margin-top: 15px; margin-left: 40px; font-size: 1.1em; line-height: 1.8;">
+                            <li>Real-time patient monitoring systems sending vital sign data every second</li>
+                            <li>Medical imaging transfers (X-rays, CT scans) averaging 200MB per file</li>
+                            <li>VoIP phone system for emergency communications</li>
+                            <li>Electronic Health Record (EHR) system for patient data access</li>
+                            <li>General staff internet access for email and web browsing</li>
+                            <li>Automated backup systems running throughout the day</li>
+                        </ul>
+                        <p style="margin-top: 20px;">During peak hours, network congestion is causing performance issues. The IT director must decide between two approaches:</p>
+                        <p style="margin-top: 15px;"><strong>Option A:</strong> Upgrade network bandwidth from 1 Gbps to 10 Gbps across all core infrastructure - estimated cost £80,000</p>
+                        <p style="margin-top: 15px;"><strong>Option B:</strong> Implement comprehensive Quality of Service (QoS) with traffic prioritization on existing 1 Gbps infrastructure - estimated cost £25,000</p>
+                        <p style="margin-top: 20px;">Evaluate both options and recommend which approach the hospital should adopt. Justify your recommendation with evidence, considering factors such as reliability, cost-effectiveness, future scalability, and patient safety implications.</p>
+                        <div style="margin-top: 30px; padding: 25px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 12px;">
+                            <p style="color: #60a5fa; font-weight: 700; margin-bottom: 10px;">Command word: Evaluate</p>
+                            <p style="color: #cbd5e1; font-size: 1.05em; line-height: 1.7;">Make a reasoned judgement after considering the advantages and disadvantages of different options, supported by evidence or examples.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">Slide 16 / 18</div>
+        </div>
+
+        <!-- Slide 17: Summary -->
+        <div class="slide">
+            <div class="content">
+                <h2>Module Summary - Data Packets</h2>
+                
+                <div class="info-box">
+                    <h3 style="margin-top: 0;">Key Takeaways</h3>
+                    <ul>
+                        <li><strong>Data packets:</strong> Small units of data that are transmitted independently across networks</li>
+                        <li><strong>Packet structure:</strong> Header (routing info), Payload (actual data), Trailer (error checking)</li>
+                        <li><strong>Packet switching:</strong> Efficient, fault-tolerant method where packets take independent paths</li>
+                        <li><strong>TCP vs UDP:</strong> TCP provides reliability and ordering; UDP provides speed for real-time apps</li>
+                        <li><strong>Encapsulation:</strong> Each OSI layer adds its own header as data moves down the stack</li>
+                        <li><strong>MTU & fragmentation:</strong> Packets larger than MTU must be fragmented, causing overhead</li>
+                        <li><strong>Packet loss:</strong> Dropped packets due to congestion, errors, or hardware failures</li>
+                        <li><strong>Latency:</strong> Delay in packet transmission - critical for real-time applications</li>
+                        <li><strong>Jitter:</strong> Variation in packet arrival times - smoothed using jitter buffers</li>
+                        <li><strong>QoS:</strong> Traffic prioritization ensures critical applications get required bandwidth and low latency</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Practical Understanding</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">Understanding data packets is fundamental to:</p>
+                    <ul style="margin-top: 20px;">
+                        <li>Troubleshooting network performance issues</li>
+                        <li>Choosing appropriate protocols for applications</li>
+                        <li>Designing QoS policies for business networks</li>
+                        <li>Optimizing network configurations for specific use cases</li>
+                        <li>Understanding how the internet actually works at a technical level</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="font-size: 1.8em; color: #60a5fa; font-weight: 700;">🎉 Module Complete!</p>
+                    <p style="font-size: 1.3em; color: #94a3b8; margin-top: 15px;">You now understand how data packets work and travel across networks</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 17 / 18</div>
+        </div>
+
+        <!-- Slide 18: Quick Reference -->
+        <div class="slide">
+            <div class="content">
+                <h2>Quick Reference Guide</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4>Packet Components</h4>
+                        <p><strong>Header:</strong> IP addresses, ports, sequence numbers</p>
+                        <p style="margin-top: 10px;"><strong>Payload:</strong> Actual data (up to MTU size)</p>
+                        <p style="margin-top: 10px;"><strong>Trailer:</strong> Error checking (CRC/checksum)</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Protocol Choice</h4>
+                        <p><strong>Use TCP for:</strong> Files, web pages, email, accuracy-critical data</p>
+                        <p style="margin-top: 10px;"><strong>Use UDP for:</strong> Streaming, gaming, VoIP, real-time apps</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Common MTU Sizes</h4>
+                        <p><strong>Ethernet:</strong> 1500 bytes</p>
+                        <p style="margin-top: 10px;"><strong>PPPoE:</strong> 1492 bytes</p>
+                        <p style="margin-top: 10px;"><strong>Jumbo:</strong> 9000 bytes</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>Performance Metrics</h4>
+                        <p><strong>Packet Loss:</strong> Should be <1%</p>
+                        <p style="margin-top: 10px;"><strong>Latency:</strong> <50ms gaming, <150ms VoIP</p>
+                        <p style="margin-top: 10px;"><strong>Jitter:</strong> <30ms for real-time apps</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>OSI Encapsulation</h4>
+                        <p><strong>Layer 4:</strong> Segment (TCP/UDP)</p>
+                        <p style="margin-top: 10px;"><strong>Layer 3:</strong> Packet (IP)</p>
+                        <p style="margin-top: 10px;"><strong>Layer 2:</strong> Frame (Ethernet)</p>
+                        <p style="margin-top: 10px;"><strong>Layer 1:</strong> Bits (Physical)</p>
+                    </div>
+                    <div class="grid-item">
+                        <h4>QoS Priority</h4>
+                        <p><strong>Highest:</strong> VoIP, video conferencing</p>
+                        <p style="margin-top: 10px;"><strong>High:</strong> Business-critical apps</p>
+                        <p style="margin-top: 10px;"><strong>Medium:</strong> Web, email</p>
+                        <p style="margin-top: 10px;"><strong>Low:</strong> Downloads, backups</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3 style="margin-top: 0;">Remember</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">Every time you browse the web, send an email, or stream a video, thousands of packets are being created, routed through multiple networks, and reassembled at the destination - all in fractions of a second. Understanding this process is key to mastering networking!</p>
+                </div>
+            </div>
+            <div class="slide-number">Slide 18 / 18</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progress = document.getElementById('progressFill');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            updateNavigation();
+        });
+    </script>
+</body>
+</html>

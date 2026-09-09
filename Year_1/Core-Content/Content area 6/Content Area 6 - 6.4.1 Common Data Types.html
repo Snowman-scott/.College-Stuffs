@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6.4.1 Common Data Types - T Level DPDD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0e27;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 50px 100px;
+    display: none;
+    opacity: 0;
+    background: linear-gradient(135deg, #0f1729 0%, #1a1f3a 100%);
+    overflow-y: auto;
+}
+
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: #1E293B;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: #8B5CF6;
+    border-radius: 4px;
+}
+
+.slide.active {
+    display: block;
+    animation: slideIn 0.6s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    z-index: 10;
+}
+
+h1 {
+    font-size: clamp(2.2em, 3.5vw, 4em);
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFFFFF 0%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(1.6em, 2.5vw, 2.8em);
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-weight: 800;
+}
+
+h3 {
+    font-size: clamp(1.2em, 1.6vw, 1.9em);
+    margin-bottom: 15px;
+    color: #8B5CF6;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: clamp(1em, 1.3vw, 1.5em);
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+p, li {
+    font-size: clamp(0.9em, 1.05vw, 1.2em);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #E2E8F0;
+}
+
+ul, ol {
+    margin-left: 25px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border-left: 4px solid #8B5CF6;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.navigation {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 14px 30px;
+    border-radius: 60px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    z-index: 1000;
+}
+
+button {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    padding: 11px 26px;
+    font-size: 0.95em;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.slide-number {
+    color: #E2E8F0;
+    font-weight: 600;
+    font-size: 0.95em;
+    min-width: 70px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 140px;
+    height: 6px;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6 0%, #7C3AED 100%);
+    transition: width 0.4s ease;
+    border-radius: 10px;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.question-number {
+    font-size: 1.3em;
+    font-weight: 800;
+    color: #8B5CF6;
+}
+
+.marks {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: rgba(139, 92, 246, 0.2);
+    padding: 5px 18px;
+    border-radius: 20px;
+}
+
+.question-text {
+    font-size: 1.05em;
+    line-height: 1.8;
+}
+
+.context-box {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin: 20px 0;
+}
+
+.command-verb {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    font-size: 1.05em;
+}
+
+.bullet-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.bullet-list li {
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.bullet-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 5px;
+    color: #8B5CF6;
+    font-weight: bold;
+}
+
+.data-type-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.data-type-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+}
+
+.example-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+.key-point {
+    background: rgba(139, 92, 246, 0.1);
+    border-left: 3px solid #8B5CF6;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+.icon-box {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+/* Data type specific colors */
+.integer-card { border-left: 4px solid #3B82F6; }
+.real-card { border-left: 4px solid #10B981; }
+.character-card { border-left: 4px solid #F59E0B; }
+.string-card { border-left: 4px solid #EC4899; }
+.boolean-card { border-left: 4px solid #8B5CF6; }
+.date-card { border-left: 4px solid #06B6D4; }
+.blob-card { border-left: 4px solid #6366F1; }
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.comparison-table th {
+    background: rgba(139, 92, 246, 0.2);
+    color: #FFFFFF;
+    padding: 15px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.05em;
+}
+
+.comparison-table td {
+    padding: 15px;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+    font-size: 0.95em;
+}
+
+.comparison-table tr:hover {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.code-example {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #A78BFA;
+    margin: 12px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 1: Title Slide -->
+<div class="slide active">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; text-align: center;">
+        <h1 style="font-size: clamp(3em, 5.5vw, 5.5em); margin-bottom: 30px; line-height: 1.1;">
+            <span style="color: #FFFFFF;">COMMON</span><br>
+            <span style="background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #7C3AED 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DATA TYPES</span>
+        </h1>
+        
+        <div style="width: 100%; max-width: 300px; height: 3px; background: linear-gradient(90deg, transparent 0%, #8B5CF6 50%, transparent 100%); margin-bottom: 35px;"></div>
+        
+        <h2 style="color: #A78BFA; font-weight: 700; font-size: clamp(1.8em, 2.5vw, 2.5em); margin-bottom: 20px;">Content Area 6.4.1</h2>
+        
+        <p style="font-size: clamp(1.1em, 1.4vw, 1.5em); color: #94A3B8; margin-bottom: 50px; max-width: 900px;">Understanding Data Types: Definition, Purpose, and Application</p>
+        
+        <div class="card" style="max-width: 1100px; margin: 0 auto 40px auto; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(139, 92, 246, 0.3);">
+            <div class="grid-4" style="gap: 25px;">
+                <div style="text-align: center;">
+                    <h4 style="color: #3B82F6; font-size: 1.05em; margin-bottom: 10px;">🔢 Numeric</h4>
+                    <p style="font-size: 0.9em; line-height: 1.6;">Integer<br>Real</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: #F59E0B; font-size: 1.05em; margin-bottom: 10px;">📝 Text</h4>
+                    <p style="font-size: 0.9em; line-height: 1.6;">Character<br>String</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: #8B5CF6; font-size: 1.05em; margin-bottom: 10px;">✓ Logical</h4>
+                    <p style="font-size: 0.9em; line-height: 1.6;">Boolean<br>Date</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: #6366F1; font-size: 1.05em; margin-bottom: 10px;">💾 Binary</h4>
+                    <p style="font-size: 0.9em; line-height: 1.6;">Blob<br>(Binary Large Object)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <span style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">T LEVEL DPDD</span>
+            <span style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">CONTENT AREA 6.4.1</span>
+            <span style="background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%); color: white; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 0.9em; letter-spacing: 0.5px;">21 SLIDES</span>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Introduction to Data Types -->
+<div class="slide">
+    <h1>Understanding Data Types</h1>
+    
+    <div class="card">
+        <h3>Why Do Data Types Matter?</h3>
+        <p style="font-size: 1.15em; margin-bottom: 20px;">Data types define how data is stored in memory, what operations can be performed on it, and how much space it requires. Choosing the correct data type ensures efficient storage, accurate processing, and prevents errors.</p>
+        
+        <div class="grid-2" style="margin-top: 25px;">
+            <div class="highlight-box">
+                <h4 style="color: #FFFFFF; margin-bottom: 12px;">Memory Efficiency</h4>
+                <p>Different data types use different amounts of memory. An integer uses 4 bytes, whilst a string can use hundreds.</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h4 style="color: #FFFFFF; margin-bottom: 12px;">Valid Operations</h4>
+                <p>You can add integers (5 + 3 = 8) but can't add Booleans (True + False = error).</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h4 style="color: #FFFFFF; margin-bottom: 12px;">Data Validation</h4>
+                <p>Data types enforce rules. Age (integer) can't accidentally store "twenty-five".</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h4 style="color: #FFFFFF; margin-bottom: 12px;">Database Design</h4>
+                <p>Proper data types enable indexing, sorting, and efficient querying in databases.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Integer Data Type -->
+<div class="slide">
+    <h1>Integer Data Type</h1>
+    
+    <div class="card integer-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">DEFINITION</div>
+        <h2 style="color: #3B82F6; margin-top: 10px;">What is an Integer?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">An <strong>integer</strong> is a whole number data type that can be positive, negative, or zero. Integers do not have decimal points or fractional parts.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #3B82F6;">
+                    <h4>🔢 Whole Numbers Only</h4>
+                    <p>No decimal points. Examples: -100, -1, 0, 1, 42, 1000, 999999</p>
+                </div>
+                <div class="key-point" style="border-left-color: #3B82F6;">
+                    <h4>💾 Fixed Memory Size</h4>
+                    <p>Typically 4 bytes (32-bit) or 8 bytes (64-bit). Determines the range of values.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #3B82F6;">
+                    <h4>➕ Mathematical Operations</h4>
+                    <p>Supports addition, subtraction, multiplication, division (results in integer).</p>
+                </div>
+                <div class="key-point" style="border-left-color: #3B82F6;">
+                    <h4>📊 Range Limits</h4>
+                    <p>32-bit: -2,147,483,648 to 2,147,483,647. 64-bit: much larger range.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(59, 130, 246, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Counting items (5 students)</li>
+                <li>Age in years (25)</li>
+                <li>Quantity in stock (147)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>User IDs (123456)</li>
+                <li>Page numbers (1, 2, 3...)</li>
+                <li>Days in month (30)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Score (0-100)</li>
+                <li>Year (2026)</li>
+                <li>Temperature in °C (-5)</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> age = 25 | quantity = 100 | temperature = -5 | userID = 789012
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Real Data Type -->
+<div class="slide">
+    <h1>Real Data Type</h1>
+    
+    <div class="card real-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">DEFINITION</div>
+        <h2 style="color: #10B981; margin-top: 10px;">What is a Real Number?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>real</strong> number (also called floating-point or float) is a numeric data type that can represent numbers with decimal points and fractional values. It allows for precise measurements.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #10B981;">
+                    <h4>📏 Decimal Precision</h4>
+                    <p>Can store fractional values: 3.14159, 0.5, -12.75, 98.6</p>
+                </div>
+                <div class="key-point" style="border-left-color: #10B981;">
+                    <h4>💾 Larger Memory</h4>
+                    <p>32-bit (float): ~7 decimal digits. 64-bit (double): ~15 decimal digits precision.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #10B981;">
+                    <h4>🔬 Scientific Notation</h4>
+                    <p>Can represent very large (1.5e10) or very small (3.2e-8) numbers.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #10B981;">
+                    <h4>⚠️ Rounding Issues</h4>
+                    <p>Finite precision can cause rounding errors (0.1 + 0.2 ≠ exactly 0.3).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(16, 185, 129, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Prices (£19.99, £45.50)</li>
+                <li>Measurements (1.75m)</li>
+                <li>Weight (68.4kg)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Temperature (36.7°C)</li>
+                <li>Percentages (87.5%)</li>
+                <li>Coordinates (51.5074, -0.1278)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Interest rates (3.25%)</li>
+                <li>Speed (65.4 mph)</li>
+                <li>Scientific data (9.81 m/s²)</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> price = 19.99 | height = 1.75 | temperature = 36.8 | pi = 3.14159
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Character Data Type -->
+<div class="slide">
+    <h1>Character Data Type</h1>
+    
+    <div class="card character-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">DEFINITION</div>
+        <h2 style="color: #F59E0B; margin-top: 10px;">What is a Character?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>character</strong> (char) is a data type that stores a single character, letter, digit, or symbol. It represents one unit of text.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>1️⃣ Single Character Only</h4>
+                    <p>Stores exactly one character: 'A', 'z', '5', '@', '!', ' ' (space)</p>
+                </div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>💾 Small Memory Footprint</h4>
+                    <p>Typically 1 byte (ASCII) or 2 bytes (Unicode). Very memory efficient.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>🔤 Written in Quotes</h4>
+                    <p>Single quotes in code: 'A', 'b', '9', '$'. Distinguishes from strings.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #F59E0B;">
+                    <h4>🔢 ASCII/Unicode Values</h4>
+                    <p>Each character has a numeric code: 'A' = 65, 'a' = 97, '0' = 48</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(245, 158, 11, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Single initials ('J', 'K')</li>
+                <li>Grade letters ('A', 'B', 'C')</li>
+                <li>Yes/No indicators ('Y', 'N')</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Gender codes ('M', 'F')</li>
+                <li>Menu choices ('1', '2', '3')</li>
+                <li>Special symbols ('@', '#', '$')</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Status codes ('A', 'P', 'C')</li>
+                <li>Currency symbols ('£', '$', '€')</li>
+                <li>Punctuation marks ('.', ',', '!')</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> initial = 'J' | grade = 'A' | gender = 'M' | symbol = '@'
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: String Data Type -->
+<div class="slide">
+    <h1>String Data Type</h1>
+    
+    <div class="card string-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);">DEFINITION</div>
+        <h2 style="color: #EC4899; margin-top: 10px;">What is a String?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>string</strong> is a data type that stores a sequence of characters. It can contain letters, numbers, spaces, and symbols in any combination and length.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #EC4899;">
+                    <h4>📝 Multiple Characters</h4>
+                    <p>Can be any length: "", "A", "Hello", "The quick brown fox jumps..."</p>
+                </div>
+                <div class="key-point" style="border-left-color: #EC4899;">
+                    <h4>💾 Variable Memory</h4>
+                    <p>Memory usage depends on length. Each character typically uses 1-2 bytes.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #EC4899;">
+                    <h4>"" Double Quotes</h4>
+                    <p>Written in double quotes: "Hello World", "123 Main St", "user@email.com"</p>
+                </div>
+                <div class="key-point" style="border-left-color: #EC4899;">
+                    <h4>🔗 Concatenation</h4>
+                    <p>Can join strings: "Hello" + " " + "World" = "Hello World"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(236, 72, 153, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Names ("Sarah Johnson")</li>
+                <li>Addresses ("123 Main St")</li>
+                <li>Email ("user@email.com")</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Descriptions ("Product info")</li>
+                <li>Messages ("Welcome back!")</li>
+                <li>Passwords ("P@ssw0rd!")</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>URLs ("www.example.com")</li>
+                <li>Product codes ("SKU-12345")</li>
+                <li>Sentences (any text)</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> name = "Sarah Johnson" | email = "sarah@example.com" | message = "Hello!"
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Boolean Data Type -->
+<div class="slide">
+    <h1>Boolean Data Type</h1>
+    
+    <div class="card boolean-card">
+        <div class="icon-box">DEFINITION</div>
+        <h2 style="color: #8B5CF6; margin-top: 10px;">What is a Boolean?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>Boolean</strong> is a logical data type that can only have two possible values: <strong>True</strong> or <strong>False</strong>. It represents yes/no, on/off, 1/0 conditions.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #8B5CF6;">
+                    <h4>✓ / ✗ Two Values Only</h4>
+                    <p>True or False. No other values possible. Binary choice.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #8B5CF6;">
+                    <h4>💾 Minimal Memory</h4>
+                    <p>Typically 1 bit (0 or 1), though often stored as 1 byte for efficiency.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #8B5CF6;">
+                    <h4>🔀 Logical Operations</h4>
+                    <p>AND, OR, NOT operations. Example: True AND False = False</p>
+                </div>
+                <div class="key-point" style="border-left-color: #8B5CF6;">
+                    <h4>❓ Conditional Logic</h4>
+                    <p>Used in if statements: if (isLoggedIn == True) { ... }</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(139, 92, 246, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>User logged in? (True/False)</li>
+                <li>Email verified? (True/False)</li>
+                <li>Account active? (True/False)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Task completed? (True/False)</li>
+                <li>Payment successful? (True/False)</li>
+                <li>Age >= 18? (True/False)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>In stock? (True/False)</li>
+                <li>Dark mode enabled? (True/False)</li>
+                <li>Notifications on? (True/False)</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> isLoggedIn = True | emailVerified = False | isDarkMode = True
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Date Data Type -->
+<div class="slide">
+    <h1>Date Data Type</h1>
+    
+    <div class="card date-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);">DEFINITION</div>
+        <h2 style="color: #06B6D4; margin-top: 10px;">What is a Date?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>date</strong> (or datetime) data type stores dates and times in a standardised format. It can represent a specific point in time with date, time, or both combined.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #06B6D4;">
+                    <h4>📅 Standardised Format</h4>
+                    <p>Common formats: DD/MM/YYYY, YYYY-MM-DD, MM/DD/YYYY. Varies by region/system.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #06B6D4;">
+                    <h4>⏰ Time Components</h4>
+                    <p>Can include time: 14:30:00, or full datetime: 2026-01-15 14:30:00</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #06B6D4;">
+                    <h4>🔢 Stored as Number</h4>
+                    <p>Internally stored as number (seconds/days since reference date) for calculations.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #06B6D4;">
+                    <h4>➕ Date Arithmetic</h4>
+                    <p>Can add/subtract dates: "15/01/2026" + 7 days = "22/01/2026"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(6, 182, 212, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Birthdays (15/03/1998)</li>
+                <li>Order dates (15/01/2026)</li>
+                <li>Due dates (31/12/2026)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Appointment times (14:30:00)</li>
+                <li>Event timestamps (2026-01-15 14:30)</li>
+                <li>Expiry dates (30/06/2027)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Last login (15/01/2026 09:45)</li>
+                <li>Created date (01/01/2025)</li>
+                <li>Modified date (15/01/2026)</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> birthday = 15/03/1998 | orderDate = 2026-01-15 | appointmentTime = 14:30:00
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Blob Data Type -->
+<div class="slide">
+    <h1>Blob Data Type</h1>
+    
+    <div class="card blob-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);">DEFINITION</div>
+        <h2 style="color: #6366F1; margin-top: 10px;">What is a Blob?</h2>
+        <p style="font-size: 1.25em; margin-top: 20px; line-height: 1.9;">A <strong>Blob</strong> (Binary Large Object) is a data type that stores large amounts of binary data such as images, audio, video, or any file in its raw binary format.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Key Characteristics</h3>
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <div class="key-point" style="border-left-color: #6366F1;">
+                    <h4>💾 Binary Storage</h4>
+                    <p>Stores data as 1s and 0s. Not human-readable like text or numbers.</p>
+                </div>
+                <div class="key-point" style="border-left-color: #6366F1;">
+                    <h4>📦 Large Size</h4>
+                    <p>Can store MB or GB of data. Images: 2-10MB, Videos: 100s of MB to GBs.</p>
+                </div>
+            </div>
+            <div>
+                <div class="key-point" style="border-left-color: #6366F1;">
+                    <h4>🎯 File Types</h4>
+                    <p>Images (JPG, PNG), Audio (MP3, WAV), Video (MP4, AVI), Documents (PDF).</p>
+                </div>
+                <div class="key-point" style="border-left-color: #6366F1;">
+                    <h4>🔍 No Direct Querying</h4>
+                    <p>Cannot search inside Blob like text. Must retrieve entire object.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="background: rgba(99, 102, 241, 0.1);">
+        <h4 style="margin-bottom: 15px;">Common Uses:</h4>
+        <div class="grid-3">
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Profile pictures (JPG, PNG)</li>
+                <li>Product images</li>
+                <li>Scanned documents (PDF)</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Audio files (MP3, WAV)</li>
+                <li>Video content (MP4)</li>
+                <li>Podcast recordings</li>
+            </ul>
+            <ul class="bullet-list" style="font-size: 0.95em;">
+                <li>Medical images (X-rays, MRI)</li>
+                <li>Backup files</li>
+                <li>Encrypted data</li>
+            </ul>
+        </div>
+        
+        <div class="code-example" style="margin-top: 15px;">
+            <strong>Examples:</strong> profilePicture = [binary image data] | videoFile = [binary video data]
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Data Type Comparison Table -->
+<div class="slide">
+    <h1>Data Types: Comparison</h1>
+    
+    <div class="card">
+        <h3>Quick Reference Table</h3>
+        
+        <table class="comparison-table" style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Purpose</th>
+                    <th>Examples</th>
+                    <th>Memory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong style="color: #3B82F6;">Integer</strong></td>
+                    <td>Whole numbers, counting</td>
+                    <td>-5, 0, 42, 1000</td>
+                    <td>4 bytes (32-bit)</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #10B981;">Real</strong></td>
+                    <td>Decimal numbers, measurements</td>
+                    <td>3.14, -12.5, 98.6</td>
+                    <td>4-8 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #F59E0B;">Character</strong></td>
+                    <td>Single character</td>
+                    <td>'A', 'z', '5', '@'</td>
+                    <td>1-2 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #EC4899;">String</strong></td>
+                    <td>Text, words, sentences</td>
+                    <td>"Hello", "user@email.com"</td>
+                    <td>Variable</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #8B5CF6;">Boolean</strong></td>
+                    <td>True/False conditions</td>
+                    <td>True, False</td>
+                    <td>1 bit (1 byte)</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #06B6D4;">Date</strong></td>
+                    <td>Dates and times</td>
+                    <td>15/01/2026, 14:30:00</td>
+                    <td>4-8 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: #6366F1;">Blob</strong></td>
+                    <td>Binary files (images, video)</td>
+                    <td>[image data], [video data]</td>
+                    <td>MBs to GBs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Slide 11: When to Use Each Data Type -->
+<div class="slide">
+    <h1>Choosing the Right Data Type</h1>
+    
+    <div class="card">
+        <h3>Decision Guide</h3>
+        <p style="font-size: 1.1em; margin-bottom: 20px;">Selecting the appropriate data type is crucial for efficient data storage and processing.</p>
+    </div>
+    
+    <div class="grid-2">
+        <div class="card integer-card">
+            <h4 style="color: #3B82F6;">Use Integer When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Counting discrete items (students, products)</li>
+                <li>Age in years (no need for decimal precision)</li>
+                <li>IDs and reference numbers</li>
+                <li>Quantities that are whole numbers</li>
+                <li>Mathematical calculations don't need decimals</li>
+            </ul>
+        </div>
+        
+        <div class="card real-card">
+            <h4 style="color: #10B981;">Use Real When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Measuring continuous values (height, weight)</li>
+                <li>Financial calculations (£19.99)</li>
+                <li>Scientific measurements (36.8°C)</li>
+                <li>Percentages with precision (87.5%)</li>
+                <li>Any value requiring decimal points</li>
+            </ul>
+        </div>
+        
+        <div class="card character-card">
+            <h4 style="color: #F59E0B;">Use Character When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Storing single letters or initials ('J')</li>
+                <li>Grade letters ('A', 'B', 'C')</li>
+                <li>Yes/No flags ('Y', 'N')</li>
+                <li>Single-digit codes or symbols</li>
+                <li>Memory efficiency critical (vs string)</li>
+            </ul>
+        </div>
+        
+        <div class="card string-card">
+            <h4 style="color: #EC4899;">Use String When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Storing names, addresses, descriptions</li>
+                <li>Email addresses, URLs, messages</li>
+                <li>Any text longer than one character</li>
+                <li>Product codes, postcodes</li>
+                <li>Human-readable identifiers</li>
+            </ul>
+        </div>
+        
+        <div class="card boolean-card">
+            <h4 style="color: #8B5CF6;">Use Boolean When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Two possible states (on/off, yes/no)</li>
+                <li>Flags for settings (dark mode on?)</li>
+                <li>Status indicators (completed?)</li>
+                <li>Permission checks (is admin?)</li>
+                <li>Conditional logic requirements</li>
+            </ul>
+        </div>
+        
+        <div class="card date-card">
+            <h4 style="color: #06B6D4;">Use Date When...</h4>
+            <ul class="bullet-list" style="margin-top: 12px;">
+                <li>Recording birthdays, events</li>
+                <li>Tracking timestamps (created, modified)</li>
+                <li>Scheduling appointments</li>
+                <li>Expiry dates, due dates</li>
+                <li>Need date calculations (age, duration)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card blob-card" style="margin-top: 20px;">
+        <h4 style="color: #6366F1;">Use Blob When...</h4>
+        <div class="grid-3">
+            <ul class="bullet-list">
+                <li>Storing images (JPG, PNG, GIF)</li>
+                <li>Storing audio files (MP3, WAV)</li>
+            </ul>
+            <ul class="bullet-list">
+                <li>Storing video content (MP4, AVI)</li>
+                <li>Storing PDF documents</li>
+            </ul>
+            <ul class="bullet-list">
+                <li>Storing any binary file format</li>
+                <li>Large file uploads to database</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Real-World Application Example -->
+<div class="slide">
+    <h1>Real-World Example: E-Commerce Database</h1>
+    
+    <div class="card">
+        <h3>Product Database Design</h3>
+        <p style="margin-bottom: 20px;">How different data types work together in a practical system:</p>
+        
+        <div class="example-box" style="background: rgba(139, 92, 246, 0.1); font-family: 'Inter', sans-serif;">
+            <h4 style="color: #8B5CF6; margin-bottom: 15px;">Products Table</h4>
+            <table style="width: 100%; font-size: 0.9em; line-height: 2;">
+                <tr>
+                    <td style="width: 25%; color: #3B82F6;"><strong>ProductID</strong> (Integer)</td>
+                    <td>1001, 1002, 1003</td>
+                </tr>
+                <tr>
+                    <td style="color: #EC4899;"><strong>ProductName</strong> (String)</td>
+                    <td>"Wireless Mouse", "USB Cable"</td>
+                </tr>
+                <tr>
+                    <td style="color: #10B981;"><strong>Price</strong> (Real)</td>
+                    <td>£19.99, £8.50, £45.75</td>
+                </tr>
+                <tr>
+                    <td style="color: #3B82F6;"><strong>StockQuantity</strong> (Integer)</td>
+                    <td>47, 123, 5</td>
+                </tr>
+                <tr>
+                    <td style="color: #8B5CF6;"><strong>InStock</strong> (Boolean)</td>
+                    <td>True, True, False</td>
+                </tr>
+                <tr>
+                    <td style="color: #F59E0B;"><strong>Category</strong> (Character)</td>
+                    <td>'E' (Electronics), 'C' (Cables)</td>
+                </tr>
+                <tr>
+                    <td style="color: #06B6D4;"><strong>DateAdded</strong> (Date)</td>
+                    <td>15/01/2026, 12/01/2026</td>
+                </tr>
+                <tr>
+                    <td style="color: #6366F1;"><strong>ProductImage</strong> (Blob)</td>
+                    <td>[Binary image data]</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="card" style="margin-top: 20px; background: rgba(139, 92, 246, 0.1);">
+        <h4 style="margin-bottom: 15px;">Why These Types?</h4>
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #3B82F6;">ProductID (Integer):</strong> Unique identifier, whole numbers only, no decimals needed</p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #EC4899;">ProductName (String):</strong> Variable length text, can include spaces and special characters</p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #10B981;">Price (Real):</strong> Money values with decimal precision (£19.99)</p>
+                <p style="font-size: 0.95em;"><strong style="color: #3B82F6;">StockQuantity (Integer):</strong> Count of items, can't have 47.5 products</p>
+            </div>
+            <div>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #8B5CF6;">InStock (Boolean):</strong> Simple yes/no, available or not, True/False</p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #F59E0B;">Category (Character):</strong> Single letter code for efficiency, saves memory</p>
+                <p style="font-size: 0.95em; margin-bottom: 8px;"><strong style="color: #06B6D4;">DateAdded (Date):</strong> Track when product added, enable date sorting/filtering</p>
+                <p style="font-size: 0.95em;"><strong style="color: #6366F1;">ProductImage (Blob):</strong> Store actual image file in database as binary</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Exam Question 1 (2 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 1</span>
+            <span class="marks">(2 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.3em; margin-bottom: 25px;"><span class="command-verb">State</span> what is meant by the term 'Boolean' data type.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Provide a clear definition in your answer.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Exam Question 2 (3 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 2</span>
+            <span class="marks">(3 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A student database stores the following information:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Student age: 16, 17, 18</li>
+                    <li>Student height: 1.65m, 1.82m, 1.74m</li>
+                    <li>Student name: "Sarah Johnson", "Michael Chen"</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Identify</span> the most appropriate data type for each piece of information:</p>
+            
+            <p style="font-size: 1.15em; margin-top: 15px; margin-left: 20px;">• Student age <em style="color: #94A3B8;">(1 mark)</em></p>
+            <p style="font-size: 1.15em; margin-left: 20px;">• Student height <em style="color: #94A3B8;">(1 mark)</em></p>
+            <p style="font-size: 1.15em; margin-left: 20px;">• Student name <em style="color: #94A3B8;">(1 mark)</em></p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Exam Question 3 (4 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 3</span>
+            <span class="marks">(4 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">An online shop stores product prices and quantities in a database.</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 15px;">The database designer is choosing between these data types:</p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>For product price: Integer or Real</li>
+                    <li>For stock quantity: Integer or Real</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Explain</span> why Real is the most appropriate data type for storing product prices.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 20px;"><span class="command-verb">Explain</span> why Integer is the most appropriate data type for storing stock quantities.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Reference the characteristics of each data type in your explanations.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 16: Exam Question 4 (6 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 4</span>
+            <span class="marks">(6 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A college is designing a student record system with the following fields:</p>
+            
+            <div class="context-box">
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li><strong>StudentID:</strong> A unique number for each student (e.g., 100234, 100235)</li>
+                    <li><strong>DateOfBirth:</strong> The student's birthdate (e.g., 15/03/2008)</li>
+                    <li><strong>AttendanceGrade:</strong> A letter grade (A, B, C, D, E)</li>
+                    <li><strong>PhotoIDCard:</strong> A scanned image of their photo ID card (JPG file)</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Recommend</span> the most appropriate data type for each of the four fields.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 20px;"><span class="command-verb">Justify</span> your choice for the PhotoIDCard field.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Explain why the data type you've chosen is suitable for storing image files.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17: Exam Question 5 (9 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 5</span>
+            <span class="marks">(9 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A fitness tracking application stores various types of user data:</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>User Profile Data:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Username: "FitUser123", "HealthyLife"</li>
+                    <li>Age: 25, 34, 42 years</li>
+                    <li>Weight: 68.5kg, 72.3kg, 81.7kg</li>
+                    <li>Premium member: Yes or No</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Activity Tracking Data:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Steps taken: 8,547 steps, 12,341 steps</li>
+                    <li>Distance walked: 6.2km, 9.847km</li>
+                    <li>Workout type: 'R' (Running), 'C' (Cycling), 'S' (Swimming)</li>
+                    <li>Workout date: 15/01/2026, 16/01/2026</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Media Data:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.95em;">
+                    <li>Profile picture: User's uploaded photo</li>
+                    <li>Progress photos: Before/after images</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The development team needs to choose appropriate data types for efficient database design.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> which data type (Integer, Real, Character, String, Boolean, Date, or Blob) is most appropriate for each field listed above.</p>
+            
+            <p style="font-size: 1.1em; margin-top: 20px; font-style: italic; color: #94A3B8;">Justify your choices by explaining why each data type is suitable for its specific purpose. Consider factors such as precision requirements, memory efficiency, and the nature of the data being stored.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 18: Exam Question 6 (12 marks) -->
+<div class="slide">
+    <h1>Exam-Style Questions</h1>
+    <div class="card" style="border-left: 6px solid #8B5CF6;">
+        <div class="question-header">
+            <span class="question-number">Question 6</span>
+            <span class="marks">(12 marks)</span>
+        </div>
+        <div class="question-text">
+            <p style="font-size: 1.15em; margin-bottom: 20px;">A hospital is designing a new patient management system that needs to store comprehensive patient information efficiently and securely.</p>
+            
+            <div class="context-box">
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong>Patient Demographics:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.9em;">
+                    <li>NHS Number: 9 digits (e.g., 123456789)</li>
+                    <li>Full Name: First name and surname</li>
+                    <li>Date of Birth: e.g., 15/03/1985</li>
+                    <li>Blood Group: Single letter with modifier (e.g., A, B, O, AB)</li>
+                    <li>Organ Donor: Yes or No</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Medical Measurements:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.9em;">
+                    <li>Height: Measured in metres (e.g., 1.75m, 1.82m)</li>
+                    <li>Weight: Measured in kilograms (e.g., 68.4kg, 72.1kg)</li>
+                    <li>Body Temperature: e.g., 36.8°C, 37.2°C, 38.5°C</li>
+                    <li>Heart Rate: Beats per minute (e.g., 72, 85, 68)</li>
+                    <li>Number of Dependants: e.g., 0, 1, 2, 3</li>
+                </ul>
+                
+                <p style="font-size: 1.05em; margin-top: 15px; margin-bottom: 10px;"><strong>Medical Records:</strong></p>
+                <ul class="bullet-list" style="font-size: 0.9em;">
+                    <li>Last Appointment Date: e.g., 10/01/2026</li>
+                    <li>Next Appointment: Date and time (e.g., 20/01/2026 14:30)</li>
+                    <li>Currently Admitted: Whether patient is in hospital or not</li>
+                    <li>X-ray Images: Chest X-rays, bone scans (stored as image files)</li>
+                    <li>MRI Scans: Brain and body scans (stored as image files)</li>
+                    <li>Medical History PDF: Scanned historical documents</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.15em; margin-top: 20px;">The database designer must select appropriate data types that balance storage efficiency, data integrity, and system performance.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 25px;"><span class="command-verb">Evaluate</span> the most appropriate data type for each category of information (Demographics, Measurements, Records).</p>
+            
+            <p style="font-size: 1.3em; margin-top: 20px;"><span class="command-verb">Justify</span> why Blob is the most appropriate data type for storing X-ray images, MRI scans, and medical history PDFs.</p>
+            
+            <p style="font-size: 1.3em; margin-top: 20px;"><span class="command-verb">Explain</span> the potential consequences of choosing incorrect data types for medical measurements like body temperature or heart rate.</p>
+            
+            <p style="font-size: 1.05em; margin-top: 20px; font-style: italic; color: #94A3B8;">Your answer should demonstrate understanding of: data type characteristics, memory efficiency, precision requirements, and the importance of data integrity in medical systems. Consider what would happen if Integer was used instead of Real for temperature, or String instead of Boolean for admission status.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 19: Summary & Exam Tips -->
+<div class="slide">
+    <h1>Summary & Exam Tips</h1>
+    
+    <div class="card">
+        <h3 style="margin-bottom: 25px;">Key Points - Content Area 6.4.1</h3>
+        
+        <div class="data-type-card integer-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #3B82F6;">Integer:</strong> Whole numbers only (no decimals). Used for counting, IDs, ages. Example: 42, -5, 1000. Memory: 4 bytes.</p>
+        </div>
+
+        <div class="data-type-card real-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #10B981;">Real (Float):</strong> Decimal numbers for measurements. Used for prices, heights, temperatures. Example: 19.99, 1.75, 36.8. Memory: 4-8 bytes.</p>
+        </div>
+
+        <div class="data-type-card character-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #F59E0B;">Character:</strong> Single character only. Used for initials, grades, codes. Example: 'A', 'z', '5', '@'. Memory: 1-2 bytes.</p>
+        </div>
+
+        <div class="data-type-card string-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #EC4899;">String:</strong> Multiple characters (text). Used for names, emails, addresses. Example: "Sarah Johnson", "user@email.com". Memory: Variable.</p>
+        </div>
+
+        <div class="data-type-card boolean-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #8B5CF6;">Boolean:</strong> True or False only. Used for yes/no, on/off flags. Example: True, False. Memory: 1 bit (1 byte stored).</p>
+        </div>
+
+        <div class="data-type-card date-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #06B6D4;">Date/DateTime:</strong> Dates and times in standard format. Used for birthdays, appointments, timestamps. Example: 15/01/2026, 14:30:00. Memory: 4-8 bytes.</p>
+        </div>
+
+        <div class="data-type-card blob-card" style="margin-bottom: 12px;">
+            <p style="font-size: 1em;"><strong style="color: #6366F1;">Blob:</strong> Binary Large Object for files. Used for images, audio, video, PDFs. Example: [image data], [video data]. Memory: MBs to GBs.</p>
+        </div>
+    </div>
+
+    <div class="card" style="background: rgba(139, 92, 246, 0.1); margin-top: 25px;">
+        <h3 style="margin-bottom: 20px;">Exam Success Tips</h3>
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">1. Decimal Point Test</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Needs decimals? → Real. Whole numbers only? → Integer. Simple check for numeric types.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">2. Text Length Check</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">One character? → Character. Multiple characters? → String. Don't confuse these!</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">3. True/False Scenarios</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Two states only (yes/no, on/off)? → Boolean. More options? → Use categorical codes instead.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">4. Date vs String</strong></p>
+                <p style="font-size: 0.95em;">Need date calculations? → Date type. Just displaying? → Could use String (but Date preferred).</p>
+            </div>
+            <div>
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">5. File Storage = Blob</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Any file (image, video, PDF, audio)? → Blob. This is the only type for binary files.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">6. Memory Efficiency</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Explain tradeoffs: Character (1 byte) vs String (variable). Integer vs Real precision.</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">7. Real-World Context</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 15px;">Use examples: "Price needs Real because £19.99 has decimal places for pence."</p>
+                
+                <p style="font-size: 1.05em; margin-bottom: 10px;"><strong style="color: #8B5CF6;">8. Wrong Type Consequences</strong></p>
+                <p style="font-size: 0.95em;">In evaluation questions, explain what breaks: Integer for price loses pence (£19.99 → £19).</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 25px; background: rgba(139, 92, 246, 0.2); border-radius: 15px;">
+        <h2 style="font-size: 2em; color: #8B5CF6; font-weight: 800;">Total: 36 marks</h2>
+        <p style="font-size: 1.1em; margin-top: 10px; color: #94A3B8;">Questions: 2 + 3 + 4 + 6 + 9 + 12</p>
+    </div>
+</div>
+
+</div><!-- End slide-container -->
+
+<!-- Navigation -->
+<div class="navigation">
+    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-number" id="slideCounter">1 / 19</span>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    if (n >= totalSlides) currentSlide = 0;
+    if (n < 0) currentSlide = totalSlides - 1;
+    
+    slides[currentSlide].classList.add('active');
+    
+    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+    document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    
+    slides[currentSlide].scrollTop = 0;
+}
+
+function changeSlide(direction) {
+    currentSlide += direction;
+    showSlide(currentSlide);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+});
+
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>

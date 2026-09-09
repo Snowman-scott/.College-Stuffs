@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.3.2 Technical Change Management - Implementation Methods</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .slide-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 80vh;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #a78bfa;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #c4b5fd;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-area {
+            background: rgba(103, 126, 234, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #e0e7ff;
+        }
+
+        .method-card {
+            background: linear-gradient(135deg, rgba(103, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(103, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .method-title {
+            font-size: 1.8rem;
+            color: #a78bfa;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .definition {
+            background: rgba(167, 139, 250, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #a78bfa;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .pros, .cons {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pros {
+            border-left: 4px solid #10b981;
+        }
+
+        .cons {
+            border-left: 4px solid #ef4444;
+        }
+
+        .pros h4 {
+            color: #10b981;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .cons h4 {
+            color: #ef4444;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .pros li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .cons li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-card {
+            background: linear-gradient(135deg, rgba(103, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(103, 126, 234, 0.3);
+        }
+
+        .comparison-card h4 {
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .scenario {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #10b981;
+        }
+
+        .scenario-title {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 6px solid #f97316;
+            border: 1px solid #fed7aa;
+            border-left: 6px solid #f97316;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .question-box h4 {
+            color: #f97316;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .question-box p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .marks {
+            background: #f97316;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .command-word-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .command-word-box p:first-child {
+            font-size: 1.2em;
+            color: #2c5364;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .command-word-box p:last-child {
+            font-size: 1.1em;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(103, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(103, 126, 234, 0.6);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+            color: #c4b5fd;
+        }
+
+        .visual-diagram {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            background: rgba(103, 126, 234, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            flex-grow: 1;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin: 0.75rem 0;
+            border-left: 4px solid #8b5cf6;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">14</span>
+    </div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>Technical Change Management</h1>
+            <div class="subtitle">Implementation Methods</div>
+            <div class="content-area">
+                <strong>Content Area 5.3.2</strong><br>
+                Understand the technical change management process<br>
+                Methods of implementing change
+            </div>
+            <div class="definition" style="margin-top: 3rem;">
+                <h3 style="color: #a78bfa; margin-top: 0;">What is Change Management?</h3>
+                <p>Change management is the systematic approach to dealing with the transition or transformation of an organization's goals, processes, or technologies. In technical contexts, it ensures that changes to systems, software, or infrastructure are implemented smoothly with minimal disruption to services.</p>
+            </div>
+            <div class="key-point">
+                📌 The method chosen for implementing change depends on factors such as risk, cost, time constraints, and the criticality of the system being changed.
+            </div>
+        </div>
+
+        <!-- Slide 2: Overview of Methods -->
+        <div class="slide">
+            <h2>Four Implementation Methods</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <div class="method-icon">⚡</div>
+                    <h4>Direct Changeover</h4>
+                    <p>Switch from old to new system immediately in one go</p>
+                    <div style="margin-top: 1rem; color: #ef4444;">⚠️ High Risk</div>
+                </div>
+                <div class="comparison-card">
+                    <div class="method-icon">🔄</div>
+                    <h4>Parallel Running</h4>
+                    <p>Run both old and new systems simultaneously</p>
+                    <div style="margin-top: 1rem; color: #10b981;">✓ Low Risk</div>
+                </div>
+                <div class="comparison-card">
+                    <div class="method-icon">📊</div>
+                    <h4>Phased Implementation</h4>
+                    <p>Introduce new system gradually in stages</p>
+                    <div style="margin-top: 1rem; color: #fbbf24;">⚖️ Medium Risk</div>
+                </div>
+                <div class="comparison-card">
+                    <div class="method-icon">🧪</div>
+                    <h4>Pilot Implementation</h4>
+                    <p>Test new system with a small group first</p>
+                    <div style="margin-top: 1rem; color: #10b981;">✓ Low Risk</div>
+                </div>
+            </div>
+            <div class="key-point" style="margin-top: 2rem;">
+                Each method offers different trade-offs between risk, cost, time, and complexity. Understanding these trade-offs is essential for selecting the appropriate implementation strategy.
+            </div>
+        </div>
+
+        <!-- Slide 3: Direct Changeover -->
+        <div class="slide">
+            <h2>Direct Changeover (Big Bang)</h2>
+            <div class="method-card">
+                <div class="method-title">
+                    <div class="method-icon">⚡</div>
+                    <span>Direct Changeover</span>
+                </div>
+                <div class="definition">
+                    <strong>Definition:</strong> The old system is completely replaced by the new system at a specific date and time. There is no overlap - the organization stops using the old system and immediately starts using the new one.
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>✓ Advantages</h4>
+                    <ul>
+                        <li>Lowest cost - no need to run multiple systems</li>
+                        <li>Fastest implementation method</li>
+                        <li>Forces users to adapt quickly to the new system</li>
+                        <li>Clear cut-off point - no confusion about which system to use</li>
+                        <li>Immediate benefits from the new system</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>✗ Disadvantages</h4>
+                    <ul>
+                        <li>Highest risk - if new system fails, no backup</li>
+                        <li>Can cause significant disruption to operations</li>
+                        <li>Requires extensive training beforehand</li>
+                        <li>No time to identify problems before full deployment</li>
+                        <li>Stressful for staff</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-title">When to Use Direct Changeover:</div>
+                • Small organizations with simple systems<br>
+                • When the new system is completely different from the old one<br>
+                • When parallel running is technically impossible<br>
+                • When downtime can be scheduled outside business hours
+            </div>
+        </div>
+
+        <!-- Slide 4: Direct Changeover Example -->
+        <div class="slide">
+            <h2>Direct Changeover - Real World Example</h2>
+            <div class="scenario">
+                <div class="scenario-title">🏪 Retail Store Point-of-Sale System</div>
+                <p><strong>Scenario:</strong> A small independent bookshop wants to upgrade from a basic cash register system to a modern cloud-based POS system with inventory management.</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="color: #10b981; font-size: 1.2rem;">Implementation Plan:</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Week 1-2:</strong> Staff training on new system during quiet hours
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Week 3:</strong> Data migration prepared (product catalog, prices)
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Sunday Evening:</strong> Old system shut down, new system activated
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Monday Morning:</strong> Store opens with new system only
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Why Direct Changeover?</strong> The shop is small, the systems are fundamentally different (can't run both), and they can schedule the switch for a Sunday evening when the shop is closed. The risk is manageable because it's a single location with a small team.
+            </div>
+        </div>
+
+        <!-- Slide 5: Parallel Running -->
+        <div class="slide">
+            <h2>Parallel Running</h2>
+            <div class="method-card">
+                <div class="method-title">
+                    <div class="method-icon">🔄</div>
+                    <span>Parallel Running</span>
+                </div>
+                <div class="definition">
+                    <strong>Definition:</strong> Both the old and new systems run simultaneously for a period of time. The same data is input into both systems, and outputs are compared to ensure the new system works correctly. Once confidence is established, the old system is retired.
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>✓ Advantages</h4>
+                    <ul>
+                        <li>Lowest risk - old system available if new one fails</li>
+                        <li>Outputs can be compared to verify accuracy</li>
+                        <li>Problems can be identified and fixed before full transition</li>
+                        <li>Users can gradually learn new system</li>
+                        <li>Provides fallback option at all times</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>✗ Disadvantages</h4>
+                    <ul>
+                        <li>Most expensive - running two systems doubles resources</li>
+                        <li>Time-consuming - requires duplicate data entry</li>
+                        <li>Increased workload for staff</li>
+                        <li>May not always be feasible (technical/cost constraints)</li>
+                        <li>Can create confusion about which system is "official"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-title">When to Use Parallel Running:</div>
+                • Critical systems where failure is not an option (e.g., banking, healthcare)<br>
+                • When accuracy of data is paramount<br>
+                • When sufficient resources are available<br>
+                • Financial systems, payroll systems
+            </div>
+        </div>
+
+        <!-- Slide 6: Parallel Running Example -->
+        <div class="slide">
+            <h2>Parallel Running - Real World Example</h2>
+            <div class="scenario">
+                <div class="scenario-title">🏥 Hospital Patient Records System</div>
+                <p><strong>Scenario:</strong> A hospital is transitioning from a legacy patient management system to a new integrated Electronic Health Records (EHR) system.</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="color: #10b981; font-size: 1.2rem;">Implementation Plan:</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Month 1-2:</strong> New system installed alongside existing system
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Month 2-5:</strong> Both systems run together - all patient data entered in both systems
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Weekly:</strong> Compare outputs and reports from both systems
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Month 5:</strong> After validation, old system gradually phased out
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Why Parallel Running?</strong> Patient safety is critical - any system failure could have life-threatening consequences. The hospital needs absolute certainty that the new system works correctly. The cost and effort of running both systems is justified by the zero-tolerance risk environment.
+            </div>
+        </div>
+
+        <!-- Slide 7: Phased Implementation -->
+        <div class="slide">
+            <h2>Phased Implementation</h2>
+            <div class="method-card">
+                <div class="method-title">
+                    <div class="method-icon">📊</div>
+                    <span>Phased Implementation</span>
+                </div>
+                <div class="definition">
+                    <strong>Definition:</strong> The new system is introduced gradually, one module or component at a time. Each phase is completed and tested before moving to the next. Parts of the old system are retired as corresponding new components are proven to work.
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>✓ Advantages</h4>
+                    <ul>
+                        <li>Reduced risk - problems isolated to specific phases</li>
+                        <li>More manageable workload - changes are gradual</li>
+                        <li>Issues can be resolved before proceeding to next phase</li>
+                        <li>Staff training can be spread out over time</li>
+                        <li>Less disruptive than direct changeover</li>
+                        <li>Early phases provide learning for later phases</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>✗ Disadvantages</h4>
+                    <ul>
+                        <li>Takes longer to fully implement</li>
+                        <li>More complex to manage multiple phases</li>
+                        <li>Old and new systems must be compatible during transition</li>
+                        <li>May delay full benefits of new system</li>
+                        <li>Requires careful planning and coordination</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-title">When to Use Phased Implementation:</div>
+                • Large, complex systems with multiple modules<br>
+                • When system can be broken into logical phases<br>
+                • Organizations that can't afford full parallel running<br>
+                • ERP systems, CRM systems, multi-module applications
+            </div>
+        </div>
+
+        <!-- Slide 8: Phased Implementation Example -->
+        <div class="slide">
+            <h2>Phased Implementation - Real World Example</h2>
+            <div class="scenario">
+                <div class="scenario-title">🏭 Manufacturing Company ERP System</div>
+                <p><strong>Scenario:</strong> A manufacturing company is implementing a new Enterprise Resource Planning (ERP) system to replace multiple disconnected legacy systems.</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="color: #10b981; font-size: 1.2rem;">Implementation Phases:</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Phase 1 (Q1):</strong> Finance module - accounting, budgeting, reporting
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Phase 2 (Q2):</strong> Inventory management module - stock control, warehousing
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Phase 3 (Q3):</strong> Production planning module - scheduling, work orders
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Phase 4 (Q4):</strong> HR and payroll module - employee records, time tracking
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Why Phased Implementation?</strong> The ERP system is complex with multiple integrated modules. Implementing everything at once would be too risky and overwhelming. By breaking it into phases, the company can ensure each module works correctly before moving on, and staff have time to adapt to changes.
+            </div>
+        </div>
+
+        <!-- Slide 9: Pilot Implementation -->
+        <div class="slide">
+            <h2>Pilot Implementation</h2>
+            <div class="method-card">
+                <div class="method-title">
+                    <div class="method-icon">🧪</div>
+                    <span>Pilot Implementation</span>
+                </div>
+                <div class="definition">
+                    <strong>Definition:</strong> The new system is introduced to a small, representative group of users or a single department/location first. This pilot group tests the full system in a real environment. After successful pilot evaluation, the system is rolled out to the entire organization.
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>✓ Advantages</h4>
+                    <ul>
+                        <li>Real-world testing with actual users</li>
+                        <li>Problems identified in controlled environment</li>
+                        <li>Feedback used to improve before full rollout</li>
+                        <li>Lower risk than direct changeover</li>
+                        <li>Training can be refined based on pilot experience</li>
+                        <li>Builds confidence before organization-wide deployment</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>✗ Disadvantages</h4>
+                    <ul>
+                        <li>Takes longer than direct changeover</li>
+                        <li>Pilot group may not represent all use cases</li>
+                        <li>Can create resentment (why them first?)</li>
+                        <li>Requires managing two systems temporarily</li>
+                        <li>May need additional resources for pilot support</li>
+                        <li>Problems might only appear at scale</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <div class="scenario-title">When to Use Pilot Implementation:</div>
+                • Testing new systems in realistic conditions<br>
+                • Multi-site organizations (test at one site first)<br>
+                • When user feedback is crucial<br>
+                • Software rollouts, new platforms, organizational changes
+            </div>
+        </div>
+
+        <!-- Slide 10: Pilot Implementation Example -->
+        <div class="slide">
+            <h2>Pilot Implementation - Real World Example</h2>
+            <div class="scenario">
+                <div class="scenario-title">🏫 School Management Information System</div>
+                <p><strong>Scenario:</strong> A large academy trust with 15 schools is implementing a new cloud-based MIS to replace their current on-premise system.</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="color: #10b981; font-size: 1.2rem;">Implementation Plan:</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Term 1:</strong> Select pilot school (mid-size secondary with engaged IT staff)
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Term 2:</strong> Full implementation at pilot school, old system maintained as backup
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Term 3:</strong> Gather feedback, refine training materials, fix issues
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <strong>Next Academic Year:</strong> Roll out to all 15 schools based on pilot learnings
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Why Pilot Implementation?</strong> Testing with one school allows the trust to identify problems in a real environment without risking all 15 schools. Feedback from the pilot school helps refine the implementation process, training, and identify any issues before the full rollout.
+            </div>
+        </div>
+
+        <!-- Slide 11: Comparison Summary -->
+        <div class="slide">
+            <h2>Comparison Summary</h2>
+            <div class="visual-diagram">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <th style="padding: 1rem; text-align: left; border: 1px solid rgba(255,255,255,0.2);">Method</th>
+                            <th style="padding: 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.2);">Risk Level</th>
+                            <th style="padding: 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.2);">Cost</th>
+                            <th style="padding: 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.2);">Time</th>
+                            <th style="padding: 1rem; text-align: left; border: 1px solid rgba(255,255,255,0.2);">Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);"><strong>Direct</strong></td>
+                            <td style="padding: 1rem; text-align: center; color: #ef4444; border: 1px solid rgba(255,255,255,0.1);">High</td>
+                            <td style="padding: 1rem; text-align: center; color: #10b981; border: 1px solid rgba(255,255,255,0.1);">Low</td>
+                            <td style="padding: 1rem; text-align: center; color: #10b981; border: 1px solid rgba(255,255,255,0.1);">Fast</td>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">Small systems, simple changes</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);"><strong>Parallel</strong></td>
+                            <td style="padding: 1rem; text-align: center; color: #10b981; border: 1px solid rgba(255,255,255,0.1);">Low</td>
+                            <td style="padding: 1rem; text-align: center; color: #ef4444; border: 1px solid rgba(255,255,255,0.1);">High</td>
+                            <td style="padding: 1rem; text-align: center; color: #ef4444; border: 1px solid rgba(255,255,255,0.1);">Slow</td>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">Critical systems, financial/health</td>
+                        </tr>
+                        <tr style="background: rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);"><strong>Phased</strong></td>
+                            <td style="padding: 1rem; text-align: center; color: #fbbf24; border: 1px solid rgba(255,255,255,0.1);">Medium</td>
+                            <td style="padding: 1rem; text-align: center; color: #fbbf24; border: 1px solid rgba(255,255,255,0.1);">Medium</td>
+                            <td style="padding: 1rem; text-align: center; color: #fbbf24; border: 1px solid rgba(255,255,255,0.1);">Medium</td>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">Large modular systems, ERP</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);"><strong>Pilot</strong></td>
+                            <td style="padding: 1rem; text-align: center; color: #10b981; border: 1px solid rgba(255,255,255,0.1);">Low</td>
+                            <td style="padding: 1rem; text-align: center; color: #fbbf24; border: 1px solid rgba(255,255,255,0.1);">Medium</td>
+                            <td style="padding: 1rem; text-align: center; color: #fbbf24; border: 1px solid rgba(255,255,255,0.1);">Medium</td>
+                            <td style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">Multi-site orgs, user feedback</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="key-point" style="margin-top: 2rem;">
+                <strong>Key Decision Factors:</strong><br>
+                • System criticality • Budget available • Time constraints • Organization size<br>
+                • User readiness • Technical complexity • Risk tolerance • Reversibility needs
+            </div>
+        </div>
+
+        <!-- Slide 12: Assessment Questions - Section A -->
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section A – Shorter Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 1 <span class="marks">2 marks</span></h4>
+                <p>Define the term <em>change management</em> in a technical context.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 2 <span class="marks">3 marks</span></h4>
+                <p>State three factors that should be considered when choosing an implementation method for a new system.</p>
+            </div>
+
+            <div class="question-box">
+                <h4>Question 3 <span class="marks">4 marks</span></h4>
+                <p>Explain two advantages of using parallel running when implementing a new payroll system.</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Assessment Questions - Section B (Q4) -->
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 4 <span class="marks">6 marks – Discuss</span></h4>
+                <p>A small dental practice with 2 dentists and 3 support staff wants to replace their paper-based appointment system with a digital booking system.</p>
+                <p style="margin-top: 10px;">Discuss why direct changeover would be the most appropriate implementation method for this scenario.</p>
+            </div>
+
+            <div class="command-word-box">
+                <p><strong>Command word: Discuss</strong></p>
+                <p>Present key points about different ideas or strengths and weaknesses of an idea. You should give a balanced answer showing multiple perspectives.</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Assessment Questions - Section B (Q5) -->
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 5 <span class="marks">9 marks – Analyse</span></h4>
+                <p>A university is implementing a new Virtual Learning Environment (VLE) to replace their current platform. The university has 15,000 students and 800 staff across 5 faculties.</p>
+                <p style="margin-top: 10px;">Analyse the suitability of pilot implementation for this scenario. In your answer, consider how the implementation would be carried out and potential disadvantages of this approach.</p>
+            </div>
+
+            <div class="command-word-box">
+                <p><strong>Command word: Analyse</strong></p>
+                <p>Break down information to examine its parts, identify relationships, and draw conclusions. Show detailed understanding of how factors interact and impact the scenario.</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Assessment Questions - Section B (Q6) -->
+        <div class="slide">
+            <h2>Assessment Questions</h2>
+            <h3>Section B – Extended Response Questions</h3>
+            
+            <div class="question-box">
+                <h4>Question 6 <span class="marks">12 marks – Evaluate</span></h4>
+                <p>A national supermarket chain is implementing a new stock management system across all 250 stores. The current system is 15 years old and needs replacing urgently. The company must choose between phased implementation and pilot implementation.</p>
+                <p style="margin-top: 10px;">Evaluate both options and recommend which implementation method should be chosen. Justify your recommendation with evidence.</p>
+            </div>
+
+            <div class="command-word-box">
+                <p><strong>Command word: Evaluate</strong></p>
+                <p>Judge the importance or success of something using evidence. Present a balanced argument with a clear conclusion and justified recommendation.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n - 1].classList.add('active');
+            
+            document.getElementById('currentSlide').textContent = n;
+            
+            document.getElementById('prevBtn').disabled = n === 1;
+            document.getElementById('nextBtn').disabled = n === totalSlides;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(1);
+    </script>
+</body>
+</html>

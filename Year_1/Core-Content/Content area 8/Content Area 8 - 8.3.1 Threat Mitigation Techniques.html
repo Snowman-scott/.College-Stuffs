@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Area 8: Threat Mitigation Techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f2e26;
+            background-image: 
+                radial-gradient(at 20% 30%, rgba(74, 222, 128, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(34, 197, 94, 0.06) 0px, transparent 50%),
+                radial-gradient(at 40% 80%, rgba(22, 163, 74, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            overflow: auto;
+            min-height: 100vh;
+        }
+
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding: 80px 100px 150px 100px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 30px;
+            color: #4ade80;
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        h2 {
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            color: #4ade80;
+            text-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+        }
+
+        h3 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #86efac;
+        }
+
+        h4 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #86efac;
+        }
+
+        p, li {
+            font-size: 1.4em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.15) 0%, rgba(34, 197, 94, 0.15) 100%);
+            border-left: 5px solid #4ade80;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(10, 77, 60, 0.9);
+            padding: 15px 40px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 222, 128, 0.4);
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .technique-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(74, 222, 128, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .technique-card:hover {
+            transform: translateY(-5px);
+            border-color: #4ade80;
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
+        }
+
+        .layer-box {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+            border: 2px solid rgba(74, 222, 128, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .layer-box:hover {
+            border-color: #4ade80;
+            transform: translateX(10px);
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: rgba(251, 146, 60, 0.1);
+            border: 2px solid rgba(251, 146, 60, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .warning-box h4 {
+            color: #fdba74;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            font-size: 1.3em;
+        }
+
+        .comparison-table td {
+            font-size: 1.2em;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            font-size: 1.2em;
+            color: rgba(134, 239, 172, 0.5);
+        }
+
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+
+        .process-step {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .process-arrow {
+            font-size: 2em;
+            color: #4ade80;
+        }
+
+        .best-practice {
+            background: rgba(74, 222, 128, 0.05);
+            border-left: 4px solid #4ade80;
+            padding: 20px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="center-content">
+                <h1>THREAT MITIGATION TECHNIQUES</h1>
+                <p style="font-size: 1.5em; color: #86efac;">Content Area 8: Security - 8.3.1</p>
+                <div class="highlight-box" style="margin-top: 60px; max-width: 900px;">
+                    <h3 style="text-align: center;">Protecting Systems and Data</h3>
+                    <p style="text-align: center;">Exploring technical and procedural controls to prevent, detect, and respond to security threats.</p>
+                </div>
+            </div>
+            <div class="slide-number">1 / 24</div>
+        </div>
+
+        <!-- Slide 2: Introduction to Threat Mitigation -->
+        <div class="slide">
+            <h2>What is Threat Mitigation?</h2>
+            <div class="highlight-box">
+                <h3>🛡️ Definition</h3>
+                <p>Threat mitigation encompasses the strategies, techniques, and controls implemented to reduce the likelihood and impact of security threats. It's about building multiple layers of defence to protect systems, data, and users.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <div class="icon">🎯</div>
+                    <h4>Prevention</h4>
+                    <p>Stopping threats before they can cause harm through proactive security measures and controls.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔍</div>
+                    <h4>Detection</h4>
+                    <p>Identifying threats that bypass preventive controls through monitoring and alerting systems.</p>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <div class="icon">⚡</div>
+                    <h4>Response</h4>
+                    <p>Reacting quickly to contain and remediate detected threats to minimise damage.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔄</div>
+                    <h4>Recovery</h4>
+                    <p>Restoring systems and data to normal operation after a security incident.</p>
+                </div>
+            </div>
+            <div class="slide-number">2 / 24</div>
+        </div>
+
+        <!-- Slide 3: Access Control - Authentication -->
+        <div class="slide">
+            <h2>Access Control: Authentication</h2>
+            <div class="card">
+                <h3>🔐 Verifying Identity</h3>
+                <p>Authentication confirms that users are who they claim to be before granting access to systems.</p>
+            </div>
+            <div class="three-column">
+                <div class="technique-card">
+                    <div class="icon">🔑</div>
+                    <h4>Something You Know</h4>
+                    <p><strong>Passwords/PINs</strong></p>
+                    <ul>
+                        <li>Complex password requirements</li>
+                        <li>Password managers</li>
+                        <li>Regular password changes</li>
+                    </ul>
+                </div>
+                <div class="technique-card">
+                    <div class="icon">📱</div>
+                    <h4>Something You Have</h4>
+                    <p><strong>Physical Tokens</strong></p>
+                    <ul>
+                        <li>Security keys (YubiKey)</li>
+                        <li>Smart cards</li>
+                        <li>Mobile authentication apps</li>
+                    </ul>
+                </div>
+                <div class="technique-card">
+                    <div class="icon">👤</div>
+                    <h4>Something You Are</h4>
+                    <p><strong>Biometrics</strong></p>
+                    <ul>
+                        <li>Fingerprint scanning</li>
+                        <li>Facial recognition</li>
+                        <li>Iris/retina scanning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">3 / 24</div>
+        </div>
+
+        <!-- Slide 4: Multi-Factor Authentication -->
+        <div class="slide">
+            <h2>Multi-Factor Authentication (MFA)</h2>
+            <div class="highlight-box">
+                <h3>🔒 Stronger Security Through Multiple Factors</h3>
+                <p>MFA requires users to provide two or more verification factors, making it exponentially harder for attackers to gain unauthorised access.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Why MFA Matters</h4>
+                    <ul>
+                        <li><strong>Password Compromise:</strong> Even if password is stolen, attacker still needs second factor</li>
+                        <li><strong>Phishing Protection:</strong> Reduces effectiveness of credential harvesting</li>
+                        <li><strong>99.9% Protection:</strong> Microsoft reports MFA blocks 99.9% of automated attacks</li>
+                        <li><strong>Compliance:</strong> Required by many regulations (PCI DSS, GDPR)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Common MFA Methods</h4>
+                    <ul>
+                        <li><strong>SMS Codes:</strong> Text message with verification code</li>
+                        <li><strong>Authenticator Apps:</strong> Time-based codes (Google Authenticator, Microsoft Authenticator)</li>
+                        <li><strong>Push Notifications:</strong> Approve login on trusted device</li>
+                        <li><strong>Hardware Tokens:</strong> Physical security keys (most secure)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">4 / 24</div>
+        </div>
+
+        <!-- Slide 5: Authorisation and Access Control -->
+        <div class="slide">
+            <h2>Authorisation & Access Control</h2>
+            <div class="card">
+                <h3>Determining What Users Can Access</h3>
+                <p>After authentication, authorisation controls define what resources users can access and what actions they can perform.</p>
+            </div>
+            <div class="two-column">
+                <div class="technique-card">
+                    <h4>🎭 Role-Based Access Control (RBAC)</h4>
+                    <p>Permissions assigned based on job roles</p>
+                    <p><strong>Example:</strong> HR staff can access employee records, but not financial systems</p>
+                    <ul>
+                        <li>Simplifies permission management</li>
+                        <li>Easier to audit</li>
+                        <li>Reduces errors</li>
+                    </ul>
+                </div>
+                <div class="technique-card">
+                    <h4>🔐 Principle of Least Privilege</h4>
+                    <p>Users receive minimum access needed</p>
+                    <p><strong>Example:</strong> Developers have read-only access to production databases</p>
+                    <ul>
+                        <li>Limits damage from compromised accounts</li>
+                        <li>Reduces insider threat risk</li>
+                        <li>Meets compliance requirements</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Best Practice: Regular Access Reviews</h4>
+                <p>Conduct quarterly reviews to remove unnecessary permissions and ensure access rights remain appropriate for current roles.</p>
+            </div>
+            <div class="slide-number">5 / 24</div>
+        </div>
+
+        <!-- Slide 6: Encryption - Data at Rest -->
+        <div class="slide">
+            <h2>Encryption: Data at Rest</h2>
+            <div class="highlight-box">
+                <h3>🔒 Protecting Stored Data</h3>
+                <p>Data at rest encryption protects information stored on devices, servers, and databases. Even if storage media is stolen, data remains unreadable without decryption keys.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Full Disk Encryption (FDE)</h4>
+                    <p>Encrypts entire hard drive or SSD</p>
+                    <ul>
+                        <li><strong>Windows:</strong> BitLocker</li>
+                        <li><strong>macOS:</strong> FileVault</li>
+                        <li><strong>Linux:</strong> LUKS</li>
+                    </ul>
+                    <p><strong>Use Case:</strong> Laptops, mobile devices, removable media</p>
+                </div>
+                <div class="card">
+                    <h4>Database Encryption</h4>
+                    <p>Encrypts sensitive database fields or entire databases</p>
+                    <ul>
+                        <li><strong>Column-level:</strong> Specific sensitive fields (credit cards, NHS numbers)</li>
+                        <li><strong>Transparent Data Encryption:</strong> Encrypts entire database files</li>
+                    </ul>
+                    <p><strong>Use Case:</strong> Protecting customer PII, payment data</p>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Key Management is Critical</h4>
+                <p>Encryption is only as secure as its keys. Store keys separately from encrypted data, use hardware security modules (HSMs) for key storage, and implement key rotation policies.</p>
+            </div>
+            <div class="slide-number">6 / 24</div>
+        </div>
+
+        <!-- Slide 7: Encryption - Data in Transit -->
+        <div class="slide">
+            <h2>Encryption: Data in Transit</h2>
+            <div class="highlight-box">
+                <h3>🌐 Protecting Data During Transmission</h3>
+                <p>Data in transit encryption protects information as it travels across networks, preventing interception and eavesdropping.</p>
+            </div>
+            <div class="card">
+                <h4>TLS/SSL (Transport Layer Security)</h4>
+                <div class="two-column">
+                    <div>
+                        <p><strong>What it does:</strong></p>
+                        <ul>
+                            <li>Encrypts web traffic (HTTPS)</li>
+                            <li>Authenticates server identity</li>
+                            <li>Ensures data integrity</li>
+                        </ul>
+                        <p><strong>Used by:</strong> Websites, email, APIs, file transfers</p>
+                    </div>
+                    <div>
+                        <p><strong>Implementation:</strong></p>
+                        <ul>
+                            <li>SSL/TLS certificates from trusted CAs</li>
+                            <li>TLS 1.2 or 1.3 (older versions deprecated)</li>
+                            <li>Strong cipher suites</li>
+                        </ul>
+                        <p><strong>Visual indicator:</strong> Padlock icon in browser</p>
+                    </div>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>VPN (Virtual Private Network)</h4>
+                    <p>Creates encrypted tunnel for all network traffic</p>
+                    <p><strong>Use cases:</strong> Remote workers, public Wi-Fi, site-to-site connections</p>
+                </div>
+                <div class="card">
+                    <h4>End-to-End Encryption</h4>
+                    <p>Only sender and recipient can decrypt messages</p>
+                    <p><strong>Examples:</strong> WhatsApp, Signal, encrypted email (PGP)</p>
+                </div>
+            </div>
+            <div class="slide-number">7 / 24</div>
+        </div>
+
+        <!-- Slide 8: Firewalls -->
+        <div class="slide">
+            <h2>Network Security: Firewalls</h2>
+            <div class="card">
+                <h3>🔥 Network Traffic Gatekeepers</h3>
+                <p>Firewalls monitor and control incoming and outgoing network traffic based on predetermined security rules, acting as a barrier between trusted internal networks and untrusted external networks.</p>
+            </div>
+            <div class="two-column">
+                <div class="technique-card">
+                    <h4>Packet Filtering Firewalls</h4>
+                    <p>Examines packets and allows/blocks based on:</p>
+                    <ul>
+                        <li>Source/destination IP addresses</li>
+                        <li>Port numbers</li>
+                        <li>Protocols (TCP, UDP, ICMP)</li>
+                    </ul>
+                    <p><strong>Speed:</strong> Fast but basic inspection</p>
+                </div>
+                <div class="technique-card">
+                    <h4>Stateful Inspection Firewalls</h4>
+                    <p>Tracks connection states and context:</p>
+                    <ul>
+                        <li>Monitors active connections</li>
+                        <li>Validates packet sequences</li>
+                        <li>Blocks unsolicited responses</li>
+                    </ul>
+                    <p><strong>Security:</strong> More intelligent filtering</p>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Next-Generation Firewalls (NGFW)</h4>
+                <p>Advanced features beyond traditional firewalls:</p>
+                <ul>
+                    <li><strong>Deep Packet Inspection:</strong> Examines packet contents, not just headers</li>
+                    <li><strong>Application Awareness:</strong> Controls specific applications (block Facebook, allow Slack)</li>
+                    <li><strong>Intrusion Prevention:</strong> Integrated IPS capabilities</li>
+                    <li><strong>Threat Intelligence:</strong> Blocks known malicious IPs/domains</li>
+                </ul>
+            </div>
+            <div class="slide-number">8 / 24</div>
+        </div>
+
+        <!-- Slide 9: IDS and IPS -->
+        <div class="slide">
+            <h2>Intrusion Detection & Prevention Systems</h2>
+            <div class="two-column">
+                <div class="card">
+                    <h4>🔍 IDS (Intrusion Detection System)</h4>
+                    <p><strong>Function:</strong> Monitors network traffic and alerts on suspicious activity</p>
+                    <p><strong>Action:</strong> Passive - detects and alerts only</p>
+                    <h4>Detection Methods:</h4>
+                    <ul>
+                        <li><strong>Signature-based:</strong> Matches known attack patterns</li>
+                        <li><strong>Anomaly-based:</strong> Identifies deviations from normal behaviour</li>
+                        <li><strong>Heuristic:</strong> Uses rules to identify suspicious patterns</li>
+                    </ul>
+                    <p><strong>Example:</strong> Snort, Suricata</p>
+                </div>
+                <div class="card">
+                    <h4>🛡️ IPS (Intrusion Prevention System)</h4>
+                    <p><strong>Function:</strong> Monitors traffic AND blocks threats automatically</p>
+                    <p><strong>Action:</strong> Active - detects and prevents</p>
+                    <h4>Prevention Actions:</h4>
+                    <ul>
+                        <li><strong>Drop packets:</strong> Discard malicious traffic</li>
+                        <li><strong>Block connections:</strong> Terminate suspicious sessions</li>
+                        <li><strong>Modify packets:</strong> Remove malicious content</li>
+                    </ul>
+                    <p><strong>Risk:</strong> False positives can block legitimate traffic</p>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h4>Best Practice: IDS + IPS Combination</h4>
+                <p>Use IDS for monitoring and analysis, IPS for automated blocking of known threats. This provides both visibility and protection whilst reducing false positive impacts.</p>
+            </div>
+            <div class="slide-number">9 / 24</div>
+        </div>
+
+        <!-- Slide 10: DMZ and Network Segmentation -->
+        <div class="slide">
+            <h2>DMZ & Network Segmentation</h2>
+            <div class="card">
+                <h3>🌐 DMZ (Demilitarised Zone)</h3>
+                <p>A network segment that sits between the internal trusted network and the external untrusted network (internet), providing an additional layer of security for public-facing services.</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 1: External Network (Internet) 🌍</h4>
+                <p>Public internet - untrusted, potential attackers</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 2: DMZ (Outer Firewall) 🔥</h4>
+                <p>Public-facing servers: Web servers, email servers, DNS servers, FTP servers</p>
+                <p><strong>Purpose:</strong> If compromised, attackers still can't reach internal network</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 3: Internal Network (Inner Firewall) 🔒</h4>
+                <p>Critical internal systems: Database servers, file servers, employee workstations</p>
+                <p><strong>Protection:</strong> Isolated from both internet and DMZ</p>
+            </div>
+            <div class="best-practice">
+                <h4>Network Segmentation Benefits</h4>
+                <p>• Limits lateral movement of attackers • Contains breaches to specific segments • Simplifies compliance auditing • Improves performance through reduced broadcast traffic</p>
+            </div>
+            <div class="slide-number">10 / 24</div>
+        </div>
+
+        <!-- Slide 11: Patch Management -->
+        <div class="slide">
+            <h2>Patch Management & Updates</h2>
+            <div class="highlight-box">
+                <h3>🔧 Closing Security Vulnerabilities</h3>
+                <p>Patch management is the process of identifying, testing, and deploying software updates to fix security vulnerabilities, bugs, and improve functionality.</p>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">
+                    <h4>1. Identify</h4>
+                    <p>Monitor vendor security bulletins and vulnerability databases</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>2. Assess</h4>
+                    <p>Evaluate severity and applicability to your systems</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>3. Test</h4>
+                    <p>Deploy to test environment first</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>4. Deploy</h4>
+                    <p>Roll out to production systems</p>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Critical Patch Categories</h4>
+                    <ul>
+                        <li><strong>Security Patches:</strong> Fix vulnerabilities (highest priority)</li>
+                        <li><strong>Critical Updates:</strong> Address major bugs affecting stability</li>
+                        <li><strong>Feature Updates:</strong> New functionality (test thoroughly)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Patch Management Tools</h4>
+                    <ul>
+                        <li><strong>Windows:</strong> WSUS, Windows Update</li>
+                        <li><strong>Linux:</strong> apt, yum, automated patching</li>
+                        <li><strong>Enterprise:</strong> SCCM, Ansible, Puppet</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ WannaCry Example</h4>
+                <p>The 2017 WannaCry ransomware exploited a Windows vulnerability for which a patch had been available for 2 months. Organisations that hadn't patched suffered major disruption. This highlights the critical importance of timely patch deployment.</p>
+            </div>
+            <div class="slide-number">11 / 24</div>
+        </div>
+
+        <!-- Slide 12: Backup and Recovery -->
+        <div class="slide">
+            <h2>Backup & Recovery Strategies</h2>
+            <div class="highlight-box">
+                <h3>💾 The Last Line of Defence</h3>
+                <p>Regular backups ensure data can be recovered after ransomware attacks, hardware failures, natural disasters, or accidental deletion. A backup strategy is essential for business continuity.</p>
+            </div>
+            <div class="card">
+                <h4>3-2-1 Backup Rule</h4>
+                <div class="three-column">
+                    <div class="technique-card">
+                        <div class="icon">3️⃣</div>
+                        <h4>3 Copies</h4>
+                        <p>Keep three copies of your data</p>
+                        <p><strong>Original + 2 backups</strong></p>
+                    </div>
+                    <div class="technique-card">
+                        <div class="icon">2️⃣</div>
+                        <h4>2 Media Types</h4>
+                        <p>Store on two different media types</p>
+                        <p><strong>e.g., local drive + cloud</strong></p>
+                    </div>
+                    <div class="technique-card">
+                        <div class="icon">1️⃣</div>
+                        <h4>1 Off-site</h4>
+                        <p>Keep one copy off-site</p>
+                        <p><strong>Protection from physical disasters</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Backup Types</h4>
+                    <ul>
+                        <li><strong>Full:</strong> Complete copy of all data (slow, but simple recovery)</li>
+                        <li><strong>Incremental:</strong> Only changed data since last backup (fast, complex recovery)</li>
+                        <li><strong>Differential:</strong> Changed data since last full backup (balanced approach)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Recovery Testing</h4>
+                    <ul>
+                        <li>Test restores regularly (quarterly minimum)</li>
+                        <li>Document recovery procedures</li>
+                        <li>Measure Recovery Time Objective (RTO)</li>
+                        <li>Verify data integrity after restoration</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">12 / 24</div>
+        </div>
+
+        <!-- Slide 13: Security Awareness Training -->
+        <div class="slide">
+            <h2>Security Awareness Training</h2>
+            <div class="highlight-box">
+                <h3>👥 The Human Firewall</h3>
+                <p>Employees are often the weakest link in security. Regular training transforms users from vulnerabilities into active defenders against social engineering, phishing, and other human-targeted attacks.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Key Training Topics</h4>
+                    <ul>
+                        <li><strong>Phishing Recognition:</strong> Identifying suspicious emails, links, attachments</li>
+                        <li><strong>Password Security:</strong> Creating strong passwords, using MFA</li>
+                        <li><strong>Social Engineering:</strong> Recognising manipulation tactics</li>
+                        <li><strong>Physical Security:</strong> Tailgating, shoulder surfing, clean desk policy</li>
+                        <li><strong>Data Handling:</strong> Classification, secure disposal, encryption</li>
+                        <li><strong>Incident Reporting:</strong> What to do when something seems wrong</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Training Methods</h4>
+                    <ul>
+                        <li><strong>Mandatory Annual Training:</strong> Foundation knowledge for all staff</li>
+                        <li><strong>Simulated Phishing:</strong> Real-world testing with immediate feedback</li>
+                        <li><strong>Role-Based Training:</strong> Additional training for high-risk roles (IT, finance, HR)</li>
+                        <li><strong>Security Bulletins:</strong> Regular updates on emerging threats</li>
+                        <li><strong>Lunch & Learns:</strong> Engaging sessions on topical threats</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="best-practice">
+                <h4>Create a Security Culture</h4>
+                <p>Encourage reporting without punishment, celebrate security champions, make security part of onboarding, and provide easy channels for asking security questions.</p>
+            </div>
+            <div class="slide-number">13 / 24</div>
+        </div>
+
+        <!-- Slide 14: Physical Security -->
+        <div class="slide">
+            <h2>Physical Security Measures</h2>
+            <div class="card">
+                <h3>🏢 Protecting Physical Assets</h3>
+                <p>Physical security controls prevent unauthorised physical access to facilities, equipment, and data. Digital security means nothing if attackers can physically access servers.</p>
+            </div>
+            <div class="three-column">
+                <div class="technique-card">
+                    <div class="icon">🚪</div>
+                    <h4>Access Control</h4>
+                    <ul>
+                        <li>Key card systems</li>
+                        <li>Biometric readers</li>
+                        <li>Mantrap entries</li>
+                        <li>Security guards</li>
+                        <li>Visitor logs</li>
+                    </ul>
+                </div>
+                <div class="technique-card">
+                    <div class="icon">📹</div>
+                    <h4>Surveillance</h4>
+                    <ul>
+                        <li>CCTV cameras</li>
+                        <li>Motion sensors</li>
+                        <li>Alarm systems</li>
+                        <li>24/7 monitoring</li>
+                        <li>Video retention</li>
+                    </ul>
+                </div>
+                <div class="technique-card">
+                    <div class="icon">🔒</div>
+                    <h4>Server Rooms</h4>
+                    <ul>
+                        <li>Locked cabinets</li>
+                        <li>Environmental controls</li>
+                        <li>Fire suppression</li>
+                        <li>Backup power (UPS)</li>
+                        <li>Cable management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="best-practice">
+                    <h4>Desk Security</h4>
+                    <p>• Clear desk policy for sensitive documents • Lock screens when away from desk • Secure storage for portable devices • Shred confidential documents</p>
+                </div>
+                <div class="best-practice">
+                    <h4>Device Security</h4>
+                    <p>• Cable locks for laptops • Encrypted USB drives • Mobile device tracking • Secure disposal procedures</p>
+                </div>
+            </div>
+            <div class="slide-number">14 / 24</div>
+        </div>
+
+        <!-- Slide 15: Monitoring and Logging -->
+        <div class="slide">
+            <h2>Monitoring & Logging</h2>
+            <div class="highlight-box">
+                <h3>👁️ Visibility is Security</h3>
+                <p>Comprehensive logging and continuous monitoring enable detection of suspicious activities, support incident investigation, and provide audit trails for compliance.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>What to Log</h4>
+                    <ul>
+                        <li><strong>Authentication Events:</strong> Login successes/failures, password changes</li>
+                        <li><strong>Access Events:</strong> File access, permission changes, data exports</li>
+                        <li><strong>Network Activity:</strong> Connections, traffic patterns, blocked attempts</li>
+                        <li><strong>System Changes:</strong> Configuration changes, software installations</li>
+                        <li><strong>Security Events:</strong> Firewall blocks, IDS alerts, antivirus detections</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Log Analysis Tools</h4>
+                    <ul>
+                        <li><strong>SIEM (Security Information and Event Management):</strong> Aggregates and correlates logs</li>
+                        <li><strong>Examples:</strong> Splunk, ELK Stack, QRadar</li>
+                        <li><strong>Automated Alerting:</strong> Immediate notification of critical events</li>
+                        <li><strong>Dashboards:</strong> Real-time visualisation of security posture</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Log Retention Requirements</h4>
+                <p>GDPR and other regulations often require logs to be retained for specific periods (typically 6-12 months). Ensure adequate storage and secure log protection to prevent tampering.</p>
+            </div>
+            <div class="slide-number">15 / 24</div>
+        </div>
+
+        <!-- Slide 16: Incident Response Planning -->
+        <div class="slide">
+            <h2>Incident Response Planning</h2>
+            <div class="highlight-box">
+                <h3>⚡ Prepare Before the Crisis</h3>
+                <p>An incident response plan defines procedures for detecting, responding to, and recovering from security incidents. Having a plan reduces response time, minimises damage, and ensures coordinated action.</p>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">
+                    <h4>1. Preparation</h4>
+                    <p>Create plan, assign roles, train team</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>2. Identification</h4>
+                    <p>Detect and confirm incident</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>3. Containment</h4>
+                    <p>Isolate affected systems</p>
+                </div>
+            </div>
+            <div class="process-flow" style="margin-top: 20px;">
+                <div class="process-step">
+                    <h4>4. Eradication</h4>
+                    <p>Remove threat completely</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>5. Recovery</h4>
+                    <p>Restore normal operations</p>
+                </div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">
+                    <h4>6. Lessons Learned</h4>
+                    <p>Review and improve</p>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Response Team Roles</h4>
+                    <ul>
+                        <li><strong>Incident Manager:</strong> Coordinates response</li>
+                        <li><strong>Technical Lead:</strong> Handles technical actions</li>
+                        <li><strong>Communications:</strong> Internal/external messaging</li>
+                        <li><strong>Legal:</strong> Compliance and legal implications</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Testing the Plan</h4>
+                    <ul>
+                        <li>Tabletop exercises (discuss scenarios)</li>
+                        <li>Simulations (practice response)</li>
+                        <li>Red team exercises (real attack simulation)</li>
+                        <li>Annual plan review and updates</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">16 / 24</div>
+        </div>
+
+        <!-- Slide 17: Defence in Depth -->
+        <div class="slide">
+            <h2>Defence in Depth</h2>
+            <div class="highlight-box">
+                <h3>🛡️ Layered Security Approach</h3>
+                <p>Defence in depth uses multiple layers of security controls. If one layer fails, others provide backup protection. No single point of failure exists.</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 7: Policies, Procedures & Awareness 📋</h4>
+                <p>Security policies, user training, acceptable use policies, incident response plans</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 6: Physical Security 🏢</h4>
+                <p>Building access controls, CCTV, security guards, locked server rooms</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 5: Perimeter Security 🔥</h4>
+                <p>Firewalls, IDS/IPS, DMZ, VPN gateways, secure internet connections</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 4: Network Security 🌐</h4>
+                <p>Network segmentation, VLANs, internal firewalls, access control lists</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 3: Endpoint Security 💻</h4>
+                <p>Antivirus, endpoint detection, host firewalls, patch management</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 2: Application Security 📱</h4>
+                <p>Secure coding, input validation, authentication, authorisation controls</p>
+            </div>
+            <div class="layer-box">
+                <h4>Layer 1: Data Security 🔒</h4>
+                <p>Encryption at rest and in transit, data classification, access controls, backups</p>
+            </div>
+            <div class="slide-number">17 / 24</div>
+        </div>
+
+        <!-- Slide 18: Case Study - Target Data Breach -->
+        <div class="slide">
+            <h2>Case Study: Target Data Breach (2013)</h2>
+            <div class="warning-box">
+                <h4>⚠️ The Incident</h4>
+                <p>Attackers compromised 40 million credit card records and 70 million customer records through a third-party HVAC vendor.</p>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h4>How It Happened</h4>
+                    <ol>
+                        <li>Phishing email sent to HVAC vendor</li>
+                        <li>Vendor credentials stolen</li>
+                        <li>Attackers accessed Target's network via vendor connection</li>
+                        <li>Malware installed on point-of-sale systems</li>
+                        <li>Credit card data stolen over several weeks</li>
+                    </ol>
+                </div>
+                <div class="card">
+                    <h4>Failed Mitigations</h4>
+                    <ul>
+                        <li>❌ Vendor had excessive network access</li>
+                        <li>❌ Network segmentation inadequate</li>
+                        <li>❌ Security alerts ignored</li>
+                        <li>❌ FireEye detected malware but wasn't acted upon</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Effective Mitigations That Could Have Prevented It</h4>
+                <ul>
+                    <li><strong>Network Segmentation:</strong> Vendor access should have been isolated from payment systems</li>
+                    <li><strong>Principle of Least Privilege:</strong> HVAC vendor didn't need access to payment networks</li>
+                    <li><strong>Monitoring & Response:</strong> Security alerts should have triggered immediate investigation</li>
+                    <li><strong>Third-party Security:</strong> Vendor security assessments could have identified weak controls</li>
+                </ul>
+            </div>
+            <div class="slide-number">18 / 24</div>
+        </div>
+
+        <!-- Slide 19: Exam Question 1 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 1 (6 marks)</h3>
+                <p><strong>Scenario:</strong> A financial services company wants to improve security for employee access to their customer database, which contains sensitive financial information.</p>
+                <p><strong>Question:</strong> Explain three different threat mitigation techniques the company could implement to protect access to this database. For each technique, describe how it would reduce security risks.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>Mark Scheme Guidance:</h4>
+                <p><strong>2 marks per technique (total 6 marks):</strong></p>
+                <ul>
+                    <li>1 mark: Correct identification of mitigation technique</li>
+                    <li>1 mark: Clear explanation of how it reduces risk in this scenario</li>
+                </ul>
+            </div>
+            <div class="slide-number">19 / 24</div>
+        </div>
+
+        <!-- Slide 20: Exam Question 1 Answer -->
+        <div class="slide">
+            <h2>Question 1: Model Answer</h2>
+            <div class="card">
+                <h4>Multi-Factor Authentication (MFA) (2 marks)</h4>
+                <p>The company could implement MFA requiring employees to use both their password and a second factor such as a code from an authenticator app ✓. This would reduce the risk of unauthorised access because even if an attacker steals or guesses an employee's password through phishing or brute force, they would still be unable to access the database without the second authentication factor ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Role-Based Access Control (RBAC) (2 marks)</h4>
+                <p>The company could implement RBAC to ensure employees only have access to the specific customer records they need for their role ✓. For example, customer service staff might only see basic account information whilst financial advisors see complete financial details. This reduces risk by limiting the amount of sensitive data each employee can access, minimising potential damage from compromised accounts or insider threats ✓.</p>
+            </div>
+            <div class="card">
+                <h4>Database Encryption (2 marks)</h4>
+                <p>The company could encrypt the customer database so that sensitive financial information is stored in encrypted form ✓. This would reduce risk because even if an attacker gains unauthorised access to the database files (through SQL injection or stolen credentials), the data would be unreadable without the decryption keys, protecting customer information from data breaches ✓.</p>
+            </div>
+            <div class="slide-number">20 / 24</div>
+        </div>
+
+        <!-- Slide 21: Exam Question 2 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 2 (8 marks)</h3>
+                <p><strong>Scenario:</strong> A manufacturing company recently suffered a ransomware attack that encrypted critical production data. The company had to halt operations for three days whilst recovering from backups.</p>
+                <p><strong>Question:</strong> Evaluate the effectiveness of implementing the following mitigation techniques to prevent similar incidents in future:</p>
+                <ul>
+                    <li>Regular patch management</li>
+                    <li>Security awareness training for employees</li>
+                    <li>Network segmentation</li>
+                    <li>Offline backup strategy</li>
+                </ul>
+                <p>In your answer, explain how each technique helps prevent ransomware attacks and discuss any limitations.</p>
+            </div>
+            <div class="slide-number">21 / 24</div>
+        </div>
+
+        <!-- Slide 22: Exam Question 2 Answer -->
+        <div class="slide">
+            <h2>Question 2: Model Answer</h2>
+            <div class="card">
+                <p><strong>Regular Patch Management (2 marks):</strong> Keeping all systems updated with the latest security patches ✓ closes known vulnerabilities that ransomware often exploits, such as the EternalBlue vulnerability used by WannaCry. However, this technique has limitations as zero-day vulnerabilities (unknown flaws without patches) can still be exploited, and patching requires careful testing to avoid breaking production systems ✓.</p>
+                <p><strong>Security Awareness Training (2 marks):</strong> Training employees to recognise phishing emails and suspicious attachments ✓ is highly effective since most ransomware infections begin with social engineering. Employees become the first line of defence, preventing initial infection. The limitation is that even well-trained users can occasionally fall for sophisticated phishing attempts, and new employees or contractors may not have received training ✓.</p>
+                <p><strong>Network Segmentation (2 marks):</strong> Dividing the network into separate segments (e.g., production systems, office systems, guest Wi-Fi) with firewalls between them ✓ prevents ransomware from spreading across the entire network if one system is infected. This containment limits damage. However, if ransomware infects a system with legitimate access to multiple segments, it can still spread, and misconfigured segmentation may be ineffective ✓.</p>
+                <p><strong>Offline Backup Strategy (2 marks):</strong> Maintaining regular backups that are disconnected from the network (offline or air-gapped) ✓ ensures ransomware cannot encrypt backup files, allowing complete data recovery without paying ransom. The limitation is that backups are only effective if tested regularly, and there may still be data loss between the last backup and the attack, plus recovery takes time during which operations remain disrupted ✓.</p>
+            </div>
+            <div class="slide-number">22 / 24</div>
+        </div>
+
+        <!-- Slide 23: Exam Question 3 -->
+        <div class="slide">
+            <h2>Exam-Style Questions</h2>
+            <div class="card">
+                <h3>Question 3 (4 marks)</h3>
+                <p><strong>Question:</strong> Compare the security benefits of a traditional firewall with a next-generation firewall (NGFW). Explain why an organisation might choose to invest in an NGFW despite the higher cost.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>Mark Scheme Guidance:</h4>
+                <p><strong>4 marks total:</strong></p>
+                <ul>
+                    <li>2 marks: Explanation of traditional firewall capabilities</li>
+                    <li>2 marks: Explanation of NGFW additional capabilities and justification for investment</li>
+                    <li>Quality of comparison demonstrated through appropriate language</li>
+                </ul>
+            </div>
+            <div class="slide-number">23 / 24</div>
+        </div>
+
+        <!-- Slide 24: Exam Question 3 Answer -->
+        <div class="slide">
+            <h2>Question 3: Model Answer</h2>
+            <div class="card">
+                <p><strong>Traditional firewalls ✓</strong> control traffic based on basic criteria such as IP addresses, port numbers, and protocols. They can block or allow traffic to specific ports (e.g., blocking port 80 for HTTP) but cannot inspect the actual content of the data packets or identify which applications are being used ✓.</p>
+                <p><strong>In contrast, next-generation firewalls ✓</strong> provide deep packet inspection to examine the actual content of network traffic, not just headers. They can identify and control specific applications (blocking Facebook whilst allowing Slack), detect and prevent intrusion attempts automatically, and incorporate threat intelligence to block connections to known malicious IP addresses and domains. An organisation might justify the higher cost because NGFWs provide much more sophisticated protection against modern threats like advanced malware, targeted attacks, and application-layer exploits that traditional firewalls cannot detect ✓.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>Key Comparison Points:</h4>
+                <p>• Traditional: Basic filtering vs NGFW: Intelligent analysis</p>
+                <p>• Traditional: Port-based vs NGFW: Application-aware</p>
+                <p>• Traditional: Reactive vs NGFW: Proactive threat prevention</p>
+            </div>
+            <div class="slide-number">24 / 24</div>
+        </div>
+
+        <!-- Slide 25: Summary -->
+        <div class="slide">
+            <h2>Summary: Threat Mitigation Techniques</h2>
+            <div class="card">
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Layered Defence:</strong> Defence in depth uses multiple overlapping security controls to ensure no single point of failure</li>
+                    <li><strong>Access Control:</strong> Authentication (proving identity) and authorisation (controlling permissions) are foundational security controls</li>
+                    <li><strong>Encryption:</strong> Protects data both at rest and in transit, rendering it unreadable without decryption keys</li>
+                    <li><strong>Network Security:</strong> Firewalls, IDS/IPS, and network segmentation control and monitor network traffic</li>
+                    <li><strong>Proactive Measures:</strong> Patch management, backups, and monitoring prevent incidents and enable rapid recovery</li>
+                    <li><strong>Human Element:</strong> Security awareness training transforms users from vulnerabilities into active defenders</li>
+                    <li><strong>Preparedness:</strong> Incident response planning ensures coordinated, effective action during security events</li>
+                </ul>
+            </div>
+            <div class="highlight-box">
+                <h3>🎯 Remember</h3>
+                <p>No single mitigation technique provides complete protection. Effective security requires a combination of technical controls, procedural safeguards, and security-aware users working together as part of a comprehensive defence-in-depth strategy.</p>
+            </div>
+            <div class="slide-number">25 / 25</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressFill = document.getElementById('progressFill');
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateProgress();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(slides.length - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>
