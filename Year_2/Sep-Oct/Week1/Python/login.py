@@ -112,3 +112,4 @@ def main():
 main()
 
 # Add password hashing, and hook it up to a proper database (SET UP HELIO HOST ROSE!!! That is a later rose job, Fuck that guy)
+# Enforce lowercase usernames?
