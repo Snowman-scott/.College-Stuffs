@@ -7,7 +7,8 @@ winner = False
 valid = True
 
 
-'''def wincheck():
+'''
+def wincheck():
     if (grid[0][0] == grid[0][1] == grid[0][2]):
         return True
     elif (grid[1][0] == grid[1][1] == grid[1][2]) == "X":
@@ -24,7 +25,7 @@ valid = True
         return True
     elif (grid[0][2] == grid[1][1] == grid[3][0]) == "X":
         return True
-    
+
     if (grid[0][0] == grid[0][1] == grid[0][2]) == "O":
         return winner == True
     elif (grid[1][0] == grid[1][1] == grid[1][2]) == "O":
@@ -40,7 +41,8 @@ valid = True
     elif (grid[0][0] == grid[1][1] == [2][2]) == "O":
         return winner == True
     elif (grid[0][2] == grid[1][1] == grid[3][0]) == "O":
-        return winner == True'''
+        return winner == True
+'''
 
 
 
@@ -82,8 +84,8 @@ while winner == False:
     else:
         print("Not a valid move")
         valid = False
-    
-    if valid != False: 
+
+    if valid != False:
         if turn == "X":
             grid[x][y] = "X"
             turn = "O"
@@ -92,7 +94,7 @@ while winner == False:
             turn = "X"
     #if wincheck() == False:
         #wincheck()
-    
+
     print(winner)
 
     if winner == True:
