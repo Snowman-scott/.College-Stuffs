@@ -119,4 +119,5 @@ def main():
 
 main()
 
-# hook it up to a proper database afterwards (SET UP HELIO HOST ROSE!!! That is a later rose job, Fuck that guy)
+# hook it up to a proper database!!!
+# (You have the HH postgres Instance live now use it idiot!)
