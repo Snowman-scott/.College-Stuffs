@@ -1,1 +1,1 @@
-[{"username": "admin", "password": "admin123"}, {"username": "rose", "password": "091166"}, {"username": "James", "password": "12345"}]
+[{"username": "admin", "password": "$argon2id$v=19$m=65536,t=3,p=4$ALqZdm++wBl6ZyGg26VO9Q$fJRhScqvggDa1+pKLYkUyJjV3AHda2bjagljvv1YI4Q"}, {"username": "rose", "password": "$argon2id$v=19$m=65536,t=3,p=4$ZKL6PAjghhhgBF+qOlOo9A$ORrOCCMKOq3UQHVV9WmNaUjZjVXqSRG1JRl+D06uQes"}]

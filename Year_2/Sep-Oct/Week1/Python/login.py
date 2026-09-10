@@ -2,6 +2,8 @@ import json
 import os
 import sys
 
+import argon2
+
 
 def clearScreen():
     os.system("cls" if os.name == "nt" else "clear")
@@ -46,13 +48,16 @@ def menu():
 def login(userFeild, passFeild):
     logins = jsonRead()
 
+    ph = argon2.PasswordHasher()
+
     for i in logins:
         if userFeild == i["username"]:
-            if passFeild == i["password"]:
-                return True
-            elif passFeild != i["password"]:
+            try:
+                ph.verify(i["password"], passFeild)
+            except (argon2.exceptions.VerifyMismatchError, argon2.exceptions.InvalidHash):
                 return False
-    return False
+            else:
+                return True
 
 
 def userCheck(user):
@@ -64,8 +69,10 @@ def userCheck(user):
 
 
 def accCreate():
+    ph = argon2.PasswordHasher()
     while True:
-        newuser = input("Enter username for your new account: ")
+        print("All usernames Must be Lower case, usrnames will automatically be made lowercase by the program \n")
+        newuser = input("Enter username for your new account: ").strip().lower()
         clear = userCheck(newuser)
         if clear == True:
             input(
@@ -77,10 +84,11 @@ def accCreate():
         newPass = input("Enter your password: ")
         confPass = input("Re-Enter your password: ")
         if newPass == confPass:
+            hashPass = ph.hash(newPass)
             break
         else:
             print("Your password did not match")
-    newEntry = {"username": newuser, "password": newPass}
+    newEntry = {"username": newuser, "password": hashPass}
     logins = jsonRead()
     logins.append(newEntry)
 
@@ -93,7 +101,7 @@ def main():
         choice = menu()
 
         if choice == 1:
-            usrFeild = input("Enter your username: ")
+            usrFeild = input("Enter your username: ").strip().lower()
             pasFeild = input("Enter your password: ")
 
             backcall = login(usrFeild, pasFeild)
@@ -111,5 +119,4 @@ def main():
 
 main()
 
-# Add password hashing, and hook it up to a proper database (SET UP HELIO HOST ROSE!!! That is a later rose job, Fuck that guy)
-# Enforce lowercase usernames?
+# hook it up to a proper database afterwards (SET UP HELIO HOST ROSE!!! That is a later rose job, Fuck that guy)
