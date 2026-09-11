@@ -1,8 +1,11 @@
 import json
 import os
 import sys
+import time
 
 import argon2
+import psycopg2
+from dotenv import load_dotenv
 
 
 def clearScreen():
@@ -19,6 +22,22 @@ def jsonRead():
     except FileNotFoundError:
         print("ERROR: logins.json not found")
         sys.exit(1)
+
+
+def dbConnect():
+    load_dotenv()
+    try:
+        conn = psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASS")
+        )
+    except psycopg2.OperationalError as e:
+        return False , e
+    else:
+        return True, conn
 
 
 def menu():
@@ -54,7 +73,10 @@ def login(userFeild, passFeild):
         if userFeild == i["username"]:
             try:
                 ph.verify(i["password"], passFeild)
-            except (argon2.exceptions.VerifyMismatchError, argon2.exceptions.InvalidHash):
+            except (
+                argon2.exceptions.VerifyMismatchError,
+                argon2.exceptions.InvalidHash,
+            ):
                 return False
             else:
                 return True
@@ -71,7 +93,9 @@ def userCheck(user):
 def accCreate():
     ph = argon2.PasswordHasher()
     while True:
-        print("All usernames Must be Lower case, usrnames will automatically be made lowercase by the program \n")
+        print(
+            "All usernames Must be Lower case, usrnames will automatically be made lowercase by the program \n"
+        )
         newuser = input("Enter username for your new account: ").strip().lower()
         clear = userCheck(newuser)
         if clear == True:
@@ -117,7 +141,16 @@ def main():
             sys.exit(0)
 
 
-main()
+def dbStuff():
+    work, conn = dbConnect()
+
+    if work == True:
+        print("DB Connected Successfully :3")
+    elif work == False:
+        print(f"Connection to DB Failed \n ERROR: {conn}")
+
+# main()
+
+dbStuff()
 
 # hook it up to a proper database!!!
-# (You have the HH postgres Instance live now use it idiot!)
