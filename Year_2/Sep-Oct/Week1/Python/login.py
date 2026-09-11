@@ -149,8 +149,8 @@ def dbStuff():
     elif work == False:
         print(f"Connection to DB Failed \n ERROR: {conn}")
 
-# main()
+main()
 
-dbStuff()
+# dbStuff()
 
 # hook it up to a proper database!!!
