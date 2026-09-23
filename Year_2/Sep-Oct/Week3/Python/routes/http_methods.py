@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 
+from helper import emailValidator, phoneValidator
+
 app = Flask(__name__)
 
 
@@ -28,7 +30,14 @@ def register():
     missing = [k for k in required if not data.get(k)]
     if missing:
         return f"You were missing: {', '.join(missing)}"
-    user, em, age, phone = (data[k] for k in required)
+    user = data["username"]
+    age = data["age"]
+    em, err = emailValidator(data)
+    if err != None:
+        return f"Email verification failed\n ERROR: {err}"
+    phone, err =phoneValidator(data)
+    if err != None:
+        return f"Phone verification failed\n ERROR: {err}"
     return f"Hello {user} your email is {em} you are {age} old and your digits are {phone} :3"
 
 
