@@ -39,13 +39,35 @@ The code needs to take the information from the front and store it in an encrypt
 ## What Might Businesses have to worry about?
 - SQL injection (attack)
 - DDoS (Denial of service attack)
-- Being sued *
-- Bankruptcy * 
+- Being sued 
+- Bankruptcy  
 - not doing H&S or risk assessments
-- lawsuit *
-- GDPR *
+- lawsuit 
+- GDPR 
 - Child labor
-- Insider threats *
-- Cyber security *
-- No stock / Supply chain risk *
-- Distribution attack
+- Insider threats 
+- Cyber security 
+- No stock / Supply chain risk 
+- Distribution attack 
+- Phishing attacks  
+- Credit risk 
+- Stocks and shares 
+- Stakeholders
+
+| Risk | Impact | Mitigation Strategy |
+|------|--------|---------------------|
+| SQL injection | Someone can minipulate a DB to get access to things they should not have like making themsevs an admin | Prepared statements, parameterized queries, and input validation |
+| DDoS attack | Servers get flooded with fake traffic making the website or app go down for actual users | Cloudflare / CDN filtering, rate limiting, and traffic monitoring |
+| Being sued / Lawsuits | Huge legal fees, losing money to court settlements, and massive damage to company reputation | Solid contracts, clear terms of service, legal compliance, and liability insurance |
+| Bankruptcy | Business completely runs out of cash and has to shut down or liquidate assets | Good financial planning, keeping cash reserves, budgeting, and watching cash flow |
+| Missing H&S / Risk assessments | Staff or customers get hurt on site, leading to heavy fines, legal action, or forced closure | Regular health and safety audits, staff safety training, and clear risk assessment docs |
+| GDPR non-compliance | Getting hit with massive fines (up to 4% global turnover) for leaking or mismanaging user data | Strict data privacy policies, encrypting user data, and getting explicit consent |
+| Child labor in supply chain | Huge ethical breach, total brand destruction, legal sanctions, and boycotted products | Strict supplier audits, ethical sourcing policies, and vetting third-party factories |
+| Insider threats | Rogue or disgruntled employees stealing source code, leaking customer data, or wiping servers | Principle of least privilege (RBAC), access logging, and revoking access immediately on offboarding |
+| General Cyber security | Ransomware locking down systems, data leaks, and complete loss of customer trust | Firewalls, MFA everywhere, keeping software updated/patched, and regular pen testing |
+| No stock / Supply chain risk | Can't ship products to customers, losing sales to competitors, and factory downtime | Having backup suppliers, keeping buffer stock, and tracking logistics carefully |
+| Distribution attack | Compromised third-party software packages or updates infecting internal build servers | Dependency scanning, lockfiles, and vetting third-party software vendors |
+| Phishing attacks | Staff getting tricked into giving away login details or transferring money to scammers | Email spam filters, hardware keys / MFA, and running staff phishing tests |
+| Credit risk | Clients or customers defaulting on invoices so the business never gets paid for work done | Credit checks before signing deals, taking upfront deposits, and strict payment terms |
+| Stocks & shares volatility | Share price crashing, losing market value, and panic among company shareholders | Diversifying revenue, clear financial reporting, and focusing on long-term stability |
+| Stakeholder issues | Conflicts over business direction, management deadlocks, or investors pulling funding | Regular reporting, clear board governance, and open communication with investors |
