@@ -6,3 +6,5 @@ venv/
 tutorial
 
 .env
+
+__pycache__
