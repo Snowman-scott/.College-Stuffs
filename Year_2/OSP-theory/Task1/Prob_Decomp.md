@@ -35,3 +35,17 @@ The code needs to take the information from the front and store it in an encrypt
 | File Storage | Keeps uploaded files in object storage instead of clogging the main database | S3-compatible storage (Cloudflare R2, MinIO) with pre-signed URLs |
 | User Accounts & Auth | Lets users create accounts with hashed passwords to manage their pastes | Argon2id or bcrypt password hashing with HTTP-only cookies or JWTs |
 | Admin Routes & RBAC | Blocks normal users from seeing admin panel tools and routes | Middleware route guards checking admin user roles + rate limiting |
+
+## What Might Businesses have to worry about?
+- SQL injection (attack)
+- DDoS (Denial of service attack)
+- Being sued *
+- Bankruptcy * 
+- not doing H&S or risk assessments
+- lawsuit *
+- GDPR *
+- Child labor
+- Insider threats *
+- Cyber security *
+- No stock / Supply chain risk *
+- Distribution attack
