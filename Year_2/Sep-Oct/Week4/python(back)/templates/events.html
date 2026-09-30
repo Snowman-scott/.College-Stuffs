@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>{{ event_name }} in {{ event_location }} on {{ event_date.strftime("%d %B %Y, %H:%M:%S") }}</h1>
+        <h2>Guests:</h2>
+        {% for guest in guestList %}
+            <p>{{ guest }}</p>
+        {% endfor %}
+    </body>
+</html>

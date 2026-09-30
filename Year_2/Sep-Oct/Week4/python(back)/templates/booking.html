@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking details</title>
+  </head>
+  <body>
+    <h1 style="text-align: center">Booking details</h1>
+    <p style="text-align: center">Hello, {{ booking.name }}</p>
+    <p style="text-align: center">You are here for a {{ booking.event }} <br /> on the {{ booking.date }}</p>
+    <p style="text-align: center">Your {{ booking.event }} is on the {{ booking.location }}</p>
+    {% if booking.amountPaid > 0 %}
+        <p style="text-align: center">Booking status : Valid</p>
+    {% else %}
+        <p style="text-align: center">Booking status: Invalid</p>
+    {% endif %}
+  </body>
+</html>
