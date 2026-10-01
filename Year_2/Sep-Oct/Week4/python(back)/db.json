@@ -1,1 +1,8 @@
-[{}, {"username": "rose", "email": "rose@killallchickens.org", "age": "17", "password": "091166"}, {"username": "rose", "email": "rose@killallchickens.org", "age": "17", "password": "091166"}]
+[
+  {
+    "username": "rose",
+    "email": "rose@killallchickens.org",
+    "age": "17",
+    "password": "091166"
+  }
+]
