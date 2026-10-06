@@ -1,19 +1,21 @@
 # First use of figma
 
 1. I really don't know,
-
-Industry: Programing and tools
-Primary : Any
+  
+Industry: Programing and tools  
+Primary : Developers  
 Issue : People often struggle to share text , files and images across devices which annoys a lot of people making them auth an account or pay for a tool.
-Primary solution: A PasteBin website that allows users to input text, images or files in 3 formats, Markdown, plaintext or code. then lets you create and copy a link that takes the other device / people.
-Secondary solution: A useful tool for sharing notes with people in an encrypted private way.
-Source: [PrivateBin](https://privatebin.net/)
+Primary solution: A PasteBin website that allows users to input text, images or files in 3 formats, Markdown, plaintext or code. then lets you create and copy a link that takes the other device / people. Main feature is proper encryption + Burn on read which makes sharing secrets easier and less stressful for developers.  
+Secondary solution: A useful tool for sharing notes with people in an encrypted private way.  
+Source: [PrivateBin](https://privatebin.net/)  
+  
+PupBin Is an Fully encrypted Paste bin which allows users to share pretty much anything safely knowing they can share .env files and more without any tokens or passwords getting leaked.  
 
 ---
 
 # Colour pallet
 
-## Light Mode
+## Light Mode (unused)
 
 Neutrals (shared)
 
@@ -34,7 +36,7 @@ Semantic (shared)
 #B23A3A — error → 5.9:1 with white text (AA)
 #E0A93E — warning → 7.4:1 with dark text (#2B2118), don't pair with white text, it fails
 
-## Dark Mode
+## Dark Mode (unused)
 
 Neutrals (dark)
 
