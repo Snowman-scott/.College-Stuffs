@@ -8,3 +8,5 @@ tutorial
 .env
 
 __pycache__
+
+.venv/

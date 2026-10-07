@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ product.name }} - Trail & Timber</title>
+    <style>
+      p,
+      h1,
+      h2 {
+        text-align: center;
+      }
+
+      body {
+          background-color: #1a1b26;
+          color: #c0caf5
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Trail & Timber</h1>
+    <h2>{{ product.name }}</h2>
+
+    <p><strong>Category:</strong> {{ product.category }}</p>
+    <p><strong>Price:</strong> £{{ "%.2f"|format(product.price) }}</p>
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>In Stock:</strong> {{ product.stock }}</p>
+
+    <div>
+      {% if product.stock == 0 %}
+      <p><strong>Stock Status:</strong> Out of stock</p>
+      {% elif product.stock <= 5 %}
+      <p><strong>Stock Status:</strong> Limited stock</p>
+      {% else %}
+      <p><strong>Stock Status:</strong> In stock</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
