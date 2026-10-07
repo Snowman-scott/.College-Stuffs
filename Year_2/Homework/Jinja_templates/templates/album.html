@@ -1,0 +1,13 @@
+<html>
+  <body>
+    <h1 style="text-align: center">{{ album.title }}</h1>
+    <p style="text-align: center">Artist: {{ album.artist }}</p>
+    <p style="text-align: center">Year: {{ album.year }}</p>
+    <p style="text-align: center">Genre: {{ album.genre }}</p>
+    {% if album.year <= "2000" %}
+    <p style="text-align: center">Classic Album</p>
+    {% else %}
+    <p style="text-align: center">21st century Album</p>
+    {% endif %}
+  </body>
+</html>
