@@ -10,3 +10,5 @@ tutorial
 __pycache__
 
 .venv/
+
+api_personal.py
