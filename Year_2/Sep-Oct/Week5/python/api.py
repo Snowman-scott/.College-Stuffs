@@ -64,44 +64,52 @@ products = [
 
 @app.route("/products", methods=["GET"])
 def get_products():
-    return products
+    return {"success": products}, 200
 
 
 @app.route("/product/<int:id>", methods=["GET"])
 def get_product(id):
     for product in products:
         if product["id"] == id:
-            return product
+            return {"success": product}, 200
     return {"error": "product not found"}, 404
 
 
 @app.route("/product", methods=["POST"])
 def add_prod():
-    data = request.form
-    new_pro = ("id", "name", "price", "category")
-    missing = [k for k in new_pro if not data.get(k)]
-    if missing:
-        return {"error": f"you were missing: {', '.join(missing)}"}, 400
-    pid, err, stat_c = id_ver(data, products)
-    if err != None:
-        return f"Error: {err['error']}", stat_c
-    price, err, stat = val_price(data)
-    if err != None:
-        return f"Error: failed to verify the price {err['error']}", stat
-    newEntry = {
-        "id": pid,
-        "name": data["name"],
-        "price": price,
-        "category": data["category"],
-    }
-    products.append(newEntry)
+    data = request.get_json(silent=True)
+    if isinstance(data, dict):
+        new_pro = ("id", "name", "price", "category")
+        missing = [k for k in new_pro if k not in data]
+        if missing:
+            return {"error": f"you were missing: {', '.join(missing)}"}, 400
+        cleaned = {k:data[k] for k in new_pro}
+        print(cleaned)
+        pid, err, stat_c = id_ver(cleaned, products)
+        if err != None:
+            return {"error": f"Error: {err['error']}"}, stat_c
+        price, err, stat = val_price(cleaned)
+        if err != None:
+            return {"error": f"failed to verify the price {err['error']}"}, stat
+        newEntry = {
+            "id": pid,
+            "name": cleaned["name"],
+            "price": price,
+            "category": cleaned["category"],
+        }
+        products.append(newEntry)
 
-    resp, err, code = ver_add(products, pid)
-    if err != None:
-        return f"Entry failed to be added \n{err['error']}", code
+        resp, err, code = ver_add(products, pid)
+        if err != None:
+            return {"error": f"Entry failed to be added \n{err['error']}"}, code
 
-    product = get_product(pid)
-    return f"{resp}\n\nEntry added successfully.\nyou added {product}.", code
+        product = get_product(pid)
+        return {
+            "Success": f"{resp}\n\nEntry added successfully.\nyou added {product}."
+        }, code
+    return {
+        "error": "The data passed was either malformed, missing or of the incorrect type"
+    }, 400
 
 
 if __name__ == "__main__":

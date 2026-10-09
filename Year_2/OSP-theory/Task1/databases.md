@@ -84,16 +84,30 @@ The whole row should get deleted as the orderID is the primary key
 
 | Field Name | Table Name | Data Type | Description | Constraints |
 |------------|------------|-----------|-------------|-------------|
-| CustomerID | Customers | Intager | Unique number for each customer | Unique, Primary Key - Auto increment |
+| CustomerID | Customers | Integer | Unique number for each customer | Unique, Primary Key - Auto increment |
 | CustomerName | Customers | String | Name of the customer | Required, Maximum of 50 chars |
 | CustomerEmail | Customers | String | Customers Email | Required, Unique, must be a valid email |
-| SalesPersonID | Salespeople | Intager | Unique number for each sales person | Unique, Primary Key - Auto Increment |
+| SalesPersonID | Salespeople | Integer | Unique number for each sales person | Unique, Primary Key - Auto Increment |
 | SalesPersonName | Salespeople | String | name of sales person | Reuired, Maximum of 50 chars |
 | SalesPersonEmail | Salespeople | String | Email of salesperson | Required, Unique, valid email |
-| ProductID | Products | Intager | Unique number for each product | Unique, Primary key - Auto increment |
+| ProductID | Products | Integer | Unique number for each product | Unique, Primary key - Auto increment |
 | ProductName | Products | String | Name of product | Required, max 100 chars, Unique | 
 | ProductPrice | Products | Float | Price of product | Price to 2 Decimal places, Type of currency (£, $, €) |
-| OrderID | Orders | Intager | Unique number for every order | Unique, Primary key, Auto Incrament |
-| CustomerID | Orders | Intager | ID of user making the order | Foreign Key (Customers) |
-| ProductID | Orders | Intager | ID for products in the order | Foreign Key (Products) |
-| SalesPerson | Orders | Intager | ID of the sales person who made the sale | Foreign Key (Salespeople) |
+| OrderID | Orders | Integer | Unique number for every order | Unique, Primary key, Auto Incrament |
+| CustomerID | Orders | Integer | ID of user making the order | Foreign Key (Customers) |
+| ProductID | Orders | Integer | ID for products in the order | Foreign Key (Products) |
+| SalesPerson | Orders | Integer | ID of the sales person who made the sale | Foreign Key (Salespeople) |
+
+
+## Data Dicts again 
+
+| Field Name | Table Name | Data Type | Description | Constraints |
+|------------|------------|-----------|-------------|-------------|
+| playerID | players | Integer | Unique number for every player | Unique, Primary key - Auto Increment |
+| nickName | players | String | A nick name for people so you know who they are | 20 chars max, Required |
+| playerAge | players | integer | Age of the player | Must be between 12 - 100, Required |
+| mainSkill | players | string | Main survival skill | Must be Medic, Fighter, Scout or Cook, Required |
+| killCount | players | integer | Amount of kills player has over career | Positive, Required |
+| infection | players | boolean | Weather the player is infected | True or False, Required |
+| entryDate | players | float | When the player entered the safe zone | Date, Accurate, Required |
+| HealthStat | players | integer | 1 - 100 health scale for each player | 1 - 100, Required |
